@@ -21,8 +21,6 @@ namespace TheGame
         Matrix worldMatrix;
         Effect effect;
         //.................
-        private Model model;
-        private Texture2D texture;
 
         List<SceneObject> sceneObjectsArray = new List<SceneObject>();
 
@@ -58,11 +56,6 @@ namespace TheGame
 
         protected override void LoadContent()
         {
-            //model = Content.Load<Model>("StarSparrow01");
-
-            //model = Content.Load<Model>("tak");
-            //texture = Content.Load<Texture2D>("StarSparrow_Green");
-
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             foreach(SceneObject sceneObject in sceneObjectsArray)
             {
@@ -114,7 +107,7 @@ namespace TheGame
 
                     Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
                     effect.Parameters["WorldInverseTransposeMatrix"].SetValue(worldInverseTransposeMatrix);
-                    //effect.Parameters["AmbienceColor"].SetValue(Color.Gray.ToVector4());
+                    effect.Parameters["AmbienceColor"].SetValue(Color.Gray.ToVector4());
                     effect.Parameters["DiffuseColor"].SetValue(Color.White.ToVector4());
                     effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(1.0f, 1.0f, 0));
                     effect.Parameters["ModelTexture"].SetValue(texture2D);
@@ -130,8 +123,8 @@ namespace TheGame
 
         private void ObjectInitializer()
         {
-            sceneObjectsArray.Add(new SceneObject(new Vector3(0, 0, 0), "tak", "StarSparrow_Green"));
-
+            sceneObjectsArray.Add(new SceneObject(new Vector3(0, 0, 0), "maja", "StarSparrow_Green"));
+            sceneObjectsArray.Add(new SceneObject(new Vector3(2, 0, 0), "maja", "StarSparrow_Green"));
         }
     }
 }
