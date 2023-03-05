@@ -38,7 +38,7 @@ namespace TheGame
             // TODO: Add your initialization logic here
             //DON'T TOUCH IT MORTALS
             camTarget = new Vector3(0f, 0f, 0f);
-            camPosition = new Vector3(0f, 10f, 10f);
+            camPosition = new Vector3(0f, 20f, 20f);
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.ToRadians(45f),
                 GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
@@ -49,8 +49,8 @@ namespace TheGame
             worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
             //.................
 
-            ObjectInitializer();
-
+            //ObjectInitializer();
+            WorldCreator(2.15f,4,4,"maja", "StarSparrow_Green");
             base.Initialize();
         }
 
@@ -123,8 +123,28 @@ namespace TheGame
 
         private void ObjectInitializer()
         {
-            sceneObjectsArray.Add(new SceneObject(new Vector3(0, 0, 0), "maja", "StarSparrow_Green"));
-            sceneObjectsArray.Add(new SceneObject(new Vector3(2, 0, 0), "maja", "StarSparrow_Green"));
+            //sceneObjectsArray.Add(new SceneObject(new Vector3(0, 0, 0), "maja", "StarSparrow_Green"));
+            //sceneObjectsArray.Add(new SceneObject(new Vector3(2.15f, 0, 0), "maja", "StarSparrow_Green"));
         }
+
+        private void WorldCreator(float blockSeparation, float worldWidth, float worldLenght, string modelFileName, string textureFileName)   //simple creator (develop it later)
+        {
+            float _blockSeparation = blockSeparation;
+            int _worldWidth = (int)worldWidth/2;
+            int _minusWidth = -_worldWidth;
+
+            int _worldLenght = (int)worldLenght/2;
+            int _minusLenght = -_worldLenght;
+            float level = 0.0f;
+
+            for(int i = _minusLenght; i <=_worldLenght; i++)
+            {
+                for(int j= _minusLenght; j<=_worldWidth; j++)
+                {
+                    sceneObjectsArray.Add(new SceneObject(new Vector3(j*blockSeparation, level, i*blockSeparation), modelFileName, textureFileName));
+                }
+            }
+        }
+
     }
 }
