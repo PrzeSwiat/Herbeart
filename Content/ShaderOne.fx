@@ -8,6 +8,7 @@ float4 AmbienceColor = float4(0.1f, 0.1f, 0.1f, 1.0f);
 float4x4 WorldInverseTransposeMatrix;
 float3 DiffuseLightDirection = float3(-1.0f, 0.0f, 0.0f);
 float4 DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+float DiffuseLightPower = 1.0f;
 
 // For Texture
 texture ModelTexture;
@@ -48,7 +49,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
     
     // For Diffuse Lightning
     float4 normal = normalize(mul(input.NormalVector, WorldInverseTransposeMatrix));
-    float lightIntensity = dot(normal, DiffuseLightDirection);
+    float lightIntensity = dot(normal, DiffuseLightDirection) * DiffuseLightPower;
     output.VertexColor = saturate(DiffuseColor * lightIntensity);
     
     // For Texture

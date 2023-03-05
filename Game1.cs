@@ -107,9 +107,10 @@ namespace TheGame
 
                     Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
                     effect.Parameters["WorldInverseTransposeMatrix"].SetValue(worldInverseTransposeMatrix);
-                    effect.Parameters["AmbienceColor"].SetValue(Color.Gray.ToVector4());
+                    //effect.Parameters["AmbienceColor"].SetValue(Color.Gray.ToVector4());      //uncomment if needed
                     effect.Parameters["DiffuseColor"].SetValue(Color.White.ToVector4());
-                    effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(1.0f, 1.0f, 0));
+                    effect.Parameters["DiffuseLightPower"].SetValue(1.5f);
+                    effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(1.0f, 1.0f, 1.0f));
                     effect.Parameters["ModelTexture"].SetValue(texture2D);
                     effect.Parameters["WorldMatrix"].SetValue(world * mesh.ParentBone.Transform);
                     effect.Parameters["ViewMatrix"].SetValue(view);
