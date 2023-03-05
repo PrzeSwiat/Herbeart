@@ -23,7 +23,7 @@ namespace TheGame
         //.................
 
         List<SceneObject> sceneObjectsArray = new List<SceneObject>();
-
+        float angle = 0;
 
         public Game1()
         {
@@ -37,16 +37,22 @@ namespace TheGame
         {
             // TODO: Add your initialization logic here
             //DON'T TOUCH IT MORTALS
-            camTarget = new Vector3(0f, 0f, 0f);
-            camPosition = new Vector3(0f, 20f, 20f);
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                MathHelper.ToRadians(45f),
-                GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
+                camTarget = new Vector3(0f, 0f, 0f);
+                camPosition = new Vector3(10f, 20f, 20f);
 
-            viewMatrix = Matrix.CreateLookAt(camPosition, camTarget, Vector3.Up); // tells the world of our orientantion
-                                                                                  // (the same as:
-                                                                                  // Vector3(0,1,0) - up and down is along y axis)
-            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
+                projectionMatrix = Matrix.CreateOrthographicOffCenter(-10, 10, -10, 5, 1f, 1000f);      // orthographic view 
+                                                                                                        // projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
+
+                // PERSPECTIVE point of view
+                //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+                //    MathHelper.ToRadians(45f),
+                //    GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
+                // ................................................................................................................
+
+                viewMatrix = Matrix.CreateLookAt(camPosition, camTarget, Vector3.Up); // tells the world of our orientantion
+                                                                                      // (the same as:
+                                                                                      // Vector3(0,1,0) - up and down is along y axis)
+                worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
             //.................
 
             //ObjectInitializer();
@@ -71,7 +77,6 @@ namespace TheGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -107,10 +112,10 @@ namespace TheGame
 
                     Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
                     effect.Parameters["WorldInverseTransposeMatrix"].SetValue(worldInverseTransposeMatrix);
-                    //effect.Parameters["AmbienceColor"].SetValue(Color.Gray.ToVector4());      //uncomment if needed
+                    //effect.Parameters["AmbienceColor"].SetValue(Color.Gray.ToVector4());      //uncomment if ambient needed
                     effect.Parameters["DiffuseColor"].SetValue(Color.White.ToVector4());
-                    effect.Parameters["DiffuseLightPower"].SetValue(1.5f);
-                    effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(1.0f, 1.0f, 1.0f));
+                    effect.Parameters["DiffuseLightPower"].SetValue(1.5f);              // diffuse light power 
+                    effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(2.0f, 4.0f, 1.0f));
                     effect.Parameters["ModelTexture"].SetValue(texture2D);
                     effect.Parameters["WorldMatrix"].SetValue(world * mesh.ParentBone.Transform);
                     effect.Parameters["ViewMatrix"].SetValue(view);
@@ -136,7 +141,7 @@ namespace TheGame
 
             int _worldLenght = (int)worldLenght/2;
             int _minusLenght = -_worldLenght;
-            float level = 0.0f;
+            float level = -4.0f;
 
             for(int i = _minusLenght; i <=_worldLenght; i++)
             {
