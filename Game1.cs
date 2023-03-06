@@ -57,7 +57,7 @@ namespace TheGame
             //.................
 
             //ObjectInitializer();
-            WorldCreator(2.15f,4,4,"maja", "StarSparrow_Green", "ShaderOne");
+            WorldCreator(2.15f,4,4,"test", "StarSparrow_Green", "ShaderOne");
 
             cameraMove = new Vector3(0, 0, 0);
             base.Initialize();
