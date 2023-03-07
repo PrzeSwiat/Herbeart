@@ -13,6 +13,8 @@ namespace TheGame
     public class Game1 : Game
     {
         //DON'T TOUCH IT MORTALS
+        int WindowWidth = 1280;
+        int WindowHeight = 720;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Vector3 camTarget;
@@ -23,13 +25,16 @@ namespace TheGame
         Effect effect;
         //.................
         World world;
-
+        
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            _graphics.PreferredBackBufferWidth = WindowWidth;
+            _graphics.PreferredBackBufferHeight = WindowHeight;
+            _graphics.ApplyChanges();
 
         }
 
@@ -39,7 +44,7 @@ namespace TheGame
                 camTarget = new Vector3(0f, 0f, 0f);
                 camPosition = new Vector3(10f, 20f, 20f);
 
-                projectionMatrix = Matrix.CreateOrthographicOffCenter(-10, 10, -10, 5, 1f, 1000f);      // orthographic view 
+                projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 100), (WindowHeight / 50), 1f, 1000f);      // orthographic view 
                                                                                                         // projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
                 // PERSPECTIVE point of view
@@ -54,7 +59,7 @@ namespace TheGame
                 worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
             //.................
 
-            world = new World(Content,2.15f,4,4,"test", "StarSparrow_Green", "ShaderOne");
+            world = new World(WindowWidth,WindowHeight,Content,2.15f,10,10,"test", "StarSparrow_Green", "ShaderOne");
             world.ObjectInitializer(Content);
 
 
@@ -71,7 +76,7 @@ namespace TheGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //worldMatrix = world.WorldMove(worldMatrix, new Vector3(0.1f, 0, 0));
+            worldMatrix = world.MouseMovement(worldMatrix);
             
             base.Update(gameTime);
         }
