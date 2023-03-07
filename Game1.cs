@@ -22,9 +22,8 @@ namespace TheGame
         Matrix worldMatrix;
         Effect effect;
         //.................
+        World world;
 
-        List<SceneObject> sceneObjectsArray = new List<SceneObject>();
-        Vector3 cameraMove;
 
         public Game1()
         {
@@ -36,7 +35,6 @@ namespace TheGame
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             //DON'T TOUCH IT MORTALS
                 camTarget = new Vector3(0f, 0f, 0f);
                 camPosition = new Vector3(10f, 20f, 20f);
@@ -56,27 +54,24 @@ namespace TheGame
                 worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
             //.................
 
-            //ObjectInitializer();
-            WorldCreator(2.15f,4,4,"test", "StarSparrow_Green", "ShaderOne");
+            world = new World(Content,2.15f,4,4,"test", "StarSparrow_Green", "ShaderOne");
+            world.ObjectInitializer(Content);
 
-            cameraMove = new Vector3(0, 0, 0);
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            // TODO: Add your update logic here
-            //cameraMove.X += 0.01f;
-            //cameraMove.Z += 0.01f;
-            //worldMatrix = Matrix.CreateTranslation(cameraMove);
+
+            //worldMatrix = world.WorldMove(worldMatrix, new Vector3(0.1f, 0, 0));
             
             base.Update(gameTime);
         }
@@ -88,8 +83,7 @@ namespace TheGame
 
             base.Draw(gameTime);
 
-            //DrawModelWithEffect(model, worldMatrix , viewMatrix, projectionMatrix, texture);
-            foreach (SceneObject sceneObject in sceneObjectsArray)
+            foreach (SceneObject sceneObject in world.GetSceneObjectList())
             {
                 sceneObject.DrawModelWithEffect(sceneObject.GetModel(),worldMatrix * Matrix.CreateScale(sceneObject.GetScale()) *
                     Matrix.CreateRotationX(sceneObject.GetRotation().X) * Matrix.CreateRotationY(sceneObject.GetRotation().Y) *
@@ -97,34 +91,7 @@ namespace TheGame
                     sceneObject.GetPosition().Y, sceneObject.GetPosition().Z), viewMatrix, projectionMatrix, sceneObject.GetTexture2D());
             }
 
-            // TODO: Add your drawing code here
 
-        }
-
-
-        private void ObjectInitializer()
-        {
-            //sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 0, 2), "test", "StarSparrow_Green", "ShaderOne"));
-            //sceneObjectsArray.Add(new SceneObject(Content,new Vector3(2.15f, 0, 0), "maja", "StarSparrow_Green", "ShaderOne"));
-        }
-
-        private void WorldCreator(float blockSeparation, float worldWidth, float worldLenght, string modelFileName, string textureFileName, string effectFileName)   //simple creator (develop it later)
-        {
-            float _blockSeparation = blockSeparation;
-            int _worldWidth = (int)worldWidth/2;
-            int _minusWidth = -_worldWidth;
-
-            int _worldLenght = (int)worldLenght/2;
-            int _minusLenght = -_worldLenght;
-            float level = -4.0f;
-
-            for(int i = _minusLenght; i <=_worldLenght; i++)
-            {
-                for(int j= _minusLenght; j<=_worldWidth; j++)
-                {
-                   sceneObjectsArray.Add(new SceneObject(Content,new Vector3(j*blockSeparation, level, i*blockSeparation), modelFileName, textureFileName, effectFileName));
-                }
-            }
         }
 
     }
