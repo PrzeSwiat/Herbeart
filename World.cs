@@ -42,8 +42,8 @@ namespace TheGame
 
         public void ObjectInitializer(ContentManager Content)
         {
-            //_sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 0, 2), "test", "StarSparrow_Green", "ShaderOne"));
-            //_sceneObjectsArray.Add(new SceneObject(Content,new Vector3(2.15f, 0, 0), "test", "StarSparrow_Green", "ShaderOne"));
+            _sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 0, 0), "test", "StarSparrow_Orange", "ShaderOne"));
+            _sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 1, 0), "test", "StarSparrow_Orange", "ShaderOne"));
         }
 
 
@@ -57,47 +57,6 @@ namespace TheGame
             return _sceneObjectsArray;
         }
         
-        public Matrix MouseMovement(Matrix worldMatrix)
-        {
-            MouseState state = Mouse.GetState();
-
-            
-
-            if(state.RightButton == ButtonState.Pressed)
-            {
-                int moveX = 0;
-                int moveY = 0;
-
-                if (state.X < (w / 2) && state.Y < (h / 2))
-                {
-                    moveX = (w/2 - state.X)*2;
-                    moveY = (h/2 - state.Y)*2;
-                }
-                if(state.X < (w / 2) && state.Y > (h / 2))
-                {
-                    moveX = w / 2 + state.X;
-                    moveY = h / 2 - state.Y;
-                }
-                if (state.X > (w / 2) && state.Y < (h / 2))
-                {
-                    moveX = w / 2 - state.X;
-                    moveY = h / 2 + state.Y;
-                }
-                if (state.X > (w / 2) && state.Y > (h / 2))
-                {
-                    moveX = -(w / 2 + state.X)/2;
-                    moveY = -(h / 2 + state.Y)/2;
-                }
-
-                worldMatrix = WorldMove(worldMatrix, new Vector3((float)moveX/1000, 0, (float)moveY/1000));
-
-            }
-            if(state.RightButton == ButtonState.Released)
-            {
-
-            }
-
-            return worldMatrix;
-        }
+        
     }
 }

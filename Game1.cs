@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -22,10 +24,14 @@ namespace TheGame
         Matrix projectionMatrix;
         Matrix viewMatrix;
         Matrix worldMatrix;
+        float cosAngle = 0;
+        float tanAngle = 0;
+        float sinAngle = 0;
         Effect effect;
         //.................
         World world;
-        
+        MouseState prevMouseState;
+        MouseState mouseState;
 
         public Game1()
         {
@@ -35,22 +41,20 @@ namespace TheGame
             _graphics.PreferredBackBufferWidth = WindowWidth;
             _graphics.PreferredBackBufferHeight = WindowHeight;
             _graphics.ApplyChanges();
-
+            
         }
 
         protected override void Initialize()
         {
             //DON'T TOUCH IT MORTALS
                 camTarget = new Vector3(0f, 0f, 0f);
-                camPosition = new Vector3(10f, 20f, 20f);
+                camPosition = new Vector3(30f, 30f, 30f);
 
-                projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 100), (WindowHeight / 50), 1f, 1000f);      // orthographic view 
-                                                                                                        // projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
+                //projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
+                  projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
                 // PERSPECTIVE point of view
-                //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                //    MathHelper.ToRadians(45f),
-                //    GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
+                //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f),GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
                 // ................................................................................................................
 
                 viewMatrix = Matrix.CreateLookAt(camPosition, camTarget, Vector3.Up); // tells the world of our orientantion
@@ -59,8 +63,12 @@ namespace TheGame
                 worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
             //.................
 
-            world = new World(WindowWidth,WindowHeight,Content,2.15f,10,10,"test", "StarSparrow_Green", "ShaderOne");
+            world = new World(WindowWidth,WindowHeight,Content,2f,7,7,"test", "StarSparrow_Green", "ShaderOne");
             world.ObjectInitializer(Content);
+
+            cosAngle =  camPosition.X / (float)Math.Sqrt(Math.Pow(camPosition.X, 2) + Math.Pow(camPosition.Z, 2));
+            sinAngle = camPosition.Z / (float)Math.Sqrt(Math.Pow(camPosition.X, 2) + Math.Pow(camPosition.Z, 2));
+            tanAngle = camPosition.Z / camPosition.X;
 
 
             base.Initialize();
@@ -76,7 +84,8 @@ namespace TheGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            worldMatrix = world.MouseMovement(worldMatrix);
+            KeyInput();
+            //MouseMovement();
             
             base.Update(gameTime);
         }
@@ -96,6 +105,104 @@ namespace TheGame
                     sceneObject.GetPosition().Y, sceneObject.GetPosition().Z), viewMatrix, projectionMatrix, sceneObject.GetTexture2D());
             }
 
+
+        }
+
+        public void KeyInput()
+        {
+            KeyboardState state = Keyboard.GetState();
+            if(state.IsKeyDown(Keys.A))
+            {
+
+                Vector3 move = world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].GetPosition();
+                world.GetSceneObjectList()[world.GetSceneObjectList().Count-1].SetPosition(move - new Vector3(0.1f, 0,-0.1f* cosAngle));
+
+                worldMatrix = world.WorldMove(worldMatrix, new Vector3(0.1f, 0, -0.1f * cosAngle));
+
+            }
+            if (state.IsKeyDown(Keys.D))
+            {
+
+                Vector3 move = world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].GetPosition();
+                world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].SetPosition(move - new Vector3(-0.1f, 0, 0.1f*cosAngle));
+
+                worldMatrix = world.WorldMove(worldMatrix, new Vector3(-0.1f, 0, 0.1f * cosAngle));
+            }
+            if (state.IsKeyDown(Keys.W))
+            {
+
+                Vector3 move = world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].GetPosition();
+                world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].SetPosition(move - new Vector3(0.2f / tanAngle , 0, 0.2f));
+
+                worldMatrix = world.WorldMove(worldMatrix, new Vector3(0.2f / tanAngle, 0, 0.2f));
+            }
+            if (state.IsKeyDown(Keys.S))
+            {
+
+                Vector3 move = world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].GetPosition();
+                world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].SetPosition(move - new Vector3(-0.2f / tanAngle, 0, -0.2f));
+
+                worldMatrix = world.WorldMove(worldMatrix, new Vector3(-0.2f / tanAngle, 0, -0.2f));
+            }
+        }
+
+        public void MouseMovement()
+        {
+            prevMouseState = mouseState;
+            mouseState = Mouse.GetState();
+
+            if (mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released)
+            {
+                
+                if (mouseState.X<WindowWidth/2 && mouseState.Y<WindowHeight/2)
+                {
+                   
+                   // moveX = 2.5f*direction.X;
+                    //moveZ = 4 * direction.Z;
+                    //moveX = (float)Math.Tan(68 * (Math.PI / 180)) * direction.X;
+                    //moveZ = (float)Math.Tan(76 * (Math.PI / 180)) * direction.Z;
+
+                    Debug.Write("1" + "\n");
+                }
+                if (mouseState.X > WindowWidth / 2 && mouseState.Y < WindowHeight / 2)
+                {
+
+                    //moveX = -3f * direction.X;
+                    //moveZ = 3f * direction.Z;
+                    //moveX = -(float)Math.Tan(71 * (Math.PI / 180)) * direction.X;
+                    //moveZ = (float)Math.Tan(71 * (Math.PI / 180)) * direction.Z;
+
+                    Debug.Write("2" + "\n");
+                }
+                if (mouseState.X < WindowWidth / 2 && mouseState.Y > WindowHeight / 2)
+                {
+                    //moveX = 2.3f * direction.X;
+                    //moveZ = -4.6f * direction.Z;
+                    //moveX = (float)Math.Tan(65 * (Math.PI / 180)) * direction.X;
+                    //moveZ = -(float)Math.Tan(78 * (Math.PI / 180)) * direction.Z;
+
+                    Debug.Write("3" + "\n");
+                }
+                if (mouseState.X > WindowWidth / 2 && mouseState.Y > WindowHeight / 2)
+                {
+                    //moveX = -2.3f * direction.X;
+                    //moveZ = -4f * direction.Z;
+                    //moveX = -(float)Math.Tan(66 * (Math.PI / 180)) * direction.X;
+                    //moveZ = -(float)Math.Tan(76 * (Math.PI / 180)) * direction.Z;
+
+                    Debug.Write("4" + "\n");
+                }
+
+                //Debug.Write(WindowWidth/2 - state.X + " : " + (WindowHeight / 2 - state.Y) + "\n");
+                //world.GetSceneObjectList()[world.GetSceneObjectList().Count-1].SetPosition(new Vector3(direction.X, 0, direction.Z));
+
+                //Debug.Write(worldMatrix + "\n");
+            }
+
+            if (mouseState.RightButton == ButtonState.Released && prevMouseState.RightButton == ButtonState.Pressed)
+            {
+
+            }
 
         }
 
