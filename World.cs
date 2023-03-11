@@ -42,8 +42,8 @@ namespace TheGame
 
         public void ObjectInitializer(ContentManager Content)
         {
-            _sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 0, 0), "test", "StarSparrow_Orange", "ShaderOne"));
-            _sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 1, 0), "test", "StarSparrow_Orange", "ShaderOne"));
+            //_sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 0, 0), "test", "StarSparrow_Orange", "ShaderOne"));
+            //_sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 1, 0), "test", "StarSparrow_Orange", "ShaderOne"));
         }
 
 

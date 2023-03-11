@@ -30,6 +30,7 @@ namespace TheGame
         Effect effect;
         //.................
         World world;
+        Player player;
         MouseState prevMouseState;
         MouseState mouseState;
 
@@ -64,11 +65,14 @@ namespace TheGame
             //.................
 
             world = new World(WindowWidth,WindowHeight,Content,2f,7,7,"test", "StarSparrow_Green", "ShaderOne");
+            player = new Player(Content,new Vector3(0,3,0), "player", "StarSparrow_Orange", "ShaderOne");
             world.ObjectInitializer(Content);
 
             cosAngle =  camPosition.X / (float)Math.Sqrt(Math.Pow(camPosition.X, 2) + Math.Pow(camPosition.Z, 2));
             sinAngle = camPosition.Z / (float)Math.Sqrt(Math.Pow(camPosition.X, 2) + Math.Pow(camPosition.Z, 2));
             tanAngle = camPosition.Z / camPosition.X;
+
+
 
 
             base.Initialize();
@@ -84,7 +88,7 @@ namespace TheGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            KeyInput();
+            worldMatrix = player.KeyInput(world,cosAngle,tanAngle,worldMatrix);
             //MouseMovement();
             
             base.Update(gameTime);
@@ -105,104 +109,10 @@ namespace TheGame
                     sceneObject.GetPosition().Y, sceneObject.GetPosition().Z), viewMatrix, projectionMatrix, sceneObject.GetTexture2D());
             }
 
-
-        }
-
-        public void KeyInput()
-        {
-            KeyboardState state = Keyboard.GetState();
-            if(state.IsKeyDown(Keys.A))
-            {
-
-                Vector3 move = world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].GetPosition();
-                world.GetSceneObjectList()[world.GetSceneObjectList().Count-1].SetPosition(move - new Vector3(0.1f, 0,-0.1f* cosAngle));
-
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(0.1f, 0, -0.1f * cosAngle));
-
-            }
-            if (state.IsKeyDown(Keys.D))
-            {
-
-                Vector3 move = world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].GetPosition();
-                world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].SetPosition(move - new Vector3(-0.1f, 0, 0.1f*cosAngle));
-
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(-0.1f, 0, 0.1f * cosAngle));
-            }
-            if (state.IsKeyDown(Keys.W))
-            {
-
-                Vector3 move = world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].GetPosition();
-                world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].SetPosition(move - new Vector3(0.2f / tanAngle , 0, 0.2f));
-
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(0.2f / tanAngle, 0, 0.2f));
-            }
-            if (state.IsKeyDown(Keys.S))
-            {
-
-                Vector3 move = world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].GetPosition();
-                world.GetSceneObjectList()[world.GetSceneObjectList().Count - 1].SetPosition(move - new Vector3(-0.2f / tanAngle, 0, -0.2f));
-
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(-0.2f / tanAngle, 0, -0.2f));
-            }
-        }
-
-        public void MouseMovement()
-        {
-            prevMouseState = mouseState;
-            mouseState = Mouse.GetState();
-
-            if (mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released)
-            {
-                
-                if (mouseState.X<WindowWidth/2 && mouseState.Y<WindowHeight/2)
-                {
-                   
-                   // moveX = 2.5f*direction.X;
-                    //moveZ = 4 * direction.Z;
-                    //moveX = (float)Math.Tan(68 * (Math.PI / 180)) * direction.X;
-                    //moveZ = (float)Math.Tan(76 * (Math.PI / 180)) * direction.Z;
-
-                    Debug.Write("1" + "\n");
-                }
-                if (mouseState.X > WindowWidth / 2 && mouseState.Y < WindowHeight / 2)
-                {
-
-                    //moveX = -3f * direction.X;
-                    //moveZ = 3f * direction.Z;
-                    //moveX = -(float)Math.Tan(71 * (Math.PI / 180)) * direction.X;
-                    //moveZ = (float)Math.Tan(71 * (Math.PI / 180)) * direction.Z;
-
-                    Debug.Write("2" + "\n");
-                }
-                if (mouseState.X < WindowWidth / 2 && mouseState.Y > WindowHeight / 2)
-                {
-                    //moveX = 2.3f * direction.X;
-                    //moveZ = -4.6f * direction.Z;
-                    //moveX = (float)Math.Tan(65 * (Math.PI / 180)) * direction.X;
-                    //moveZ = -(float)Math.Tan(78 * (Math.PI / 180)) * direction.Z;
-
-                    Debug.Write("3" + "\n");
-                }
-                if (mouseState.X > WindowWidth / 2 && mouseState.Y > WindowHeight / 2)
-                {
-                    //moveX = -2.3f * direction.X;
-                    //moveZ = -4f * direction.Z;
-                    //moveX = -(float)Math.Tan(66 * (Math.PI / 180)) * direction.X;
-                    //moveZ = -(float)Math.Tan(76 * (Math.PI / 180)) * direction.Z;
-
-                    Debug.Write("4" + "\n");
-                }
-
-                //Debug.Write(WindowWidth/2 - state.X + " : " + (WindowHeight / 2 - state.Y) + "\n");
-                //world.GetSceneObjectList()[world.GetSceneObjectList().Count-1].SetPosition(new Vector3(direction.X, 0, direction.Z));
-
-                //Debug.Write(worldMatrix + "\n");
-            }
-
-            if (mouseState.RightButton == ButtonState.Released && prevMouseState.RightButton == ButtonState.Pressed)
-            {
-
-            }
+            player.DrawModelWithEffect(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) *
+                    Matrix.CreateRotationX(player.GetRotation().X) * Matrix.CreateRotationY(player.GetRotation().Y) *
+                    Matrix.CreateRotationZ(player.GetRotation().Z) * Matrix.CreateTranslation(player.GetPosition().X,
+                    player.GetPosition().Y, player.GetPosition().Z), viewMatrix, projectionMatrix, player.GetTexture2D());
 
         }
 
