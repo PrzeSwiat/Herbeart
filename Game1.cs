@@ -65,7 +65,7 @@ namespace TheGame
             //.................
 
             world = new World(WindowWidth,WindowHeight,Content,2f,7,7,"test", "StarSparrow_Green", "ShaderOne");
-            player = new Player(Content,new Vector3(0,3,0), "player", "StarSparrow_Orange", "ShaderOne");
+            player = new Player(Content,new Vector3(0,2,0), "player", "StarSparrow_Orange", "ShaderOne");
             world.ObjectInitializer(Content);
 
             cosAngle =  camPosition.X / (float)Math.Sqrt(Math.Pow(camPosition.X, 2) + Math.Pow(camPosition.Z, 2));

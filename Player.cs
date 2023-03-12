@@ -150,30 +150,34 @@ namespace TheGame
             if (state.IsKeyDown(Keys.A))
             {
                 SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
-
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
+               //SetRotation(0, -cosAngle, 0);
+                //Camera movement acccording to player A move 
+                worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedRightLeft*2, 0, -movementSpeedRightLeft * cosAngle*2));
 
             }
             if (state.IsKeyDown(Keys.D))
             {
 
                 SetPosition(position - new Vector3(-movementSpeedRightLeft, 0, movementSpeedRightLeft * cosAngle));
-
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedRightLeft, 0, movementSpeedRightLeft * cosAngle));
+                //SetRotation(0, tanAngle, 0);
+                //Camera movement acccording to player D move 
+                worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedRightLeft*2, 0, movementSpeedRightLeft * cosAngle * 2));
             }
             if (state.IsKeyDown(Keys.W))
             {
 
                 SetPosition(position - new Vector3(movementSpeedUpDown / tanAngle, 0, movementSpeedUpDown));
 
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedUpDown / tanAngle, 0, movementSpeedUpDown));
+                //Camera movement acccording to player W move 
+                worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedUpDown / tanAngle * 2, 0, movementSpeedUpDown * 2));
             }
             if (state.IsKeyDown(Keys.S))
             {
 
                 SetPosition(position - new Vector3(-movementSpeedUpDown / tanAngle, 0, -movementSpeedUpDown));
 
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedUpDown / tanAngle, 0, -movementSpeedUpDown));
+                //Camera movement acccording to player S move 
+                worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedUpDown / tanAngle * 2, 0, -movementSpeedUpDown * 2));
             }
 
             return worldMatrix;
