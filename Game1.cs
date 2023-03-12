@@ -110,9 +110,9 @@ namespace TheGame
             }
 
             player.DrawModelWithEffect(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) *
+                    Matrix.CreateTranslation(player.GetPosition().X,player.GetPosition().Y, player.GetPosition().Z) *
                     Matrix.CreateRotationX(player.GetRotation().X) * Matrix.CreateRotationY(player.GetRotation().Y) *
-                    Matrix.CreateRotationZ(player.GetRotation().Z) * Matrix.CreateTranslation(player.GetPosition().X,
-                    player.GetPosition().Y, player.GetPosition().Z), viewMatrix, projectionMatrix, player.GetTexture2D());
+                    Matrix.CreateRotationZ(player.GetRotation().Z), viewMatrix, projectionMatrix, player.GetTexture2D());
 
         }
 

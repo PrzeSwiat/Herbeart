@@ -150,7 +150,7 @@ namespace TheGame
             if (state.IsKeyDown(Keys.A))
             {
                 SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
-               //SetRotation(0, -cosAngle, 0);
+               SetRotation(0, -cosAngle, 0);
                 //Camera movement acccording to player A move 
                 worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedRightLeft*2, 0, -movementSpeedRightLeft * cosAngle*2));
 
@@ -159,7 +159,7 @@ namespace TheGame
             {
 
                 SetPosition(position - new Vector3(-movementSpeedRightLeft, 0, movementSpeedRightLeft * cosAngle));
-                //SetRotation(0, tanAngle, 0);
+                SetRotation(0, cosAngle*3, 0);
                 //Camera movement acccording to player D move 
                 worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedRightLeft*2, 0, movementSpeedRightLeft * cosAngle * 2));
             }
@@ -167,7 +167,7 @@ namespace TheGame
             {
 
                 SetPosition(position - new Vector3(movementSpeedUpDown / tanAngle, 0, movementSpeedUpDown));
-
+                SetRotation(0, cosAngle * 5.5f, 0);
                 //Camera movement acccording to player W move 
                 worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedUpDown / tanAngle * 2, 0, movementSpeedUpDown * 2));
             }
@@ -175,7 +175,7 @@ namespace TheGame
             {
 
                 SetPosition(position - new Vector3(-movementSpeedUpDown / tanAngle, 0, -movementSpeedUpDown));
-
+                SetRotation(0, cosAngle, 0);
                 //Camera movement acccording to player S move 
                 worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedUpDown / tanAngle * 2, 0, -movementSpeedUpDown * 2));
             }
