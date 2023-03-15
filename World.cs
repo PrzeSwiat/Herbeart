@@ -14,6 +14,7 @@ namespace TheGame
 {
     internal class World
     {
+        private List<SceneObject> _worldArray;
         private List<SceneObject> _sceneObjectsArray;
         int w;
         int h;
@@ -22,7 +23,7 @@ namespace TheGame
         {
             w = WindowWidth;
             h = WindowHeight;
-            _sceneObjectsArray = new List<SceneObject>();
+            _worldArray = new List<SceneObject>();
             float _blockSeparation = blockSeparation;
             int _worldWidth = (int)worldWidth / 2;
             int _minusWidth = -_worldWidth;
@@ -35,14 +36,14 @@ namespace TheGame
             {
                 for (int j = _minusLenght; j <= _worldWidth; j++)
                 {
-                    _sceneObjectsArray.Add(new SceneObject(Content, new Vector3(j * blockSeparation, level, i * blockSeparation), modelFileName, textureFileName, effectFileName));
+                    _worldArray.Add(new SceneObject(Content, new Vector3(j * blockSeparation, level, i * blockSeparation), modelFileName, textureFileName, effectFileName));
                 }
             }
         }
 
         public void ObjectInitializer(ContentManager Content)
         {
-            //_sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 0, 0), "test", "StarSparrow_Orange", "ShaderOne"));
+            //_sceneObjectsArray.Add(new SceneObject(Content,new Vector3(10, 0, 0), "test", "StarSparrow_Orange", "File"));
             //_sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 1, 0), "test", "StarSparrow_Orange", "ShaderOne"));
         }
 
@@ -55,6 +56,10 @@ namespace TheGame
         public List<SceneObject> GetSceneObjectList()
         {
             return _sceneObjectsArray;
+        }
+        public List<SceneObject> GetWorldList()
+        {
+            return _worldArray;
         }
         
         

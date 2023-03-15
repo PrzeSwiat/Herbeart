@@ -144,8 +144,68 @@ namespace TheGame
             }
         }
 
-        public Matrix KeyInput(World world, float cosAngle,float tanAngle, Matrix worldMatrix)
+        public Matrix PlayerMovement(World world, float cosAngle,float tanAngle, Matrix worldMatrix)
         {
+            //GameControler 
+            GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
+            if(capabilities.IsConnected)
+            {
+                GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+                if (capabilities.HasLeftXThumbStick)
+                {
+                    if (gamePadState.ThumbSticks.Left.X < -0.5f)
+                    {
+                        SetRotation(0, -cosAngle, 0);
+                        SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
+                        worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedRightLeft * 2, 0, -movementSpeedRightLeft * cosAngle * 2));
+                    }
+                    if (gamePadState.ThumbSticks.Left.X > 0.5f)
+                    {
+                        SetRotation(0, cosAngle * 3, 0);
+                        SetPosition(position - new Vector3(-movementSpeedRightLeft, 0, movementSpeedRightLeft * cosAngle));
+                        worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedRightLeft * 2, 0, movementSpeedRightLeft * cosAngle * 2));
+                    }
+                    if (gamePadState.ThumbSticks.Left.Y > 0.5f)
+                    {
+                        SetRotation(0, cosAngle * 5.5f, 0);
+                        SetPosition(position - new Vector3(movementSpeedUpDown / tanAngle, 0, movementSpeedUpDown));
+                        worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedUpDown / tanAngle * 2, 0, movementSpeedUpDown * 2));
+                    }
+                    if (gamePadState.ThumbSticks.Left.Y < -0.5f)
+                    {
+                        SetPosition(position - new Vector3(-movementSpeedUpDown / tanAngle, 0, -movementSpeedUpDown));
+                        SetRotation(0, cosAngle, 0);
+                        worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedUpDown / tanAngle * 2, 0, -movementSpeedUpDown * 2));
+                    }
+
+                    //SetRotation(0, 0.7933f, 0); // down
+                    //SetRotation(0, -2.38f, 0); //up
+                    //SetRotation(0, 2.38f, 0); //right
+                    //SetRotation(0, -0.7933f, 0); //left
+                    
+
+                    /*
+                     *  UPOŚLEDZONY RUCH KAMERĄ RIGHT FUKIN THUMBSTICK
+                    if (gamePadState.ThumbSticks.Right.X != 0)
+                    {
+                        SetRotation(0, (gamePadState.ThumbSticks.Right.X * cosAngle) + (gamePadState.ThumbSticks.Right.X+cosAngle), 0);
+                    }
+                    if (gamePadState.ThumbSticks.Right.Y != 0)
+                    {
+                        SetRotation(0,(-gamePadState.ThumbSticks.Right.Y * cosAngle) + (-gamePadState.ThumbSticks.Right.Y - cosAngle), 0);
+                    }
+                    */
+
+                    //Debug.Write((gamePadState.ThumbSticks.Right.X * cosAngle) + (gamePadState.ThumbSticks.Right.X + cosAngle) + "\n");
+                    //Debug.Write(cosAngle+1+cosAngle + "\n");
+                    
+
+                }
+            }
+
+
+
+            //Keyboard
             KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.A))
             {

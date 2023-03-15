@@ -64,7 +64,7 @@ namespace TheGame
                 worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
             //.................
 
-            world = new World(WindowWidth,WindowHeight,Content,2f,7,7,"test", "StarSparrow_Green", "ShaderOne");
+            world = new World(WindowWidth,WindowHeight,Content,2f,14,14,"test", "StarSparrow_Green", "ShaderOne");
             player = new Player(Content,new Vector3(0,2,0), "player", "StarSparrow_Orange", "ShaderOne");
             world.ObjectInitializer(Content);
 
@@ -88,7 +88,7 @@ namespace TheGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            worldMatrix = player.KeyInput(world,cosAngle,tanAngle,worldMatrix);
+            worldMatrix = player.PlayerMovement(world,cosAngle,tanAngle,worldMatrix);
             //MouseMovement();
             
             base.Update(gameTime);
@@ -101,13 +101,15 @@ namespace TheGame
 
             base.Draw(gameTime);
 
-            foreach (SceneObject sceneObject in world.GetSceneObjectList())
+            foreach (SceneObject sceneObject in world.GetWorldList())
             {
                 sceneObject.DrawModelWithEffect(sceneObject.GetModel(),worldMatrix * Matrix.CreateScale(sceneObject.GetScale())
                      * Matrix.CreateTranslation(sceneObject.GetPosition().X,sceneObject.GetPosition().Y, sceneObject.GetPosition().Z)
                      *Matrix.CreateRotationX(sceneObject.GetRotation().X) * Matrix.CreateRotationY(sceneObject.GetRotation().Y) *
                     Matrix.CreateRotationZ(sceneObject.GetRotation().Z), viewMatrix, projectionMatrix, sceneObject.GetTexture2D());
             }
+
+
 
             player.DrawModelWithEffect(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) *
                     Matrix.CreateTranslation(player.GetPosition().X,player.GetPosition().Y, player.GetPosition().Z) *
