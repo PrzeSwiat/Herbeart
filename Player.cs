@@ -25,6 +25,9 @@ namespace TheGame
         private float movementSpeedUpDown = 0.2f;
         private float movementSpeedRightLeft = 0.1f;
 
+
+        float rot;
+
         public Player(ContentManager content, Vector3 worldPosition, string modelFileName, string textureFileName, string effectFileName)
         {
             position = worldPosition;
@@ -144,7 +147,7 @@ namespace TheGame
             }
         }
 
-        public Matrix PlayerMovement(World world, float cosAngle,float tanAngle, Matrix worldMatrix)
+        public Matrix PlayerMovement(World world, float cosAngle,float sinAngle,float tanAngle, Matrix worldMatrix)
         {
             //GameControler 
             GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
@@ -153,56 +156,69 @@ namespace TheGame
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
                 if (capabilities.HasLeftXThumbStick)
                 {
+                    
                     if (gamePadState.ThumbSticks.Left.X < -0.5f)
                     {
-                        SetRotation(0, -cosAngle, 0);
-                        SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
+                        //SetRotation(0, gamePadState.ThumbSticks.Left.X * cosAngle, 0);
+                       SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
                         worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedRightLeft * 2, 0, -movementSpeedRightLeft * cosAngle * 2));
                     }
                     if (gamePadState.ThumbSticks.Left.X > 0.5f)
                     {
-                        SetRotation(0, cosAngle * 3, 0);
+                       // SetRotation(0, gamePadState.ThumbSticks.Left.X * cosAngle * 3, 0);
                         SetPosition(position - new Vector3(-movementSpeedRightLeft, 0, movementSpeedRightLeft * cosAngle));
                         worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedRightLeft * 2, 0, movementSpeedRightLeft * cosAngle * 2));
                     }
                     if (gamePadState.ThumbSticks.Left.Y > 0.5f)
                     {
-                        SetRotation(0, cosAngle * 5.5f, 0);
+                        // SetRotation(0, gamePadState.ThumbSticks.Left.Y*cosAngle * 5.5f, 0);
                         SetPosition(position - new Vector3(movementSpeedUpDown / tanAngle, 0, movementSpeedUpDown));
                         worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedUpDown / tanAngle * 2, 0, movementSpeedUpDown * 2));
                     }
                     if (gamePadState.ThumbSticks.Left.Y < -0.5f)
                     {
+                       // SetRotation(0, gamePadState.ThumbSticks.Left.Y*cosAngle, 0);
                         SetPosition(position - new Vector3(-movementSpeedUpDown / tanAngle, 0, -movementSpeedUpDown));
-                        SetRotation(0, cosAngle, 0);
                         worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedUpDown / tanAngle * 2, 0, -movementSpeedUpDown * 2));
                     }
 
-                    //SetRotation(0, 0.7933f, 0); // down
-                    //SetRotation(0, -2.38f, 0); //up
-                    //SetRotation(0, 2.38f, 0); //right
-                    //SetRotation(0, -0.7933f, 0); //left
-                    
-
-                    /*
-                     *  UPOŚLEDZONY RUCH KAMERĄ RIGHT FUKIN THUMBSTICK
-                    if (gamePadState.ThumbSticks.Right.X != 0)
+                    // UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1)
                     {
-                        SetRotation(0, (gamePadState.ThumbSticks.Right.X * cosAngle) + (gamePadState.ThumbSticks.Right.X+cosAngle), 0);
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 1 / 4, 0);
                     }
-                    if (gamePadState.ThumbSticks.Right.Y != 0)
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 0)
                     {
-                        SetRotation(0,(-gamePadState.ThumbSticks.Right.Y * cosAngle) + (-gamePadState.ThumbSticks.Right.Y - cosAngle), 0);
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 1 / 2, 0);
                     }
-                    */
-
-                    //Debug.Write((gamePadState.ThumbSticks.Right.X * cosAngle) + (gamePadState.ThumbSticks.Right.X + cosAngle) + "\n");
-                    //Debug.Write(cosAngle+1+cosAngle + "\n");
-                    
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 3 / 4, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 0 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 5 / 4, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 0)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 3 / 2, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI*7/4, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 0 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 0, 0);
+                    }
+                    //////////////////????////////////////////////////////////////
 
                 }
             }
-
 
 
             //Keyboard

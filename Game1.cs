@@ -88,7 +88,7 @@ namespace TheGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            worldMatrix = player.PlayerMovement(world,cosAngle,tanAngle,worldMatrix);
+            worldMatrix = player.PlayerMovement(world,cosAngle, sinAngle, tanAngle,worldMatrix);
             //MouseMovement();
             
             base.Update(gameTime);
