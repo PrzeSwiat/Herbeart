@@ -183,6 +183,7 @@ namespace TheGame
                     }
 
                     // UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
+                    
                     if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1)
                     {
                         SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 1 / 4, 0);
@@ -216,7 +217,40 @@ namespace TheGame
                         SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 0, 0);
                     }
                     //////////////////????////////////////////////////////////////
-
+                    ///LEFT THUMBSTICK
+                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == 1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == -1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 1 / 4, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == 1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 0)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 1 / 2, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == 1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 3 / 4, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == 0 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == -1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 5 / 4, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == -1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 0)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 3 / 2, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == -1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == -1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 7 / 4, 0);
+                    }
+                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == 0 && Math.Round(gamePadState.ThumbSticks.Right.Y) == -1)
+                    {
+                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 0, 0);
+                    }
+                    /////////////
                 }
             }
 
@@ -259,67 +293,7 @@ namespace TheGame
             return worldMatrix;
         }
 
-        /*
-        public void MouseMovement()
-        {
-            prevMouseState = mouseState;
-            mouseState = Mouse.GetState();
-
-            if (mouseState.RightButton == ButtonState.Pressed && prevMouseState.RightButton == ButtonState.Released)
-            {
-
-                if (mouseState.X < WindowWidth / 2 && mouseState.Y < WindowHeight / 2)
-                {
-
-                    // moveX = 2.5f*direction.X;
-                    //moveZ = 4 * direction.Z;
-                    //moveX = (float)Math.Tan(68 * (Math.PI / 180)) * direction.X;
-                    //moveZ = (float)Math.Tan(76 * (Math.PI / 180)) * direction.Z;
-
-                    Debug.Write("1" + "\n");
-                }
-                if (mouseState.X > WindowWidth / 2 && mouseState.Y < WindowHeight / 2)
-                {
-
-                    //moveX = -3f * direction.X;
-                    //moveZ = 3f * direction.Z;
-                    //moveX = -(float)Math.Tan(71 * (Math.PI / 180)) * direction.X;
-                    //moveZ = (float)Math.Tan(71 * (Math.PI / 180)) * direction.Z;
-
-                    Debug.Write("2" + "\n");
-                }
-                if (mouseState.X < WindowWidth / 2 && mouseState.Y > WindowHeight / 2)
-                {
-                    //moveX = 2.3f * direction.X;
-                    //moveZ = -4.6f * direction.Z;
-                    //moveX = (float)Math.Tan(65 * (Math.PI / 180)) * direction.X;
-                    //moveZ = -(float)Math.Tan(78 * (Math.PI / 180)) * direction.Z;
-
-                    Debug.Write("3" + "\n");
-                }
-                if (mouseState.X > WindowWidth / 2 && mouseState.Y > WindowHeight / 2)
-                {
-                    //moveX = -2.3f * direction.X;
-                    //moveZ = -4f * direction.Z;
-                    //moveX = -(float)Math.Tan(66 * (Math.PI / 180)) * direction.X;
-                    //moveZ = -(float)Math.Tan(76 * (Math.PI / 180)) * direction.Z;
-
-                    Debug.Write("4" + "\n");
-                }
-
-                //Debug.Write(WindowWidth/2 - state.X + " : " + (WindowHeight / 2 - state.Y) + "\n");
-                //world.GetSceneObjectList()[world.GetSceneObjectList().Count-1].SetPosition(new Vector3(direction.X, 0, direction.Z));
-
-                //Debug.Write(worldMatrix + "\n");
-            }
-
-            if (mouseState.RightButton == ButtonState.Released && prevMouseState.RightButton == ButtonState.Pressed)
-            {
-
-            }
-
-        }
-        */
+        
 
     }
 }
