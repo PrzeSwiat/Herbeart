@@ -5,11 +5,11 @@ float4x4 Projection;
 float4x4 WorldInverseTranspose;
 
 float4 AmbientColor = float4(1, 1, 1, 1);
-//float AmbientIntensity = 0.1;
+float AmbientIntensity = 0.1;
 
 //float3 DiffuseLightDirection = float3(1, 0, 0);
 float4 DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-//float DiffuseIntensity = 1.0;
+float DiffuseIntensity = 1.0;
 
 float3 Attenuation = float3(0.0f, 0.2f, 0.0f);
 float3 LightPosition = float3(10.0f, 0.0f, 0.0f);
@@ -66,7 +66,8 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float3 lightToPixelVec = LightPosition - input.WorldPosition;
     float d = length(lightToPixelVec);
 
-    float3 finalAmbient = diffuse * AmbientColor;
+    float3 finalAmbient = diffuse * AmbientColor * AmbientIntensity;
+    
     if (d > LightRange)
         return float4(finalAmbient, diffuse.a);
 
@@ -83,7 +84,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     }
 
 
-    finalColor = saturate(finalColor + finalAmbient);
+    finalColor = saturate(finalColor * DiffuseIntensity + finalAmbient);
     
     //Return Final Color
     return float4(finalColor, diffuse.a);

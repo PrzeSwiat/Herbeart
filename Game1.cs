@@ -33,6 +33,7 @@ namespace TheGame
         Player player;
         MouseState prevMouseState;
         MouseState mouseState;
+        Vector3 lightpos;
 
         public Game1()
         {
@@ -64,8 +65,8 @@ namespace TheGame
                 worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
             //.................
 
-            world = new World(WindowWidth,WindowHeight,Content,2f,14,14,"test", "StarSparrow_Green", "ShaderOne");
-            player = new Player(Content,new Vector3(0,2,0), "player", "StarSparrow_Orange", "ShaderOne");
+            world = new World(WindowWidth,WindowHeight,Content,2f,32,32,"test", "StarSparrow_Green", "File");
+            player = new Player(Content,new Vector3(0,2,0), "player", "StarSparrow_Orange", "File");
             world.ObjectInitializer(Content);
 
             cosAngle =  camPosition.X / (float)Math.Sqrt(Math.Pow(camPosition.X, 2) + Math.Pow(camPosition.Z, 2));
@@ -90,7 +91,8 @@ namespace TheGame
 
             worldMatrix = player.PlayerMovement(world,cosAngle, sinAngle, tanAngle,worldMatrix);
             //MouseMovement();
-            
+            lightpos = new Vector3(worldMatrix.M41,worldMatrix.M42,worldMatrix.M43);
+            Debug.Write(lightpos + "\n");
             base.Update(gameTime);
         }
 
@@ -103,18 +105,18 @@ namespace TheGame
 
             foreach (SceneObject sceneObject in world.GetWorldList())
             {
-                sceneObject.DrawModelWithEffect(sceneObject.GetModel(),worldMatrix * Matrix.CreateScale(sceneObject.GetScale())
+                sceneObject.DrawModelWithEffect2(sceneObject.GetModel(),worldMatrix * Matrix.CreateScale(sceneObject.GetScale())
                      * Matrix.CreateTranslation(sceneObject.GetPosition().X,sceneObject.GetPosition().Y, sceneObject.GetPosition().Z)
                      *Matrix.CreateRotationX(sceneObject.GetRotation().X) * Matrix.CreateRotationY(sceneObject.GetRotation().Y) *
-                    Matrix.CreateRotationZ(sceneObject.GetRotation().Z), viewMatrix, projectionMatrix, sceneObject.GetTexture2D());
+                    Matrix.CreateRotationZ(sceneObject.GetRotation().Z), viewMatrix, projectionMatrix, sceneObject.GetTexture2D(), lightpos);
             }
 
 
 
-            player.DrawModelWithEffect(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) *
+            player.DrawModelWithEffect2(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) *
                     Matrix.CreateTranslation(player.GetPosition().X,player.GetPosition().Y, player.GetPosition().Z) *
                     Matrix.CreateRotationX(player.GetRotation().X) * Matrix.CreateRotationY(player.GetRotation().Y) *
-                    Matrix.CreateRotationZ(player.GetRotation().Z), viewMatrix, projectionMatrix, player.GetTexture2D());
+                    Matrix.CreateRotationZ(player.GetRotation().Z), viewMatrix, projectionMatrix, player.GetTexture2D(),lightpos);
 
         }
 

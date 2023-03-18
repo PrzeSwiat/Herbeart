@@ -146,6 +146,33 @@ namespace TheGame
                 mesh.Draw();
             }
         }
+        public void DrawModelWithEffect2(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D, Vector3 lightpos)
+        {
+            // point light (fire light?)
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = effect;
+                    effect.Parameters["World"].SetValue(world * mesh.ParentBone.Transform);
+                    effect.Parameters["View"].SetValue(view);
+                    effect.Parameters["Projection"].SetValue(projection);
+                    effect.Parameters["DiffuseColor"].SetValue((Color.DarkOrange.ToVector4() + Color.Yellow.ToVector4()) / 3);
+                    effect.Parameters["AmbientColor"].SetValue(Color.White.ToVector4());
+                    effect.Parameters["AmbientIntensity"].SetValue(0.3f);
+
+                    effect.Parameters["DiffuseIntensity"].SetValue(3f);
+                    effect.Parameters["ModelTexture"].SetValue(texture2D);
+                    effect.Parameters["Attenuation"].SetValue(new Vector3(0.1f, 0.1f, 0.1f));
+                    effect.Parameters["LightRange"].SetValue(20.0f);
+                    effect.Parameters["LightPosition"].SetValue(lightpos + new Vector3(10f, 2f, 0f));
+
+                    //Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
+                    //effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
+                }
+                mesh.Draw();
+            }
+        }
 
         public Matrix PlayerMovement(World world, float cosAngle,float sinAngle,float tanAngle, Matrix worldMatrix)
         {
