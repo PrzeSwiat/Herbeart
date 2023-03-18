@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -27,13 +28,11 @@ namespace TheGame
         float cosAngle = 0;
         float tanAngle = 0;
         float sinAngle = 0;
-        Effect effect;
+        EffectHandler effectHandler;
         //.................
         World world;
         Player player;
-        MouseState prevMouseState;
-        MouseState mouseState;
-        Vector3 lightpos;
+
 
         public Game1()
         {
@@ -64,9 +63,16 @@ namespace TheGame
                                                                                       // Vector3(0,1,0) - up and down is along y axis)
                 worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
             //.................
+            Effect one;
+            one = Content.Load<Effect>("File");
+            effectHandler = new EffectHandler(one);
 
-            world = new World(WindowWidth,WindowHeight,Content,2f,32,32,"test", "StarSparrow_Green", "File");
-            player = new Player(Content,new Vector3(0,2,0), "player", "StarSparrow_Orange", "File");
+            effectHandler.AddLight(new Vector3(0,0,0));
+
+            world = new World(WindowWidth,WindowHeight,Content,2f,32,32,"test", "StarSparrow_Green");
+            player = new Player(Content,new Vector3(0,2,0), "player", "StarSparrow_Orange");
+
+
             world.ObjectInitializer(Content);
 
             cosAngle =  camPosition.X / (float)Math.Sqrt(Math.Pow(camPosition.X, 2) + Math.Pow(camPosition.Z, 2));
@@ -91,8 +97,8 @@ namespace TheGame
 
             worldMatrix = player.PlayerMovement(world,cosAngle, sinAngle, tanAngle,worldMatrix);
             //MouseMovement();
-            lightpos = new Vector3(worldMatrix.M41,worldMatrix.M42,worldMatrix.M43);
-            Debug.Write(lightpos + "\n");
+            effectHandler.ActualizeLights(worldMatrix);
+
             base.Update(gameTime);
         }
 
@@ -105,18 +111,18 @@ namespace TheGame
 
             foreach (SceneObject sceneObject in world.GetWorldList())
             {
-                sceneObject.DrawModelWithEffect2(sceneObject.GetModel(),worldMatrix * Matrix.CreateScale(sceneObject.GetScale())
+                effectHandler.BasicDraw(sceneObject.GetModel(),worldMatrix * Matrix.CreateScale(sceneObject.GetScale())
                      * Matrix.CreateTranslation(sceneObject.GetPosition().X,sceneObject.GetPosition().Y, sceneObject.GetPosition().Z)
                      *Matrix.CreateRotationX(sceneObject.GetRotation().X) * Matrix.CreateRotationY(sceneObject.GetRotation().Y) *
-                    Matrix.CreateRotationZ(sceneObject.GetRotation().Z), viewMatrix, projectionMatrix, sceneObject.GetTexture2D(), lightpos);
+                    Matrix.CreateRotationZ(sceneObject.GetRotation().Z), viewMatrix, projectionMatrix, sceneObject.GetTexture2D());
             }
 
 
 
-            player.DrawModelWithEffect2(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) *
+           effectHandler.BasicDraw(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) *
                     Matrix.CreateTranslation(player.GetPosition().X,player.GetPosition().Y, player.GetPosition().Z) *
                     Matrix.CreateRotationX(player.GetRotation().X) * Matrix.CreateRotationY(player.GetRotation().Y) *
-                    Matrix.CreateRotationZ(player.GetRotation().Z), viewMatrix, projectionMatrix, player.GetTexture2D(),lightpos);
+                    Matrix.CreateRotationZ(player.GetRotation().Z), viewMatrix, projectionMatrix, player.GetTexture2D());
 
         }
 

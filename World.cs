@@ -19,7 +19,7 @@ namespace TheGame
         int w;
         int h;
         
-        public World(int WindowWidth,int WindowHeight,ContentManager Content,float blockSeparation, float worldWidth, float worldLenght, string modelFileName, string textureFileName, string effectFileName)   //simple creator (develop it later)
+        public World(int WindowWidth,int WindowHeight,ContentManager Content,float blockSeparation, float worldWidth, float worldLenght, string modelFileName, string textureFileName)   //simple creator (develop it later)
         {
             w = WindowWidth;
             h = WindowHeight;
@@ -36,7 +36,7 @@ namespace TheGame
             {
                 for (int j = _minusLenght; j <= _worldWidth; j++)
                 {
-                    _worldArray.Add(new SceneObject(Content, new Vector3(j * blockSeparation, level, i * blockSeparation), modelFileName, textureFileName, effectFileName));
+                    _worldArray.Add(new SceneObject(Content, new Vector3(j * blockSeparation, level, i * blockSeparation), modelFileName, textureFileName));
                 }
             }
         }

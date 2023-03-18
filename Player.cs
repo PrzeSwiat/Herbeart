@@ -18,26 +18,22 @@ namespace TheGame
         private float scale = 0.5f;
         private Model model;
         private Texture2D texture2D;
-        private Effect effect;
         private string _modelFileName;
         private string _textureFileName;
-        private string _effectFileName;
         private float movementSpeedUpDown = 0.2f;
         private float movementSpeedRightLeft = 0.1f;
 
 
         float rot;
 
-        public Player(ContentManager content, Vector3 worldPosition, string modelFileName, string textureFileName, string effectFileName)
+        public Player(ContentManager content, Vector3 worldPosition, string modelFileName, string textureFileName)
         {
             position = worldPosition;
             _modelFileName = modelFileName;
             _textureFileName = textureFileName;
-            _effectFileName = effectFileName;
 
             SetModel(content.Load<Model>(modelFileName));
             SetTexture(content.Load<Texture2D>(textureFileName));
-            SetEffect(content.Load<Effect>(effectFileName));
         }
 
         //GET'ERS
@@ -116,63 +112,8 @@ namespace TheGame
         {
             texture2D = tex;
         }
-        public void SetEffect(Effect eff)
-        {
-            effect = eff;
-        }
         //.................
 
-        public void DrawModelWithEffect(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D)
-        {
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    part.Effect = effect;
-
-                    Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
-                    effect.Parameters["WorldInverseTransposeMatrix"].SetValue(worldInverseTransposeMatrix);
-                    //effect.Parameters["AmbienceColor"].SetValue(Color.Gray.ToVector4());      //uncomment if ambient needed
-                    effect.Parameters["DiffuseColor"].SetValue(Color.White.ToVector4());
-                    effect.Parameters["DiffuseLightPower"].SetValue(2);              // diffuse light power 
-                    effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(2.0f, 4.0f, 1.0f));
-                    effect.Parameters["ModelTexture"].SetValue(texture2D);
-                    effect.Parameters["WorldMatrix"].SetValue(world * mesh.ParentBone.Transform);
-                    effect.Parameters["ViewMatrix"].SetValue(view);
-                    effect.Parameters["ProjectionMatrix"].SetValue(projection);
-
-                }
-
-                mesh.Draw();
-            }
-        }
-        public void DrawModelWithEffect2(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D, Vector3 lightpos)
-        {
-            // point light (fire light?)
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    part.Effect = effect;
-                    effect.Parameters["World"].SetValue(world * mesh.ParentBone.Transform);
-                    effect.Parameters["View"].SetValue(view);
-                    effect.Parameters["Projection"].SetValue(projection);
-                    effect.Parameters["DiffuseColor"].SetValue((Color.DarkOrange.ToVector4() + Color.Yellow.ToVector4()) / 3);
-                    effect.Parameters["AmbientColor"].SetValue(Color.White.ToVector4());
-                    effect.Parameters["AmbientIntensity"].SetValue(0.3f);
-
-                    effect.Parameters["DiffuseIntensity"].SetValue(3f);
-                    effect.Parameters["ModelTexture"].SetValue(texture2D);
-                    effect.Parameters["Attenuation"].SetValue(new Vector3(0.1f, 0.1f, 0.1f));
-                    effect.Parameters["LightRange"].SetValue(20.0f);
-                    effect.Parameters["LightPosition"].SetValue(lightpos + new Vector3(10f, 2f, 0f));
-
-                    //Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
-                    //effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
-                }
-                mesh.Draw();
-            }
-        }
 
         public Matrix PlayerMovement(World world, float cosAngle,float sinAngle,float tanAngle, Matrix worldMatrix)
         {
