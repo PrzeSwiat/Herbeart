@@ -20,17 +20,15 @@ namespace TheGame
         private Texture2D texture2D;
         private string _modelFileName;
         private string _textureFileName;
-        private float movementSpeedUpDown = 0.2f;
-        private float movementSpeedRightLeft = 0.1f;
-
-
-        float rot;
+        private float movementSpeedUpDown;
+        private float movementSpeedRightLeft = 0.15f;
 
         public Player(ContentManager content, Vector3 worldPosition, string modelFileName, string textureFileName)
         {
             position = worldPosition;
             _modelFileName = modelFileName;
             _textureFileName = textureFileName;
+            movementSpeedUpDown = 2 * movementSpeedRightLeft;
 
             SetModel(content.Load<Model>(modelFileName));
             SetTexture(content.Load<Texture2D>(textureFileName));
@@ -115,7 +113,7 @@ namespace TheGame
         //.................
 
 
-        public Matrix PlayerMovement(World world, float cosAngle,float sinAngle,float tanAngle, Matrix worldMatrix)
+        public void PlayerMovement(World world, float cosAngle,float sinAngle,float tanAngle)
         {
             //GameControler 
             GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
@@ -127,27 +125,20 @@ namespace TheGame
                     
                     if (gamePadState.ThumbSticks.Left.X < -0.5f)
                     {
-                        //SetRotation(0, gamePadState.ThumbSticks.Left.X * cosAngle, 0);
+                        
                        SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
-                        worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedRightLeft * 2, 0, -movementSpeedRightLeft * cosAngle * 2));
                     }
                     if (gamePadState.ThumbSticks.Left.X > 0.5f)
                     {
-                       // SetRotation(0, gamePadState.ThumbSticks.Left.X * cosAngle * 3, 0);
                         SetPosition(position - new Vector3(-movementSpeedRightLeft, 0, movementSpeedRightLeft * cosAngle));
-                        worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedRightLeft * 2, 0, movementSpeedRightLeft * cosAngle * 2));
                     }
                     if (gamePadState.ThumbSticks.Left.Y > 0.5f)
                     {
-                        // SetRotation(0, gamePadState.ThumbSticks.Left.Y*cosAngle * 5.5f, 0);
                         SetPosition(position - new Vector3(movementSpeedUpDown / tanAngle, 0, movementSpeedUpDown));
-                        worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedUpDown / tanAngle * 2, 0, movementSpeedUpDown * 2));
                     }
                     if (gamePadState.ThumbSticks.Left.Y < -0.5f)
                     {
-                       // SetRotation(0, gamePadState.ThumbSticks.Left.Y*cosAngle, 0);
                         SetPosition(position - new Vector3(-movementSpeedUpDown / tanAngle, 0, -movementSpeedUpDown));
-                        worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedUpDown / tanAngle * 2, 0, -movementSpeedUpDown * 2));
                     }
 
                     // UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
@@ -230,7 +221,6 @@ namespace TheGame
                 SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
                SetRotation(0, -cosAngle, 0);
                 //Camera movement acccording to player A move 
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedRightLeft*2, 0, -movementSpeedRightLeft * cosAngle*2));
 
             }
             if (state.IsKeyDown(Keys.D))
@@ -239,7 +229,6 @@ namespace TheGame
                 SetPosition(position - new Vector3(-movementSpeedRightLeft, 0, movementSpeedRightLeft * cosAngle));
                 SetRotation(0, cosAngle*3, 0);
                 //Camera movement acccording to player D move 
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedRightLeft*2, 0, movementSpeedRightLeft * cosAngle * 2));
             }
             if (state.IsKeyDown(Keys.W))
             {
@@ -247,7 +236,6 @@ namespace TheGame
                 SetPosition(position - new Vector3(movementSpeedUpDown / tanAngle, 0, movementSpeedUpDown));
                 SetRotation(0, cosAngle * 5.5f, 0);
                 //Camera movement acccording to player W move 
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(movementSpeedUpDown / tanAngle * 2, 0, movementSpeedUpDown * 2));
             }
             if (state.IsKeyDown(Keys.S))
             {
@@ -255,10 +243,7 @@ namespace TheGame
                 SetPosition(position - new Vector3(-movementSpeedUpDown / tanAngle, 0, -movementSpeedUpDown));
                 SetRotation(0, cosAngle, 0);
                 //Camera movement acccording to player S move 
-                worldMatrix = world.WorldMove(worldMatrix, new Vector3(-movementSpeedUpDown / tanAngle * 2, 0, -movementSpeedUpDown * 2));
             }
-
-            return worldMatrix;
         }
 
         

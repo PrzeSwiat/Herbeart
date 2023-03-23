@@ -22,6 +22,7 @@ namespace TheGame
         private SpriteBatch _spriteBatch;
         Vector3 camTarget;
         Vector3 camPosition;
+        Vector3 camPositionStat;
         Matrix projectionMatrix;
         Matrix viewMatrix;
         Matrix worldMatrix;
@@ -49,16 +50,16 @@ namespace TheGame
         {
             //DON'T TOUCH IT MORTALS
                 camTarget = new Vector3(0f, 0f, 0f);
-                camPosition = new Vector3(30f, 30f, 30f);
-
-                //projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
-                  projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
+                camPosition = new Vector3(30f,30f, 30f);
+                camPositionStat = new Vector3(30f, 30f, 30f);
+            //projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
+            projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
                 // PERSPECTIVE point of view
                 //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f),GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
                 // ................................................................................................................
 
-                viewMatrix = Matrix.CreateLookAt(camPosition, camTarget, Vector3.Up); // tells the world of our orientantion
+                 // tells the world of our orientantion
                                                                                       // (the same as:
                                                                                       // Vector3(0,1,0) - up and down is along y axis)
                 worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
@@ -95,9 +96,12 @@ namespace TheGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            worldMatrix = player.PlayerMovement(world,cosAngle, sinAngle, tanAngle,worldMatrix);
+            camPosition = player.GetPosition() + camPositionStat;
+
+            viewMatrix = Matrix.CreateLookAt(camPosition, player.GetPosition(), Vector3.Up);
+
+            player.PlayerMovement(world,cosAngle, sinAngle, tanAngle);
             //MouseMovement();
-            effectHandler.ActualizeLights(worldMatrix);
 
             base.Update(gameTime);
         }
@@ -119,10 +123,10 @@ namespace TheGame
 
 
 
-           effectHandler.BasicDraw(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) *
-                    Matrix.CreateTranslation(player.GetPosition().X,player.GetPosition().Y, player.GetPosition().Z) *
+           effectHandler.BasicDraw(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) * 
                     Matrix.CreateRotationX(player.GetRotation().X) * Matrix.CreateRotationY(player.GetRotation().Y) *
-                    Matrix.CreateRotationZ(player.GetRotation().Z), viewMatrix, projectionMatrix, player.GetTexture2D());
+                    Matrix.CreateRotationZ(player.GetRotation().Z)*
+                    Matrix.CreateTranslation(player.GetPosition().X,player.GetPosition().Y, player.GetPosition().Z), viewMatrix, projectionMatrix, player.GetTexture2D());
 
         }
 
