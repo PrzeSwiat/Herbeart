@@ -15,7 +15,6 @@ namespace TheGame
     internal class World
     {
         private List<SceneObject> _worldArray;
-        private List<SceneObject> _sceneObjectsArray;
         int w;
         int h;
         
@@ -43,20 +42,10 @@ namespace TheGame
 
         public void ObjectInitializer(ContentManager Content)
         {
-            //_sceneObjectsArray.Add(new SceneObject(Content,new Vector3(10, 0, 0), "test", "StarSparrow_Orange", "File"));
-            //_sceneObjectsArray.Add(new SceneObject(Content,new Vector3(0, 1, 0), "test", "StarSparrow_Orange", "ShaderOne"));
+           // _worldArray.Add(new SceneObject(Content,new Vector3(12, 0, 0), "test", "StarSparrow_Orange"));
+            //_worldArray.Add(new SceneObject(Content,new Vector3(0, 1, 0), "test", "StarSparrow_Orange"));
         }
 
-
-        public Matrix WorldMove(Matrix worldMatrix,Vector3 moveVec)
-        {
-            return worldMatrix * Matrix.CreateTranslation(moveVec);
-        }
-
-        public List<SceneObject> GetSceneObjectList()
-        {
-            return _sceneObjectsArray;
-        }
         public List<SceneObject> GetWorldList()
         {
             return _worldArray;
