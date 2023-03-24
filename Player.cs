@@ -2,38 +2,45 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Json;
+using System.Reflection.Metadata;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace TheGame
 {
+    [Serializable]
     internal class Player
     {
-        Vector3 position;
-        private Vector3 rotation = new Vector3(0.0f, 0.0f, 0.0f);
-        private float scale = 0.5f;
+        public Vector3 position;
+        public Vector3 rotation = new Vector3(0.0f, 0.0f, 0.0f);
+        public float scale = 0.5f;
         private Model model;
         private Texture2D texture2D;
-        private string _modelFileName;
-        private string _textureFileName;
+        public string _modelFileName;
+        public string _textureFileName;
         private float movementSpeedUpDown;
         private float movementSpeedRightLeft = 0.15f;
 
-        public Player(ContentManager content, Vector3 worldPosition, string modelFileName, string textureFileName)
+        public Player( Vector3 Position, string modelFileName, string textureFileName)
         {
-            position = worldPosition;
+            position = Position;
             _modelFileName = modelFileName;
             _textureFileName = textureFileName;
             movementSpeedUpDown = 2 * movementSpeedRightLeft;
-
-            SetModel(content.Load<Model>(modelFileName));
-            SetTexture(content.Load<Texture2D>(textureFileName));
         }
-
+        public void LoadContent(ContentManager content)
+        {
+            model = (content.Load<Model>(_modelFileName));
+            texture2D = (content.Load<Texture2D>(_textureFileName));
+        }
         //GET'ERS
         public float GetmovementSpeedUpDown()
         {
@@ -110,6 +117,7 @@ namespace TheGame
         {
             texture2D = tex;
         }
+
         //.................
 
 
@@ -244,6 +252,7 @@ namespace TheGame
                 SetRotation(0, cosAngle, 0);
                 //Camera movement acccording to player S move 
             }
+
         }
 
         

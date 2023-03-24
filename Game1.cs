@@ -30,9 +30,11 @@ namespace TheGame
         float tanAngle = 0;
         float sinAngle = 0;
         EffectHandler effectHandler;
+        Serializator serializator;
         //.................
         World world;
         Player player;
+
 
 
         public Game1()
@@ -71,8 +73,8 @@ namespace TheGame
             effectHandler.AddLight(new Vector3(0,0,0));
 
             world = new World(WindowWidth,WindowHeight,Content,2f,32,32,"test", "StarSparrow_Green");
-            player = new Player(Content,new Vector3(0,2,0), "player", "StarSparrow_Orange");
-
+            player = new Player(new Vector3(0,2,0), "player", "StarSparrow_Orange");
+            player.LoadContent(Content);
 
             world.ObjectInitializer(Content);
 
@@ -80,7 +82,7 @@ namespace TheGame
             sinAngle = camPosition.Z / (float)Math.Sqrt(Math.Pow(camPosition.X, 2) + Math.Pow(camPosition.Z, 2));
             tanAngle = camPosition.Z / camPosition.X;
 
-
+            serializator = new Serializator("zapis.txt");
 
 
             base.Initialize();
@@ -102,6 +104,7 @@ namespace TheGame
 
             player.PlayerMovement(world,cosAngle, sinAngle, tanAngle);
             //MouseMovement();
+            SaveControl();
 
             base.Update(gameTime);
         }
@@ -130,5 +133,28 @@ namespace TheGame
 
         }
 
+        void SaveControl()
+        {
+            KeyboardState state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.P))
+            {
+                serializator.SavePlayer(player);
+            }
+            if (state.IsKeyDown(Keys.O))
+            {
+                Player copied;
+                copied = serializator.LoadPlayer();
+                if(copied!=null)
+                {
+                    player = copied;
+                    player.LoadContent(Content);
+                }
+                else
+                {
+                    Debug.Write("nima \n");
+                }
+               
+            }
+        }
     }
 }
