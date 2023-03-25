@@ -6,6 +6,8 @@ float4 AmbientColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 float4 DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 float AmbientIntensity = 0.1f;
 
+float DiffuseIntensity = 1.0f;
+
 float3 LightPosition[2];
 float3 Attenuation[2];
 float LightRange[2];
@@ -88,16 +90,16 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
             }
 
 
-            finalColor += saturate(singleColor + finalAmbient);
+            finalColor += saturate(singleColor * DiffuseIntensity);
         }
     }
 
     if (!anyInRange) {
-        return float4(finalAmbient, diffuse.a);
+        //return float4(finalAmbient, diffuse.a);
     }
 
     //Return Final Color
-    return float4(finalColor, diffuse.a);
+    return float4(finalColor + finalAmbient, diffuse.a);
 }
 
 technique Ambient

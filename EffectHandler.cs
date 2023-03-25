@@ -47,9 +47,9 @@ namespace TheGame
 
             Lights = new PointLight[2];
 
-            Vector3 att = new Vector3(0.0f, 0.2f, 0.3f);
-            Lights[0] = new PointLight(pos1, Color.White.ToVector4(), att, 4);
-            Lights[1] = new PointLight(pos2, Color.White.ToVector4(), att, 5);
+            Vector3 att = new Vector3(0.1f, 0.1f, 0.1f);
+            Lights[0] = new PointLight(pos1, Color.White.ToVector4(), att, 20);
+            Lights[1] = new PointLight(pos2, Color.White.ToVector4(), att, 20);
             //lightpos = new List<Vector3>();
         }
 
@@ -119,14 +119,14 @@ namespace TheGame
                     _effect.Parameters["View"].SetValue(view);
                     _effect.Parameters["Projection"].SetValue(projection);
 
-                    _effect.Parameters["DiffuseColor"].SetValue(Color.White.ToVector4());
+                    _effect.Parameters["DiffuseColor"].SetValue((Color.DarkOrange.ToVector4() + Color.Yellow.ToVector4()) / 2);
                     _effect.Parameters["LightPosition"].SetValue(getPointLightPositions(Lights));
                     _effect.Parameters["Attenuation"].SetValue(getPointLightAttenuation(Lights));
                     _effect.Parameters["LightRange"].SetValue(getPointLightRange(Lights));
                     _effect.Parameters["ModelTexture"].SetValue(texture2D);
                     _effect.Parameters["AmbientColor"].SetValue(Color.White.ToVector4());
-                    _effect.Parameters["AmbientIntensity"].SetValue(0.1f);
-                    //_effect.Parameters["DiffuseIntensity"].SetValue(3f);
+                    _effect.Parameters["AmbientIntensity"].SetValue(0.3f);
+                    _effect.Parameters["DiffuseIntensity"].SetValue(3f);
                     
                 }
                 mesh.Draw();
