@@ -1,22 +1,22 @@
-﻿float4x4 WorldMatrix;
-float4x4 ViewMatrix;
-float4x4 ProjectionMatrix;
+﻿float4x4 World;
+float4x4 View;
+float4x4 Projection;
 
-float4 AmbienceColor = float4(0.1f, 0.1f, 0.1f, 1.0f);
-
-// For Diffuse Lightning
-float4x4 WorldInverseTransposeMatrix;
-float3 DiffuseLightDirection = float3(-1.0f, 0.0f, 0.0f);
+float4 AmbientColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 float4 DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-float DiffuseLightPower = 1.0f;
+float AmbientIntensity = 0.1f;
 
-// For Texture
+float3 LightPosition[2];
+float3 Attenuation[2];
+float LightRange[2];
+
 texture ModelTexture;
-sampler2D TextureSampler = sampler_state
+
+sampler2D textureSampler = sampler_state
 {
     Texture = (ModelTexture);
-    MagFilter = Linear;
     MinFilter = Linear;
+    MagFilter = Linear;
     AddressU = Clamp;
     AddressV = Clamp;
 };
@@ -24,50 +24,83 @@ sampler2D TextureSampler = sampler_state
 struct VertexShaderInput
 {
     float4 Position : POSITION0;
-    // For Diffuse Lightning
-    float4 NormalVector : NORMAL0;
-    // For Texture
+    float3 Normal : NORMAL0;
     float2 TextureCoordinate : TEXCOORD0;
 };
 
 struct VertexShaderOutput
 {
     float4 Position : POSITION0;
-    // For Diffuse Lightning
-    float4 VertexColor : COLOR0;
-    // For Texture    
-    float2 TextureCoordinate : TEXCOORD0;
+    float3 Normal : TEXCOORD0;
+    float2 TextureCoordinate : TEXCOORD1;
+    float4 WorldPosition : TEXCOORD2;
 };
 
 VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 {
     VertexShaderOutput output;
 
-    float4 worldPosition = mul(input.Position, WorldMatrix);
-    float4 viewPosition = mul(worldPosition, ViewMatrix);
-    output.Position = mul(viewPosition, ProjectionMatrix);
-    
-    // For Diffuse Lightning
-    float4 normal = normalize(mul(input.NormalVector, WorldInverseTransposeMatrix));
-    float lightIntensity = dot(normal, DiffuseLightDirection) * DiffuseLightPower;
-    output.VertexColor = saturate(DiffuseColor * lightIntensity);
-    
-    // For Texture
+    float4x4 WVP = mul(World, View);
+    WVP = mul(WVP, Projection);
+    output.Position = mul(input.Position, WVP);
+
+    output.WorldPosition = mul(input.Position, World);
+    output.Normal = mul(input.Normal, World);
     output.TextureCoordinate = input.TextureCoordinate;
-	
+
     return output;
 }
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-    // For Texture
-    float4 VertexTextureColor = tex2D(TextureSampler, input.TextureCoordinate);
-    VertexTextureColor.a = 1;
-	
-    return saturate(VertexTextureColor * input.VertexColor + AmbienceColor);
+    input.Normal = normalize(input.Normal);
+    float4 diffuse = tex2D(textureSampler, input.TextureCoordinate);
+    float3 finalColor = float3(0.0f, 0.0f, 0.0f);
+    float3 singleColor;
+    bool outOfRange;
+    bool anyInRange = false;
+    float3 finalAmbient = diffuse * AmbientColor * AmbientIntensity;
+
+    for (int i = 0; i < 2; i++) {
+        singleColor = float3(0.0f, 0.0f, 0.0f);
+        float3 lightToPixelVec = LightPosition[i] - input.WorldPosition;
+        float d = length(lightToPixelVec);
+        
+        if (d > LightRange[i]) {
+            outOfRange = true;
+        }
+        else {
+            outOfRange = false;
+            anyInRange = true;
+        }
+
+        if (!outOfRange) {
+            lightToPixelVec /= d;
+            float howMuchLight = dot(lightToPixelVec, input.Normal);
+
+            if (howMuchLight > 0.0f)
+            {
+                //Add light to the finalColor of the pixel
+                singleColor += howMuchLight * diffuse * DiffuseColor;
+
+                //Calculate Light's Falloff factor
+                singleColor /= (Attenuation[i][0] + (Attenuation[i][1] * d) + (Attenuation[i][2] * (d * d)));
+            }
+
+
+            finalColor += saturate(singleColor + finalAmbient);
+        }
+    }
+
+    if (!anyInRange) {
+        return float4(finalAmbient, diffuse.a);
+    }
+
+    //Return Final Color
+    return float4(finalColor, diffuse.a);
 }
 
-technique Texture
+technique Ambient
 {
     pass Pass1
     {

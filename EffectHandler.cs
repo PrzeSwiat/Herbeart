@@ -6,27 +6,105 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace TheGame
 {
+    struct PointLight
+    {
+        Vector3 position;
+        Vector4 color;
+        Vector3 attenuation;
+        float lightRange;
+        bool isActive;
+
+        public PointLight(Vector3 pos, Vector4 col, Vector3 att, float range)
+        {
+            position = pos;
+            color = col;
+            attenuation = att;
+            lightRange = range;
+            isActive = true;
+        }
+
+        public Vector3 Position { get { return position; } }
+        public Vector4 Color { get { return color; } }
+        public Vector3 Attenuation { get { return attenuation; } }
+        public float Range { get { return lightRange; } }
+    }
+
     internal class EffectHandler
     {
         private Effect _effect;
-        private List<Vector3> lightpos;
+        private PointLight[] Lights;
+        //private List<Vector3> lightpos;
 
         public EffectHandler(Effect effect)
         {
             _effect = effect;
-            lightpos = new List<Vector3>();
+            Vector3 pos1 = new Vector3(8, 1, 0);
+            Vector3 pos2 = new Vector3(0, 1, 0);
+
+            Lights = new PointLight[2];
+
+            Vector3 att = new Vector3(0.0f, 0.2f, 0.3f);
+            Lights[0] = new PointLight(pos1, Color.White.ToVector4(), att, 4);
+            Lights[1] = new PointLight(pos2, Color.White.ToVector4(), att, 5);
+            //lightpos = new List<Vector3>();
         }
 
-        public void AddLight(Vector3 vector3)
+        private Vector3[] getPointLightPositions(PointLight[] lights)
+        {
+            Vector3[] positions = new Vector3[lights.Length];
+
+            for (int i = 0; i < lights.Length; i++)
+            {
+                positions[i] = lights[i].Position;
+            }
+            return positions;
+        }
+
+        private Vector4[] getPointLightColor(PointLight[] lights)
+        {
+            Vector4[] colors = new Vector4[lights.Length];
+
+            for (int i = 0; i < lights.Length; i++)
+            {
+                colors[i] = lights[i].Color;
+            }
+            return colors;
+        }
+
+        private Vector3[] getPointLightAttenuation(PointLight[] lights)
+        {
+            Vector3[] att = new Vector3[lights.Length];
+
+            for (int i = 0; i < lights.Length; i++)
+            {
+                att[i] = lights[i].Attenuation;
+            }
+            return att;
+        }
+
+        private float[] getPointLightRange(PointLight[] lights)
+        {
+            float[] ranges = new float[lights.Length];
+
+            for (int i = 0; i < lights.Length; i++)
+            {
+                ranges[i] = lights[i].Range;
+            }
+            return ranges;
+        }
+
+        /*public void AddLight(Vector3 vector3)
         {
             lightpos.Add(vector3);
         }
         public List<Vector3> GetLights()
         {
             return lightpos;
-        }
+        }*/
 
 
         public void BasicDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D)
@@ -40,16 +118,16 @@ namespace TheGame
                     _effect.Parameters["World"].SetValue(world * mesh.ParentBone.Transform);
                     _effect.Parameters["View"].SetValue(view);
                     _effect.Parameters["Projection"].SetValue(projection);
-                    _effect.Parameters["DiffuseColor"].SetValue((Color.DarkOrange.ToVector4() + Color.Yellow.ToVector4()) / 2);
-                    _effect.Parameters["AmbientColor"].SetValue(Color.White.ToVector4());
-                    _effect.Parameters["AmbientIntensity"].SetValue(1f);
 
-                    _effect.Parameters["DiffuseIntensity"].SetValue(3f);
+                    _effect.Parameters["DiffuseColor"].SetValue(Color.White.ToVector4());
+                    _effect.Parameters["LightPosition"].SetValue(getPointLightPositions(Lights));
+                    _effect.Parameters["Attenuation"].SetValue(getPointLightAttenuation(Lights));
+                    _effect.Parameters["LightRange"].SetValue(getPointLightRange(Lights));
                     _effect.Parameters["ModelTexture"].SetValue(texture2D);
-                    _effect.Parameters["Attenuation"].SetValue(new Vector3(0.1f, 0.1f, 0.1f));
-                    _effect.Parameters["LightRange"].SetValue(20.0f);
-                    _effect.Parameters["LightPosition"].SetValue(lightpos[0] + new Vector3(10f, 1f, 0f));
-
+                    _effect.Parameters["AmbientColor"].SetValue(Color.White.ToVector4());
+                    _effect.Parameters["AmbientIntensity"].SetValue(0.1f);
+                    //_effect.Parameters["DiffuseIntensity"].SetValue(3f);
+                    
                 }
                 mesh.Draw();
             }
