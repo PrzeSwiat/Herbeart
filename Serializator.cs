@@ -26,8 +26,15 @@ namespace TheGame
 
         public Player LoadPlayer()
         {
+            string load = null;
+            try
+            {
+               load = File.ReadAllText(fileName);
+            }catch(Exception ex)
+            {
+                Debug.Write(ex);
+            };
             
-            string load = File.ReadAllText(fileName);
             if(load != null)
             {
                 return JsonConvert.DeserializeObject<Player>(load);

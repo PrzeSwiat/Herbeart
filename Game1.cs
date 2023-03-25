@@ -149,10 +149,6 @@ namespace TheGame
                     player = copied;
                     player.LoadContent(Content);
                 }
-                else
-                {
-                    Debug.Write("nima \n");
-                }
                
             }
         }
