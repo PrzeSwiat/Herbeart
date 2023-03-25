@@ -67,10 +67,10 @@ namespace TheGame
                 worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
             //.................
             Effect one;
-            one = Content.Load<Effect>("File");
+            one = Content.Load<Effect>("ShaderOne");
             effectHandler = new EffectHandler(one);
 
-            effectHandler.AddLight(new Vector3(0,0,0));
+            //effectHandler.AddLight(new Vector3(0,0,0));
 
             world = new World(WindowWidth,WindowHeight,Content,2f,32,32,"test", "StarSparrow_Green");
             player = new Player(new Vector3(0,2,0), "player", "StarSparrow_Orange");
