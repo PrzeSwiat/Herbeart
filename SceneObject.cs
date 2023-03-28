@@ -10,26 +10,30 @@ using System.Threading.Tasks;
 
 namespace TheGame
 {
+    [Serializable]
     internal class SceneObject
     {
-        private Vector3 position;
-        private Vector3 rotation = new Vector3(0.0f,0.0f,0.0f);
-        private float scale = 1;
-        private Model model;
-        private Texture2D texture2D;
-        private string _modelFileName;
-        private string _textureFileName;
+        public Vector3 position;
+        public Vector3 rotation = new Vector3(0.0f,0.0f,0.0f);
+        public float scale = 1;
+        protected Model model;
+        protected Texture2D texture2D;
+        public string _modelFileName;
+        public string _textureFileName;
 
-        public SceneObject(ContentManager content,Vector3 worldPosition, string modelFileName , string textureFileName)
+        public SceneObject(Vector3 worldPosition, string modelFileName , string textureFileName)
         {
             position = worldPosition;
             _modelFileName = modelFileName;
             _textureFileName = textureFileName;
 
-            SetModel(content.Load<Model>(modelFileName));
-            SetTexture(content.Load<Texture2D>(textureFileName));
         }
 
+        public void LoadContent(ContentManager content)
+        {
+            model = (content.Load<Model>(_modelFileName));
+            texture2D = (content.Load<Texture2D>(_textureFileName));
+        }
 
         //GET'ERS
         public Vector3 GetPosition()

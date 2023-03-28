@@ -103,7 +103,7 @@ namespace TheGame
             viewMatrix = Matrix.CreateLookAt(camPosition, player.GetPosition(), Vector3.Up);
 
             player.PlayerMovement(world,cosAngle, sinAngle, tanAngle);
-            //MouseMovement();
+
             SaveControl();
 
             base.Update(gameTime);

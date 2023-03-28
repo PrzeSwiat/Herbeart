@@ -35,9 +35,17 @@ namespace TheGame
             {
                 for (int j = _minusLenght; j <= _worldWidth; j++)
                 {
-                    _worldArray.Add(new SceneObject(Content, new Vector3(j * blockSeparation, level, i * blockSeparation), modelFileName, textureFileName));
+                    _worldArray.Add(new SceneObject(new Vector3(j * blockSeparation, level, i * blockSeparation), modelFileName, textureFileName));
+                    
                 }
             }
+
+            foreach (SceneObject obj in _worldArray)
+            {
+                obj.LoadContent(Content);
+            }
+
+            
         }
 
         public void ObjectInitializer(ContentManager Content)

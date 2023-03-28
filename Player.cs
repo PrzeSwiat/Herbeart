@@ -17,29 +17,15 @@ using System.Xml;
 namespace TheGame
 {
     [Serializable]
-    internal class Player
+    internal class Player : SceneObject
     {
-        public Vector3 position;
-        public Vector3 rotation = new Vector3(0.0f, 0.0f, 0.0f);
-        public float scale = 0.5f;
-        private Model model;
-        private Texture2D texture2D;
-        public string _modelFileName;
-        public string _textureFileName;
         private float movementSpeedUpDown;
         private float movementSpeedRightLeft = 0.15f;
 
-        public Player( Vector3 Position, string modelFileName, string textureFileName)
+        public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position,modelFileName,textureFileName)
         {
-            position = Position;
-            _modelFileName = modelFileName;
-            _textureFileName = textureFileName;
-            movementSpeedUpDown = 2 * movementSpeedRightLeft;
-        }
-        public void LoadContent(ContentManager content)
-        {
-            model = (content.Load<Model>(_modelFileName));
-            texture2D = (content.Load<Texture2D>(_textureFileName));
+            movementSpeedUpDown = movementSpeedRightLeft * 2;
+            SetScale(0.5f);
         }
         //GET'ERS
         public float GetmovementSpeedUpDown()
@@ -49,34 +35,6 @@ namespace TheGame
         public float GetmovementSpeedRightLeft()
         {
             return movementSpeedRightLeft;
-        }
-        public Vector3 GetPosition()
-        {
-            return position;
-        }
-        public Vector3 GetRotation()
-        {
-            return rotation;
-        }
-        public float GetScale()
-        {
-            return scale;
-        }
-        public Model GetModel()
-        {
-            return model;
-        }
-        public Texture2D GetTexture2D()
-        {
-            return texture2D;
-        }
-        public string GetModelFileName()
-        {
-            return _modelFileName;
-        }
-        public string GetTextureFileName()
-        {
-            return _textureFileName;
         }
         //.................
 
@@ -88,34 +46,6 @@ namespace TheGame
         public void SetmovementSpeedRightLeft(float speed)
         {
             movementSpeedRightLeft = speed;
-        }
-        public void SetPosition(float x, float y, float z)
-        {
-            position = new Vector3(x, y, z);
-        }
-        public void SetPosition(Vector3 pos)
-        {
-            position = pos;
-        }
-        public void SetRotation(Vector3 rot)
-        {
-            rotation = rot;
-        }
-        public void SetRotation(float x, float y, float z)
-        {
-            rotation = new Vector3(x, y, z);
-        }
-        public void SetScale(float scl)
-        {
-            scale = scl;
-        }
-        public void SetModel(Model mod)
-        {
-            model = mod;
-        }
-        public void SetTexture(Texture2D tex)
-        {
-            texture2D = tex;
         }
 
         //.................
@@ -133,7 +63,6 @@ namespace TheGame
                     
                     if (gamePadState.ThumbSticks.Left.X < -0.5f)
                     {
-                        
                        SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
                     }
                     if (gamePadState.ThumbSticks.Left.X > 0.5f)
@@ -227,7 +156,7 @@ namespace TheGame
             if (state.IsKeyDown(Keys.A))
             {
                 SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
-               SetRotation(0, -cosAngle, 0);
+                SetRotation(0, -cosAngle, 0);
                 //Camera movement acccording to player A move 
 
             }
