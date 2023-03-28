@@ -20,15 +20,10 @@ namespace TheGame
         int WindowHeight = 720;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Vector3 camTarget;
-        Vector3 camPosition;
-        Vector3 camPositionStat;
         Matrix projectionMatrix;
         Matrix viewMatrix;
         Matrix worldMatrix;
-        float cosAngle = 0;
-        float tanAngle = 0;
-        float sinAngle = 0;
+        Camera camera;
         EffectHandler effectHandler;
         Serializator serializator;
         //.................
@@ -50,10 +45,9 @@ namespace TheGame
 
         protected override void Initialize()
         {
+            
             //DON'T TOUCH IT MORTALS
-                camTarget = new Vector3(0f, 0f, 0f);
-                camPosition = new Vector3(30f,30f, 30f);
-                camPositionStat = new Vector3(30f, 30f, 30f);
+            camera = new Camera();
             //projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
             projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
@@ -64,7 +58,7 @@ namespace TheGame
                  // tells the world of our orientantion
                                                                                       // (the same as:
                                                                                       // Vector3(0,1,0) - up and down is along y axis)
-                worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
+                worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
             //.................
             Effect one;
             one = Content.Load<Effect>("ShaderOne");
@@ -72,15 +66,13 @@ namespace TheGame
 
             //effectHandler.AddLight(new Vector3(0,0,0));
 
-            world = new World(WindowWidth,WindowHeight,Content,2f,32,32,"test", "StarSparrow_Green");
+            world = new World(WindowWidth,WindowHeight,Content,2f,30,30,"test", "StarSparrow_Green");
             player = new Player(new Vector3(0,2,0), "player", "StarSparrow_Orange");
             player.LoadContent(Content);
 
             world.ObjectInitializer(Content);
 
-            cosAngle =  camPosition.X / (float)Math.Sqrt(Math.Pow(camPosition.X, 2) + Math.Pow(camPosition.Z, 2));
-            sinAngle = camPosition.Z / (float)Math.Sqrt(Math.Pow(camPosition.X, 2) + Math.Pow(camPosition.Z, 2));
-            tanAngle = camPosition.Z / camPosition.X;
+           
 
             serializator = new Serializator("zapis.txt");
 
@@ -98,12 +90,14 @@ namespace TheGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            camPosition = player.GetPosition() + camPositionStat;
+            camera.CamPosition = player.GetPosition() + camera.CamPositionState;
+            camera.nextpos = player.GetPosition();
+            viewMatrix = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker , Vector3.Up);
+            //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
 
-            viewMatrix = Matrix.CreateLookAt(camPosition, player.GetPosition(), Vector3.Up);
-
-            player.PlayerMovement(world,cosAngle, sinAngle, tanAngle);
-
+            player.PlayerMovement(world,camera.CosAngle, camera.SinAngle, camera.TanAngle);
+            camera.Update();
+            
             SaveControl();
 
             base.Update(gameTime);
