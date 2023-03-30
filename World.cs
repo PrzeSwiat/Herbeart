@@ -51,7 +51,12 @@ namespace TheGame
         public void ObjectInitializer(ContentManager Content)
         {
            // _worldArray.Add(new SceneObject(Content,new Vector3(12, 0, 0), "test", "StarSparrow_Orange"));
-            //_worldArray.Add(new SceneObject(Content,new Vector3(0, 1, 0), "test", "StarSparrow_Orange"));
+            _worldArray.Add(new SceneObject(new Vector3(0, 1, 0), "test", "StarSparrow_Orange"));
+
+            foreach (SceneObject obj in _worldArray)
+            {
+                obj.LoadContent(Content);
+            }
         }
 
         public List<SceneObject> GetWorldList()

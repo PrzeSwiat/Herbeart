@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Reflection;
@@ -29,7 +30,7 @@ namespace TheGame
         //.................
         World world;
         Player player;
-
+        HUD hud;
 
 
         public Game1()
@@ -64,13 +65,14 @@ namespace TheGame
             one = Content.Load<Effect>("ShaderOne");
             effectHandler = new EffectHandler(one);
 
+            hud = new HUD("sky", WindowWidth, WindowHeight);
+
             //effectHandler.AddLight(new Vector3(0,0,0));
 
             world = new World(WindowWidth,WindowHeight,Content,2f,30,30,"test", "StarSparrow_Green");
             player = new Player(new Vector3(0,2,0), "player", "StarSparrow_Orange");
-            player.LoadContent(Content);
+            
 
-            world.ObjectInitializer(Content);
 
            
 
@@ -83,12 +85,17 @@ namespace TheGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            player.LoadContent(Content);
+            world.ObjectInitializer(Content);
+            hud.LoadContent(Content);
+
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
 
             camera.CamPosition = player.GetPosition() + camera.CamPositionState;
             camera.nextpos = player.GetPosition();
@@ -97,6 +104,7 @@ namespace TheGame
 
             player.PlayerMovement(world,camera.CosAngle, camera.SinAngle, camera.TanAngle);
             camera.Update();
+            hud.Move();
             
             SaveControl();
 
@@ -109,6 +117,8 @@ namespace TheGame
             GraphicsDevice.Clear(Color.Black);           //........
 
             base.Draw(gameTime);
+
+            hud.DrawBackgroud(_spriteBatch);
 
             foreach (SceneObject sceneObject in world.GetWorldList())
             {
@@ -125,6 +135,8 @@ namespace TheGame
                     Matrix.CreateRotationZ(player.GetRotation().Z)*
                     Matrix.CreateTranslation(player.GetPosition().X,player.GetPosition().Y, player.GetPosition().Z), viewMatrix, projectionMatrix, player.GetTexture2D());
 
+
+            
         }
 
         void SaveControl()
