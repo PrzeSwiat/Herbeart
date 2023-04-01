@@ -66,7 +66,6 @@ namespace TheGame
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
                 if (capabilities.HasLeftXThumbStick)
                 {
-                    
                     if (gamePadState.ThumbSticks.Left.X < -0.5f)
                     {
                        SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
