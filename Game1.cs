@@ -31,6 +31,7 @@ namespace TheGame
         World world;
         Player player;
         HUD hud;
+        private BasicEffect basicEffect;
 
 
         public Game1()
@@ -49,8 +50,8 @@ namespace TheGame
             
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
-            //projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
-            projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
+            projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
+            //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
                 // PERSPECTIVE point of view
                 //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f),GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
@@ -69,12 +70,10 @@ namespace TheGame
 
             //effectHandler.AddLight(new Vector3(0,0,0));
 
-            world = new World(WindowWidth,WindowHeight,Content,2f,30,30,"test", "StarSparrow_Green");
-            player = new Player(new Vector3(0,2,0), "player", "StarSparrow_Orange");
+            world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
+            player = new Player(new Vector3(5,2,5), "player", "StarSparrow_Orange");
             
-
-
-           
+            
 
             serializator = new Serializator("zapis.txt");
 
@@ -88,7 +87,8 @@ namespace TheGame
             player.LoadContent(Content);
             world.ObjectInitializer(Content);
             hud.LoadContent(Content);
-
+            basicEffect = new BasicEffect(GraphicsDevice);
+            basicEffect.Projection = projectionMatrix;
         }
 
         protected override void Update(GameTime gameTime)
@@ -101,11 +101,15 @@ namespace TheGame
             camera.nextpos = player.GetPosition();
             viewMatrix = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker , Vector3.Up);
             //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
-
+            basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.PlayerMovement(world,camera.CosAngle, camera.SinAngle, camera.TanAngle);
-            camera.Update();
+            camera.Update1(player.position);
             hud.Move();
-            
+
+           
+
+
+
             SaveControl();
 
             base.Update(gameTime);
@@ -114,29 +118,37 @@ namespace TheGame
         protected override void Draw(GameTime gameTime)
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue); //change if u want to
+            
             GraphicsDevice.Clear(Color.Black);           //........
-
+            
             base.Draw(gameTime);
 
-            hud.DrawBackgroud(_spriteBatch);
+            
+            //hud.DrawBackgroud(_spriteBatch);
 
             foreach (SceneObject sceneObject in world.GetWorldList())
             {
                 effectHandler.BasicDraw(sceneObject.GetModel(),worldMatrix * Matrix.CreateScale(sceneObject.GetScale())
-                     * Matrix.CreateTranslation(sceneObject.GetPosition().X,sceneObject.GetPosition().Y, sceneObject.GetPosition().Z)
-                     *Matrix.CreateRotationX(sceneObject.GetRotation().X) * Matrix.CreateRotationY(sceneObject.GetRotation().Y) *
-                    Matrix.CreateRotationZ(sceneObject.GetRotation().Z), viewMatrix, projectionMatrix, sceneObject.GetTexture2D());
+                        * Matrix.CreateRotationX(sceneObject.GetRotation().X) * Matrix.CreateRotationY(sceneObject.GetRotation().Y) *
+                        Matrix.CreateRotationZ(sceneObject.GetRotation().Z)
+                        * Matrix.CreateTranslation(sceneObject.GetPosition().X,sceneObject.GetPosition().Y, sceneObject.GetPosition().Z)
+                         , viewMatrix, projectionMatrix, sceneObject.GetTexture2D());
+
+                
             }
 
 
 
-           effectHandler.BasicDraw(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) * 
-                    Matrix.CreateRotationX(player.GetRotation().X) * Matrix.CreateRotationY(player.GetRotation().Y) *
-                    Matrix.CreateRotationZ(player.GetRotation().Z)*
-                    Matrix.CreateTranslation(player.GetPosition().X,player.GetPosition().Y, player.GetPosition().Z), viewMatrix, projectionMatrix, player.GetTexture2D());
+           effectHandler.BasicDraw(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale())
+                    * Matrix.CreateRotationX(player.GetRotation().X) * Matrix.CreateRotationY(player.GetRotation().Y) *
+                    Matrix.CreateRotationZ(player.GetRotation().Z) * Matrix.CreateTranslation(player.GetPosition().X, player.GetPosition().Y, player.GetPosition().Z), 
+                    viewMatrix, projectionMatrix, player.GetTexture2D());
+            //Debug.Write(worldMatrix + "\n");
 
 
-            
+            DrawBoundingBoxes();
+
+
         }
 
         void SaveControl()
@@ -157,6 +169,87 @@ namespace TheGame
                 }
                
             }
+        }
+
+
+        private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.World = world;
+                    effect.View = view;
+                    effect.Projection = projection;
+                }
+
+                mesh.Draw();
+            }
+        }
+
+        public void DrawBoundingBoxes()
+        {
+            basicEffect.CurrentTechnique.Passes[0].Apply();
+            
+            foreach(SceneObject obj in world.GetWorldList())
+            {
+                DrawBB(obj.boundingBox.GetCorners());
+            }
+
+            DrawBB(player.boundingBox.GetCorners());
+            
+           
+        }
+
+        public void DrawBB(Vector3[] corners)
+        {
+            var bottom = new[] 
+            { 
+                new VertexPositionColor(corners[2], Color.White),
+                new VertexPositionColor(corners[3], Color.White),
+                new VertexPositionColor(corners[7], Color.White),
+                new VertexPositionColor(corners[6], Color.White),
+                new VertexPositionColor(corners[2], Color.White),
+            };
+
+            var top = new[]
+            {
+                new VertexPositionColor(corners[4], Color.White),
+                new VertexPositionColor(corners[5], Color.White),
+                new VertexPositionColor(corners[1], Color.White),
+                new VertexPositionColor(corners[0], Color.White),
+                new VertexPositionColor(corners[4], Color.White),
+            };
+
+            var rf = new[]
+            {
+                new VertexPositionColor(corners[1], Color.White),
+                new VertexPositionColor(corners[2], Color.White)
+            };
+            var lf = new[]
+            {
+                new VertexPositionColor(corners[3], Color.White),
+                new VertexPositionColor(corners[0], Color.White)
+            };
+            var rb = new[]
+            {
+                new VertexPositionColor(corners[5], Color.White),
+                new VertexPositionColor(corners[6], Color.White)
+            };
+            var lb = new[]
+            {
+                new VertexPositionColor(corners[4], Color.White),
+                new VertexPositionColor(corners[7], Color.White)
+            };
+
+            //Sciany dolna i górna
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, bottom, 0, 4);
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, top, 0,4);
+            //boki
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rf, 0, 1);
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lf, 0, 1);
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rb, 0, 1);
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lb, 0, 1);
         }
     }
 }

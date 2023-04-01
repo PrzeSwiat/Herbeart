@@ -25,8 +25,8 @@ namespace TheGame
         public Camera()
         {
             camTarget = new Vector3(0f, 0f, 0f);
-            camPosition = new Vector3(30f, 30f, 30f);
-            camPositionState = new Vector3(30f, 30f, 30f);
+            camPosition = new Vector3(0f, 30f, 30f);
+            camPositionState = new Vector3(0f, 30f, 30f);
             CalculateAngles();
         }
         public Camera(Vector3 camTarget, Vector3 camPosition, Vector3 camPositionStat)
@@ -85,7 +85,6 @@ namespace TheGame
         {
             // camOffset = Vector3.Lerp(camPosition,nextpos*1.1f,camSlow);
             // camTracker += Vector3.Normalize(Vector3.Lerp(camPosition, camOffset, 5f));
-
             camOffset = Vector3.Lerp(camPosition, nextpos, camSlow);
             camTracker += Vector3.Normalize(Vector3.Lerp(nextpos, camOffset, 20f));
         }
