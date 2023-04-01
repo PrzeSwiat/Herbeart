@@ -19,6 +19,25 @@
 /processorParam:DebugMode=Auto
 /build:File.fx
 
+#begin Fonts.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts.spritefont
+
+#begin itemFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:itemFrame.png
+
 #begin player.obj
 /importer:FbxImporter
 /processor:ModelProcessor
@@ -49,6 +68,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:pobrany plik (1).jpg;sky.jpg
+
+#begin Red.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Red.png
 
 #begin ShaderOne.fx
 /importer:EffectImporter

@@ -25,8 +25,8 @@ namespace TheGame
         public Camera()
         {
             camTarget = new Vector3(0f, 0f, 0f);
-            camPosition = new Vector3(30f, 30f, 30f);
-            camPositionState = new Vector3(30f, 30f, 30f);
+            camPosition = new Vector3(0f, 30f, 30f);
+            camPositionState = new Vector3(0f, 30f, 30f);
             CalculateAngles();
         }
         public Camera(Vector3 camTarget, Vector3 camPosition, Vector3 camPositionStat)

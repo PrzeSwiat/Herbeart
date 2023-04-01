@@ -32,7 +32,6 @@ namespace TheGame
         Player player;
         HUD hud;
 
-
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -43,7 +42,7 @@ namespace TheGame
             _graphics.ApplyChanges();
             
         }
-
+        
         protected override void Initialize()
         {
             
@@ -104,7 +103,7 @@ namespace TheGame
 
             player.PlayerMovement(world,camera.CosAngle, camera.SinAngle, camera.TanAngle);
             camera.Update();
-            hud.Move();
+            hud.Update(camera.CamPosition);
             
             SaveControl();
 
@@ -118,7 +117,7 @@ namespace TheGame
 
             base.Draw(gameTime);
 
-            hud.DrawBackgroud(_spriteBatch);
+            hud.DrawBackground(_spriteBatch);
 
             foreach (SceneObject sceneObject in world.GetWorldList())
             {
@@ -130,13 +129,13 @@ namespace TheGame
 
 
 
-           effectHandler.BasicDraw(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) * 
+            effectHandler.BasicDraw(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale()) * 
                     Matrix.CreateRotationX(player.GetRotation().X) * Matrix.CreateRotationY(player.GetRotation().Y) *
                     Matrix.CreateRotationZ(player.GetRotation().Z)*
                     Matrix.CreateTranslation(player.GetPosition().X,player.GetPosition().Y, player.GetPosition().Z), viewMatrix, projectionMatrix, player.GetTexture2D());
 
+            hud.DrawFrontground(_spriteBatch);
 
-            
         }
 
         void SaveControl()

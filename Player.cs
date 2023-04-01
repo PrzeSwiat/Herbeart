@@ -60,7 +60,6 @@ namespace TheGame
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
                 if (capabilities.HasLeftXThumbStick)
                 {
-                    
                     if (gamePadState.ThumbSticks.Left.X < -0.5f)
                     {
                        SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
@@ -153,34 +152,37 @@ namespace TheGame
 
             //Keyboard
             KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.A))
+            if(state.GetPressedKeyCount() > 0)
             {
-                SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
-                SetRotation(0, -cosAngle, 0);
-                //Camera movement acccording to player A move 
+                if (state.IsKeyDown(Keys.A))
+                {
+                    SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
+                    SetRotation(0, -cosAngle, 0);
+                    //Camera movement acccording to player A move
+                }
+                if (state.IsKeyDown(Keys.D))
+                {
 
-            }
-            if (state.IsKeyDown(Keys.D))
-            {
+                    SetPosition(position - new Vector3(-movementSpeedRightLeft, 0, movementSpeedRightLeft * cosAngle));
+                    SetRotation(0, cosAngle*3, 0);
+                    //Camera movement acccording to player D move 
+                }
+                if (state.IsKeyDown(Keys.W))
+                {
 
-                SetPosition(position - new Vector3(-movementSpeedRightLeft, 0, movementSpeedRightLeft * cosAngle));
-                SetRotation(0, cosAngle*3, 0);
-                //Camera movement acccording to player D move 
-            }
-            if (state.IsKeyDown(Keys.W))
-            {
+                    SetPosition(position - new Vector3(movementSpeedUpDown / tanAngle, 0, movementSpeedUpDown));
+                    SetRotation(0, cosAngle * 5.5f, 0);
+                    //Camera movement acccording to player W move 
+                }
+                if (state.IsKeyDown(Keys.S))
+                {
 
-                SetPosition(position - new Vector3(movementSpeedUpDown / tanAngle, 0, movementSpeedUpDown));
-                SetRotation(0, cosAngle * 5.5f, 0);
-                //Camera movement acccording to player W move 
+                    SetPosition(position - new Vector3(-movementSpeedUpDown / tanAngle, 0, -movementSpeedUpDown));
+                    SetRotation(0, cosAngle, 0);
+                    //Camera movement acccording to player S move 
+                }
             }
-            if (state.IsKeyDown(Keys.S))
-            {
-
-                SetPosition(position - new Vector3(-movementSpeedUpDown / tanAngle, 0, -movementSpeedUpDown));
-                SetRotation(0, cosAngle, 0);
-                //Camera movement acccording to player S move 
-            }
+            
 
         }
 
