@@ -18,7 +18,7 @@ using System.Xml;
 namespace TheGame
 {
     [Serializable]
-    internal class Player : SceneObject
+    internal class Player : Creature
     {
         private float movementSpeedUpDown;
         private float movementSpeedRightLeft = 0.15f;
