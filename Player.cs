@@ -252,47 +252,49 @@ namespace TheGame
 
         public void UpdateBB(float ang, World world, Vector3 moveVec)
         {
-           
+            Vector3 center = ((boundingBox.Min + boundingBox.Max) / 2);
+            // Przenieś punkt środka boxa do punktu (0, 0, 0)
+            Matrix translation1 = Matrix.CreateTranslation(-center);
             Matrix rotation = Matrix.CreateRotationY(ang);
+            Matrix translation2 = Matrix.CreateTranslation(center);
+            Matrix transform = translation1 * rotation * translation2;
+            Vector3[] vertices = boundingBox.GetCorners();
 
-            Vector2 origin = new Vector2(0, 0); // ustaw punkt obrotu
-            Vector2[] corners = new Vector2[4]; // stwórz tablicę na wierzchołki prostokąta
-            Vector2 position = new Vector2(rect.X, rect.Y);
-            Vector2 size = new Vector2(rect.Width, rect.Height);
-
-            Vector2 topLeft = position;
-            Vector2 topRight = position + new Vector2(size.X, 0);
-            Vector2 bottomLeft = position + new Vector2(0, size.Y);
-            Vector2 bottomRight = position + size;
-
-            corners[0] = topLeft; corners[1] = topRight; corners[2] = bottomLeft; corners[3]= bottomRight;
-            // Oblicz nowe wartości min i max
-
-
-            for (int i = 0; i < corners.Length; i++)
+            for (int i = 0; i < vertices.Length; i++)
             {
-                corners[i] -= origin; // przesuń wierzchołek do punktu (0,0)
-               corners[i] = Vector2.Transform(corners[i], rotation); // obróć wierzchołek o 45 stopni
-                corners[i] += origin; // przesuń wierzchołek z powrotem na swoją pierwotną pozycję
+                vertices[i] = Vector3.Transform(vertices[i], transform);
             }
-            float minX = corners.Min(v => v.X);
-            float maxX = corners.Max(v => v.X);
-            float minY = corners.Min(v => v.Y);
-            float maxY = corners.Max(v => v.Y);
-            RectangleF rotatedRect = new RectangleF(minX, minY, maxX - minX, maxY - minY);
-            rect = rotatedRect;
-            RectangleF kopia = rect;
-            rect= new RectangleF(rect.X-moveVec.X,rect.Y-moveVec.Z,rect.Width,rect.Height);
-            // Sprawdź kolizje
-            if (!(this.collisionRect(world.GetWorldList())))
+            Vector3 min = vertices[0];
+            Vector3 max = vertices[0];
+            for (int i = 1; i < vertices.Length; i++)
             {
-                SetPosition(this.position - moveVec);
+                min = Vector3.Min(min, vertices[i]);
+                max = Vector3.Max(max, vertices[i]);
+            }
+
+            boundingBox = new BoundingBox(min, max);
+
+            //boundingBox =  BoundingBox.CreateFromPoints(vertices);
+
+            //Debug.Write(ang);
+            BoundingBox bb = new BoundingBox(boundingBox.Min - moveVec, boundingBox.Max - moveVec);
+            // Wyznacz punkt środka boxa
+
+            lastrotationtochcek = 1;
+            //Debug.Write(bb.Min + " " + bb.Max + "\n");
+            BoundingBox boksik = boundingBox;
+            boundingBox = bb;
+
+            if (!(this.collision(world.GetWorldList())))
+            {
+                SetPosition(position - moveVec);
+
             }
             else
             {
-                rect = kopia;
-            }
+                boundingBox = boksik;
 
+            }
 
         }
         
