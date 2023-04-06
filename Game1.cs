@@ -11,6 +11,7 @@ using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using TheGame.Content;
 
 namespace TheGame
 {
@@ -28,10 +29,12 @@ namespace TheGame
         EffectHandler effectHandler;
         Serializator serializator;
         //.................
-        World world;
-        Player player;
-        HUD hud;
         private BasicEffect basicEffect;
+        World world;
+        HUD hud;
+        
+        Player player;
+        Enemy enemy;
 
         public Game1()
         {
@@ -61,21 +64,16 @@ namespace TheGame
                                                                                       // Vector3(0,1,0) - up and down is along y axis)
                 worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
             //.................
-            Effect one;
-            one = Content.Load<Effect>("ShaderOne");
-            effectHandler = new EffectHandler(one);
+
+            effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
 
             hud = new HUD("sky", WindowWidth, WindowHeight);
-
-            //effectHandler.AddLight(new Vector3(0,0,0));
-
             world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
+
             player = new Player(new Vector3(5,2,5), "player", "StarSparrow_Orange");
-            
-            
+            enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
 
             serializator = new Serializator("zapis.txt");
-
 
             base.Initialize();
         }
@@ -83,11 +81,13 @@ namespace TheGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            player.LoadContent(Content);
             world.ObjectInitializer(Content);
             hud.LoadContent(Content);
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.Projection = projectionMatrix;
+            
+            player.LoadContent(Content);
+            enemy.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -95,6 +95,7 @@ namespace TheGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             camera.CamPosition = player.GetPosition() + camera.CamPositionState;
             camera.nextpos = player.GetPosition();
@@ -102,6 +103,7 @@ namespace TheGame
             //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.PlayerMovement(world,camera.CosAngle, camera.SinAngle, camera.TanAngle);
+            enemy.Update(delta);
             camera.Update();
             hud.Update(camera.CamPosition);
             
@@ -112,9 +114,7 @@ namespace TheGame
 
         protected override void Draw(GameTime gameTime)
         {
-            //GraphicsDevice.Clear(Color.CornflowerBlue); //change if u want to
-            
-            GraphicsDevice.Clear(Color.Black);           //........
+            GraphicsDevice.Clear(Color.Black);
             
             base.Draw(gameTime);
 
@@ -122,29 +122,16 @@ namespace TheGame
 
             foreach (SceneObject sceneObject in world.GetWorldList())
             {
-                effectHandler.BasicDraw(sceneObject.GetModel(),worldMatrix * Matrix.CreateScale(sceneObject.GetScale())
-                        * Matrix.CreateRotationX(sceneObject.GetRotation().X) * Matrix.CreateRotationY(sceneObject.GetRotation().Y) *
-                        Matrix.CreateRotationZ(sceneObject.GetRotation().Z)
-                        * Matrix.CreateTranslation(sceneObject.GetPosition().X,sceneObject.GetPosition().Y, sceneObject.GetPosition().Z)
-                         , viewMatrix, projectionMatrix, sceneObject.GetTexture2D());
-
-                
+                sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             }
 
-
-
-           effectHandler.BasicDraw(player.GetModel(), worldMatrix * Matrix.CreateScale(player.GetScale())
-                    * Matrix.CreateRotationX(player.GetRotation().X) * Matrix.CreateRotationY(player.GetRotation().Y) *
-                    Matrix.CreateRotationZ(player.GetRotation().Z) * Matrix.CreateTranslation(player.GetPosition().X, player.GetPosition().Y, player.GetPosition().Z), 
-                    viewMatrix, projectionMatrix, player.GetTexture2D());
-            //Debug.Write(worldMatrix + "\n");
-
+            enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
+            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
+            
 
             hud.DrawFrontground(_spriteBatch);
 
             DrawBoundingBoxes();
-
-
         }
 
         void SaveControl()
@@ -158,28 +145,12 @@ namespace TheGame
             {
                 Player copied;
                 copied = serializator.LoadPlayer();
-                if(copied!=null)
+                if (copied != null)
                 {
                     player = copied;
                     player.LoadContent(Content);
                 }
-               
-            }
-        }
 
-
-        private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
-        {
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.World = world;
-                    effect.View = view;
-                    effect.Projection = projection;
-                }
-
-                mesh.Draw();
             }
         }
 

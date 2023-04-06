@@ -26,6 +26,7 @@ namespace TheGame
         public BoundingBox boundingBox;
         public BoundingBox helper;
         public Vector3 boundingboxrotation = new Vector3(0.0f,0.0f,0.0f);
+
         public SceneObject(Vector3 worldPosition, string modelFileName , string textureFileName)
         {
             position = worldPosition;
@@ -42,6 +43,15 @@ namespace TheGame
             boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
             boundingSphere = BoundingSphere.CreateFromBoundingBox(boundingBox);
 
+        }
+
+        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        {
+            effectHandler.BasicDraw(GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
+                        * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
+                        Matrix.CreateRotationZ(GetRotation().Z)
+                        * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
+                         , viewMatrix, projectionMatrix, GetTexture2D());
         }
 
         //GET'ERS

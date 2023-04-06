@@ -12,10 +12,10 @@ namespace TheGame
     [Serializable]
     internal class Creature : SceneObject
     {
-        public float health;
-        public float strenght;
-        public float speed;
-        public float attackSpeed;
+        private int health;
+        private int strenght;
+        private float speed;
+        private float attackSpeed;
         public BoundingSphere attackShpere;
         public BoundingBox collisionBox;
         public List<CreatureEffect> currentBadEffect;
@@ -27,16 +27,24 @@ namespace TheGame
 
         }
 
-        public void Hit(float damage)
+        public void AssignParameters(int health, int strenght, float speed)
+        {
+            this.health = health;
+            this.strenght = strenght;
+            this.speed = speed;
+        }
+
+        private void Hit(int damage)
         {
             health -= damage;
         }
 
-        public void ApplyBadEffect(CreatureEffect effect)
+        private void ApplyBadEffect(CreatureEffect effect)
         {
             currentBadEffect.Add(effect);
         }
-        public void RemoveBadEffect(CreatureEffect effect)
+
+        private void RemoveBadEffect(CreatureEffect effect)
         {
             currentBadEffect.Remove(effect);
         }
@@ -48,7 +56,7 @@ namespace TheGame
 
         private void DealDamage(Creature creature)
         {
-            creature.health -= this.strenght;
+            creature.Hit(this.strenght);
         }
 
         public void AttackCheck()
@@ -76,6 +84,27 @@ namespace TheGame
         {
             return true;
         }
+
+        // -------------- G E T T E R S --------------------
+
+        public int Health
+        {
+            get { return this.health; }
+            set { this.health = value; }
+        }
+
+        public int Strength
+        {
+            get { return this.strenght; }
+            set { this.strenght = value; }
+        }
+
+        public float Speed
+        {
+            get { return this.speed; }
+            set { this.speed = value; }
+        }
+
 
     }
 }
