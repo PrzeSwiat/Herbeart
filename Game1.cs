@@ -192,7 +192,9 @@ namespace TheGame
                 DrawBB(obj.boundingBox.GetCorners());
             }
 
-            DrawBB(player.boundingBox.GetCorners());
+            //DrawBB(player.boundingBox.GetCorners());
+
+            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
             
            
         }
@@ -246,6 +248,57 @@ namespace TheGame
             GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lf, 0, 1);
             GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rb, 0, 1);
             GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lb, 0, 1);
+        }
+
+        public void DrawBS(Vector3 center, float radius)
+        {
+            var X = new[]
+            {
+                new VertexPositionColor(center+new Vector3(radius,0,0), Color.White),
+                new VertexPositionColor(center+new Vector3(-radius,0,0), Color.White),
+
+            };
+
+            var Y = new[]
+            {
+                new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
+                new VertexPositionColor(center+new Vector3(0,-radius,0), Color.White),
+
+            };
+
+            var Z = new[]
+            {
+                new VertexPositionColor(center+new Vector3(0,0,radius), Color.White),
+                new VertexPositionColor(center+new Vector3(0,0,-radius), Color.White),
+
+            };
+
+            var XTOY = new[]
+            {
+                
+                new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
+                new VertexPositionColor(center+new Vector3(-radius,0,0), Color.White),
+                new VertexPositionColor(center+new Vector3(0,-radius,0), Color.White),
+                new VertexPositionColor(center+new Vector3(radius,0,0), Color.White),
+                new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
+            };
+
+            var ZTOY = new[]
+            {
+
+                new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
+                new VertexPositionColor(center+new Vector3(0,0,-radius), Color.White),
+                new VertexPositionColor(center+new Vector3(0,-radius,0), Color.White),
+                new VertexPositionColor(center+new Vector3(0,0,radius), Color.White),
+                new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
+            };
+
+
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, X, 0, 1);
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, Y, 0, 1);
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, Z, 0, 1);
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, XTOY, 0, 4);
+            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, ZTOY, 0, 4);
         }
     }
 }

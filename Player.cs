@@ -27,6 +27,7 @@ namespace TheGame
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position,modelFileName,textureFileName)
         {
             movementSpeedUpDown = movementSpeedRightLeft * 2;
+
             SetScale(1f);
 
         }
@@ -227,20 +228,6 @@ namespace TheGame
             foreach (SceneObject obj in objects)
             {
                 if (this.boundingBox.Intersects(obj.boundingBox))
-                {
-                    return true;
-                }
-
-
-            }
-            return false;
-        }
-        public bool collisionRect(List<SceneObject> objects)
-        {
-
-            foreach (SceneObject obj in objects)
-            {
-                if (this.rect.IntersectsWith(obj.rect))
                 {
                     return true;
                 }

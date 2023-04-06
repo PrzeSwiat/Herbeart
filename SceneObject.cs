@@ -22,9 +22,9 @@ namespace TheGame
         protected Texture2D texture2D;
         public string _modelFileName;
         public string _textureFileName;
+        public BoundingSphere boundingSphere;
         public BoundingBox boundingBox;
         public BoundingBox helper;
-        public RectangleF rect;
         public Vector3 boundingboxrotation = new Vector3(0.0f,0.0f,0.0f);
         public SceneObject(Vector3 worldPosition, string modelFileName , string textureFileName)
         {
@@ -40,7 +40,8 @@ namespace TheGame
             texture2D = (content.Load<Texture2D>(_textureFileName));
             helper = CreateBoundingBox(this.model);
             boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
-            rect = CreateRectangle(this.model);
+            boundingSphere = BoundingSphere.CreateFromBoundingBox(boundingBox);
+
         }
 
         //GET'ERS
