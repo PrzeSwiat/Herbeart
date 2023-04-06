@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
@@ -66,95 +67,84 @@ namespace TheGame
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
                 if (capabilities.HasLeftXThumbStick)
                 {
-                    if (gamePadState.ThumbSticks.Left.X < -0.5f)
-                    {
-                       SetPosition(position - new Vector3(movementSpeedRightLeft, 0, -movementSpeedRightLeft * cosAngle));
-                        
-                    }
-                    if (gamePadState.ThumbSticks.Left.X > 0.5f)
-                    {
-                        SetPosition(position - new Vector3(-movementSpeedRightLeft, 0, movementSpeedRightLeft * cosAngle));
-                        
-                    }
-                    if (gamePadState.ThumbSticks.Left.Y > 0.5f)
-                    {
-                        SetPosition(position - new Vector3(movementSpeedUpDown / tanAngle, 0, movementSpeedUpDown));
-                        
-                    }
-                    if (gamePadState.ThumbSticks.Left.Y < -0.5f)
-                    {
-                        SetPosition(position - new Vector3(-movementSpeedUpDown / tanAngle, 0, -movementSpeedUpDown));
-                        
-                    }
 
-                    // UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
+                    float lastcount = this.rotation.Y;
+                    // UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK       
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1) //prawy dol
+                    {
+                        this.UpdateBB((float)Math.PI * 1 / 4 - lastcount,world ,new Vector3(-movementSpeedRightLeft, 0, -movementSpeedUpDown));
+                        SetRotation(0,(float)Math.PI * 1 / 4, 0);
+
+                    }
                     
-                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1)
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 0) // prawo
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 1 / 4, 0);
-                        
+                        this.UpdateBB((float)Math.PI * 1 / 2 - lastcount, world, new Vector3(-movementSpeedRightLeft, 0, 0));
+                        SetRotation(0, (float)Math.PI * 1 / 2, 0);
+                    } 
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1) //prawa gora
+                    {
+                        this.UpdateBB((float)Math.PI * 3 / 4 - lastcount, world, new Vector3(-movementSpeedRightLeft, 0, movementSpeedUpDown));
+                        SetRotation(0, (float)Math.PI * 3 / 4, 0);
                     }
-                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 0)
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 0 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1) // gora
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 1 / 2, 0);
+                        this.UpdateBB((float)Math.PI - lastcount, world, new Vector3(0, 0, movementSpeedUpDown));
+                        SetRotation(0,(float)Math.PI, 0);
                     }
-                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1)
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1) //lewa gora
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 3 / 4, 0);
+                        this.UpdateBB((float)Math.PI * 5 / 4 - lastcount, world, new Vector3(movementSpeedRightLeft, 0, movementSpeedUpDown));
+                        SetRotation(0, (float)Math.PI * 5 / 4, 0);
                     }
-                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 0 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1)
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 0) //lewo 
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI, 0);
+                        this.UpdateBB((float)Math.PI * 3 / 2 - lastcount, world, new Vector3(movementSpeedRightLeft, 0, 0));
+                        SetRotation(0, (float)Math.PI * 3 / 2, 0);
                     }
-                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1)
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1) //lewy dol
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 5 / 4, 0);
+                        this.UpdateBB((float)Math.PI * 7 / 4 - lastcount, world, new Vector3(movementSpeedRightLeft, 0, -movementSpeedUpDown));
+                        SetRotation(0, (float)Math.PI * 7 / 4, 0);
                     }
-                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 0)
+                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 0 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1)// dol
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 3 / 2, 0);
-                    }
-                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1)
-                    {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI*7/4, 0);
-                    }
-                    if (Math.Round(gamePadState.ThumbSticks.Left.X) == 0 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1)
-                    {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 0, 0);
+                        this.UpdateBB(0 - lastcount, world, new Vector3(0, 0, -movementSpeedUpDown));
+                        SetRotation(0, 0, 0);
                     }
                     //////////////////????////////////////////////////////////////
                     ///Right THUMBSTICK
                     if (Math.Round(gamePadState.ThumbSticks.Right.X) == 1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == -1)
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 1 / 4, 0);
+                        SetRotation(0,  (float)Math.PI * 1 / 4, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Right.X) == 1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 0)
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 1 / 2, 0);
+                        SetRotation(0, (float)Math.PI * 1 / 2, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Right.X) == 1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 1)
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 3 / 4, 0);
+                        SetRotation(0, (float)Math.PI * 3 / 4, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Right.X) == 0 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 1)
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI, 0);
+                        SetRotation(0,  (float)Math.PI, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Right.X) == -1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 1)
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 5 / 4, 0);
+                        SetRotation(0, (float)Math.PI * 5 / 4, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Right.X) == -1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 0)
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 3 / 2, 0);
+                        SetRotation(0, (float)Math.PI * 3 / 2, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Right.X) == -1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == -1)
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 7 / 4, 0);
+                        SetRotation(0, (float)Math.PI * 7 / 4, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Right.X) == 0 && Math.Round(gamePadState.ThumbSticks.Right.Y) == -1)
                     {
-                        SetRotation(0, ((float)Math.PI * 2f) + cosAngle + (float)Math.PI * 0, 0);
+                        SetRotation(0, (float)Math.PI * 0, 0);
                     }
                     /////////////
                     ///
@@ -170,12 +160,12 @@ namespace TheGame
             float angleRight = (float)Math.PI * 1 / 2;
             float angleUp = (float)Math.PI;
             float angleDown = 0;
-            float lastcount = this.rotation.Y;
+           
 
             KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.A))
             {
-                float ang = angleLeft - lastcount;
+                float ang = angleLeft - this.GetRotation().Y;
                 if (lastrotationtochcek == 1) ang = 0.0f;
                 Vector3 left = new Vector3(movementSpeedRightLeft, 0, 0);
                 
@@ -187,7 +177,7 @@ namespace TheGame
             if (state.IsKeyDown(Keys.D))
             {
 
-                float ang = angleRight - lastcount;
+                float ang = angleRight - this.GetRotation().Y;
                 if (lastrotationtochcek == 2) ang = 0.0f;
                 Vector3 right = new Vector3(-movementSpeedRightLeft, 0, 0);
                 UpdateBB(ang, world, right);
@@ -199,7 +189,7 @@ namespace TheGame
             }
             if (state.IsKeyDown(Keys.W))
             {
-                float ang = angleUp - lastcount;
+                float ang = angleUp - this.GetRotation().Y;
                 if (lastrotationtochcek == 3) ang = 0.0f;
 
                 Vector3 up = new Vector3(0, 0, movementSpeedUpDown);
@@ -213,7 +203,7 @@ namespace TheGame
             }
             if (state.IsKeyDown(Keys.S))
             {
-                float ang = angleDown - lastcount;
+                float ang = angleDown - this.GetRotation().Y;
                 if (lastrotationtochcek == 4) ang = 0.0f;
 
                 Vector3 down = new Vector3(0, 0, -movementSpeedUpDown);
@@ -239,64 +229,67 @@ namespace TheGame
             }
             return false;
         }
-
-        public Matrix UpdateBB(float ang, World world, Vector3 moveVec)
+        public bool collisionRect(List<SceneObject> objects)
         {
-            Vector3 center = new Vector3((boundingBox.Min.X + boundingBox.Max.X) / 2, (boundingBox.Min.Y + boundingBox.Max.Y) / 2, (boundingBox.Min.Z + boundingBox.Max.Z) / 2);
-            // Przenieś punkt środka boxa do punktu (0, 0, 0)
-            Matrix translation4 = Matrix.CreateTranslation(moveVec);
-            Matrix translation1 = Matrix.CreateTranslation(-center);
+
+            foreach (SceneObject obj in objects)
+            {
+                if (this.rect.IntersectsWith(obj.rect))
+                {
+                    return true;
+                }
+
+
+            }
+            return false;
+        }
+
+        public void UpdateBB(float ang, World world, Vector3 moveVec)
+        {
+           
             Matrix rotation = Matrix.CreateRotationY(ang);
-            Matrix translation2 = Matrix.CreateTranslation(center);
-            Matrix translation3 = Matrix.CreateTranslation(moveVec);
-            Matrix transform = translation1 * rotation * translation2;
-            Vector3 min = Vector3.Transform(boundingBox.Min, transform);
-            Vector3 max = Vector3.Transform(boundingBox.Max, transform);
+
+            Vector2 origin = new Vector2(0, 0); // ustaw punkt obrotu
+            Vector2[] corners = new Vector2[4]; // stwórz tablicę na wierzchołki prostokąta
+            Vector2 position = new Vector2(rect.X, rect.Y);
+            Vector2 size = new Vector2(rect.Width, rect.Height);
+
+            Vector2 topLeft = position;
+            Vector2 topRight = position + new Vector2(size.X, 0);
+            Vector2 bottomLeft = position + new Vector2(0, size.Y);
+            Vector2 bottomRight = position + size;
+
+            corners[0] = topLeft; corners[1] = topRight; corners[2] = bottomLeft; corners[3]= bottomRight;
+            // Oblicz nowe wartości min i max
 
 
-            if (min.X > max.X)
+            for (int i = 0; i < corners.Length; i++)
             {
-
-                float bufor = min.X;
-                min.X = max.X;
-                max.X = bufor;
+                corners[i] -= origin; // przesuń wierzchołek do punktu (0,0)
+               corners[i] = Vector2.Transform(corners[i], rotation); // obróć wierzchołek o 45 stopni
+                corners[i] += origin; // przesuń wierzchołek z powrotem na swoją pierwotną pozycję
             }
-            if (min.Y > max.Y)
+            float minX = corners.Min(v => v.X);
+            float maxX = corners.Max(v => v.X);
+            float minY = corners.Min(v => v.Y);
+            float maxY = corners.Max(v => v.Y);
+            RectangleF rotatedRect = new RectangleF(minX, minY, maxX - minX, maxY - minY);
+            rect = rotatedRect;
+            RectangleF kopia = rect;
+            rect= new RectangleF(rect.X-moveVec.X,rect.Y-moveVec.Z,rect.Width,rect.Height);
+            // Sprawdź kolizje
+            if (!(this.collisionRect(world.GetWorldList())))
             {
-                float bufor = min.Y;
-                min.Y = max.Y;
-                max.Y = bufor;
-            }
-            if (min.Z > max.Z)
-            {
-                float bufor = min.Z;
-                min.Z = max.Z;
-                max.Z = bufor;
-            }
-
-            boundingBox = new BoundingBox(min, max);
-            //Debug.Write(ang);
-            BoundingBox bb = new BoundingBox(boundingBox.Min - moveVec, boundingBox.Max - moveVec);
-            // Wyznacz punkt środka boxa
-
-            lastrotationtochcek = 1;
-            //Debug.Write(bb.Min + " " + bb.Max + "\n");
-            BoundingBox boksik = boundingBox;
-            boundingBox = bb;
-
-            if (!(this.collision(world.GetWorldList())))
-            {
-                SetPosition(position - moveVec);
-
+                SetPosition(this.position - moveVec);
             }
             else
             {
-                boundingBox = boksik;
-
+                rect = kopia;
             }
 
-            return transform;
+
         }
+        
 
 
 
