@@ -25,6 +25,7 @@ namespace TheGame
         public BoundingBox boundingBox;
         public BoundingBox helper;
         public RectangleF rect;
+        public Vector3 boundingboxrotation = new Vector3(0.0f,0.0f,0.0f);
         public SceneObject(Vector3 worldPosition, string modelFileName , string textureFileName)
         {
             position = worldPosition;

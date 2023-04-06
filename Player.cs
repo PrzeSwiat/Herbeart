@@ -68,44 +68,50 @@ namespace TheGame
                 if (capabilities.HasLeftXThumbStick)
                 {
 
-                    float lastcount = this.rotation.Y;
+                    float lastcount = this.boundingboxrotation.Y;
                     // UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK       
                     if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1) //prawy dol
                     {
-                        this.UpdateBB((float)Math.PI * 1 / 4 - lastcount,world ,new Vector3(-movementSpeedRightLeft, 0, -movementSpeedUpDown));
+                        this.UpdateBB((float)Math.PI * 1 / 2 - lastcount,world ,new Vector3(-movementSpeedRightLeft, 0, -movementSpeedUpDown));
                         SetRotation(0,(float)Math.PI * 1 / 4, 0);
-
+                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
                     }
                     
                     if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 0) // prawo
                     {
                         this.UpdateBB((float)Math.PI * 1 / 2 - lastcount, world, new Vector3(-movementSpeedRightLeft, 0, 0));
                         SetRotation(0, (float)Math.PI * 1 / 2, 0);
+                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
                     } 
                     if (Math.Round(gamePadState.ThumbSticks.Left.X) == 1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1) //prawa gora
                     {
-                        this.UpdateBB((float)Math.PI * 3 / 4 - lastcount, world, new Vector3(-movementSpeedRightLeft, 0, movementSpeedUpDown));
+                        this.UpdateBB((float)Math.PI * 1 / 2 - lastcount, world, new Vector3(-movementSpeedRightLeft, 0, movementSpeedUpDown));
                         SetRotation(0, (float)Math.PI * 3 / 4, 0);
+                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Left.X) == 0 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1) // gora
                     {
                         this.UpdateBB((float)Math.PI - lastcount, world, new Vector3(0, 0, movementSpeedUpDown));
                         SetRotation(0,(float)Math.PI, 0);
+                        boundingboxrotation = new Vector3(0, (float)Math.PI, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 1) //lewa gora
                     {
-                        this.UpdateBB((float)Math.PI * 5 / 4 - lastcount, world, new Vector3(movementSpeedRightLeft, 0, movementSpeedUpDown));
+                        this.UpdateBB((float)Math.PI * 3 / 2 - lastcount, world, new Vector3(movementSpeedRightLeft, 0, movementSpeedUpDown));
                         SetRotation(0, (float)Math.PI * 5 / 4, 0);
+                        boundingboxrotation = new Vector3(0, (float)Math.PI * 3 / 2, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == 0) //lewo 
                     {
                         this.UpdateBB((float)Math.PI * 3 / 2 - lastcount, world, new Vector3(movementSpeedRightLeft, 0, 0));
                         SetRotation(0, (float)Math.PI * 3 / 2, 0);
+                        boundingboxrotation = new Vector3(0, (float)Math.PI * 3 / 2, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Left.X) == -1 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1) //lewy dol
                     {
-                        this.UpdateBB((float)Math.PI * 7 / 4 - lastcount, world, new Vector3(movementSpeedRightLeft, 0, -movementSpeedUpDown));
+                        this.UpdateBB((float)Math.PI * 3 / 2- lastcount, world, new Vector3(movementSpeedRightLeft, 0, -movementSpeedUpDown));
                         SetRotation(0, (float)Math.PI * 7 / 4, 0);
+                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
                     }
                     if (Math.Round(gamePadState.ThumbSticks.Left.X) == 0 && Math.Round(gamePadState.ThumbSticks.Left.Y) == -1)// dol
                     {
