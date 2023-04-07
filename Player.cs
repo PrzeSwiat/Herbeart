@@ -27,10 +27,17 @@ namespace TheGame
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position,modelFileName,textureFileName)
         {
             movementSpeedUpDown = movementSpeedRightLeft * 2;
-
             SetScale(1f);
 
+            AssignParameters(200, 20, 3);
         }
+
+        public void getDamage(int amount)
+        {
+            Health -= amount;
+            if (Health < 0 ) { Health = 0; }
+        }
+
         //GET'ERS
         public float GetmovementSpeedUpDown()
         {
@@ -274,7 +281,7 @@ namespace TheGame
 
             if (!(this.collision(world.GetWorldList())))
             {
-                SetPosition(position - moveVec);
+                SetPosition(GetPosition() - moveVec);
 
             }
             else

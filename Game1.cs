@@ -103,7 +103,7 @@ namespace TheGame
             //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.PlayerMovement(world,camera.CosAngle, camera.SinAngle, camera.TanAngle);
-            enemy.Update(delta);
+            enemy.Update(delta, player);
             camera.Update();
             hud.Update(camera.CamPosition);
             
@@ -129,7 +129,7 @@ namespace TheGame
             player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             
 
-            hud.DrawFrontground(_spriteBatch);
+            hud.DrawFrontground(_spriteBatch, player.Health);
 
             DrawBoundingBoxes();
         }

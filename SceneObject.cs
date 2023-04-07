@@ -15,9 +15,9 @@ namespace TheGame
     [Serializable]
     internal class SceneObject
     {
-        public Vector3 position;
-        public Vector3 rotation = new Vector3(0.0f,0.0f,0.0f);
-        public float scale = 1;
+        private Vector3 position;
+        private Vector3 rotation = new Vector3(0.0f,0.0f,0.0f);
+        private float scale = 1;
         protected Model model;
         protected Texture2D texture2D;
         public string _modelFileName;

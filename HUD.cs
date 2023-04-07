@@ -31,8 +31,8 @@ namespace TheGame
             _texFilename = texFilename;
             lastChangeTime = DateTime.Now;
             actualTime = lastChangeTime;
-            BackgroundWidth = 50;
-            BackgroundHeight = 50;
+            BackgroundWidth = 200;
+            BackgroundHeight = 200;
             WindowWidth = windowWidth;
             WindowHeight = windowHeight;
             skyRec = new Rectangle(0,0, BackgroundWidth, BackgroundHeight);
@@ -73,14 +73,14 @@ namespace TheGame
             spriteBatch.End();
         }
 
-        public void DrawFrontground(SpriteBatch spriteBatch)
+        public void DrawFrontground(SpriteBatch spriteBatch, int hp)
         {
             spriteBatch.Begin();
 
             int[] numbers = { 1, 2, 3 };
 
             DrawInventory(spriteBatch, numbers);
-            DrawHealthBar(spriteBatch, health);
+            DrawHealthBar(spriteBatch, hp);
             health -= 1;
             if (health < 0) health = 200;
 
