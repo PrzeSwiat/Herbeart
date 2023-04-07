@@ -119,7 +119,7 @@ namespace TheGame
             base.Draw(gameTime);
 
             hud.DrawBackground(_spriteBatch);
-
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             foreach (SceneObject sceneObject in world.GetWorldList())
             {
                 sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
