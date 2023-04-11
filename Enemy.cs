@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace TheGame.Content
+namespace TheGame
 {
     internal class Enemy : Creature
     {
@@ -15,8 +15,8 @@ namespace TheGame.Content
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            this.AssignParameters(100, 10, 2);
-            this.direction = new Vector2(0, 0);
+            AssignParameters(100, 10, 2);
+            direction = new Vector2(0, 0);
             lastAttackTime = DateTime.Now;
             actualTime = lastAttackTime;
         }
@@ -24,23 +24,23 @@ namespace TheGame.Content
         public void Update(float deltaTime, Player player)
         {
             FollowPlayer(player.GetPosition());
-            float ishowspeed = this.Speed * deltaTime;
-            this.SetPosition(this.GetPosition() + new Vector3(direction.X * ishowspeed, 0, direction.Y * ishowspeed));
+            float ishowspeed = Speed * deltaTime;
+            SetPosition(GetPosition() + new Vector3(direction.X * ishowspeed, 0, direction.Y * ishowspeed));
 
-            Debug.Write(Math.Round(player.GetPosition().X, 2) + "  " + this.GetPosition().X + "  ");
-            if (Math.Round(player.GetPosition().X, 2) == Math.Round(this.GetPosition().X, 2) 
-                && Math.Round(player.GetPosition().Z, 2) == Math.Round(this.GetPosition().Z, 2))
+            Debug.Write(Math.Round(player.GetPosition().X, 2) + "  " + GetPosition().X + "  ");
+            if (Math.Round(player.GetPosition().X, 2) == Math.Round(GetPosition().X, 2)
+                && Math.Round(player.GetPosition().Z, 2) == Math.Round(GetPosition().Z, 2))
             {
                 actualTime = DateTime.Now;
                 TimeSpan time = actualTime - lastAttackTime;
                 if (time.TotalSeconds > 1)
                 {
-                    player.getDamage(this.Strength);
+                    player.getDamage(Strength);
                     lastAttackTime = actualTime;
                 }
-                
+
             }
-            
+
         }
 
         private void FollowPlayer(Vector3 playerPosition)

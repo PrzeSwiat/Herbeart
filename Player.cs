@@ -24,6 +24,7 @@ namespace TheGame
         private float movementSpeedUpDown;
         private float movementSpeedRightLeft = 0.15f;
         private int lastrotationtochcek = 0;
+        public List<Leaf> inventory;
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position,modelFileName,textureFileName)
         {
             movementSpeedUpDown = movementSpeedRightLeft * 2;
@@ -291,7 +292,16 @@ namespace TheGame
             }
 
         }
-        
+        public void AddLeaf(Leaf leaf)
+        {
+            inventory.Add(leaf);
+        }
+
+        public void RemoveLeaf(Leaf leaf)
+        {
+            inventory.Remove(leaf);
+        }
+
 
 
 

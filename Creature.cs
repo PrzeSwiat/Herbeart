@@ -20,7 +20,7 @@ namespace TheGame
         public BoundingBox collisionBox;
         public List<CreatureEffect> currentBadEffect;
         public List<float> badEffectTimes;
-        public List<Leaf> inventory;
+        
 
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -34,17 +34,17 @@ namespace TheGame
             this.speed = speed;
         }
 
-        private void Hit(int damage)
+        public void Hit(int damage)
         {
             health -= damage;
         }
 
-        private void ApplyBadEffect(CreatureEffect effect)
+        public void ApplyBadEffect(CreatureEffect effect)
         {
             currentBadEffect.Add(effect);
         }
 
-        private void RemoveBadEffect(CreatureEffect effect)
+        public void RemoveBadEffect(CreatureEffect effect)
         {
             currentBadEffect.Remove(effect);
         }
@@ -69,15 +69,7 @@ namespace TheGame
 
         }
 
-        public void AddLeaf(Leaf leaf)
-        {
-            inventory.Add(leaf);
-        }
-
-        public void RemoveLeaf(Leaf leaf)
-        {
-            inventory.Remove(leaf);
-        }
+        
 
 
         public bool Destroy() //XD
