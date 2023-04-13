@@ -20,7 +20,8 @@ namespace TheGame
         public BoundingBox collisionBox;
         public List<CreatureEffect> currentBadEffect;
         public List<float> badEffectTimes;
-        
+
+        private Vector2 direction;
 
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -95,6 +96,27 @@ namespace TheGame
         {
             get { return this.speed; }
             set { this.speed = value; }
+        }
+
+        public Vector2 Direction
+        {
+            get { return this.direction; }
+            set { this.direction = value; }
+        }
+
+        public void setDirectionX(float x)
+        {
+            this.direction.X = x;
+        }
+
+        public void setDirectionY(float y)
+        {
+            this.direction.Y = y;
+        }
+
+        public void NormalizeDirection()
+        {
+            this.direction.Normalize();
         }
 
 

@@ -165,7 +165,7 @@ namespace TheGame
 
             //DrawBB(player.boundingBox.GetCorners());
 
-            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
+           // DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
             
            
         }

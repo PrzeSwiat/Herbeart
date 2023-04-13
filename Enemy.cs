@@ -10,13 +10,12 @@ namespace TheGame
 {
     internal class Enemy : Creature
     {
-        private Vector2 direction;
         private DateTime lastAttackTime, actualTime;
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(100, 10, 2);
-            direction = new Vector2(0, 0);
+            Direction = new Vector2(0, 0);
             lastAttackTime = DateTime.Now;
             actualTime = lastAttackTime;
         }
@@ -25,9 +24,8 @@ namespace TheGame
         {
             FollowPlayer(player.GetPosition());
             float ishowspeed = Speed * deltaTime;
-            SetPosition(GetPosition() + new Vector3(direction.X * ishowspeed, 0, direction.Y * ishowspeed));
+            SetPosition(GetPosition() + new Vector3(Direction.X * ishowspeed, 0, Direction.Y * ishowspeed));
 
-            Debug.Write(Math.Round(player.GetPosition().X, 2) + "  " + GetPosition().X + "  ");
             if (Math.Round(player.GetPosition().X, 2) == Math.Round(GetPosition().X, 2)
                 && Math.Round(player.GetPosition().Z, 2) == Math.Round(GetPosition().Z, 2))
             {
@@ -45,9 +43,8 @@ namespace TheGame
 
         private void FollowPlayer(Vector3 playerPosition)
         {
-            direction.X = playerPosition.X - GetPosition().X;
-            direction.Y = playerPosition.Z - GetPosition().Z;
-            direction.Normalize();
+            Direction = new Vector2(playerPosition.X - GetPosition().X, playerPosition.Z - GetPosition().Z);
+            NormalizeDirection();
         }
 
 
