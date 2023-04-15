@@ -29,7 +29,7 @@ namespace TheGame
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
             movementSpeedUpDown = movementSpeedRightLeft * 2;
-            SetScale(1f);
+            SetScale(1.7f);
 
             AssignParameters(200, 20, 3);
         }
@@ -80,15 +80,19 @@ namespace TheGame
                     double thumbLeftY = Math.Round(gamePadState.ThumbSticks.Left.Y);
                     float rotation = 0;
                     float rotationBB = 0;
+                    float Sphereang = 0;
 
                     // UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
-                    if (thumbLeftX == 0 && thumbLeftY == 0) //prawy dol
+                    if (thumbLeftX == 0 && thumbLeftY == 0) 
                     {
                         Direction = new Vector2(0, 0);
+                        rotation = this.GetRotation().Y;
+                        Sphereang = 0;
                     }
                     if (thumbLeftX == 1 && thumbLeftY == -1) //prawy dol
                     {
                         Direction = new Vector2(1, -1);
+                        Sphereang = (float)Math.PI * 1 / 4 - this.GetRotation().Y;
                         rotation = (float)Math.PI * 1 / 4;
                         rotationBB = (float)Math.PI * 1 / 2;
                         boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
@@ -97,6 +101,7 @@ namespace TheGame
                     if (thumbLeftX == 1 && thumbLeftY == 0) // prawo
                     {
                         Direction = new Vector2(1, 0);
+                        Sphereang = (float)Math.PI * 1 / 2 - this.GetRotation().Y;
                         rotation = (float)Math.PI * 1 / 2;
                         rotationBB = (float)Math.PI * 1 / 2;
                         boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
@@ -104,6 +109,7 @@ namespace TheGame
                     if (thumbLeftX == 1 && thumbLeftY == 1) //prawa gora
                     {
                         Direction = new Vector2(1, 1);
+                        Sphereang = (float)Math.PI * 3 / 4 - this.GetRotation().Y;
                         rotation = (float)Math.PI * 3 / 4;
                         rotationBB = (float)Math.PI * 1 / 2;
                         boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
@@ -111,6 +117,7 @@ namespace TheGame
                     if (thumbLeftX == 0 && thumbLeftY == 1) // gora
                     {
                         Direction = new Vector2(0, 1);
+                        Sphereang = (float)Math.PI - this.GetRotation().Y;
                         rotation = (float)Math.PI;
                         rotationBB = (float)Math.PI;
                         boundingboxrotation = new Vector3(0, (float)Math.PI, 0);
@@ -118,6 +125,7 @@ namespace TheGame
                     if (thumbLeftX == -1 && thumbLeftY == 1) //lewa gora
                     {
                         Direction = new Vector2(-1, 1);
+                        Sphereang = (float)Math.PI * 5 / 4 - this.GetRotation().Y;
                         rotation = (float)Math.PI * 5 / 4;
                         rotationBB = (float)Math.PI * 3 / 2;
                         boundingboxrotation = new Vector3(0, (float)Math.PI * 3 / 2, 0);
@@ -125,6 +133,7 @@ namespace TheGame
                     if (thumbLeftX == -1 && thumbLeftY == 0) //lewo 
                     {
                         Direction = new Vector2(-1, 0);
+                        Sphereang = (float)Math.PI * 3 / 2 - this.GetRotation().Y;
                         rotation = (float)Math.PI * 3 / 2;
                         rotationBB = (float)Math.PI * 3 / 2;
                         boundingboxrotation = new Vector3(0, (float)Math.PI * 3 / 2, 0);
@@ -132,6 +141,7 @@ namespace TheGame
                     if (thumbLeftX == -1 && thumbLeftY == -1) //lewy dol
                     {
                         Direction = new Vector2(-1, -1);
+                        Sphereang = (float)Math.PI * 7 / 4 - this.GetRotation().Y;
                         rotation = (float)Math.PI * 7 / 4;
                         rotationBB = (float)Math.PI * 3 / 2;
                         boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
@@ -139,6 +149,7 @@ namespace TheGame
                     if (thumbLeftX == 0 && thumbLeftY == -1) // dol
                     {
                         Direction = new Vector2(0, -1);
+                        Sphereang = 0 - this.GetRotation().Y;
                         rotation = 0;
                         boundingboxrotation = new Vector3(0, 0, 0);
                         rotationBB = 0;
@@ -181,7 +192,9 @@ namespace TheGame
                     /////////////
                     //Vector2 dr = Direction;
                     //dr.Normalize();
-                    this.UpdateBB(rotationBB - lastcount, world, new Vector3(-Direction.X * 0.2f, 0, Direction.Y * 0.2f));
+                    rotateSphere(Sphereang);
+                    this.UpdateBB(0, world, new Vector3(-Direction.X * 0.2f, 0, 0));
+                    this.UpdateBB(0, world, new Vector3(0, 0, Direction.Y * 0.2f));
                     SetRotation(0, rotation, 0);
 
                 }
@@ -285,7 +298,9 @@ namespace TheGame
 
             if (!(this.collision(world.GetWorldList())))
             {
+                
                 SetPosition(GetPosition() - moveVec);
+                this.boundingSphere.Center -= moveVec;
 
             } 
             else
@@ -305,7 +320,13 @@ namespace TheGame
             inventory.Remove(leaf);
         }
 
-
+        public void rotateSphere(float Angle)
+        {
+            Matrix rotationMatrix = Matrix.CreateRotationY(Angle);
+            boundingSphere.Center -= this.GetPosition();
+            boundingSphere.Center = Vector3.Transform(boundingSphere.Center, rotationMatrix);
+            boundingSphere.Center += this.GetPosition();
+        }
 
 
     }

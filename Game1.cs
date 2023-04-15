@@ -70,8 +70,8 @@ namespace TheGame
             hud = new HUD("sky", WindowWidth, WindowHeight);
             world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
 
-            player = new Player(new Vector3(5,2,5), "player", "StarSparrow_Orange");
-            enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
+            player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
+         //   enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
 
             serializator = new Serializator("zapis.txt");
 
@@ -87,7 +87,7 @@ namespace TheGame
             basicEffect.Projection = projectionMatrix;
             
             player.LoadContent(Content);
-            enemy.LoadContent(Content);
+           // enemy.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -103,7 +103,7 @@ namespace TheGame
             //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.PlayerMovement(world,camera.CosAngle, camera.SinAngle, camera.TanAngle);
-            enemy.Update(delta, player);
+           // enemy.Update(delta, player);
             camera.Update();
             hud.Update(camera.CamPosition);
             
@@ -125,7 +125,7 @@ namespace TheGame
                 sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             }
 
-            enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
+           // enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             
 
@@ -165,7 +165,7 @@ namespace TheGame
 
             //DrawBB(player.boundingBox.GetCorners());
 
-           // DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
+            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
             
            
         }

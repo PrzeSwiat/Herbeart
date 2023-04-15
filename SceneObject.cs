@@ -42,6 +42,7 @@ namespace TheGame
             helper = CreateBoundingBox(this.model);
             boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
             boundingSphere = BoundingSphere.CreateFromBoundingBox(boundingBox);
+            boundingSphere.Center += new Vector3(0, 0, 3);
 
         }
 
