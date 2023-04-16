@@ -1,11 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
+using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace TheGame
 {
@@ -21,7 +25,10 @@ namespace TheGame
         public List<CreatureEffect> currentBadEffect;
         public List<float> badEffectTimes;
 
+        public event EventHandler OnDestroy;
+
         private Vector2 direction;
+        private DateTime lastAttackTime, actualTime;
 
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -38,6 +45,15 @@ namespace TheGame
         public void Hit(int damage)
         {
             health -= damage;
+
+            if(health<0)
+            {
+                OnDestroy?.Invoke(this,EventArgs.Empty);
+            }
+            else
+            {
+                color = Color.Red;
+            }
         }
 
         public void ApplyBadEffect(CreatureEffect effect)
@@ -50,32 +66,24 @@ namespace TheGame
             currentBadEffect.Remove(effect);
         }
 
-        public void UpdateBadEffects()
+        public void Update()
         {
-
+            actualTime = DateTime.Now;
+            TimeSpan time = actualTime - lastAttackTime;
+            if (time.TotalSeconds > 1)
+            {
+                lastAttackTime = actualTime;
+                if(color != Color.White)
+                {
+                    color = Color.White;
+                }
+            }
         }
 
-        private void DealDamage(Creature creature)
-        {
-            creature.Hit(this.strenght);
-        }
-
-        public void AttackCheck()
-        {
-
-        }
 
         public void Drop()
         {
 
-        }
-
-        
-
-
-        public bool Destroy() //XD
-        {
-            return true;
         }
 
         // -------------- G E T T E R S --------------------

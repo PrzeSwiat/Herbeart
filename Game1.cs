@@ -33,9 +33,10 @@ namespace TheGame
         private BasicEffect basicEffect;
         World world;
         HUD hud;
+        InteractionEventHandler interactionEventHandler;
         
         Player player;
-        Enemy enemy;
+        List<Enemy> enemies;
 
         public Game1()
         {
@@ -66,6 +67,8 @@ namespace TheGame
                                                                                       // Vector3(0,1,0) - up and down is along y axis)
                 worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
             //.................
+            enemies = new List<Enemy>();
+
 
             effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
 
@@ -73,9 +76,13 @@ namespace TheGame
             world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
-            enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
+            Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
+            Enemy enemy2 = new Enemy(new Vector3(5, 2, 10), "player", "StarSparrow_Green");
 
+            enemies.Add(enemy);
+            enemies.Add(enemy2);
             serializator = new Serializator("zapis.txt");
+            interactionEventHandler = new InteractionEventHandler(player,enemies);
 
             base.Initialize();
         }
@@ -87,9 +94,16 @@ namespace TheGame
             hud.LoadContent(Content);
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.Projection = projectionMatrix;
-            
             player.LoadContent(Content);
-            enemy.LoadContent(Content);
+
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.LoadContent(Content);
+                enemy.OnDestroy += DestroyControl;
+            }
+
+            player.OnDestroy += DestroyControl;
+            
         }
 
         protected override void Update(GameTime gameTime)
@@ -105,10 +119,14 @@ namespace TheGame
             //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world);
-            enemy.Update(delta, player);
+
+            foreach(Enemy enemy in enemies)
+            {
+                enemy.Update(delta, player);
+            }
+
             camera.Update();
             hud.Update(camera.CamPosition);
-            
             SaveControl();
 
             base.Update(gameTime);
@@ -124,11 +142,14 @@ namespace TheGame
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             foreach (SceneObject sceneObject in world.GetWorldList())
             {
-                sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
+                sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,sceneObject.color);
             }
-
-            enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
-            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
+            foreach(Enemy enemy in enemies)
+            {
+                enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,enemy.color);
+            }
+            
+            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
             
 
             hud.DrawFrontground(_spriteBatch, player.Health);
@@ -147,10 +168,13 @@ namespace TheGame
             {
                 DrawBB(obj.boundingBox.GetCorners());
             }
-
+            foreach(Enemy enemy in enemies)
+            {
+                DrawBB(enemy.collisionBox.GetCorners());
+            }
             //DrawBB(player.boundingBox.GetCorners());
 
-            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
+           // DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
             
            
         }
@@ -258,6 +282,7 @@ namespace TheGame
         }
         #endregion
 
+        #region Controls
         void SaveControl()
         {
             KeyboardState state = Keyboard.GetState();
@@ -277,6 +302,15 @@ namespace TheGame
 
             }
         }
+
+        void DestroyControl(object obj, EventArgs e)
+        {
+            if(obj.GetType() == typeof(Enemy))
+            {
+                enemies.Remove((Enemy)obj);
+            }
+        }
+        #endregion
 
     }
 

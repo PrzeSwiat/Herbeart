@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
 {
@@ -26,6 +27,7 @@ namespace TheGame
         public BoundingBox boundingBox;
         public BoundingBox helper;
         public Vector3 boundingboxrotation = new Vector3(0.0f,0.0f,0.0f);
+        public Color color = Color.White;
 
         public SceneObject(Vector3 worldPosition, string modelFileName , string textureFileName)
         {
@@ -46,15 +48,16 @@ namespace TheGame
 
         }
 
-        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color)
         {
             effectHandler.BasicDraw(GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
                         * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
                         Matrix.CreateRotationZ(GetRotation().Z)
                         * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
-                         , viewMatrix, projectionMatrix, GetTexture2D());
+                         , viewMatrix, projectionMatrix, GetTexture2D(), color);
         }
 
+        #region Getters
         //GET'ERS
         public Vector3 GetPosition()
         {
@@ -85,7 +88,9 @@ namespace TheGame
             return _textureFileName;
         }
         //.................
+        #endregion
 
+        #region Setters
         //SET'ERS
         public void SetPosition(float x, float y, float z)
         {
@@ -116,6 +121,9 @@ namespace TheGame
             texture2D = tex;
         }
         //.................
+        #endregion
+
+        #region BoundingBoxes
         public BoundingBox CreateBoundingBox(Model model)
         {
             Vector3 min = new Vector3(float.MaxValue);
@@ -203,6 +211,6 @@ namespace TheGame
 
             return new RectangleF(min.X,min.Z,max.X-min.X, max.Z - min.Z);
         }
-
+        #endregion
     }
 }

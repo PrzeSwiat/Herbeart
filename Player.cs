@@ -26,6 +26,11 @@ namespace TheGame
 
         private int lastrotationtochcek = 0;
         public List<Leaf> inventory;
+        private GamePadState beffore;
+
+        public event EventHandler OnAttackPressed = null;
+
+
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
             movementSpeedUpDown = movementSpeedRightLeft * 2;
@@ -36,8 +41,9 @@ namespace TheGame
 
         public void Update(World world) //Logic player here
         {
+            
             PlayerMovement(world);
-
+            GamePadClick();
         }
 
 
@@ -350,7 +356,28 @@ namespace TheGame
         }
 
 
+        public void GamePadClick()
+        {
+            GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
+            if (capabilities.IsConnected)
+            {
 
+                GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+                if (capabilities.HasAButton)
+                {
+                    if(gamePadState.IsButtonDown(Buttons.A) && beffore != gamePadState)
+                    {
+                        OnAttackPressed?.Invoke(this, EventArgs.Empty);  //?.Invoke() ==  if(ojb != null)
+                        beffore = gamePadState;
+                    }
+                    if(gamePadState.IsButtonUp(Buttons.A))
+                    {
+                        beffore = gamePadState;
+                    }
+                }
+
+            }
+        }
 
     }
 }

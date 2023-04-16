@@ -22,9 +22,9 @@ namespace TheGame
 
         public void Update(float deltaTime, Player player)
         {
-            FollowPlayer(player.GetPosition());
-            float ishowspeed = Speed * deltaTime;
-            SetPosition(GetPosition() + new Vector3(Direction.X * ishowspeed, 0, Direction.Y * ishowspeed));
+            Update();
+            FollowPlayer(player.GetPosition(),deltaTime);
+            
 
             if (Math.Round(player.GetPosition().X, 2) == Math.Round(GetPosition().X, 2)
                 && Math.Round(player.GetPosition().Z, 2) == Math.Round(GetPosition().Z, 2))
@@ -41,10 +41,12 @@ namespace TheGame
 
         }
 
-        private void FollowPlayer(Vector3 playerPosition)
+        private void FollowPlayer(Vector3 playerPosition, float deltaTime)
         {
             Direction = new Vector2(playerPosition.X - GetPosition().X, playerPosition.Z - GetPosition().Z);
             NormalizeDirection();
+            float ishowspeed = Speed * deltaTime;
+            SetPosition(GetPosition() + new Vector3(Direction.X * ishowspeed, 0, Direction.Y * ishowspeed));
         }
 
 

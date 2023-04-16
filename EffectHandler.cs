@@ -107,7 +107,7 @@ namespace TheGame
         }*/
 
 
-        public void BasicDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D)
+        public void BasicDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D, Color color)
         {
             // point light (fire light?)
             foreach (ModelMesh mesh in model.Meshes)
@@ -124,7 +124,7 @@ namespace TheGame
                     _effect.Parameters["Attenuation"].SetValue(getPointLightAttenuation(Lights));
                     _effect.Parameters["LightRange"].SetValue(getPointLightRange(Lights));
                     _effect.Parameters["ModelTexture"].SetValue(texture2D);
-                    _effect.Parameters["AmbientColor"].SetValue(Color.White.ToVector4());
+                    _effect.Parameters["AmbientColor"].SetValue(color.ToVector4());
                     _effect.Parameters["AmbientIntensity"].SetValue(0.3f);
                     _effect.Parameters["DiffuseIntensity"].SetValue(3f);
                     
