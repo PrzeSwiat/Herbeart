@@ -29,6 +29,7 @@ namespace TheGame
         EffectHandler effectHandler;
         Serializator serializator;
         //.................
+
         private BasicEffect basicEffect;
         World world;
         HUD hud;
@@ -47,6 +48,7 @@ namespace TheGame
             
         }
         
+
         protected override void Initialize()
         {
             
@@ -71,7 +73,7 @@ namespace TheGame
             world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
-         //   enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
+            enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
 
             serializator = new Serializator("zapis.txt");
 
@@ -87,7 +89,7 @@ namespace TheGame
             basicEffect.Projection = projectionMatrix;
             
             player.LoadContent(Content);
-           // enemy.LoadContent(Content);
+            enemy.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -102,8 +104,8 @@ namespace TheGame
             viewMatrix = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker , Vector3.Up);
             //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
-            player.PlayerMovement(world,camera.CosAngle, camera.SinAngle, camera.TanAngle);
-           // enemy.Update(delta, player);
+            player.Update(world);
+            enemy.Update(delta, player);
             camera.Update();
             hud.Update(camera.CamPosition);
             
@@ -125,7 +127,7 @@ namespace TheGame
                 sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             }
 
-           // enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
+            enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             
 
@@ -134,26 +136,9 @@ namespace TheGame
             DrawBoundingBoxes();
         }
 
-        void SaveControl()
-        {
-            KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.P))
-            {
-                serializator.SavePlayer(player);
-            }
-            if (state.IsKeyDown(Keys.O))
-            {
-                Player copied;
-                copied = serializator.LoadPlayer();
-                if (copied != null)
-                {
-                    player = copied;
-                    player.LoadContent(Content);
-                }
+      
 
-            }
-        }
-
+        #region DrawingBB
         public void DrawBoundingBoxes()
         {
             basicEffect.CurrentTechnique.Passes[0].Apply();
@@ -271,5 +256,28 @@ namespace TheGame
             GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, XTOY, 0, 4);
             GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, ZTOY, 0, 4);
         }
+        #endregion
+
+        void SaveControl()
+        {
+            KeyboardState state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.P))
+            {
+                serializator.SavePlayer(player);
+            }
+            if (state.IsKeyDown(Keys.O))
+            {
+                Player copied;
+                copied = serializator.LoadPlayer();
+                if (copied != null)
+                {
+                    player = copied;
+                    player.LoadContent(Content);
+                }
+
+            }
+        }
+
     }
+
 }

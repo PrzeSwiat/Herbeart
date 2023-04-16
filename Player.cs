@@ -34,12 +34,21 @@ namespace TheGame
             AssignParameters(200, 20, 3);
         }
 
+        public void Update(World world) //Logic player here
+        {
+            PlayerMovement(world);
+
+        }
+
+
+
         public void getDamage(int amount)
         {
             Health -= amount;
             if (Health < 0) { Health = 0; }
         }
 
+        #region Getters
         //GET'ERS
         public float GetmovementSpeedUpDown()
         {
@@ -50,7 +59,9 @@ namespace TheGame
             return movementSpeedRightLeft;
         }
         //.................
+        #endregion
 
+        #region Setters
         //SET'ERS
         public void SetmovementSpeedUpDown(float speed)
         {
@@ -60,11 +71,11 @@ namespace TheGame
         {
             movementSpeedRightLeft = speed;
         }
-
+        #endregion
         //.................
 
-
-        public void PlayerMovement(World world, float cosAngle, float sinAngle, float tanAngle)
+        #region MovementAndColisionRegion
+        public void PlayerMovement(World world)
         {
             //GameControler 
             GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
@@ -250,6 +261,11 @@ namespace TheGame
             UpdateBB(ang, world, new Vector3(Direction.X * 0.2f, 0, Direction.Y * 0.2f));
 
         }
+
+
+
+
+
         public bool collision(List<SceneObject> objects)
         {
 
@@ -310,6 +326,19 @@ namespace TheGame
             }
 
         }
+
+        public void rotateSphere(float Angle)
+        {
+            Matrix rotationMatrix = Matrix.CreateRotationY(Angle);
+            boundingSphere.Center -= this.GetPosition();
+            boundingSphere.Center = Vector3.Transform(boundingSphere.Center, rotationMatrix);
+            boundingSphere.Center += this.GetPosition();
+        }
+
+
+        #endregion
+
+
         public void AddLeaf(Leaf leaf)
         {
             inventory.Add(leaf);
@@ -320,13 +349,7 @@ namespace TheGame
             inventory.Remove(leaf);
         }
 
-        public void rotateSphere(float Angle)
-        {
-            Matrix rotationMatrix = Matrix.CreateRotationY(Angle);
-            boundingSphere.Center -= this.GetPosition();
-            boundingSphere.Center = Vector3.Transform(boundingSphere.Center, rotationMatrix);
-            boundingSphere.Center += this.GetPosition();
-        }
+
 
 
     }
