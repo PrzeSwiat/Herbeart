@@ -18,6 +18,7 @@ namespace TheGame
             Direction = new Vector2(0, 0);
             lastAttackTime = DateTime.Now;
             actualTime = lastAttackTime;
+            
         }
 
         public void Update(float deltaTime, Player player)
@@ -33,7 +34,7 @@ namespace TheGame
                 TimeSpan time = actualTime - lastAttackTime;
                 if (time.TotalSeconds > 1)
                 {
-                    player.getDamage(Strength);
+                    player.Hit(Strength);
                     lastAttackTime = actualTime;
                 }
 

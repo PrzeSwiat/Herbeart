@@ -157,8 +157,6 @@ namespace TheGame
             DrawBoundingBoxes();
         }
 
-      
-
         #region DrawingBB
         public void DrawBoundingBoxes()
         {
@@ -170,7 +168,7 @@ namespace TheGame
             }
             foreach(Enemy enemy in enemies)
             {
-                DrawBB(enemy.collisionBox.GetCorners());
+                DrawBB(enemy.boundingBox.GetCorners());
             }
             //DrawBB(player.boundingBox.GetCorners());
 
