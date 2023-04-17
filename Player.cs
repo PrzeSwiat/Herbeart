@@ -28,7 +28,7 @@ namespace TheGame
         public List<Leaf> inventory;
         private GamePadState beffore;
 
-        public event EventHandler OnAttackPressed = null;
+        public event EventHandler OnAttackPressed;
 
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
@@ -41,18 +41,11 @@ namespace TheGame
 
         public void Update(World world) //Logic player here
         {
-            
+            Update();
             PlayerMovement(world);
             GamePadClick();
         }
 
-
-
-        public void getDamage(int amount)
-        {
-            Health -= amount;
-            if (Health < 0) { Health = 0; }
-        }
 
         #region Getters
         //GET'ERS
@@ -375,6 +368,8 @@ namespace TheGame
                         beffore = gamePadState;
                     }
                 }
+
+
 
             }
         }

@@ -21,7 +21,6 @@ namespace TheGame
         private float speed;
         private float attackSpeed;
         public BoundingSphere attackShpere;
-        public BoundingBox collisionBox;
         public List<CreatureEffect> currentBadEffect;
         public List<float> badEffectTimes;
 
