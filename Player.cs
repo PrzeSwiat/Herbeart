@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
+//using System.Numerics;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -95,9 +96,17 @@ namespace TheGame
 
                     double thumbLeftX = Math.Round(gamePadState.ThumbSticks.Left.X);
                     double thumbLeftY = Math.Round(gamePadState.ThumbSticks.Left.Y);
+                    float LeftjoystickX = gamePadState.ThumbSticks.Left.X;
+                    float LeftjoystickY = gamePadState.ThumbSticks.Left.Y;
                     float rotation = 0;
                     float rotationBB = 0;
                     float Sphereang = 0;
+
+                    Vector2 w1 = new Vector2(0, -1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
+                    Vector2 w2 = new Vector2(LeftjoystickX, LeftjoystickY);
+
+                    rotation = angle(w1, w2);
+                    Direction = new Vector2(LeftjoystickX, LeftjoystickY);
 
                     // UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
                     if (thumbLeftX == 0 && thumbLeftY == 0) 
@@ -106,6 +115,9 @@ namespace TheGame
                         rotation = this.GetRotation().Y;
                         Sphereang = 0;
                     }
+
+                    
+                    /*
                     if (thumbLeftX == 1 && thumbLeftY == -1) //prawy dol
                     {
                         Direction = new Vector2(1, -1);
@@ -170,7 +182,7 @@ namespace TheGame
                         rotation = 0;
                         boundingboxrotation = new Vector3(0, 0, 0);
                         rotationBB = 0;
-                    }
+                    }*/
 
                     //////////////////????////////////////////////////////////////
                     ///Right THUMBSTICK
@@ -379,5 +391,22 @@ namespace TheGame
             }
         }
 
+
+        // MOZNA GDZIES PRZERZUCIC DO JAKIEJS KLASY CZY CO IDK
+        public static float angle(Vector2 a, Vector2 b)
+        {
+            float dot = dotProduct(a, b);
+            float det = a.X * b.Y - a.Y * b.X;
+            return (float)Math.Atan2(det, dot);
+        }
+
+        public static float dotProduct(Vector2 vector, Vector2 vector1)
+        {
+            float result = vector.X * vector1.X + vector.Y * vector1.Y;
+
+            return result;
+        }
+
+        // MATEMATYCZNE RZECZY
     }
 }
