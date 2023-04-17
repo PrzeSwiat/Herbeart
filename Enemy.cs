@@ -54,13 +54,13 @@ namespace TheGame
             boundingBox.Min = boundingBox.Min + movement;
             boundingBox.Max = boundingBox.Max + movement;
             
-            // Vector2 w1 = new Vector2(0, -1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
-             //Vector2 w2 = new Vector2(Direction.X, Direction.Y);
+            Vector2 w1 = new Vector2(0, 1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
+            Vector2 w2 = new Vector2(Direction.X, Direction.Y);
 
-           //  float rotation = angle(w1, w2);
-           //  rotateSphere(rotation - this.GetRotation().Y);
+            float rotation = angle(w2, w1);
+            rotateSphere(rotation - this.GetRotation().Y);
 
-           //  this.SetRotation(0, rotation, 0);
+            this.SetRotation(0, rotation, 0);
         }
         public void rotateSphere(float Angle)
         {

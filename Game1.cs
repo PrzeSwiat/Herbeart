@@ -118,7 +118,7 @@ namespace TheGame
             viewMatrix = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker , Vector3.Up);
             //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
-            player.Update(world);
+            player.Update(world, delta);
 
             foreach(Enemy enemy in enemies)
             {
@@ -171,7 +171,10 @@ namespace TheGame
                 DrawBB(enemy.boundingBox.GetCorners());
             }
             //DrawBB(player.boundingBox.GetCorners());
-
+            foreach (Enemy enemy in enemies)
+            {
+                DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
+            }
            // DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
             
            
