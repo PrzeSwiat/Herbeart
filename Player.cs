@@ -100,82 +100,24 @@ namespace TheGame
 
                     rotation = angle(w1, w2);
                     Direction = new Vector2(LeftjoystickX, LeftjoystickY);
+                    
+
 
                     // UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
+                    
                     if (thumbLeftX == 0 && thumbLeftY == 0) 
                     {
                         Direction = new Vector2(0, 0);
                         rotation = this.GetRotation().Y;
                         Sphereang = 0;
                     }
+                    Sphereang = rotation - this.GetRotation().Y;
+                    rotateSphere(Sphereang);
+                    this.UpdateBB(0, world, new Vector3(-Direction.X * 0.2f, 0, 0));
+                    this.UpdateBB(0, world, new Vector3(0, 0, Direction.Y * 0.2f));
+                    SetRotation(0, rotation, 0);
 
-                    
-                    /*
-                    if (thumbLeftX == 1 && thumbLeftY == -1) //prawy dol
-                    {
-                        Direction = new Vector2(1, -1);
-                        Sphereang = (float)Math.PI * 1 / 4 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 1 / 4;
-                        rotationBB = (float)Math.PI * 1 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
-                    }
-
-                    if (thumbLeftX == 1 && thumbLeftY == 0) // prawo
-                    {
-                        Direction = new Vector2(1, 0);
-                        Sphereang = (float)Math.PI * 1 / 2 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 1 / 2;
-                        rotationBB = (float)Math.PI * 1 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
-                    }
-                    if (thumbLeftX == 1 && thumbLeftY == 1) //prawa gora
-                    {
-                        Direction = new Vector2(1, 1);
-                        Sphereang = (float)Math.PI * 3 / 4 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 3 / 4;
-                        rotationBB = (float)Math.PI * 1 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
-                    }
-                    if (thumbLeftX == 0 && thumbLeftY == 1) // gora
-                    {
-                        Direction = new Vector2(0, 1);
-                        Sphereang = (float)Math.PI - this.GetRotation().Y;
-                        rotation = (float)Math.PI;
-                        rotationBB = (float)Math.PI;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI, 0);
-                    }
-                    if (thumbLeftX == -1 && thumbLeftY == 1) //lewa gora
-                    {
-                        Direction = new Vector2(-1, 1);
-                        Sphereang = (float)Math.PI * 5 / 4 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 5 / 4;
-                        rotationBB = (float)Math.PI * 3 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 3 / 2, 0);
-                    }
-                    if (thumbLeftX == -1 && thumbLeftY == 0) //lewo 
-                    {
-                        Direction = new Vector2(-1, 0);
-                        Sphereang = (float)Math.PI * 3 / 2 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 3 / 2;
-                        rotationBB = (float)Math.PI * 3 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 3 / 2, 0);
-                    }
-                    if (thumbLeftX == -1 && thumbLeftY == -1) //lewy dol
-                    {
-                        Direction = new Vector2(-1, -1);
-                        Sphereang = (float)Math.PI * 7 / 4 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 7 / 4;
-                        rotationBB = (float)Math.PI * 3 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
-                    }
-                    if (thumbLeftX == 0 && thumbLeftY == -1) // dol
-                    {
-                        Direction = new Vector2(0, -1);
-                        Sphereang = 0 - this.GetRotation().Y;
-                        rotation = 0;
-                        boundingboxrotation = new Vector3(0, 0, 0);
-                        rotationBB = 0;
-                    }*/
+                  
 
                     //////////////////????////////////////////////////////////////
                     ///Right THUMBSTICK
@@ -214,10 +156,9 @@ namespace TheGame
                     /////////////
                     //Vector2 dr = Direction;
                     //dr.Normalize();
-                    rotateSphere(Sphereang);
-                    this.UpdateBB(0, world, new Vector3(-Direction.X * 0.2f, 0, 0));
-                    this.UpdateBB(0, world, new Vector3(0, 0, Direction.Y * 0.2f));
-                    SetRotation(0, rotation, 0);
+                    
+                    
+                    
 
                 }
             }
