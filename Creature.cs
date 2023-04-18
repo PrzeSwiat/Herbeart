@@ -65,19 +65,7 @@ namespace TheGame
             currentBadEffect.Remove(effect);
         }
 
-        public void Update()
-        {
-            actualTime = DateTime.Now;
-            TimeSpan time = actualTime - lastAttackTime;
-            if (time.TotalSeconds > 1)
-            {
-                lastAttackTime = actualTime;
-                if(color != Color.White)
-                {
-                    color = Color.White;
-                }
-            }
-        }
+        
 
 
         public void Drop()

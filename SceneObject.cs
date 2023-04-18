@@ -29,12 +29,28 @@ namespace TheGame
         public Vector3 boundingboxrotation = new Vector3(0.0f,0.0f,0.0f);
         public Color color = Color.White;
 
+        private DateTime lastEventTime, actualTime;
+
         public SceneObject(Vector3 worldPosition, string modelFileName , string textureFileName)
         {
             position = worldPosition;
             _modelFileName = modelFileName;
             _textureFileName = textureFileName;
             
+        }
+
+        public void Update()    //przyda się do efektów podłoża (obszarowych)
+        {
+            actualTime = DateTime.Now;
+            TimeSpan time = actualTime - lastEventTime;
+            if (time.TotalSeconds > 1)
+            {
+                lastEventTime = actualTime;
+                if (color != Color.White)
+                {
+                    color = Color.White;
+                }
+            }
         }
 
         public void LoadContent(ContentManager content)
