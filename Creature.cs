@@ -27,7 +27,6 @@ namespace TheGame
         public event EventHandler OnDestroy;
 
         private Vector2 direction;
-        private DateTime lastAttackTime, actualTime;
 
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {

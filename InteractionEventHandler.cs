@@ -21,15 +21,18 @@ namespace TheGame
 
             this.player.OnAttackPressed += PlayerAttack;
 
+
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.OnAttack += EnemyAttack;
+            }
         }
 
+        #region PLAYER
         private void PlayerAttack(object sender, EventArgs e) //A
         {
             foreach(Enemy enemy in enemies.ToList())
             {
-                Debug.Write(enemy.position + "\n");
-
-
                 if (player.boundingSphere.Intersects(enemy.boundingBox))
                 {
                     enemy.Hit(player.Strength);
@@ -37,6 +40,21 @@ namespace TheGame
             }
             
         }
+        #endregion
 
+
+        #region ENEMIES
+        private void EnemyAttack(object sender, EventArgs e)
+        {
+            foreach(Enemy enemy in enemies)
+            {
+                if(sender==enemy)
+                {
+                    player.Hit(enemy.Strength);
+                }
+            }
+            
+        }
+        #endregion
     }
 }

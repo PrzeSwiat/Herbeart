@@ -11,6 +11,8 @@ namespace TheGame
     internal class Enemy : Creature
     {
         private DateTime lastAttackTime, actualTime;
+        public event EventHandler OnAttack;
+
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -34,8 +36,8 @@ namespace TheGame
                 TimeSpan time = actualTime - lastAttackTime;
                 if (time.TotalSeconds > 1)
                 {
-                    player.Hit(Strength);
-                    lastAttackTime = actualTime;
+                        OnAttack?.Invoke(this, EventArgs.Empty);
+                        lastAttackTime = actualTime;
                 }
 
             }

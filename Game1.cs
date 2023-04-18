@@ -77,7 +77,7 @@ namespace TheGame
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
-            Enemy enemy2 = new Enemy(new Vector3(5, 2, 10), "player", "StarSparrow_Green");
+            Enemy enemy2 = new Enemy(new Vector3(0, 2, 30), "player", "StarSparrow_Green");
 
             enemies.Add(enemy);
             enemies.Add(enemy2);
