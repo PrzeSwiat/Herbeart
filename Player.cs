@@ -37,13 +37,13 @@ namespace TheGame
             movementSpeedUpDown = movementSpeedRightLeft * 2;
             SetScale(1.7f);
 
-            AssignParameters(200, 20, 3);
+            AssignParameters(200, 20, 5);
         }
 
-        public void Update(World world) //Logic player here
+        public void Update(World world, float deltaTime) //Logic player here
         {
             Update();
-            PlayerMovement(world);
+            PlayerMovement(world, deltaTime);
             GamePadClick();
         }
 
@@ -75,8 +75,9 @@ namespace TheGame
         //.................
 
         #region MovementAndColisionRegion
-        public void PlayerMovement(World world)
+        public void PlayerMovement(World world, float deltaTime)
         {
+            float rotation = 0;
             //GameControler 
             GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
             if (capabilities.IsConnected)
@@ -85,14 +86,13 @@ namespace TheGame
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
                 if (capabilities.HasLeftXThumbStick)
                 {
-                    float lastcount = this.boundingboxrotation.Y;
-
                     double thumbLeftX = Math.Round(gamePadState.ThumbSticks.Left.X);
                     double thumbLeftY = Math.Round(gamePadState.ThumbSticks.Left.Y);
                     float LeftjoystickX = gamePadState.ThumbSticks.Left.X;
                     float LeftjoystickY = gamePadState.ThumbSticks.Left.Y;
-                    float rotation = 0;
-                    float rotationBB = 0;
+                    float RightjoystickX = gamePadState.ThumbSticks.Right.X;
+                    float RightjoystickY = gamePadState.ThumbSticks.Right.Y;
+                    
                     float Sphereang = 0;
 
                     Vector2 w1 = new Vector2(0, -1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
@@ -100,181 +100,66 @@ namespace TheGame
 
                     rotation = angle(w1, w2);
                     Direction = new Vector2(LeftjoystickX, LeftjoystickY);
+                    
+
 
                     // UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
+                    
                     if (thumbLeftX == 0 && thumbLeftY == 0) 
                     {
                         Direction = new Vector2(0, 0);
                         rotation = this.GetRotation().Y;
                         Sphereang = 0;
                     }
-
                     
-                    /*
-                    if (thumbLeftX == 1 && thumbLeftY == -1) //prawy dol
-                    {
-                        Direction = new Vector2(1, -1);
-                        Sphereang = (float)Math.PI * 1 / 4 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 1 / 4;
-                        rotationBB = (float)Math.PI * 1 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
-                    }
-
-                    if (thumbLeftX == 1 && thumbLeftY == 0) // prawo
-                    {
-                        Direction = new Vector2(1, 0);
-                        Sphereang = (float)Math.PI * 1 / 2 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 1 / 2;
-                        rotationBB = (float)Math.PI * 1 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
-                    }
-                    if (thumbLeftX == 1 && thumbLeftY == 1) //prawa gora
-                    {
-                        Direction = new Vector2(1, 1);
-                        Sphereang = (float)Math.PI * 3 / 4 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 3 / 4;
-                        rotationBB = (float)Math.PI * 1 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
-                    }
-                    if (thumbLeftX == 0 && thumbLeftY == 1) // gora
-                    {
-                        Direction = new Vector2(0, 1);
-                        Sphereang = (float)Math.PI - this.GetRotation().Y;
-                        rotation = (float)Math.PI;
-                        rotationBB = (float)Math.PI;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI, 0);
-                    }
-                    if (thumbLeftX == -1 && thumbLeftY == 1) //lewa gora
-                    {
-                        Direction = new Vector2(-1, 1);
-                        Sphereang = (float)Math.PI * 5 / 4 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 5 / 4;
-                        rotationBB = (float)Math.PI * 3 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 3 / 2, 0);
-                    }
-                    if (thumbLeftX == -1 && thumbLeftY == 0) //lewo 
-                    {
-                        Direction = new Vector2(-1, 0);
-                        Sphereang = (float)Math.PI * 3 / 2 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 3 / 2;
-                        rotationBB = (float)Math.PI * 3 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 3 / 2, 0);
-                    }
-                    if (thumbLeftX == -1 && thumbLeftY == -1) //lewy dol
-                    {
-                        Direction = new Vector2(-1, -1);
-                        Sphereang = (float)Math.PI * 7 / 4 - this.GetRotation().Y;
-                        rotation = (float)Math.PI * 7 / 4;
-                        rotationBB = (float)Math.PI * 3 / 2;
-                        boundingboxrotation = new Vector3(0, (float)Math.PI * 1 / 2, 0);
-                    }
-                    if (thumbLeftX == 0 && thumbLeftY == -1) // dol
-                    {
-                        Direction = new Vector2(0, -1);
-                        Sphereang = 0 - this.GetRotation().Y;
-                        rotation = 0;
-                        boundingboxrotation = new Vector3(0, 0, 0);
-                        rotationBB = 0;
-                    }*/
+                    
 
                     //////////////////????////////////////////////////////////////
                     ///Right THUMBSTICK
-                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == 1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == -1)
+                    ///
+
+                    if(RightjoystickX != 0 || RightjoystickY != 0)
                     {
-                        SetRotation(0, (float)Math.PI * 1 / 4, 0);
+                        w2 = new Vector2(RightjoystickX, RightjoystickY); 
+                        rotation = angle(w1, w2);
                     }
-                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == 1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 0)
-                    {
-                        SetRotation(0, (float)Math.PI * 1 / 2, 0);
-                    }
-                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == 1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 1)
-                    {
-                        SetRotation(0, (float)Math.PI * 3 / 4, 0);
-                    }
-                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == 0 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 1)
-                    {
-                        SetRotation(0, (float)Math.PI, 0);
-                    }
-                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == -1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 1)
-                    {
-                        SetRotation(0, (float)Math.PI * 5 / 4, 0);
-                    }
-                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == -1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == 0)
-                    {
-                        SetRotation(0, (float)Math.PI * 3 / 2, 0);
-                    }
-                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == -1 && Math.Round(gamePadState.ThumbSticks.Right.Y) == -1)
-                    {
-                        SetRotation(0, (float)Math.PI * 7 / 4, 0);
-                    }
-                    if (Math.Round(gamePadState.ThumbSticks.Right.X) == 0 && Math.Round(gamePadState.ThumbSticks.Right.Y) == -1)
-                    {
-                        SetRotation(0, (float)Math.PI * 0, 0);
-                    }
-                    /////////////
-                    //Vector2 dr = Direction;
-                    //dr.Normalize();
+                    
+                    Sphereang = rotation - this.GetRotation().Y;
                     rotateSphere(Sphereang);
-                    this.UpdateBB(0, world, new Vector3(-Direction.X * 0.2f, 0, 0));
-                    this.UpdateBB(0, world, new Vector3(0, 0, Direction.Y * 0.2f));
+                    this.UpdateBB(0, world, new Vector3(-Direction.X * deltaTime * Speed, 0, 0));
+                    this.UpdateBB(0, world, new Vector3(0, 0, Direction.Y * deltaTime * Speed));
                     SetRotation(0, rotation, 0);
-
                 }
-            }
-
-            //Keyboard
-            float angleLeft = (float)Math.PI * 3 / 2;
-            float angleRight = (float)Math.PI * 1 / 2;
-            float angleUp = (float)Math.PI;
-            float angleDown = 0;
-
-            KeyboardState state = Keyboard.GetState();
-            float ang = 0;
-            Direction = new Vector2(0, 0);
-            if (state.IsKeyDown(Keys.A))
+            } else
             {
-                ang = angleLeft - this.GetRotation().Y;
-                if (lastrotationtochcek == 1) ang = 0.0f;
-                setDirectionX(1.0f);
-                SetRotation(0, angleLeft, 0);
-                lastrotationtochcek = 1;
-            }
-            if (state.IsKeyDown(Keys.D))
-            {
-                ang = angleRight - this.GetRotation().Y;
-                if (lastrotationtochcek == 2) ang = 0.0f;
+                KeyboardState state = Keyboard.GetState();
 
-                setDirectionX(-1);
-                SetRotation(0, angleRight, 0);
-                lastrotationtochcek = 2;
-                //Camera movement acccording to player D move 
+                Direction = new Vector2(0, 0);
+                if (state.IsKeyDown(Keys.A))
+                {
+                    setDirectionX(1.0f);
+                }
+                if (state.IsKeyDown(Keys.D))
+                {
+                    setDirectionX(-1.0f);
+                }
+                if (state.IsKeyDown(Keys.W))
+                {
+                    setDirectionY(1.0f);
+                }
+                if (state.IsKeyDown(Keys.S))
+                {
+                    setDirectionY(-1.0f);
+                }
+            
+                Vector2 w3 = new Vector2(0, -1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
+                Vector2 w4 = new Vector2(-Direction.X, Direction.Y);
+           
+                rotation = angle(w3, w4); 
+                SetRotation(0, rotation, 0);
+                UpdateBB(0, world, new Vector3(Direction.X * 0.2f, 0, Direction.Y * 0.2f));
             }
-            if (state.IsKeyDown(Keys.W))
-            {
-                ang = angleUp - this.GetRotation().Y;
-                if (lastrotationtochcek == 3) ang = 0.0f;
-                setDirectionY(1);
-                lastrotationtochcek = 3;
-                SetRotation(0, angleUp, 0);
-
-                //Camera movement acccording to player W move 
-            }
-            if (state.IsKeyDown(Keys.S))
-            {
-                ang = angleDown - this.GetRotation().Y;
-                if (lastrotationtochcek == 4) ang = 0.0f;
-                setDirectionY(-1);
-                SetRotation(0, angleDown, 0);
-                lastrotationtochcek = 4;
-                //Camera movement acccording to player S move 
-            }
-            //NormalizeDirection();
-            UpdateBB(ang, world, new Vector3(Direction.X * 0.2f, 0, Direction.Y * 0.2f));
-
         }
-
-
-
 
 
         public bool collision(List<SceneObject> objects)
