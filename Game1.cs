@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
-
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
 {
@@ -37,6 +38,8 @@ namespace TheGame
         
         Player player;
         List<Enemy> enemies;
+
+        EffectHandler effectPrzemyslaw;
 
         public Game1()
         {
@@ -71,6 +74,8 @@ namespace TheGame
 
 
             effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
+            effectPrzemyslaw = new EffectHandler(Content.Load<Effect>("Przemyslaw"));
+
 
             hud = new HUD("sky", WindowWidth, WindowHeight);
             world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
@@ -148,10 +153,11 @@ namespace TheGame
             {
                 enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,enemy.color);
             }
-            
-            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
-            
 
+            // player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            
+            player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            
             hud.DrawFrontground(_spriteBatch, player.Health);
 
             DrawBoundingBoxes();
