@@ -83,9 +83,11 @@ namespace TheGame
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
             Enemy enemy2 = new Enemy(new Vector3(0, 2, 30), "player", "StarSparrow_Green");
+            AppleTree apple = new AppleTree(new Vector3(30, 2, 30), "player", "StarSparrow_Green");
 
-            enemies.Add(enemy);
-            enemies.Add(enemy2);
+          //  enemies.Add(enemy);
+           // enemies.Add(enemy2);
+            enemies.Add(apple);
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player,enemies);
 
@@ -128,6 +130,7 @@ namespace TheGame
             foreach(Enemy enemy in enemies)
             {
                 enemy.Update(delta, player);
+                
             }
 
             camera.Update();

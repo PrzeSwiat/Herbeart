@@ -40,7 +40,7 @@ namespace TheGame
             this.speed = speed;
         }
 
-        public void Hit(int damage)
+        public virtual void Hit(int damage)
         {
             health -= damage;
 
