@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
 {
@@ -128,6 +128,34 @@ namespace TheGame
                     _effect.Parameters["AmbientIntensity"].SetValue(0.3f);
                     _effect.Parameters["DiffuseIntensity"].SetValue(3f);
                     
+                }
+                mesh.Draw();
+            }
+        }
+
+        public void PrzemyslawDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D)
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = _effect;
+                    _effect.Parameters["World"].SetValue(world * mesh.ParentBone.Transform);
+                    _effect.Parameters["View"].SetValue(view);
+                    _effect.Parameters["Projection"].SetValue(projection);
+                    _effect.Parameters["ViewVector"].SetValue(new Vector3(1,1,1));
+                    _effect.Parameters["ModelTexture"].SetValue(texture2D);
+                    _effect.Parameters["DiffuseColor"].SetValue((Color.Green.ToVector4()));
+                    _effect.Parameters["ModelTexture"].SetValue(texture2D);
+                    _effect.Parameters["AmbientColor"].SetValue((Color.White.ToVector4()));
+                    _effect.Parameters["AmbientIntensity"].SetValue(0.3f);
+                    _effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(1, 0, 0));
+                    _effect.Parameters["DiffuseIntensity"].SetValue(1f); 
+                    _effect.Parameters["Shininess"].SetValue(100f);
+                    _effect.Parameters["SpecularColor"].SetValue((Color.White.ToVector4()));
+                    _effect.Parameters["SpecularIntensity"].SetValue(1f);
+                    Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
+                    _effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
                 }
                 mesh.Draw();
             }

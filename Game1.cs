@@ -6,20 +6,21 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
-
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
 {
     public class Game1 : Game
     {
         //DON'T TOUCH IT MORTALS
-        int WindowWidth = 1280;
-        int WindowHeight = 720;
+        int WindowWidth = 1920;
+        int WindowHeight = 1080;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Matrix projectionMatrix;
@@ -37,6 +38,8 @@ namespace TheGame
         
         Player player;
         List<Enemy> enemies;
+
+        EffectHandler effectPrzemyslaw;
 
         public Game1()
         {
@@ -71,6 +74,8 @@ namespace TheGame
 
 
             effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
+            effectPrzemyslaw = new EffectHandler(Content.Load<Effect>("Przemyslaw"));
+
 
             hud = new HUD("sky", WindowWidth, WindowHeight);
             world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
@@ -151,10 +156,11 @@ namespace TheGame
             {
                 enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,enemy.color);
             }
-            
-            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
-            
 
+            // player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            
+            player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            
             hud.DrawFrontground(_spriteBatch, player.Health);
 
             DrawBoundingBoxes();
@@ -178,7 +184,7 @@ namespace TheGame
             {
                 DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
-           // DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
+            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
             
            
         }
@@ -309,10 +315,7 @@ namespace TheGame
 
         void DestroyControl(object obj, EventArgs e)
         {
-            if(obj.GetType() == typeof(Enemy))
-            {
-                enemies.Remove((Enemy)obj);
-            }
+            enemies.Remove((Enemy)obj);
         }
         #endregion
 

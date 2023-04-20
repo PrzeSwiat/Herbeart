@@ -77,7 +77,7 @@ namespace TheGame
 
         public override void Update(float deltaTime, Player player)
         {
-
+            Update();
             
             Vector3 difference = this.GetPosition() - player.GetPosition();
             float distance = difference.LengthSquared();
