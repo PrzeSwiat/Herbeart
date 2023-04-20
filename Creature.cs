@@ -43,8 +43,7 @@ namespace TheGame
         public virtual void Hit(int damage)
         {
             health -= damage;
-
-            if(health<0)
+            if(health<=0)
             {
                 OnDestroy?.Invoke(this,EventArgs.Empty);
             }

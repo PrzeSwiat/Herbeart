@@ -19,8 +19,8 @@ namespace TheGame
     public class Game1 : Game
     {
         //DON'T TOUCH IT MORTALS
-        int WindowWidth = 1280;
-        int WindowHeight = 720;
+        int WindowWidth = 1920;
+        int WindowHeight = 1080;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Matrix projectionMatrix;
@@ -184,7 +184,7 @@ namespace TheGame
             {
                 DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
-           // DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
+            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
             
            
         }
@@ -315,10 +315,7 @@ namespace TheGame
 
         void DestroyControl(object obj, EventArgs e)
         {
-            if(obj.GetType() == typeof(Enemy))
-            {
-                enemies.Remove((Enemy)obj);
-            }
+            enemies.Remove((Enemy)obj);
         }
         #endregion
 

@@ -18,19 +18,14 @@ namespace TheGame
 
         }
 
-
-       
-
-
-
         public override void Update(float deltaTime, Player player)
         {
-
+            Update();
             
             Vector3 difference = this.GetPosition() - player.GetPosition();
             float distance = difference.LengthSquared();
             timecounter -= deltaTime;
-            Debug.Write(timecounter.ToString() + "\n");
+            //Debug.Write(timecounter.ToString() + "\n");
 
             if (timecounter > 0)
             {
