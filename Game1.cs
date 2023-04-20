@@ -80,7 +80,7 @@ namespace TheGame
             hud = new HUD("sky", WindowWidth, WindowHeight);
             world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
 
-            player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
+            player = new Player(new Vector3(5,2,5), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
             Enemy enemy2 = new Enemy(new Vector3(0, 2, 30), "player", "StarSparrow_Green");
             AppleTree apple = new AppleTree(new Vector3(30, 2, 30), "player", "StarSparrow_Green");
@@ -156,7 +156,19 @@ namespace TheGame
             {
                 enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,enemy.color);
             }
-
+            foreach (Enemy enemy in enemies )
+            {
+                if(enemy.GetType() == typeof(AppleTree))
+                {
+                    AppleTree tree = (AppleTree)enemy;
+                    foreach(Apple apple in tree.bullet) 
+                    {
+                        apple.LoadContent(Content);
+                        apple.Draw(effectHandler,worldMatrix, viewMatrix, projectionMatrix,apple.color); 
+                    }
+                   
+                }
+            }
             // player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
             
             player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
