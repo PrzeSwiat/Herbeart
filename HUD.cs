@@ -95,14 +95,14 @@ namespace TheGame
 
         public void DrawInventory(SpriteBatch spriteBatch, int[] numberOfItems)
         {
-            Rectangle rect = new Rectangle(0, 650, 50, 50);
+            Rectangle rect = new Rectangle(0, WindowHeight - 100, 50, 50);
             actualTime = DateTime.Now;
 
             for (int i = 0; i < 3; i++)
             {
                 rect.X = 20 + i * 50;
                 spriteBatch.Draw(itemFrame, rect, Color.Gray);
-                spriteBatch.DrawString(Font, licznik.ToString(), new Vector2(50 + i * 50, 660), Color.Black);
+                spriteBatch.DrawString(Font, licznik.ToString(), new Vector2(50 + i * 50, WindowHeight - 90), Color.Black);
             }
             TimeSpan time = actualTime - lastChangeTime;
             if (time.TotalSeconds > 3)
