@@ -55,6 +55,7 @@ namespace TheGame
             
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
+            Levels levels = new Levels("D:\\Projects\\Herbeart\\map1.txt");
             projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
             //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
@@ -73,14 +74,18 @@ namespace TheGame
             effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
 
             hud = new HUD("sky", WindowWidth, WindowHeight);
-            world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
+            //world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
+            Tuple<List<string>, List<string>> models_textures = levels.DrawScene();
+            List<string> models = models_textures.Item1;
+            List<string> textures = models_textures.Item2;
+            world = new World(WindowWidth, WindowHeight, Content, 2f, 4, 4, models, textures);
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
-            Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
+/*            Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
             Enemy enemy2 = new Enemy(new Vector3(0, 2, 30), "player", "StarSparrow_Green");
 
             enemies.Add(enemy);
-            enemies.Add(enemy2);
+            enemies.Add(enemy2);*/
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player,enemies);
 
