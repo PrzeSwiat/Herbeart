@@ -88,6 +88,12 @@
 /processorParam:TextureFormat=Color
 /build:pobrany plik (1).jpg;sky.jpg
 
+#begin Przemyslaw.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Przemyslaw.fx
+
 #begin Red.png
 /importer:TextureImporter
 /processor:TextureProcessor

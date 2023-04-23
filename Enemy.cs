@@ -23,11 +23,11 @@ namespace TheGame
             
         }
 
-        public void Update(float deltaTime, Player player)
+        public virtual void Update(float deltaTime, Player player)
         {
             Update();
             if (!(this.boundingSphere.Intersects(player.boundingBox)))
-            { FollowPlayer(player.GetPosition(), deltaTime); }
+            { FollowPlayer(player.GetPosition(), deltaTime,0); }
             else { 
 
             
@@ -45,11 +45,13 @@ namespace TheGame
 
         }
 
-        private void FollowPlayer(Vector3 playerPosition, float deltaTime)
+        public virtual  void FollowPlayer(Vector3 playerPosition, float deltaTime, int dir)
         {
+            float speed = this.Speed;
+            if (dir ==1 ) { speed = -speed; }
             Direction = new Vector2(playerPosition.X - GetPosition().X, playerPosition.Z - GetPosition().Z);
             NormalizeDirection();
-            float ishowspeed = Speed * deltaTime;
+            float ishowspeed = speed * deltaTime;
             Vector3 movement = new Vector3(Direction.X * ishowspeed, 0, Direction.Y * ishowspeed);
             SetPosition(GetPosition() + movement);
             boundingSphere.Center = boundingSphere.Center + movement;

@@ -73,8 +73,17 @@ namespace TheGame
                          , viewMatrix, projectionMatrix, GetTexture2D(), color);
         }
 
+        public void PrzemyslawDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color)
+        {
+            effectHandler.PrzemyslawDraw(GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
+                       * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
+                       Matrix.CreateRotationZ(GetRotation().Z)
+                       * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
+                        , viewMatrix, projectionMatrix, GetTexture2D());
+        }
+
         #region Getters
-        //GET'ERS
+            //GET'ERS
         public Vector3 GetPosition()
         {
             return position;

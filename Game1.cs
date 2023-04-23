@@ -6,20 +6,21 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
-
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
 {
     public class Game1 : Game
     {
         //DON'T TOUCH IT MORTALS
-        int WindowWidth = 1280;
-        int WindowHeight = 720;
+        int WindowWidth = 1920;
+        int WindowHeight = 1080;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Matrix projectionMatrix;
@@ -37,6 +38,8 @@ namespace TheGame
         
         Player player;
         List<Enemy> enemies;
+
+        EffectHandler effectPrzemyslaw;
 
         public Game1()
         {
@@ -72,6 +75,8 @@ namespace TheGame
 
 
             effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
+            effectPrzemyslaw = new EffectHandler(Content.Load<Effect>("Przemyslaw"));
+
 
             hud = new HUD("sky", WindowWidth, WindowHeight);
             //world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
@@ -83,9 +88,11 @@ namespace TheGame
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
 /*            Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
             Enemy enemy2 = new Enemy(new Vector3(0, 2, 30), "player", "StarSparrow_Green");
+            AppleTree apple = new AppleTree(new Vector3(30, 2, 30), "player", "StarSparrow_Green");
 
-            enemies.Add(enemy);
-            enemies.Add(enemy2);*/
+           //  enemies.Add(enemy);
+           // enemies.Add(enemy2);
+            enemies.Add(apple);
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player,enemies);
 
@@ -128,6 +135,7 @@ namespace TheGame
             foreach(Enemy enemy in enemies)
             {
                 enemy.Update(delta, player);
+                
             }
 
             camera.Update();
@@ -153,10 +161,23 @@ namespace TheGame
             {
                 enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,enemy.color);
             }
+            foreach (Enemy enemy in enemies )
+            {
+                if(enemy.GetType() == typeof(AppleTree))
+                {
+                    AppleTree tree = (AppleTree)enemy;
+                    foreach(Apple apple in tree.bullet) 
+                    {
+                        apple.LoadContent(Content);
+                        apple.Draw(effectHandler,worldMatrix, viewMatrix, projectionMatrix,apple.color); 
+                    }
+                   
+                }
+            }
+            // player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
             
-            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
             
-
             hud.DrawFrontground(_spriteBatch, player.Health);
 
             DrawBoundingBoxes();
@@ -180,7 +201,7 @@ namespace TheGame
             {
                 DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
-           // DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
+            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
             
            
         }
@@ -311,10 +332,7 @@ namespace TheGame
 
         void DestroyControl(object obj, EventArgs e)
         {
-            if(obj.GetType() == typeof(Enemy))
-            {
-                enemies.Remove((Enemy)obj);
-            }
+            enemies.Remove((Enemy)obj);
         }
         #endregion
 
