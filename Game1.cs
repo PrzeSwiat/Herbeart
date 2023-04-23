@@ -58,7 +58,7 @@ namespace TheGame
             
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
-            Levels levels = new Levels("D:\\Projects\\Herbeart\\map1.txt");
+            Levels levels = new Levels("../../../map1.txt");
             projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
             //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
