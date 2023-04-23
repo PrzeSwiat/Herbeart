@@ -192,7 +192,7 @@
 /build:trawa3.png
 
 #begin tree1.obj
-/importer:OpenAssetImporter
+/importer:FbxImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
@@ -205,7 +205,7 @@
 /processorParam:RotationX=0
 /processorParam:RotationY=0
 /processorParam:RotationZ=0
-/processorParam:Scale=1
+/processorParam:Scale=100
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:tree1.obj
