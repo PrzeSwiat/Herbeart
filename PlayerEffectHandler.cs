@@ -18,7 +18,7 @@ namespace TheGame
         {
             this.player = player;
             timer1 = new IntervalTimer(5000, 1000, EffectAddHealth);
-            timer2 = new IntervalTimer(0, 1000, EffectTakeLife);
+            timer2 = new IntervalTimer(0, 1000, EffectTakeHealth);
         }
 
         public void Start()
@@ -29,12 +29,12 @@ namespace TheGame
 
         public void EffectAddHealth()
         {
-            player.AddHealth(2);
+            player.AddHealth(3);
         }
 
-        public void EffectTakeLife()
+        public void EffectTakeHealth()
         {
-            player.SubstractHealth(3);
+            player.SubstractHealth(2);
         }
 
 
@@ -59,6 +59,16 @@ namespace TheGame
             public void Start()
             {
                 timer.Start();
+            }
+
+            public void setTimerMaxTime(int maxTime)
+            {
+                this.maxTime = maxTime;
+            }
+
+            public void setTimerInterval(int interval)
+            {
+                this.timer.Interval = interval;
             }
 
             void Timer_Elapsed(object sender, ElapsedEventArgs e)

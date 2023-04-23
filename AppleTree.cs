@@ -82,7 +82,6 @@ namespace TheGame
         public void RemoveBullet(object sender,EventArgs e)
         {
             bullet.Remove((Apple)sender);
-            //Debug.Write("Hitler");
         }
 
         public  void Throw(int damage,Player player)
@@ -101,7 +100,6 @@ namespace TheGame
             float distance = difference.LengthSquared();
             timecounter -= deltaTime;
             timetoshoot -= deltaTime;
-            //Debug.Write(timetoshoot.ToString() + "\n");
 
             if (timecounter > 0)
             {
@@ -157,8 +155,6 @@ namespace TheGame
             {
                 apple.Update(deltaTime,  player);
                 apple.OnDestroy += RemoveBullet;
-               //ebug.Write(bullet.Count()
-
             }
 
             
