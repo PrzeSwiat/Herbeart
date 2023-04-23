@@ -16,6 +16,7 @@ namespace TheGame
     [Serializable]
     internal class Creature : SceneObject
     {
+        private int maxHealth;
         private int health;
         private int strenght;
         private float speed;
@@ -38,6 +39,7 @@ namespace TheGame
             this.health = health;
             this.strenght = strenght;
             this.speed = speed;
+            this.maxHealth = 200;
         }
 
         public virtual void Hit(int damage)
@@ -72,6 +74,12 @@ namespace TheGame
         }
 
         // -------------- G E T T E R S --------------------
+
+        public int MaxHealth
+        {
+            get { return this.maxHealth; }
+            set { this.maxHealth = value; }
+        }
 
         public int Health
         {

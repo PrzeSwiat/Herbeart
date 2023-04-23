@@ -82,7 +82,7 @@ namespace TheGame
         public void RemoveBullet(object sender,EventArgs e)
         {
             bullet.Remove((Apple)sender);
-            Debug.Write("Hitler");
+            //Debug.Write("Hitler");
         }
 
         public  void Throw(int damage,Player player)
