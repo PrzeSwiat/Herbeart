@@ -78,13 +78,13 @@ namespace TheGame
             effectPrzemyslaw = new EffectHandler(Content.Load<Effect>("Przemyslaw"));
 
 
-            hud = new HUD("sky", WindowWidth, WindowHeight);
+            hud = new HUD("forest2", WindowWidth, WindowHeight);
             //world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
             Tuple<List<string>, List<string>, List<float>> models_textures = levels.DrawScene();
             List<string> models = models_textures.Item1;
             List<string> textures = models_textures.Item2;
             List<float> level = models_textures.Item3;
-            world = new World(WindowWidth, WindowHeight, Content, 2f, 20, 20, models, textures, level);
+            world = new World(WindowWidth, WindowHeight, Content, 3f, 20, 20, models, textures, level);
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");

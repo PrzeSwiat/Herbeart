@@ -60,9 +60,9 @@ namespace TheGame
             {
                 if (tileList[i] == 48) //0 - las
                 {
-                    models.Add("player");
-                    textures.Add("Red");
-                    level.Add(-2.0f);
+                    models.Add("tree2");
+                    textures.Add("green");
+                    level.Add(-3.0f);
 
                 }
                 if (tileList[i] == 49) //1
