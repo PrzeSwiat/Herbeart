@@ -80,10 +80,11 @@ namespace TheGame
 
             hud = new HUD("sky", WindowWidth, WindowHeight);
             //world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
-            Tuple<List<string>, List<string>> models_textures = levels.DrawScene();
+            Tuple<List<string>, List<string>, List<float>> models_textures = levels.DrawScene();
             List<string> models = models_textures.Item1;
             List<string> textures = models_textures.Item2;
-            world = new World(WindowWidth, WindowHeight, Content, 2f, 4, 4, models, textures);
+            List<float> level = models_textures.Item3;
+            world = new World(WindowWidth, WindowHeight, Content, 2f, 20, 20, models, textures, level);
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
@@ -190,7 +191,7 @@ namespace TheGame
             
             foreach(SceneObject obj in world.GetWorldList())
             {
-                DrawBB(obj.boundingBox.GetCorners());
+                //DrawBB(obj.boundingBox.GetCorners());
             }
             foreach(Enemy enemy in enemies)
             {

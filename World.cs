@@ -48,7 +48,7 @@ namespace TheGame
             
         }
 
-        public World(int WindowWidth, int WindowHeight, ContentManager Content, float blockSeparation, float worldWidth, float worldLenght, List<string> modelFileName, List<string> textureFileName)   //simple creator (develop it later)
+        public World(int WindowWidth, int WindowHeight, ContentManager Content, float blockSeparation, float worldWidth, float worldLenght, List<string> modelFileName, List<string> textureFileName, List<float> level)   //simple creator (develop it later)
         {
             w = WindowWidth;
             h = WindowHeight;
@@ -59,7 +59,7 @@ namespace TheGame
 
             int _worldLenght = (int)worldLenght / 2;
             int _minusLenght = -_worldLenght;
-            float level = -2.0f;
+            //float levels = -2.0f;
 
             for (int i = _minusLenght, a = 0; i <= _worldLenght; i++, a++)
             {
@@ -70,7 +70,7 @@ namespace TheGame
                     Debug.Write(i * blockSeparation);
                     Debug.Write("\n");
                     Debug.Write("\n");*/
-                    _worldArray.Add(new SceneObject(new Vector3(j * blockSeparation, level, i * blockSeparation), (string)modelFileName[a* 5 + b], (string)textureFileName[a * 5 + b]));
+                    _worldArray.Add(new SceneObject(new Vector3(j * blockSeparation, level[a * 21 + b], i * blockSeparation), (string)modelFileName[a* 21 + b], (string)textureFileName[a * 21 + b]));
 
                 }
             }

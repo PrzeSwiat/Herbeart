@@ -50,28 +50,41 @@ namespace TheGame
             
         }
 
-        public Tuple<List<string>, List<string>> DrawScene()
+        public Tuple<List<string>, List<string>, List<float>> DrawScene()
         {
             List<int> tileList = ReadFile();
             List<string> models = new List<string>();
             List<string> textures = new List<string>();
-
+            List<float> level = new List<float>();
             for (int i = 0; i < tileList.Count; i++)
             {
-                if (tileList[i] == 49) //1 - las
+                if (tileList[i] == 48) //0 - las
+                {
+                    models.Add("test");
+                    textures.Add("Red");
+                    level.Add(0.0f);
+
+                }
+                if (tileList[i] == 49) //1
                 {
                     models.Add("test");
                     textures.Add("trawa1");
-
+                    level.Add(-2.0f);
                 }
-                if (tileList[i] == 48) //0
+                if (tileList[i] == 50) //2
                 {
                     models.Add("test");
                     textures.Add("trawa2");
-                    
+                    level.Add(-2.0f);
+                }
+                if (tileList[i] == 51) //2
+                {
+                    models.Add("test");
+                    textures.Add("trawa3");
+                    level.Add(-2.0f);
                 }
             }
-            return Tuple.Create(models,textures);
+            return Tuple.Create(models,textures, level);
         }
 
 
