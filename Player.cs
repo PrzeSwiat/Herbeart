@@ -151,7 +151,7 @@ namespace TheGame
                 {
                     setDirectionY(-1.0f);
                 }
-            
+                
                 Vector2 w3 = new Vector2(0, -1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
                 Vector2 w4 = new Vector2(-Direction.X, Direction.Y);
            
