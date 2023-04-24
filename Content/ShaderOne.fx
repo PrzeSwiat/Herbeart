@@ -6,8 +6,12 @@ float4 AmbientColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 float4 DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 float AmbientIntensity = 0.1f;
 
-float DiffuseIntensity = 1.0f;
+float3 DiffuseLightDirection = float3(1, 0, 0);
+float4 DiffLightCol = float4(1, 1, 1, 1);
 
+float DiffuseIntensity = 1.0f;
+float PointLightIntensity = 1.0f;
+float4x4 WorldInverseTranspose;
 float3 LightPosition[2];
 float3 Attenuation[2];
 float LightRange[2];
@@ -36,6 +40,7 @@ struct VertexShaderOutput
     float3 Normal : TEXCOORD0;
     float2 TextureCoordinate : TEXCOORD1;
     float4 WorldPosition : TEXCOORD2;
+    float3 Color : COLOR0;
 };
 
 VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
@@ -45,7 +50,11 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
     float4x4 WVP = mul(World, View);
     WVP = mul(WVP, Projection);
     output.Position = mul(input.Position, WVP);
-
+    
+    float4 normal = mul(input.Normal, WorldInverseTranspose);
+    float lightIntensity = dot(normal, DiffuseLightDirection);
+    output.Color = saturate(DiffLightCol * DiffuseIntensity * lightIntensity);
+    
     output.WorldPosition = mul(input.Position, World);
     output.Normal = mul(input.Normal, World);
     output.TextureCoordinate = input.TextureCoordinate;
@@ -90,16 +99,18 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
             }
 
 
-            finalColor += saturate(singleColor * DiffuseIntensity);
+            finalColor += saturate(singleColor * PointLightIntensity);
         }
     }
 
     if (!anyInRange) {
         //return float4(finalAmbient, diffuse.a);
     }
-
+    float4 diffa = tex2D(textureSampler, input.TextureCoordinate);
+    float3 fini = diffa * AmbientColor * AmbientIntensity;
+    
     //Return Final Color
-    return float4(finalColor + finalAmbient, diffuse.a);
+    return float4(input.Color + fini+finalColor + finalAmbient, diffuse.a);
 }
 
 technique Ambient

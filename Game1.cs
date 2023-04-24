@@ -58,6 +58,7 @@ namespace TheGame
             
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
+            Levels levels = new Levels("../../../map1.txt");
             projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
             //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
@@ -77,15 +78,21 @@ namespace TheGame
             effectPrzemyslaw = new EffectHandler(Content.Load<Effect>("Przemyslaw"));
 
 
-            hud = new HUD("sky", WindowWidth, WindowHeight);
-            world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
+            hud = new HUD("forest2", WindowWidth, WindowHeight);
+            //world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
+            Tuple<List<string>, List<string>, List<float>> models_textures = levels.DrawScene();
+            List<string> models = models_textures.Item1;
+            List<string> textures = models_textures.Item2;
+            List<float> level = models_textures.Item3;
+            world = new World(Content, 4f, 20, 20, models, textures, level, 0);
+            
 
-            player = new Player(new Vector3(5,2,5), "mis4", "StarSparrow_Orange");
+            player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
             Enemy enemy2 = new Enemy(new Vector3(0, 2, 30), "player", "StarSparrow_Green");
             AppleTree apple = new AppleTree(new Vector3(30, 2, 30), "player", "StarSparrow_Green");
 
-          //  enemies.Add(enemy);
+           //  enemies.Add(enemy);
            // enemies.Add(enemy2);
             enemies.Add(apple);
             serializator = new Serializator("zapis.txt");
@@ -169,9 +176,9 @@ namespace TheGame
                    
                 }
             }
-            // player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
             
-            player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
             
             hud.DrawFrontground(_spriteBatch, player.Health);
 
@@ -185,7 +192,7 @@ namespace TheGame
             
             foreach(SceneObject obj in world.GetWorldList())
             {
-                DrawBB(obj.boundingBox.GetCorners());
+                //DrawBB(obj.boundingBox.GetCorners());
             }
             foreach(Enemy enemy in enemies)
             {
