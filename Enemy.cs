@@ -20,6 +20,7 @@ namespace TheGame
             Direction = new Vector2(0, 0);
             lastAttackTime = DateTime.Now;
             actualTime = lastAttackTime;
+            SetScale(0.5f);
             
         }
 
