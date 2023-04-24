@@ -81,7 +81,7 @@ namespace TheGame
             }
             float Sphereang = rotation - player.GetRotation().Y;
             rotateSphere(Sphereang);
-            UpdateBB(0, world, new Vector3(player.Direction.X * deltaTime * player.Speed, 0, 0));
+            UpdateBB(0, world, new Vector3(-player.Direction.X * deltaTime * player.Speed, 0, 0));
             UpdateBB(0, world, new Vector3(0, 0, player.Direction.Y * deltaTime * player.Speed));
             player.SetRotation(0, rotation, 0);
         }

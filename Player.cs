@@ -24,7 +24,8 @@ namespace TheGame
     {
         public List<Leaf> inventory;
         private GamePadState beffore;
-
+        private bool canMove = true;
+        private float StunTimer = 0;
         private PlayerMovement playerMovement;
         private PlayerEffectHandler playerEffects;
         public event EventHandler OnAttackPressed;
@@ -45,16 +46,25 @@ namespace TheGame
         public void Update(World world, float deltaTime) //Logic player here
         {
             Update();
-            playerMovement.UpdatePlayerMovement(world, deltaTime);
+            if (canMove) { playerMovement.UpdatePlayerMovement(world, deltaTime); StunTimer = 2; }
+            else
+            {
+                StunTimer = StunTimer - deltaTime;
+                if (StunTimer < 0) { canMove = true; }
+            }
             GamePadClick();
         }
-
+        public void setStun(bool bStun)
+        {
+            this.canMove = bStun;
+        }
         public void AddHealth(int amount)
         {
-            if (this.Health + amount > this.MaxHealth) 
-            { 
+            if (this.Health + amount > this.MaxHealth)
+            {
                 this.Health = this.MaxHealth;
-            } else { this.Health += amount; }
+            }
+            else { this.Health += amount; }
         }
 
         public void SubstractHealth(int amount)
@@ -62,7 +72,8 @@ namespace TheGame
             if (this.Health - amount < 0)
             {
                 this.Health = 0;
-            } else { this.Health -= amount; }
+            }
+            else { this.Health -= amount; }
         }
 
 
@@ -75,46 +86,8 @@ namespace TheGame
         #region Setters
         //SET'ERS
 
-                Direction = new Vector2(0, 0);
-                if (state.IsKeyDown(Keys.A))
-                {
-                    setDirectionX(1.0f);
-                }
-                if (state.IsKeyDown(Keys.D))
-                {
-                    setDirectionX(-1.0f);
-                }
-                if (state.IsKeyDown(Keys.W))
-                {
-                    setDirectionY(1.0f);
-                }
-                if (state.IsKeyDown(Keys.S))
-                {
-                    setDirectionY(-1.0f);
-                }
-            
-                Vector2 w3 = new Vector2(0, -1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
-                Vector2 w4 = new Vector2(-Direction.X, Direction.Y);
-           
-                rotation = angle(w3, w4); 
-                SetRotation(0, rotation, 0);
-                UpdateBB(0, world, new Vector3(Direction.X * 0.2f, 0, Direction.Y * 0.2f));
-            }
-        }
-
-
-        public bool collision(List<SceneObject> objects)
-        {
-
-            foreach (SceneObject obj in objects)
-            {
-                if (this.boundingBox.Intersects(obj.boundingBox))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        #endregion
+        //.................
 
 
 

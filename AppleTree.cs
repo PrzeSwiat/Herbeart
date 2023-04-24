@@ -47,7 +47,7 @@ namespace TheGame
                 
                 
                 OnDestroy?.Invoke(this, EventArgs.Empty);
-              //  Debug.Write("dupa \n");
+              
             }
 
             // Check if the bullet has hit the ground
