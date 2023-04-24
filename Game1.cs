@@ -33,6 +33,7 @@ namespace TheGame
 
         private BasicEffect basicEffect;
         World world;
+        World world1;
         HUD hud;
         InteractionEventHandler interactionEventHandler;
         
@@ -59,6 +60,7 @@ namespace TheGame
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
             Levels levels = new Levels("../../../map1.txt");
+            Levels levels1 = new Levels("../../../map.txt");
             projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
             //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
@@ -85,7 +87,11 @@ namespace TheGame
             List<string> textures = models_textures.Item2;
             List<float> level = models_textures.Item3;
             world = new World(Content, 4f, 20, 20, models, textures, level, 0);
-            
+/*            Tuple<List<string>, List<string>, List<float>> models_textures1 = levels1.DrawScene();
+            List<string> models1 = models_textures1.Item1;
+            List<string> textures1 = models_textures1.Item2;
+            List<float> level1 = models_textures1.Item3;
+            world1 = new World(Content, 4f, 20, 20, models1, textures1, level1, -80);*/
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
@@ -104,7 +110,7 @@ namespace TheGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            world.ObjectInitializer(Content);
+            //world.ObjectInitializer(Content);
             hud.LoadContent(Content);
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.Projection = projectionMatrix;
@@ -133,8 +139,9 @@ namespace TheGame
             //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta);
+            /*player.Update(world1, delta);*/
 
-            foreach(Enemy enemy in enemies)
+            foreach (Enemy enemy in enemies)
             {
                 enemy.Update(delta, player);
                 
@@ -159,7 +166,11 @@ namespace TheGame
             {
                 sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,sceneObject.color);
             }
-            foreach(Enemy enemy in enemies)
+/*            foreach (SceneObject sceneObject in world1.GetWorldList())
+            {
+                sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, sceneObject.color);
+            }*/
+            foreach (Enemy enemy in enemies)
             {
                 enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,enemy.color);
             }
