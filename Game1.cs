@@ -84,7 +84,8 @@ namespace TheGame
             List<string> models = models_textures.Item1;
             List<string> textures = models_textures.Item2;
             List<float> level = models_textures.Item3;
-            world = new World(WindowWidth, WindowHeight, Content, 3f, 20, 20, models, textures, level);
+            world = new World(Content, 4f, 20, 20, models, textures, level, 0);
+            
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");

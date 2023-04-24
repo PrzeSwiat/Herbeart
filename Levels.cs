@@ -39,11 +39,11 @@ namespace TheGame
                         tileList.Add(val);
                     }
                 }
-/*                for (int i = 0; i < tileList.Count; i++)
+                for (int i = 0; i < tileList.Count; i++)
                 {
-                    Debug.Write((char)tileList[i]);
+                    Debug.Write(tileList[i]);
                     Debug.Write("\n");
-                }*/
+                }
                 return tileList;
             }
             else return null;
@@ -60,24 +60,41 @@ namespace TheGame
             {
                 if (tileList[i] == 48) //0 - las
                 {
+                    models.Add("tree1");
+                    textures.Add("green");
+                    level.Add(-3.0f);
+                }
+                if (tileList[i] == 49) //1 - las
+                {
                     models.Add("tree2");
                     textures.Add("green");
                     level.Add(-3.0f);
-
                 }
-                if (tileList[i] == 49) //1
+                if (tileList[i] == 50) //2 - las
+                {
+                    models.Add("tree3");
+                    textures.Add("green");
+                    level.Add(-3.0f);
+                }
+                if (tileList[i] == 51) //3 - las
+                {
+                    models.Add("tree4");
+                    textures.Add("green");
+                    level.Add(-3.0f);
+                }
+                if (tileList[i] == 97) //a
                 {
                     models.Add("test");
                     textures.Add("trawa1");
                     level.Add(-2.0f);
                 }
-                if (tileList[i] == 50) //2
+                if (tileList[i] == 98) //b
                 {
                     models.Add("test");
                     textures.Add("trawa2");
                     level.Add(-2.0f);
                 }
-                if (tileList[i] == 51) //2
+                if (tileList[i] == 99) //c
                 {
                     models.Add("test");
                     textures.Add("trawa3");
