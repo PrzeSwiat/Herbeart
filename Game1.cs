@@ -175,9 +175,9 @@ namespace TheGame
                    
                 }
             }
-            // player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
             
-            player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
             
             hud.DrawFrontground(_spriteBatch, player.Health);
 
