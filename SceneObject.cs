@@ -82,6 +82,12 @@ namespace TheGame
                         , viewMatrix, projectionMatrix, GetTexture2D());
         }
 
+        public double GetDistance(SceneObject entity)
+        {
+            double distance = (double)Vector3.Distance(this.position, entity.GetPosition());
+            return distance;
+        }
+
         #region Getters
             //GET'ERS
         public Vector3 GetPosition()

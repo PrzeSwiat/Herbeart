@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
@@ -11,6 +12,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Threading;
 using Color = Microsoft.Xna.Framework.Color;
 
@@ -87,17 +89,33 @@ namespace TheGame
             world = new World(WindowWidth, WindowHeight, Content, 3f, 20, 20, models, textures, level);
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
-            Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
-            Enemy enemy2 = new Enemy(new Vector3(0, 2, 30), "player", "StarSparrow_Green");
+            Enemy enemy = new Enemy(new Vector3(20, 2, 10), "player", "StarSparrow_Green");
+            Enemy enemy2 = new Enemy(new Vector3(-15, 2, -5), "player", "StarSparrow_Green");
+            Enemy enemy3 = new Enemy(new Vector3(3, 2, 5), "player", "StarSparrow_Green");
             AppleTree apple = new AppleTree(new Vector3(30, 2, 30), "player", "StarSparrow_Green");
 
-           //  enemies.Add(enemy);
-           // enemies.Add(enemy2);
-            enemies.Add(apple);
+            //enemies.Add(enemy);
+            //enemies.Add(enemy2);
+            enemies = spawnEnemies(5, 30, 15);
+            //enemies.Add(apple);
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player,enemies);
 
             base.Initialize();
+        }
+
+        // helper function
+        private List<Enemy> spawnEnemies(int count, float distanceFroMCenterX, float distanceFroMCenterZ)
+        {
+            List<Enemy> output = new List<Enemy>();
+            for (int i = 0; i < count; i++)
+            {
+                System.Random random = new System.Random();
+                float x = (float)(random.NextDouble() *  2 * distanceFroMCenterX - distanceFroMCenterX);
+                float z = (float)(random.NextDouble() * 2 * distanceFroMCenterZ - distanceFroMCenterZ);
+                output.Add(new Enemy(new Vector3(x, 2, z), "player", "StarSparrow_Green"));
+            }
+            return output;
         }
 
         protected override void LoadContent()
@@ -135,8 +153,13 @@ namespace TheGame
 
             foreach(Enemy enemy in enemies)
             {
-                enemy.Update(delta, player);
-                
+                //enemy.Update(delta, player);
+                Vector2 flockVel = Flock(enemy, 50, 0.003);
+                Vector2 avoidVel = Avoid(enemy, 7, 0.0003);
+                enemy.Direction = flockVel + avoidVel;
+                enemy.Direction.Normalize();
+                enemy.MoveForwards();
+
             }
 
             camera.Update();
@@ -144,6 +167,36 @@ namespace TheGame
             SaveControl();
 
             base.Update(gameTime);
+        }
+
+        private Vector2 Flock(Enemy enemy, double distance, double power)
+        {
+            IEnumerable<Enemy> query = enemies.Where(x => x.GetDistance(enemy) < distance);
+            List<Enemy> neighbors = query.ToList();
+            double meanX = neighbors.Sum(x => x.GetPosition().X) / neighbors.Count();
+            double meanZ = neighbors.Sum(x => x.GetPosition().Z) / neighbors.Count();
+            double deltaCenterX = meanX - enemy.GetPosition().X;
+            double deltaCenterZ = meanZ - enemy.GetPosition().Z;
+            Vector2 output = new Vector2((float)deltaCenterX, (float)deltaCenterZ) * (float)power;
+            //System.Diagnostics.Debug.WriteLine(output.ToString());
+            return output;
+        }
+
+        private Vector2 Avoid(Enemy enemy, double distance, double power)
+        {
+
+            IEnumerable<Enemy> query = enemies.Where(x => x.GetDistance(enemy) < distance);
+            List<Enemy> neighbors = query.ToList();
+            (double sumClosenessX, double sumClosenessY) = (0, 0);
+            foreach (var neighbor in neighbors)
+            {
+                double closeness = distance - enemy.GetDistance(neighbor);
+                sumClosenessX += (enemy.GetPosition().X - neighbor.GetPosition().X) * closeness;
+                sumClosenessY += (enemy.GetPosition().Z - neighbor.GetPosition().Z) * closeness;
+            }
+            Vector2 output = new Vector2((float)sumClosenessX, (float)sumClosenessY) * (float)power;
+            //System.Diagnostics.Debug.WriteLine(output.ToString());
+            return output;
         }
 
         protected override void Draw(GameTime gameTime)
