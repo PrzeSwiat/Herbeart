@@ -120,15 +120,18 @@ namespace TheGame
                     _effect.Parameters["Projection"].SetValue(projection);
                    
                     _effect.Parameters["DiffuseColor"].SetValue((Color.DarkOrange.ToVector4() + Color.Yellow.ToVector4()) / 2);
-                    
+                    _effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(1, 0, 1));
+                    _effect.Parameters["DiffLightCol"].SetValue((Color.Gray.ToVector4()));
                     _effect.Parameters["LightPosition"].SetValue(getPointLightPositions(Lights));
                     _effect.Parameters["Attenuation"].SetValue(getPointLightAttenuation(Lights));
                     _effect.Parameters["LightRange"].SetValue(getPointLightRange(Lights));
                     _effect.Parameters["ModelTexture"].SetValue(texture2D);
                     _effect.Parameters["AmbientColor"].SetValue(color.ToVector4());
                     _effect.Parameters["AmbientIntensity"].SetValue(0.3f);
-                    _effect.Parameters["DiffuseIntensity"].SetValue(3f);
-                    
+                    _effect.Parameters["DiffuseIntensity"].SetValue(0.5f);
+                    _effect.Parameters["PointLightIntensity"].SetValue(3f);
+                    Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
+                    _effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
                 }
                 mesh.Draw();
             }
