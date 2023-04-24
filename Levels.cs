@@ -39,11 +39,11 @@ namespace TheGame
                         tileList.Add(val);
                     }
                 }
-                for (int i = 0; i < tileList.Count; i++)
+/*                for (int i = 0; i < tileList.Count; i++)
                 {
                     Debug.Write(tileList[i]);
                     Debug.Write("\n");
-                }
+                }*/
                 return tileList;
             }
             else return null;
