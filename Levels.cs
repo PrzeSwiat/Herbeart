@@ -15,7 +15,7 @@ namespace TheGame
 {
     internal class Levels
     {
-        private string _textFile; //= "D:\\Projects\\Herbeart\\map1.txt"
+        private string _textFile;
         public struct Tile
         {
             public String model;
@@ -69,6 +69,7 @@ namespace TheGame
                     }
                 }
                 return tileList;
+                s.Close();
             }
             else return null;
             
@@ -85,16 +86,16 @@ namespace TheGame
                 {
                     case 48:
 
-                        _tiles.Add(new Tile("tree1", "green", 0.0f));
+                        _tiles.Add(new Tile("tree1", "green", -2.0f));
                         break;
                     case 49:
-                        _tiles.Add(new Tile("tree2", "green", 0.0f));
+                        _tiles.Add(new Tile("tree2", "green", -2.0f));
                         break;
                     case 50:
-                        _tiles.Add(new Tile("tree3", "green", 0.0f));
+                        _tiles.Add(new Tile("tree3", "green", -2.0f));
                         break;
                     case 51:
-                        _tiles.Add(new Tile("tree4", "green", 0.0f));
+                        _tiles.Add(new Tile("tree4", "green", -2.0f));
                         break;
                     case 97:
                         _tiles.Add(new Tile("test", "trawa1", -2.0f));

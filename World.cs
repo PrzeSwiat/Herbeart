@@ -17,33 +17,41 @@ namespace TheGame
         private List<SceneObject> _worldArray;
         private Levels level;
 
-        /*private int _worldWidth;
-        private int _minusWidth;
+        private int worldWidth = 20;
+        private int worldLenght = 20;
+        private float blockSeparation = 4f;
+        private int moduleSeparator = 80;
+        private string[] maps = { "../../../map2.txt", "../../../map3.txt", "../../../map3.txt"};
 
-        private int _worldLenght;
-        private int _minusLenght;*/
 
-
-        public World(ContentManager Content, float blockSeparation, float worldWidth, float worldLenght, float separator)   //simple creator (develop it later)
+        public World(ContentManager Content)   
         {
             _worldArray = new List<SceneObject>();
-            level = new Levels("../../../map1.txt");
-            
-            /*_worldWidth = (int)worldWidth / 2;
-            _minusWidth = -_worldWidth;
-
-            _worldLenght = (int)worldLenght / 2;
-            _minusLenght = -_worldLenght;*/
-
-            for (int i = 0; i <= worldLenght; i++)
+            AddSceneObjectsFromModule(Content, "../../../map1.txt", 0);
+            for (int i = 1; i < 4; i++)
             {
-                for (int j = 0; j <= worldWidth; j++)
+                Random random = new Random();
+                int index = random.Next(maps.Length);
+                string mapName = maps[index];
+                AddSceneObjectsFromModule(Content, mapName, moduleSeparator * i);
+            }
+            //AddSceneObjectsFromModule(Content, "../../../map2.txt", 80);
+
+        }
+
+        private void AddSceneObjectsFromModule(ContentManager Content, String fileName, float separator)
+        {
+            level = new Levels(fileName);
+
+            for (int i = 0; i < worldLenght; i++)
+            {
+                for (int j = 0; j < worldWidth; j++)
                 {
-                    int index = i * 21 + j;
+                    int index = i * 20 + j;
                     float height = level.returnTileHeight(index);
                     String model = level.returnTileModel(index);
                     String texture = level.returnTileTexture(index);
-                    Vector3 wektor = new Vector3(j * blockSeparation - separator, height, i * blockSeparation);
+                    Vector3 wektor = new Vector3(j * blockSeparation + separator, height, i * blockSeparation);
                     _worldArray.Add(new SceneObject(wektor, model, texture));
                 }
             }
@@ -52,25 +60,7 @@ namespace TheGame
             {
                 obj.LoadContent(Content);
             }
-
-
         }
-
-        /*private AddSceneObjectsFromModule()
-        {
-            for (int i = _minusLenght, a = 0; i <= _worldLenght; i++, a++)
-            {
-                for (int j = _minusWidth, b = 0; j <= _worldWidth; j++, b++)
-                {
-                    int index = a * 21 + b;
-                    float height = level.returnTileHeight(index);
-                    String model = level.returnTileModel(index);
-                    String texture = level.returnTileTexture(index);
-                    Vector3 wektor = new Vector3(j * blockSeparation - separator, height, i * blockSeparation);
-                    _worldArray.Add(new SceneObject(wektor, model, texture));
-                }
-            }
-        }*/
 
         public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
