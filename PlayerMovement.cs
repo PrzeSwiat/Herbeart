@@ -34,7 +34,7 @@ namespace TheGame
                     Vector2 w2 = new Vector2(-LeftjoystickX, LeftjoystickY);
 
                     rotation = angle(w1, w2);
-                    player.Direction = new Vector2(-LeftjoystickX, LeftjoystickY);
+                    player.Direction = new Vector2(LeftjoystickX, LeftjoystickY);
 
                     // JUZ WCALE NIE UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
                     if (thumbLeftX == 0 && thumbLeftY == 0)
