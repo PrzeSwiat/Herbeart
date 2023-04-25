@@ -79,7 +79,7 @@ namespace TheGame
 
 
             hud = new HUD("forest2", WindowWidth, WindowHeight);
-            world = new World(Content, 4f, 20, 20, 0);
+            world = new World(Content);
 
             player = new Player(new Vector3(30,0,30), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
