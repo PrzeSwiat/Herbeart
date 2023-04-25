@@ -33,7 +33,6 @@ namespace TheGame
 
         private BasicEffect basicEffect;
         World world;
-        World world1;
         HUD hud;
         InteractionEventHandler interactionEventHandler;
         
@@ -82,7 +81,7 @@ namespace TheGame
             hud = new HUD("forest2", WindowWidth, WindowHeight);
             world = new World(Content, 4f, 20, 20, 0);
 
-            player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
+            player = new Player(new Vector3(30,0,30), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
             Enemy enemy2 = new Enemy(new Vector3(0, 2, 30), "player", "StarSparrow_Green");
             AppleTree apple = new AppleTree(new Vector3(30, 2, 30), "player", "StarSparrow_Green");
@@ -124,8 +123,8 @@ namespace TheGame
 
             camera.CamPosition = player.GetPosition() + camera.CamPositionState;
             camera.nextpos = player.GetPosition();
-            viewMatrix = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker , Vector3.Up);
-            //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
+            //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker , Vector3.Up);
+            viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta);
             /*player.Update(world1, delta);*/
@@ -136,7 +135,7 @@ namespace TheGame
                 
             }
 
-            camera.Update();
+            camera.Update1(player.position);
             hud.Update(camera.CamPosition);
             SaveControl();
 
