@@ -9,19 +9,48 @@ using System.Numerics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Drawing;
+using System.Xml.XPath;
 
 namespace TheGame
 {
     internal class Levels
     {
         private string _textFile; //= "D:\\Projects\\Herbeart\\map1.txt"
-        private List<string> models;
-        private List<string> textures;
-        private Rectangle tileRect;
+        public struct Tile
+        {
+            public String model;
+            public String texture;
+            public float height;
+
+            public Tile(String model, String texture, float height)
+            {
+                this.model = model;
+                this.texture = texture;
+                this.height = height;
+            }
+        }
+
+        private List<Tile> _tiles;
+
+        public float returnTileHeight(int index)
+        {
+            return this._tiles[index].height;
+        }
+
+        public String returnTileModel(int index)
+        {
+            return this._tiles[index].model;
+        }
+
+        public String returnTileTexture(int index)
+        {
+            return this._tiles[index].texture;
+        }
 
         public Levels(string textFile)
         {
             _textFile = textFile;
+            LoadScene();
         }
         public List<int> ReadFile()
         {
@@ -39,91 +68,46 @@ namespace TheGame
                         tileList.Add(val);
                     }
                 }
-/*                for (int i = 0; i < tileList.Count; i++)
-                {
-                    Debug.Write(tileList[i]);
-                    Debug.Write("\n");
-                }*/
                 return tileList;
             }
             else return null;
             
         }
 
-        public Tuple<List<string>, List<string>, List<float>> DrawScene()
+        public void LoadScene()
         {
             List<int> tileList = ReadFile();
-            List<string> models = new List<string>();
-            List<string> textures = new List<string>();
-            List<float> level = new List<float>();
+            _tiles = new List<Tile>();
+        
             for (int i = 0; i < tileList.Count; i++)
             {
-                if (tileList[i] == 48) //0 - las
+                switch(tileList[i]) 
                 {
-                    models.Add("tree1");
-                    textures.Add("green");
-                    level.Add(-3.0f);
-                }
-                if (tileList[i] == 49) //1 - las
-                {
-                    models.Add("tree2");
-                    textures.Add("green");
-                    level.Add(-3.0f);
-                }
-                if (tileList[i] == 50) //2 - las
-                {
-                    models.Add("tree3");
-                    textures.Add("green");
-                    level.Add(-3.0f);
-                }
-                if (tileList[i] == 51) //3 - las
-                {
-                    models.Add("tree4");
-                    textures.Add("green");
-                    level.Add(-3.0f);
-                }
-                if (tileList[i] == 97) //a
-                {
-                    models.Add("test");
-                    textures.Add("trawa1");
-                    level.Add(-2.0f);
-                }
-                if (tileList[i] == 98) //b
-                {
-                    models.Add("test");
-                    textures.Add("trawa2");
-                    level.Add(-2.0f);
-                }
-                if (tileList[i] == 99) //c
-                {
-                    models.Add("test");
-                    textures.Add("trawa3");
-                    level.Add(-2.0f);
+                    case 48:
+
+                        _tiles.Add(new Tile("tree1", "green", 0.0f));
+                        break;
+                    case 49:
+                        _tiles.Add(new Tile("tree2", "green", 0.0f));
+                        break;
+                    case 50:
+                        _tiles.Add(new Tile("tree3", "green", 0.0f));
+                        break;
+                    case 51:
+                        _tiles.Add(new Tile("tree4", "green", 0.0f));
+                        break;
+                    case 97:
+                        _tiles.Add(new Tile("test", "trawa1", -2.0f));
+                        break;
+                    case 98:
+                        _tiles.Add(new Tile("test", "trawa2", -2.0f));
+                        break;
+                    case 99:
+                        _tiles.Add(new Tile("test", "trawa3", -2.0f));
+                        break;
                 }
             }
-            return Tuple.Create(models,textures, level);
         }
 
-
-/*        public void DrawBackground(SpriteBatch spriteBatch, int WindowWidth, int WindowHeight)
-        {
-            int numberOfWidthBG = WindowWidth / 100;
-            int numberOfHeightBG = WindowHeight / 100;
-
-            spriteBatch.Begin();
-
-            for (int i = 0; i <= numberOfWidthBG + 2; i++)
-            {
-                tileRect.X = BackgroundX + i * BackgroundWidth;
-                for (int j = 0; j <= numberOfHeightBG + 1; j++)
-                {
-
-                    tileRect.Y = BackgroundY + j * BackgroundHeight;
-                    spriteBatch.Draw(skyTex, tileRect, Color.Gray);
-                }
-            }
-
-            spriteBatch.End();
-        }*/
     }
 }

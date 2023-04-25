@@ -20,7 +20,6 @@ namespace TheGame
             GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
             if (capabilities.IsConnected)
             {
-
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
                 if (capabilities.HasLeftXThumbStick)
                 {
@@ -32,10 +31,10 @@ namespace TheGame
                     float RightjoystickY = gamePadState.ThumbSticks.Right.Y;
 
                     Vector2 w1 = new Vector2(0, -1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
-                    Vector2 w2 = new Vector2(LeftjoystickX, LeftjoystickY);
+                    Vector2 w2 = new Vector2(-LeftjoystickX, LeftjoystickY);
 
                     rotation = angle(w1, w2);
-                    player.Direction = new Vector2(LeftjoystickX, LeftjoystickY);
+                    player.Direction = new Vector2(-LeftjoystickX, LeftjoystickY);
 
                     // JUZ WCALE NIE UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
                     if (thumbLeftX == 0 && thumbLeftY == 0)
@@ -81,7 +80,7 @@ namespace TheGame
             }
             float Sphereang = rotation - player.GetRotation().Y;
             rotateSphere(Sphereang);
-            UpdateBB(0, world, new Vector3(-player.Direction.X * deltaTime * player.Speed, 0, 0));
+            UpdateBB(0, world, new Vector3(player.Direction.X * deltaTime * player.Speed, 0, 0));
             UpdateBB(0, world, new Vector3(0, 0, player.Direction.Y * deltaTime * player.Speed));
             player.SetRotation(0, rotation, 0);
         }

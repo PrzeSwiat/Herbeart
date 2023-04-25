@@ -59,8 +59,7 @@ namespace TheGame
             
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
-            Levels levels = new Levels("../../../map1.txt");
-            Levels levels1 = new Levels("../../../map.txt");
+            
             projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
             //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
@@ -81,17 +80,7 @@ namespace TheGame
 
 
             hud = new HUD("forest2", WindowWidth, WindowHeight);
-            //world = new World(WindowWidth,WindowHeight,Content,2f,3,3,"test", "StarSparrow_Green");
-            Tuple<List<string>, List<string>, List<float>> models_textures = levels.DrawScene();
-            List<string> models = models_textures.Item1;
-            List<string> textures = models_textures.Item2;
-            List<float> level = models_textures.Item3;
-            world = new World(Content, 4f, 20, 20, models, textures, level, 0);
-/*            Tuple<List<string>, List<string>, List<float>> models_textures1 = levels1.DrawScene();
-            List<string> models1 = models_textures1.Item1;
-            List<string> textures1 = models_textures1.Item2;
-            List<float> level1 = models_textures1.Item3;
-            world1 = new World(Content, 4f, 20, 20, models1, textures1, level1, -80);*/
+            world = new World(Content, 4f, 20, 20, 0);
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
@@ -162,18 +151,14 @@ namespace TheGame
 
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            foreach (SceneObject sceneObject in world.GetWorldList())
-            {
-                sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,sceneObject.color);
-            }
-/*            foreach (SceneObject sceneObject in world1.GetWorldList())
-            {
-                sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, sceneObject.color);
-            }*/
+
+            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
+            
             foreach (Enemy enemy in enemies)
             {
                 enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,enemy.color);
             }
+
             foreach (Enemy enemy in enemies )
             {
                 if(enemy.GetType() == typeof(AppleTree))

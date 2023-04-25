@@ -15,61 +15,29 @@ namespace TheGame
     internal class World
     {
         private List<SceneObject> _worldArray;
-        int w;
-        int h;
-        
-        public World(int WindowWidth,int WindowHeight,ContentManager Content,float blockSeparation, float worldWidth, float worldLenght, string modelFileName, string textureFileName)   //simple creator (develop it later)
+        private Levels level;
+
+        public World(ContentManager Content, float blockSeparation, float worldWidth, float worldLenght, float separator)   //simple creator (develop it later)
         {
-            w = WindowWidth;
-            h = WindowHeight;
             _worldArray = new List<SceneObject>();
-            float _blockSeparation = blockSeparation;
-            int _worldWidth = (int)worldWidth / 2;
-            int _minusWidth = -_worldWidth;
-
-            int _worldLenght = (int)worldLenght / 2;
-            int _minusLenght = -_worldLenght;
-            float level = 0.0f;
-
-            for (int i = _minusLenght; i <= _worldLenght; i++)
-            {
-                for (int j = _minusLenght; j <= _worldWidth; j++)
-                {
-                    _worldArray.Add(new SceneObject(new Vector3(j * blockSeparation, level, i * blockSeparation), modelFileName, textureFileName));
-                    
-                }
-            }
-
-            foreach (SceneObject obj in _worldArray)
-            {
-                obj.LoadContent(Content);
-            }
-
+            level = new Levels("../../../map1.txt");
             
-        }
-
-        public World(ContentManager Content, float blockSeparation, float worldWidth, float worldLenght, List<string> modelFileName, List<string> textureFileName, List<float> level, float separator)   //simple creator (develop it later)
-        {
-            _worldArray = new List<SceneObject>();
-            //float _blockSeparation = blockSeparation;
             int _worldWidth = (int)worldWidth / 2;
             int _minusWidth = -_worldWidth;
 
             int _worldLenght = (int)worldLenght / 2;
             int _minusLenght = -_worldLenght;
-            //float levels = -2.0f;
 
             for (int i = _minusLenght, a = 0; i <= _worldLenght; i++, a++)
             {
                 for (int j = _minusWidth, b = 0; j <= _worldWidth; j++, b++)
                 {
-/*                    Debug.Write(j * blockSeparation);
-                    Debug.Write("\n");
-                    Debug.Write(i * blockSeparation);
-                    Debug.Write("\n");
-                    Debug.Write("\n");*/
-                    _worldArray.Add(new SceneObject(new Vector3(j * blockSeparation - separator, level[a * 21 + b], i * blockSeparation), (string)modelFileName[a* 21 + b], (string)textureFileName[a * 21 + b]));
-
+                    int index = a * 21 + b;
+                    float height = level.returnTileHeight(index);
+                    String model = level.returnTileModel(index);
+                    String texture = level.returnTileTexture(index);
+                    Vector3 wektor = new Vector3(j * blockSeparation - separator, height, i * blockSeparation);
+                    _worldArray.Add(new SceneObject(wektor, model, texture));
                 }
             }
 
@@ -81,11 +49,16 @@ namespace TheGame
 
         }
 
+        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        {
+            foreach (SceneObject sceneObject in _worldArray)
+            {
+                sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, sceneObject.color);
+            }
+        }
+
         public void ObjectInitializer(ContentManager Content)
         {
-           // _worldArray.Add(new SceneObject(Content,new Vector3(12, 0, 0), "test", "StarSparrow_Orange"));
-            //_worldArray.Add(new SceneObject(new Vector3(10, 1, 0), "test", "StarSparrow_Orange"));
-
             foreach (SceneObject obj in _worldArray)
             {
                 obj.LoadContent(Content);
