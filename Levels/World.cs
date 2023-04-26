@@ -21,13 +21,13 @@ namespace TheGame
         private int worldLenght = 20;
         private float blockSeparation = 4f;
         private int moduleSeparator = 80;
-        private string[] maps = { "../../../Levels/map2.txt", "../../../Levels/map3.txt", "../../../Levels/map3.txt" };
+        private string[] maps = { "map2.txt", "map3.txt", "map3.txt" };
 
 
         public World(ContentManager Content)   
         {
             _worldArray = new List<SceneObject>();
-            AddSceneObjectsFromModule(Content, "../../../Levels/map1.txt", 0);
+            AddSceneObjectsFromModule(Content, "map1.txt", 0);
             for (int i = 1; i < 4; i++)
             {
                 Random random = new Random();
