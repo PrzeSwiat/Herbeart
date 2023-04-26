@@ -68,8 +68,9 @@ namespace TheGame
                         tileList.Add(val);
                     }
                 }
-                return tileList;
                 s.Close();
+                return tileList;
+                
             }
             else return null;
             

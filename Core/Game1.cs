@@ -84,10 +84,10 @@ namespace TheGame
             player = new Player(new Vector3(30,0,30), "mis4", "StarSparrow_Orange");
             Enemy enemy = new Enemy(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
             Enemy enemy2 = new Enemy(new Vector3(0, 2, 30), "player", "StarSparrow_Green");
-            AppleTree apple = new AppleTree(new Vector3(30, 2, 30), "player", "StarSparrow_Green");
+            AppleTree apple = new AppleTree(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
 
-           //  enemies.Add(enemy);
-           // enemies.Add(enemy2);
+            enemies.Add(enemy);
+            enemies.Add(enemy2);
             enemies.Add(apple);
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player,enemies);
@@ -329,7 +329,14 @@ namespace TheGame
 
         void DestroyControl(object obj, EventArgs e)
         {
-            enemies.Remove((Enemy)obj);
+            if(obj is Enemy)
+                enemies.Remove((Enemy)obj);
+            if(obj is Player)
+            {
+                Exit();
+                // GAME OVER HERE;
+            }
+
         }
         #endregion
 
