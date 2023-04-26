@@ -25,7 +25,7 @@ namespace TheGame
                 {
                     double thumbLeftX = -Math.Round(gamePadState.ThumbSticks.Left.X);
                     double thumbLeftY = Math.Round(gamePadState.ThumbSticks.Left.Y);
-                    float LeftjoystickX = gamePadState.ThumbSticks.Left.X;
+                    float LeftjoystickX = -gamePadState.ThumbSticks.Left.X;
                     float LeftjoystickY = gamePadState.ThumbSticks.Left.Y;
                     float RightjoystickX = gamePadState.ThumbSticks.Right.X;
                     float RightjoystickY = gamePadState.ThumbSticks.Right.Y;
