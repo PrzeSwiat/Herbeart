@@ -28,25 +28,22 @@ namespace TheGame
         {
             Update();
             if (!(this.boundingSphere.Intersects(player.boundingBox)))
-            { FollowPlayer(player.GetPosition(), deltaTime,0); }
-            else { 
-
-            
+            { FollowPlayer(player.GetPosition(), deltaTime, 0); }
+            else
             {
+
                 actualTime = DateTime.Now;
                 TimeSpan time = actualTime - lastAttackTime;
                 if (time.TotalSeconds > 1)
                 {
-                        OnAttack?.Invoke(this, EventArgs.Empty);
-                        lastAttackTime = actualTime;
+                    OnAttack?.Invoke(this, EventArgs.Empty);
+                    lastAttackTime = actualTime;
                 }
-
-            }
             }
 
         }
 
-        public virtual  void FollowPlayer(Vector3 playerPosition, float deltaTime, int dir)
+        public virtual void FollowPlayer(Vector3 playerPosition, float deltaTime, int dir)
         {
             float speed = this.Speed;
             if (dir ==1 ) { speed = -speed; }

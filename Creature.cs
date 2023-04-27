@@ -19,7 +19,7 @@ namespace TheGame
         private int maxHealth;
         private int health;
         private int strenght;
-        private float speed;
+        private float maxSpeed;
         private float attackSpeed;
         public BoundingSphere attackShpere;
         public List<CreatureEffect> currentBadEffect;
@@ -34,11 +34,11 @@ namespace TheGame
 
         }
 
-        public void AssignParameters(int health, int strenght, float speed)
+        public void AssignParameters(int health, int strenght, float maxSpeed)
         {
             this.health = health;
             this.strenght = strenght;
-            this.speed = speed;
+            this.maxSpeed = maxSpeed;
             this.maxHealth = 200;
         }
 
@@ -67,7 +67,7 @@ namespace TheGame
 
         public void MoveForwards()
         {
-            position += new Vector3(direction.X, 0f, direction.Y) * speed;
+            position += new Vector3(direction.X, 0f, direction.Y) * maxSpeed;
         }
 
 
@@ -98,8 +98,8 @@ namespace TheGame
 
         public float Speed
         {
-            get { return this.speed; }
-            set { this.speed = value; }
+            get { return this.maxSpeed; }
+            set { this.maxSpeed = value; }
         }
 
         public Vector2 Direction

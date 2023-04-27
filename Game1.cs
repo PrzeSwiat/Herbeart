@@ -39,12 +39,13 @@ namespace TheGame
         InteractionEventHandler interactionEventHandler;
         
         Player player;
-        List<Enemy> enemies;
+        Enemies enemies;
 
         EffectHandler effectPrzemyslaw;
 
         public Game1()
         {
+            enemies = new Enemies();
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -73,7 +74,6 @@ namespace TheGame
                                                                                       // Vector3(0,1,0) - up and down is along y axis)
                 worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
             //.................
-            enemies = new List<Enemy>();
 
 
             effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
@@ -89,34 +89,21 @@ namespace TheGame
             world = new World(WindowWidth, WindowHeight, Content, 3f, 20, 20, models, textures, level);
 
             player = new Player(new Vector3(5,0,5), "mis4", "StarSparrow_Orange");
-            Enemy enemy = new Enemy(new Vector3(20, 2, 10), "player", "StarSparrow_Green");
-            Enemy enemy2 = new Enemy(new Vector3(-15, 2, -5), "player", "StarSparrow_Green");
-            Enemy enemy3 = new Enemy(new Vector3(3, 2, 5), "player", "StarSparrow_Green");
+            //Enemy enemy = new Enemy(new Vector3(20, 2, 10), "player", "StarSparrow_Green");
+            //Enemy enemy2 = new Enemy(new Vector3(-15, 2, -5), "player", "StarSparrow_Green");
+            //Enemy enemy3 = new Enemy(new Vector3(3, 2, 5), "player", "StarSparrow_Green");
             AppleTree apple = new AppleTree(new Vector3(30, 2, 30), "player", "StarSparrow_Green");
 
             //enemies.Add(enemy);
             //enemies.Add(enemy2);
-            enemies = spawnEnemies(5, 30, 15);
+            enemies.SpawnEnemies(5, 30, 15);
             //enemies.Add(apple);
             serializator = new Serializator("zapis.txt");
-            interactionEventHandler = new InteractionEventHandler(player,enemies);
+            interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
 
             base.Initialize();
         }
 
-        // helper function
-        private List<Enemy> spawnEnemies(int count, float distanceFroMCenterX, float distanceFroMCenterZ)
-        {
-            List<Enemy> output = new List<Enemy>();
-            for (int i = 0; i < count; i++)
-            {
-                System.Random random = new System.Random();
-                float x = (float)(random.NextDouble() *  2 * distanceFroMCenterX - distanceFroMCenterX);
-                float z = (float)(random.NextDouble() * 2 * distanceFroMCenterZ - distanceFroMCenterZ);
-                output.Add(new Enemy(new Vector3(x, 2, z), "player", "StarSparrow_Green"));
-            }
-            return output;
-        }
 
         protected override void LoadContent()
         {
@@ -126,14 +113,9 @@ namespace TheGame
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.Projection = projectionMatrix;
             player.LoadContent(Content);
+            enemies.LoadModels(Content);
 
-            foreach (Enemy enemy in enemies)
-            {
-                enemy.LoadContent(Content);
-                enemy.OnDestroy += DestroyControl;
-            }
-
-            player.OnDestroy += DestroyControl;
+            //player.OnDestroy += DestroyControl;
             
         }
 
@@ -150,53 +132,13 @@ namespace TheGame
             //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta);
-
-            foreach(Enemy enemy in enemies)
-            {
-                //enemy.Update(delta, player);
-                Vector2 flockVel = Flock(enemy, 50, 0.003);
-                Vector2 avoidVel = Avoid(enemy, 7, 0.0003);
-                enemy.Direction = flockVel + avoidVel;
-                enemy.Direction.Normalize();
-                enemy.MoveForwards();
-
-            }
+            enemies.Move(delta, player);
 
             camera.Update();
             hud.Update(camera.CamPosition);
             SaveControl();
 
             base.Update(gameTime);
-        }
-
-        private Vector2 Flock(Enemy enemy, double distance, double power)
-        {
-            IEnumerable<Enemy> query = enemies.Where(x => x.GetDistance(enemy) < distance);
-            List<Enemy> neighbors = query.ToList();
-            double meanX = neighbors.Sum(x => x.GetPosition().X) / neighbors.Count();
-            double meanZ = neighbors.Sum(x => x.GetPosition().Z) / neighbors.Count();
-            double deltaCenterX = meanX - enemy.GetPosition().X;
-            double deltaCenterZ = meanZ - enemy.GetPosition().Z;
-            Vector2 output = new Vector2((float)deltaCenterX, (float)deltaCenterZ) * (float)power;
-            //System.Diagnostics.Debug.WriteLine(output.ToString());
-            return output;
-        }
-
-        private Vector2 Avoid(Enemy enemy, double distance, double power)
-        {
-
-            IEnumerable<Enemy> query = enemies.Where(x => x.GetDistance(enemy) < distance);
-            List<Enemy> neighbors = query.ToList();
-            (double sumClosenessX, double sumClosenessY) = (0, 0);
-            foreach (var neighbor in neighbors)
-            {
-                double closeness = distance - enemy.GetDistance(neighbor);
-                sumClosenessX += (enemy.GetPosition().X - neighbor.GetPosition().X) * closeness;
-                sumClosenessY += (enemy.GetPosition().Z - neighbor.GetPosition().Z) * closeness;
-            }
-            Vector2 output = new Vector2((float)sumClosenessX, (float)sumClosenessY) * (float)power;
-            //System.Diagnostics.Debug.WriteLine(output.ToString());
-            return output;
         }
 
         protected override void Draw(GameTime gameTime)
@@ -211,24 +153,8 @@ namespace TheGame
             {
                 sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,sceneObject.color);
             }
-            foreach(Enemy enemy in enemies)
-            {
-                enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,enemy.color);
-            }
-            foreach (Enemy enemy in enemies )
-            {
-                if(enemy.GetType() == typeof(AppleTree))
-                {
-                    AppleTree tree = (AppleTree)enemy;
-                    foreach(Apple apple in tree.bullet) 
-                    {
-                        apple.LoadContent(Content);
-                        apple.Draw(effectHandler,worldMatrix, viewMatrix, projectionMatrix,apple.color); 
-                    }
-                   
-                }
-            }
-            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
+            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color); 
             
             //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
             
@@ -246,18 +172,13 @@ namespace TheGame
             {
                 //DrawBB(obj.boundingBox.GetCorners());
             }
-            foreach(Enemy enemy in enemies)
+            foreach (Enemy enemy in enemies.EnemiesList)
             {
                 DrawBB(enemy.boundingBox.GetCorners());
-            }
-            //DrawBB(player.boundingBox.GetCorners());
-            foreach (Enemy enemy in enemies)
-            {
                 DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
+            //DrawBB(player.boundingBox.GetCorners());
             DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
-            
-           
         }
 
         public void DrawBB(Vector3[] corners)
@@ -384,10 +305,11 @@ namespace TheGame
             }
         }
 
-        void DestroyControl(object obj, EventArgs e)
-        {
-            enemies.Remove((Enemy)obj);
-        }
+        //private void DestroyControl(object obj, EventArgs e)
+        //{
+        //    enemies.Remove((Enemy)obj);
+        //}
+
         #endregion
 
     }
