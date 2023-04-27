@@ -16,6 +16,8 @@ namespace TheGame
     internal class Levels
     {
         private string _textFile;
+        private string[] treeModels = { "tree1", "tree2", "tree3" };
+        private string[] grassTextures = {"trawa1", "trawa2", "trawa3"};
         public struct Tile
         {
             public String model;
@@ -85,22 +87,13 @@ namespace TheGame
             {
                 switch(tileList[i]) 
                 {
-                    case 48:
-
-                        _tiles.Add(new Tile("tree1", "green", -2.0f));
+                    case 48: //0
+                        string treeModel = GenerateRandomString(treeModels);
+                        _tiles.Add(new Tile(treeModel, "green", -2.0f));
                         break;
-                    case 49:
-                        _tiles.Add(new Tile("tree2", "green", -2.0f));
-                        break;
-                    case 50:
-                        _tiles.Add(new Tile("tree3", "green", -2.0f));
-                        break;
-                    case 51:
-                        _tiles.Add(new Tile("tree4", "green", -2.0f));
-                        break;
-                    case 97:
+                    case 97: //a
                         _tiles.Add(new Tile("test", "trawa1", -2.0f));
-                        break;
+                        break; 
                     case 98:
                         _tiles.Add(new Tile("test", "trawa2", -2.0f));
                         break;
@@ -109,6 +102,14 @@ namespace TheGame
                         break;
                 }
             }
+        }
+
+        public string GenerateRandomString(string[] list)
+        {
+            Random random = new Random();
+            int index = random.Next(list.Length);
+            string generatedRandom = list[index];
+            return generatedRandom;
         }
 
     }
