@@ -114,7 +114,7 @@ namespace TheGame
             { 
                 if (PossibledistanceToPlayer * PossibledistanceToPlayer < distance )
                 {
-                    this.FollowPlayer(player.GetPosition(), deltaTime, 0);
+                    this.Move(player.GetPosition(), deltaTime, true);
                     difference = this.GetPosition() - player.GetPosition();
                     distance = difference.LengthSquared();
 
@@ -126,7 +126,7 @@ namespace TheGame
             else if(PossibledistanceToPlayer * PossibledistanceToPlayer >= distance ) {
 
 
-                    this.FollowPlayer(player.GetPosition(), deltaTime,1);
+                    this.Move(player.GetPosition(), deltaTime, false);
                     difference = this.GetPosition() - player.GetPosition();
                     distance = difference.LengthSquared();
                     if (PossibledistanceToPlayer * PossibledistanceToPlayer <= distance)

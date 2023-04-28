@@ -10,8 +10,10 @@ namespace TheGame
 {
     internal class Enemy : Creature
     {
-        private DateTime lastAttackTime, actualTime;
         public event EventHandler OnAttack;
+
+        private DateTime lastAttackTime, actualTime;
+        private bool collides = false;
 
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
@@ -24,45 +26,83 @@ namespace TheGame
             
         }
 
+        private void Attack()
+        {
+            actualTime = DateTime.Now;
+            TimeSpan time = actualTime - lastAttackTime;
+            if (time.TotalSeconds > 1)
+            {
+                OnAttack?.Invoke(this, EventArgs.Empty);
+                lastAttackTime = actualTime;
+            }
+        }
+
+        private void checkCollision(Player player)
+        {
+            if (this.boundingSphere.Intersects(player.boundingBox) == true) collides = true;
+            else collides = false;
+        }
+
         public virtual void Update(float deltaTime, Player player)
         {
             Update();
-            if (!(this.boundingSphere.Intersects(player.boundingBox)))
-            { FollowPlayer(player.GetPosition(), deltaTime, 0); }
+            checkCollision(player);
+            if (collides)
+            {
+                Attack();
+            }
             else
             {
-
-                actualTime = DateTime.Now;
-                TimeSpan time = actualTime - lastAttackTime;
-                if (time.TotalSeconds > 1)
-                {
-                    OnAttack?.Invoke(this, EventArgs.Empty);
-                    lastAttackTime = actualTime;
-                }
+                //FollowPlayer(player.GetPosition(), deltaTime, true);
+                Move(player.GetPosition(), deltaTime, true);
             }
-
         }
 
-        public virtual void FollowPlayer(Vector3 playerPosition, float deltaTime, int dir)
+        private void CalculateDirection(Vector3 playerPosition)
         {
-            float speed = this.Speed;
-            if (dir ==1 ) { speed = -speed; }
-            Direction = new Vector2(playerPosition.X - GetPosition().X, playerPosition.Z - GetPosition().Z);
-            NormalizeDirection();
-            float ishowspeed = speed * deltaTime;
-            Vector3 movement = new Vector3(Direction.X * ishowspeed, 0, Direction.Y * ishowspeed);
-            SetPosition(GetPosition() + movement);
-            boundingSphere.Center = boundingSphere.Center + movement;
-            boundingBox.Min = boundingBox.Min + movement;
-            boundingBox.Max = boundingBox.Max + movement;
-            
+            Vector2 newDirection = Vector2.Zero;
+            Vector2 directionToPlayer = new Vector2(playerPosition.X - GetPosition().X, playerPosition.Z - GetPosition().Z);
+            newDirection += directionToPlayer;
+            newDirection.Normalize();
+            Direction = newDirection;
+        }
+
+        private void RotateTowardsDirection()
+        {
             Vector2 w1 = new Vector2(0, 1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
             Vector2 w2 = new Vector2(Direction.X, Direction.Y);
 
             float rotation = angle(w2, w1);
+
+            // rotate bounding box
             rotateSphere(rotation - this.GetRotation().Y);
 
+            // rotate model
             this.SetRotation(0, rotation, 0);
+        }
+
+        private void MoveBoundingBoxForwards(float speed)
+        {
+            Vector3 movement = new Vector3(Direction.X * speed, 0, Direction.Y * speed);
+            boundingSphere.Center = boundingSphere.Center + movement;
+            boundingBox.Min = boundingBox.Min + movement;
+            boundingBox.Max = boundingBox.Max + movement;
+        }
+
+        public void Move(Vector3 playerPosition, float deltaTime, bool shouldChase)
+        {
+            float currentSpeed = this.MaxSpeed;
+            if (!shouldChase) { currentSpeed *= -1; }
+
+            CalculateDirection(playerPosition);
+            RotateTowardsDirection();
+            MoveForwards(currentSpeed * deltaTime);
+            MoveBoundingBoxForwards(currentSpeed * deltaTime);
+        }
+
+        public virtual void FollowPlayer(Vector3 playerPosition, float deltaTime, bool shouldChase)
+        {
+
         }
         public void rotateSphere(float Angle)
         {

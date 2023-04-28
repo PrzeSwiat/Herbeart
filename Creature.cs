@@ -65,9 +65,9 @@ namespace TheGame
             currentBadEffect.Remove(effect);
         }
 
-        public void MoveForwards()
+        public void MoveForwards(float speed)
         {
-            position += new Vector3(direction.X, 0f, direction.Y) * maxSpeed;
+            position += new Vector3(direction.X, 0f, direction.Y) * speed;
         }
 
 
@@ -96,7 +96,7 @@ namespace TheGame
             set { this.strenght = value; }
         }
 
-        public float Speed
+        public float MaxSpeed
         {
             get { return this.maxSpeed; }
             set { this.maxSpeed = value; }
