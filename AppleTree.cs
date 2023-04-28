@@ -111,10 +111,12 @@ namespace TheGame
             }
 
             if (canCorrectPosition)
-            { 
+            {
+                RotateTowardsPlayer(player.GetPosition());
                 if (PossibledistanceToPlayer * PossibledistanceToPlayer < distance )
                 {
-                    this.Move(player.GetPosition(), deltaTime, true);
+
+                    this.MoveForwards(deltaTime, true);
                     difference = this.GetPosition() - player.GetPosition();
                     distance = difference.LengthSquared();
 
@@ -123,10 +125,10 @@ namespace TheGame
                         }
 
                 }
-            else if(PossibledistanceToPlayer * PossibledistanceToPlayer >= distance ) {
+                else if(PossibledistanceToPlayer * PossibledistanceToPlayer >= distance ) {
 
 
-                    this.Move(player.GetPosition(), deltaTime, false);
+                    this.MoveForwards(deltaTime, false);
                     difference = this.GetPosition() - player.GetPosition();
                     distance = difference.LengthSquared();
                     if (PossibledistanceToPlayer * PossibledistanceToPlayer <= distance)
