@@ -47,6 +47,7 @@ namespace TheGame
         {
             Update();
             checkCollision(player);
+            RotateTowardsPlayer(player.GetPosition());
             if (collides)
             {
                 Attack();
@@ -54,11 +55,40 @@ namespace TheGame
             else
             {
                 //FollowPlayer(player.GetPosition(), deltaTime, true);
-                Move(player.GetPosition(), deltaTime, true);
+                MoveForwards(deltaTime, true);
             }
         }
 
-        private void CalculateDirection(Vector3 playerPosition)
+        //private Vector2 FlockBehaviour(Enemy enemy, double distance, double power)
+        //{
+        //    IEnumerable<Enemy> query = enemiesList.Where(x => x.GetDistance(enemy) < distance);
+        //    List<Enemy> neighbors = query.ToList();
+        //    double meanX = neighbors.Sum(x => x.GetPosition().X) / neighbors.Count();
+        //    double meanZ = neighbors.Sum(x => x.GetPosition().Z) / neighbors.Count();
+        //    double deltaCenterX = meanX - enemy.GetPosition().X;
+        //    double deltaCenterZ = meanZ - enemy.GetPosition().Z;
+        //    Vector2 output = new Vector2((float)deltaCenterX, (float)deltaCenterZ) * (float)power;
+        //    //System.Diagnostics.Debug.WriteLine(output.ToString());
+        //    return output;
+        //}
+
+        //private Vector2 AvoidanceBehaviour(Enemy enemy, double distance, double power)
+        //{
+        //    IEnumerable<Enemy> query = enemiesList.Where(x => x.GetDistance(enemy) < distance);
+        //    List<Enemy> neighbors = query.ToList();
+        //    (double sumClosenessX, double sumClosenessY) = (0, 0);
+        //    foreach (var neighbor in neighbors)
+        //    {
+        //        double closeness = distance - enemy.GetDistance(neighbor);
+        //        sumClosenessX += (enemy.GetPosition().X - neighbor.GetPosition().X) * closeness;
+        //        sumClosenessY += (enemy.GetPosition().Z - neighbor.GetPosition().Z) * closeness;
+        //    }
+        //    Vector2 output = new Vector2((float)sumClosenessX, (float)sumClosenessY) * (float)power;
+        //    //System.Diagnostics.Debug.WriteLine(output.ToString());
+        //    return output;
+        //}
+
+        private void CalculateDirection(Vector3 playerPosition )
         {
             Vector2 newDirection = Vector2.Zero;
             Vector2 directionToPlayer = new Vector2(playerPosition.X - GetPosition().X, playerPosition.Z - GetPosition().Z);
@@ -67,8 +97,9 @@ namespace TheGame
             Direction = newDirection;
         }
 
-        private void RotateTowardsDirection()
+        private void RotateTowardsPlayer(Vector3 playerPosition)
         {
+            CalculateDirection(playerPosition);
             Vector2 w1 = new Vector2(0, 1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
             Vector2 w2 = new Vector2(Direction.X, Direction.Y);
 
@@ -89,14 +120,13 @@ namespace TheGame
             boundingBox.Max = boundingBox.Max + movement;
         }
 
-        public void Move(Vector3 playerPosition, float deltaTime, bool shouldChase)
+        public void MoveForwards(float deltaTime, bool shouldChase)
         {
             float currentSpeed = this.MaxSpeed;
             if (!shouldChase) { currentSpeed *= -1; }
 
-            CalculateDirection(playerPosition);
-            RotateTowardsDirection();
-            MoveForwards(currentSpeed * deltaTime);
+
+            MoveModelForwards(currentSpeed * deltaTime);
             MoveBoundingBoxForwards(currentSpeed * deltaTime);
         }
 

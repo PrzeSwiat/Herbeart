@@ -30,11 +30,8 @@ namespace TheGame
             foreach (Enemy enemy in enemiesList)
             {
                 enemy.Update(deltaTime, player);
-                Vector2 flockVel = FlockBehaviour(enemy, 50, 0.003);
-                Vector2 avoidVel = AvoidBehaviour(enemy, 7, 0.0003);
-                //enemy.Direction = flockVel + avoidVel;
-                //enemy.Direction.Normalize();
-                //enemy.MoveForwards();
+                //Vector2 flockVel = FlockBehaviour(enemy, 50, 0.003);
+                //Vector2 avoidVel = AvoidBehaviour(enemy, 7, 0.0003);
             }
         }
 
@@ -75,35 +72,6 @@ namespace TheGame
             }
         }
 
-        private Vector2 FlockBehaviour(Enemy enemy, double distance, double power)
-        {
-            IEnumerable<Enemy> query = enemiesList.Where(x => x.GetDistance(enemy) < distance);
-            List<Enemy> neighbors = query.ToList();
-            double meanX = neighbors.Sum(x => x.GetPosition().X) / neighbors.Count();
-            double meanZ = neighbors.Sum(x => x.GetPosition().Z) / neighbors.Count();
-            double deltaCenterX = meanX - enemy.GetPosition().X;
-            double deltaCenterZ = meanZ - enemy.GetPosition().Z;
-            Vector2 output = new Vector2((float)deltaCenterX, (float)deltaCenterZ) * (float)power;
-            //System.Diagnostics.Debug.WriteLine(output.ToString());
-            return output;
-        }
-
-        private Vector2 AvoidBehaviour(Enemy enemy, double distance, double power)
-        {
-
-            IEnumerable<Enemy> query = enemiesList.Where(x => x.GetDistance(enemy) < distance);
-            List<Enemy> neighbors = query.ToList();
-            (double sumClosenessX, double sumClosenessY) = (0, 0);
-            foreach (var neighbor in neighbors)
-            {
-                double closeness = distance - enemy.GetDistance(neighbor);
-                sumClosenessX += (enemy.GetPosition().X - neighbor.GetPosition().X) * closeness;
-                sumClosenessY += (enemy.GetPosition().Z - neighbor.GetPosition().Z) * closeness;
-            }
-            Vector2 output = new Vector2((float)sumClosenessX, (float)sumClosenessY) * (float)power;
-            //System.Diagnostics.Debug.WriteLine(output.ToString());
-            return output;
-        }
 
         private void DestroyControl(object obj, EventArgs e)
         {

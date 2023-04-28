@@ -65,7 +65,7 @@ namespace TheGame
             currentBadEffect.Remove(effect);
         }
 
-        public void MoveForwards(float speed)
+        public void MoveModelForwards(float speed)
         {
             position += new Vector3(direction.X, 0f, direction.Y) * speed;
         }
