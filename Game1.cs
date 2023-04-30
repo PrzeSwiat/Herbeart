@@ -96,7 +96,7 @@ namespace TheGame
 
             //enemies.AddEnemy(enemy);
             //enemies.AddEnemy(enemy2);
-            //enemies.SpawnEnemies(4, 20, 20);
+            enemies.SpawnEnemies(4, 20, 20);
             enemies.AddEnemy(apple);
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);

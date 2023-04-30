@@ -35,7 +35,14 @@ namespace TheGame
                 Vector2 avoidVel = AvoidanceBehaviour(enemy, 9, 0.5f);
                 Vector2 alignVel = AlignBehaviour(enemy, 20, 0.1f);
                 Vector2 towardsPlayerVel = enemy.CalculateDirectionTowardsTarget(playerPosition);
-                enemy.Direction = flockVel + towardsPlayerVel + avoidVel;
+                if (enemy.Collides)
+                {
+                    enemy.Direction = towardsPlayerVel;
+                }
+                else
+                {
+                    enemy.Direction = flockVel + towardsPlayerVel + avoidVel;
+                }
                 enemy.NormalizeDirection();
                 enemy.Update(deltaTime, player);
             }

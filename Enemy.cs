@@ -122,5 +122,10 @@ namespace TheGame
             return result;
         }
 
+        public bool Collides
+        {
+            get { return this.collides; }
+        }
+
     }
 }
