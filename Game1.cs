@@ -92,12 +92,12 @@ namespace TheGame
             //Enemy enemy = new Enemy(new Vector3(20, 2, 10), "player", "StarSparrow_Green");
             //Enemy enemy2 = new Enemy(new Vector3(-15, 2, -5), "player", "StarSparrow_Green");
             //Enemy enemy3 = new Enemy(new Vector3(3, 2, 5), "player", "StarSparrow_Green");
-            AppleTree apple = new AppleTree(new Vector3(30, 2, 30), "player", "StarSparrow_Green");
+            AppleTree apple = new AppleTree(new Vector3(10, 2, 10), "player", "StarSparrow_Green");
 
-            //enemies.Add(enemy);
-            //enemies.Add(enemy2);
-            enemies.SpawnEnemies(5, 30, 15);
-            //enemies.Add(apple);
+            //enemies.AddEnemy(enemy);
+            //enemies.AddEnemy(enemy2);
+            //enemies.SpawnEnemies(4, 20, 20);
+            enemies.AddEnemy(apple);
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
 
@@ -160,7 +160,7 @@ namespace TheGame
             
             hud.DrawFrontground(_spriteBatch, player.Health);
 
-            DrawBoundingBoxes();
+            //DrawBoundingBoxes();
         }
 
         #region DrawingBB

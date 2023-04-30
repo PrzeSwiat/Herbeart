@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,40 +28,55 @@ namespace TheGame
 
         public void Move(float deltaTime, Player player)
         {
+            Vector3 playerPosition = player.GetPosition();
             foreach (Enemy enemy in enemiesList)
             {
+                Vector2 flockVel = FlockBehaviour(enemy, 20, 0.7f);
+                Vector2 avoidVel = AvoidanceBehaviour(enemy, 9, 0.5f);
+                Vector2 alignVel = AlignBehaviour(enemy, 20, 0.1f);
+                Vector2 towardsPlayerVel = enemy.CalculateDirectionTowardsTarget(playerPosition);
+                enemy.Direction = flockVel + towardsPlayerVel + avoidVel;
+                enemy.NormalizeDirection();
                 enemy.Update(deltaTime, player);
-                //Vector2 flockVel = FlockBehaviour(enemy, 50, 0.003);
-                //Vector2 avoidVel = AvoidBehaviour(enemy, 7, 0.0003);
             }
         }
 
-        private Vector2 FlockBehaviour(Enemy enemy, double distance, double power)
+        private Vector2 FlockBehaviour(Enemy enemy, float distance, float power)
         {
-            IEnumerable<Enemy> query = enemiesList.Where(x => x.GetDistance(enemy) < distance);
-            List<Enemy> neighbors = query.ToList();
-            double meanX = neighbors.Sum(x => x.GetPosition().X) / neighbors.Count();
-            double meanZ = neighbors.Sum(x => x.GetPosition().Z) / neighbors.Count();
-            double deltaCenterX = meanX - enemy.GetPosition().X;
-            double deltaCenterZ = meanZ - enemy.GetPosition().Z;
-            Vector2 output = new Vector2((float)deltaCenterX, (float)deltaCenterZ) * (float)power;
-            //System.Diagnostics.Debug.WriteLine(output.ToString());
+            List<Enemy> neighbors = enemiesList.Where(x => x.GetDistance(enemy) < distance).ToList();
+            neighbors.Remove(enemy);
+            float meanX = neighbors.Sum(x => x.GetPosition().X) / neighbors.Count();
+            float meanZ = neighbors.Sum(x => x.GetPosition().Z) / neighbors.Count();
+            float deltaCenterX = meanX - enemy.GetPosition().X;
+            float deltaCenterZ = meanZ - enemy.GetPosition().Z;
+            Vector2 output = new Vector2(deltaCenterX, deltaCenterZ) * power;
             return output;
         }
 
-        private Vector2 AvoidanceBehaviour(Enemy enemy, double distance, double power)
+        private Vector2 AvoidanceBehaviour(Enemy enemy, float distance, float power)
         {
-            IEnumerable<Enemy> query = enemiesList.Where(x => x.GetDistance(enemy) < distance);
-            List<Enemy> neighbors = query.ToList();
-            (double sumClosenessX, double sumClosenessY) = (0, 0);
+            List<Enemy> neighbors = enemiesList.Where(x => x.GetDistance(enemy) < distance).ToList();
+            neighbors.Remove(enemy);
+            (float sumClosenessX, float sumClosenessY) = (0, 0);
             foreach (var neighbor in neighbors)
             {
-                double closeness = distance - enemy.GetDistance(neighbor);
+                float closeness = distance - (float)enemy.GetDistance(neighbor);
                 sumClosenessX += (enemy.GetPosition().X - neighbor.GetPosition().X) * closeness;
                 sumClosenessY += (enemy.GetPosition().Z - neighbor.GetPosition().Z) * closeness;
             }
-            Vector2 output = new Vector2((float)sumClosenessX, (float)sumClosenessY) * (float)power;
-            //System.Diagnostics.Debug.WriteLine(output.ToString());
+            Vector2 output = new Vector2(sumClosenessX, sumClosenessY) * power;
+            return output;
+        }
+
+        private Vector2 AlignBehaviour(Enemy enemy, double distance, float power)
+        {
+            List<Enemy> neighbors = enemiesList.Where(x => x.GetDistance(enemy) < distance).ToList();
+            neighbors.Remove(enemy);
+            float meanXvel = neighbors.Sum(x => x.Direction.X) / neighbors.Count();
+            float meanYvel = neighbors.Sum(x => x.Direction.Y) / neighbors.Count();
+            float dXvel = meanXvel - enemy.Direction.X;
+            float dYvel = meanYvel - enemy.Direction.Y;
+            Vector2 output = new Vector2(dXvel * power, dYvel * power);
             return output;
         }
 

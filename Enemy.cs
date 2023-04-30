@@ -47,7 +47,7 @@ namespace TheGame
         {
             Update();
             checkCollision(player);
-            RotateTowardsPlayer(player.GetPosition());
+            RotateTowardsCurrentDirection();
             if (collides)
             {
                 Attack();
@@ -59,18 +59,15 @@ namespace TheGame
         }
 
 
-        private void CalculateDirection(Vector3 playerPosition )
+        public Vector2 CalculateDirectionTowardsTarget(Vector3 targetPosition)
         {
-            Vector2 newDirection = Vector2.Zero;
-            Vector2 directionToPlayer = new Vector2(playerPosition.X - GetPosition().X, playerPosition.Z - GetPosition().Z);
-            newDirection += directionToPlayer;
-            newDirection.Normalize();
-            Direction = newDirection;
+            return new Vector2(targetPosition.X - GetPosition().X, targetPosition.Z - GetPosition().Z);
         }
 
-        protected void RotateTowardsPlayer(Vector3 playerPosition)
+
+
+        protected void RotateTowardsCurrentDirection()
         {
-            CalculateDirection(playerPosition);
             Vector2 w1 = new Vector2(0, 1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
             Vector2 w2 = new Vector2(Direction.X, Direction.Y);
 

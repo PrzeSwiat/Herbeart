@@ -76,7 +76,7 @@ namespace TheGame
         public List<Apple> bullet = new List<Apple>(); 
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-           
+            
         }
 
         public void RemoveBullet(object sender,EventArgs e)
@@ -101,6 +101,11 @@ namespace TheGame
             timecounter -= deltaTime;
             timetoshoot -= deltaTime;
 
+            this.Direction = Vector2.Zero;
+            Vector3 playerPosition = player.GetPosition();
+            this.Direction = CalculateDirectionTowardsTarget(playerPosition);
+            RotateTowardsCurrentDirection();
+
             if (timecounter > 0)
             {
                 canCorrectPosition = false;
@@ -112,11 +117,11 @@ namespace TheGame
 
             if (canCorrectPosition)
             {
-                RotateTowardsPlayer(player.GetPosition());
+
                 if (PossibledistanceToPlayer * PossibledistanceToPlayer < distance )
                 {
 
-                    this.MoveForwards(deltaTime, true);
+                    this.MoveForwards(deltaTime/10, true);
                     difference = this.GetPosition() - player.GetPosition();
                     distance = difference.LengthSquared();
 
@@ -128,7 +133,7 @@ namespace TheGame
                 else if(PossibledistanceToPlayer * PossibledistanceToPlayer >= distance ) {
 
 
-                    this.MoveForwards(deltaTime, false);
+                    this.MoveForwards(deltaTime/10, false);
                     difference = this.GetPosition() - player.GetPosition();
                     distance = difference.LengthSquared();
                     if (PossibledistanceToPlayer * PossibledistanceToPlayer <= distance)
