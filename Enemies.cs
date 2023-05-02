@@ -51,6 +51,7 @@ namespace TheGame
         private Vector2 FlockBehaviour(Enemy enemy, float distance, float power)
         {
             List<Enemy> neighbors = enemiesList.Where(x => x.GetDistance(enemy) < distance).ToList();
+            if (neighbors.Count <= 1) return Vector2.Zero;
             neighbors.Remove(enemy);
             float meanX = neighbors.Sum(x => x.GetPosition().X) / neighbors.Count();
             float meanZ = neighbors.Sum(x => x.GetPosition().Z) / neighbors.Count();
@@ -63,6 +64,7 @@ namespace TheGame
         private Vector2 AvoidanceBehaviour(Enemy enemy, float distance, float power)
         {
             List<Enemy> neighbors = enemiesList.Where(x => x.GetDistance(enemy) < distance).ToList();
+            if (neighbors.Count <= 1) return Vector2.Zero;
             neighbors.Remove(enemy);
             (float sumClosenessX, float sumClosenessY) = (0, 0);
             foreach (var neighbor in neighbors)
@@ -78,6 +80,7 @@ namespace TheGame
         private Vector2 AlignBehaviour(Enemy enemy, double distance, float power)
         {
             List<Enemy> neighbors = enemiesList.Where(x => x.GetDistance(enemy) < distance).ToList();
+            if (neighbors.Count <= 1) return Vector2.Zero;
             neighbors.Remove(enemy);
             float meanXvel = neighbors.Sum(x => x.Direction.X) / neighbors.Count();
             float meanYvel = neighbors.Sum(x => x.Direction.Y) / neighbors.Count();

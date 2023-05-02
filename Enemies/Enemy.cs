@@ -26,7 +26,7 @@ namespace TheGame
             
         }
 
-        private void Attack()
+        protected virtual void Attack(Player player)
         {
             actualTime = DateTime.Now;
             TimeSpan time = actualTime - lastAttackTime;
@@ -37,7 +37,7 @@ namespace TheGame
             }
         }
 
-        private void checkCollision(Player player)
+        protected void checkCollision(Player player)
         {
             if (this.boundingSphere.Intersects(player.boundingBox) == true) collides = true;
             else collides = false;
@@ -50,7 +50,7 @@ namespace TheGame
             RotateTowardsCurrentDirection();
             if (collides)
             {
-                Attack();
+                Attack(player);
             }
             else
             {

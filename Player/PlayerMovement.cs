@@ -31,10 +31,10 @@ namespace TheGame
                     float RightjoystickY = gamePadState.ThumbSticks.Right.Y;
 
                     Vector2 w1 = new Vector2(0, -1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
-                    Vector2 w2 = new Vector2(-LeftjoystickX, LeftjoystickY);
+                    Vector2 w2 = new Vector2(LeftjoystickX, LeftjoystickY);
 
                     rotation = angle(w1, w2);
-                    player.Direction = new Vector2(-LeftjoystickX, LeftjoystickY);
+                    player.Direction = new Vector2(LeftjoystickX, LeftjoystickY);
 
                     // JUZ WCALE NIE UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
                     if (thumbLeftX == 0 && thumbLeftY == 0)
