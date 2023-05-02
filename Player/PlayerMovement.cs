@@ -34,7 +34,7 @@ namespace TheGame
                     Vector2 w2 = new Vector2(-LeftjoystickX, LeftjoystickY);
 
                     rotation = angle(w1, w2);
-                    player.Direction = new Vector2(LeftjoystickX, LeftjoystickY);
+                    player.Direction = new Vector2(-LeftjoystickX, LeftjoystickY);
 
                     // JUZ WCALE NIE UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
                     if (thumbLeftX == 0 && thumbLeftY == 0)
@@ -80,8 +80,8 @@ namespace TheGame
             }
             float Sphereang = rotation - player.GetRotation().Y;
             rotateSphere(Sphereang);
-            UpdateBB(0, world, new Vector3(player.Direction.X * deltaTime * player.Speed, 0, 0));
-            UpdateBB(0, world, new Vector3(0, 0, player.Direction.Y * deltaTime * player.Speed));
+            UpdateBB(0, world, new Vector3(player.Direction.X * deltaTime * player.MaxSpeed, 0, 0));
+            UpdateBB(0, world, new Vector3(0, 0, player.Direction.Y * deltaTime * player.MaxSpeed));
             player.SetRotation(0, rotation, 0);
         }
 

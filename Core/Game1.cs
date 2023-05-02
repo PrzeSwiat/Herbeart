@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
@@ -11,6 +12,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Threading;
 using Color = Microsoft.Xna.Framework.Color;
 
@@ -37,12 +39,13 @@ namespace TheGame
         InteractionEventHandler interactionEventHandler;
         
         Player player;
-        List<Enemy> enemies;
+        Enemies enemies;
 
         EffectHandler effectPrzemyslaw;
 
         public Game1()
         {
+            enemies = new Enemies();
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -71,7 +74,6 @@ namespace TheGame
                                                                                       // Vector3(0,1,0) - up and down is along y axis)
                 worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
             //.................
-            enemies = new List<Enemy>();
 
 
             effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
@@ -86,11 +88,11 @@ namespace TheGame
             Enemy enemy2 = new Enemy(new Vector3(0, 2, 30), "player", "StarSparrow_Green");
             AppleTree apple = new AppleTree(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
 
-            enemies.Add(enemy);
-            enemies.Add(enemy2);
-            enemies.Add(apple);
+            enemies.AddEnemy(enemy);
+            enemies.AddEnemy(enemy2);
+            enemies.AddEnemy(apple);
             serializator = new Serializator("zapis.txt");
-            interactionEventHandler = new InteractionEventHandler(player,enemies);
+            interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
 
             base.Initialize();
         }
@@ -103,14 +105,9 @@ namespace TheGame
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.Projection = projectionMatrix;
             player.LoadContent(Content);
+            enemies.LoadModels(Content);
 
-            foreach (Enemy enemy in enemies)
-            {
-                enemy.LoadContent(Content);
-                enemy.OnDestroy += DestroyControl;
-            }
-
-            player.OnDestroy += DestroyControl;
+            //player.OnDestroy += DestroyControl;
             
         }
 
@@ -127,13 +124,7 @@ namespace TheGame
             viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta);
-            /*player.Update(world1, delta);*/
-
-            foreach (Enemy enemy in enemies)
-            {
-                enemy.Update(delta, player);
-                
-            }
+            enemies.Move(delta, player);
 
             camera.Update1(player.position);
             hud.Update(camera.CamPosition);
@@ -150,28 +141,12 @@ namespace TheGame
 
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
-            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
-            
-            foreach (Enemy enemy in enemies)
+            foreach (SceneObject sceneObject in world.GetWorldList())
             {
-                enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,enemy.color);
+                sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,sceneObject.color);
             }
-
-            foreach (Enemy enemy in enemies )
-            {
-                if(enemy.GetType() == typeof(AppleTree))
-                {
-                    AppleTree tree = (AppleTree)enemy;
-                    foreach(Apple apple in tree.bullet) 
-                    {
-                        apple.LoadContent(Content);
-                        apple.Draw(effectHandler,worldMatrix, viewMatrix, projectionMatrix,apple.color); 
-                    }
-                   
-                }
-            }
-            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
+            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color); 
             
             //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
             
@@ -189,18 +164,13 @@ namespace TheGame
             {
                 //DrawBB(obj.boundingBox.GetCorners());
             }
-            foreach(Enemy enemy in enemies)
+            foreach (Enemy enemy in enemies.EnemiesList)
             {
                 DrawBB(enemy.boundingBox.GetCorners());
-            }
-            //DrawBB(player.boundingBox.GetCorners());
-            foreach (Enemy enemy in enemies)
-            {
                 DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
+            //DrawBB(player.boundingBox.GetCorners());
             DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
-            
-           
         }
 
         public void DrawBB(Vector3[] corners)
@@ -329,8 +299,6 @@ namespace TheGame
 
         void DestroyControl(object obj, EventArgs e)
         {
-            if(obj is Enemy)
-                enemies.Remove((Enemy)obj);
             if(obj is Player)
             {
                 Exit();
