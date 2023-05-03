@@ -40,29 +40,18 @@ namespace TheGame
 
             int numberOfModule = (int)playerX / moduleSeparator;
 
-            if (numberOfModule - 1 >= 0)
+            for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
-                foreach (SceneObject obj in _levels[numberOfModule - 1].returnSceneObjects())
+                if (i >= 0 && i < _levels.Count - 1)
                 {
-                    _sceneObjects.Add(obj);
+                    foreach (SceneObject obj in _levels[i].returnSceneObjects())
+                    {
+                        _sceneObjects.Add(obj);
+                    }
                 }
+                
             }
 
-            if (numberOfModule < _levels.Count)
-            {
-                foreach (SceneObject obj in _levels[numberOfModule].returnSceneObjects())
-                {
-                    _sceneObjects.Add(obj);
-                }
-            }
-
-            if (numberOfModule + 1 < _levels.Count)
-            {
-                foreach (SceneObject obj in _levels[numberOfModule + 1].returnSceneObjects())
-                {
-                    _sceneObjects.Add(obj);
-                }
-            }
 
             return _sceneObjects;
         }
