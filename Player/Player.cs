@@ -34,7 +34,7 @@ namespace TheGame
         {
             SetScale(1.7f);
 
-            AssignParameters(200, 20, 5);
+            AssignParameters(200, 20, 20);
             playerMovement = new PlayerMovement(this);
 
             // Dołączenie metody, która będzie wykonywana przy każdym ticku timera

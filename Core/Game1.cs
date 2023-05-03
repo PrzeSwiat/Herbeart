@@ -141,10 +141,9 @@ namespace TheGame
 
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            foreach (SceneObject sceneObject in world.GetWorldList())
-            {
-                sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix,sceneObject.color);
-            }
+
+            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.position.X);
+
             enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color); 
             
