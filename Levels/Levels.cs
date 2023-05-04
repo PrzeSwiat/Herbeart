@@ -62,7 +62,7 @@ namespace TheGame
         class Level
         {
             private string[] treeModels = { "tree1", "tree2", "tree3" };
-            private string[] grassTextures = {"trawa1", "trawa2", "trawa3"};
+            //private string[] grassTextures = {"trawa1", "trawa2", "trawa3"};
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
             private int tileSize = 4;
@@ -93,21 +93,6 @@ namespace TheGame
 
             public List<SceneObject> returnSceneObjects() { return _sceneObjects; }
 
-            public float returnTileHeight(int index)
-            {
-                return this._tiles[index].height;
-            }
-
-            public String returnTileModel(int index)
-            {
-                return this._tiles[index].model;
-            }
-
-            public String returnTileTexture(int index)
-            {
-                return this._tiles[index].texture;
-            }
-
 
             private void LoadSceneObjects(ContentManager Content, string fileName, float separator)
             {
@@ -118,9 +103,9 @@ namespace TheGame
                     for (int j = 0; j < moduleWidth; j++)
                     {
                         int index = i * moduleWidth + j;
-                        float height = returnTileHeight(index);
-                        String model = returnTileModel(index);
-                        String texture = returnTileTexture(index);
+                        float height = this._tiles[index].height;
+                        String model = this._tiles[index].model;
+                        String texture = this._tiles[index].texture;
                         Vector3 wektor = new Vector3(j * tileSize + separator, height, i * tileSize);
                         _sceneObjects.Add(new SceneObject(wektor, model, texture));
                     }
@@ -140,7 +125,7 @@ namespace TheGame
             public void LoadScene(string fileName)
             {
                 List<int> tileList = ReadFile(fileName);
-                _tiles = new List<Tile>();
+               _tiles = new List<Tile>();
 
                 for (int i = 0; i < tileList.Count; i++)
                 {

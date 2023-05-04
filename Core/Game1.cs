@@ -42,6 +42,7 @@ namespace TheGame
         Enemies enemies;
 
         EffectHandler effectPrzemyslaw;
+        EffectHandler effectWiktor;
 
         public Game1()
         {
@@ -78,6 +79,7 @@ namespace TheGame
 
             effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
             effectPrzemyslaw = new EffectHandler(Content.Load<Effect>("Przemyslaw"));
+            effectWiktor = new EffectHandler(Content.Load<Effect>("Wiktor"));
 
 
             hud = new HUD("forest2", WindowWidth, WindowHeight);
@@ -146,6 +148,8 @@ namespace TheGame
 
             enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color); 
+
+
             
             //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
             

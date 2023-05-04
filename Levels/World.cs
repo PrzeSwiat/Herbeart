@@ -20,7 +20,7 @@ namespace TheGame
         public World(ContentManager Content)   
         {
             _worldArray = new List<SceneObject>();
-            level = new Levels(Content, 2);
+            level = new Levels(Content, 4);
         }
 
         public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, float playerX)
