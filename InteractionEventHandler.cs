@@ -16,7 +16,7 @@ namespace TheGame
 
         public InteractionEventHandler(Player player, List<Enemy> enemies)
         {
-           this.player = player;
+            this.player = player;
             this.enemies = enemies;
 
             this.player.OnAttackPressed += PlayerAttack;
@@ -31,7 +31,8 @@ namespace TheGame
         #region PLAYER
         private void PlayerAttack(object sender, EventArgs e) //A
         {
-            foreach(Enemy enemy in enemies.ToList())
+            
+            foreach (Enemy enemy in enemies.ToList())
             {
                 if (player.boundingSphere.Intersects(enemy.boundingBox))
                 {

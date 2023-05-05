@@ -23,12 +23,20 @@ namespace TheGame
     internal class Player : Creature
     {
         public List<Leaf> inventory;
-        private GamePadState beffore;
         private bool canMove = true;
         private float StunTimer = 0;
+        private DateTime lastAttackTime, actualTime;
+
+
         private PlayerMovement playerMovement;
         private PlayerEffectHandler playerEffects;
         public event EventHandler OnAttackPressed;
+
+        private Boolean isCraftingTea;
+        private Boolean padButtonAClicked;
+        private Boolean padButtonBClicked;
+        private Boolean padButtonXClicked;
+        private Boolean padButtonYClicked;
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
@@ -36,6 +44,8 @@ namespace TheGame
 
             AssignParameters(200, 20, 20);
             playerMovement = new PlayerMovement(this);
+            isCraftingTea = false;
+            padButtonAClicked = false;
 
             // Dołączenie metody, która będzie wykonywana przy każdym ticku timera
             playerEffects = new PlayerEffectHandler(this);
@@ -107,20 +117,68 @@ namespace TheGame
             GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
             if (capabilities.IsConnected)
             {
-
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+                // Button A
                 if (capabilities.HasAButton)
                 {
-                    if (gamePadState.IsButtonDown(Buttons.A) && beffore != gamePadState)
+                    if (gamePadState.IsButtonDown(Buttons.A))
                     {
-                        OnAttackPressed?.Invoke(this, EventArgs.Empty);  //?.Invoke() ==  if(ojb != null)
-                        beffore = gamePadState;
-                    }
-                    if (gamePadState.IsButtonUp(Buttons.A))
-                    {
-                        beffore = gamePadState;
+                        if (isCraftingTea && !padButtonAClicked) // W momencie jak lewy triger jest wcisniety
+                        {
+                            // tutaj dodac skladnik do tworzenia herbaty pod A
+                            padButtonAClicked = true;
+
+                        } else // normalny atak gracza
+                        {
+                            actualTime = DateTime.Now;
+                            TimeSpan time = actualTime - lastAttackTime;
+                            if (time.TotalSeconds > 1)
+                            {
+                                OnAttackPressed?.Invoke(this, EventArgs.Empty);
+                                lastAttackTime = actualTime;
+                            }
+                        }
+                        
+                    } else if (gamePadState.IsButtonUp(Buttons.A)) {
+                        padButtonAClicked = false;
                     }
                 }
+
+                // Button B
+                if (capabilities.HasBButton)
+                {
+                    if (gamePadState.IsButtonDown(Buttons.B))
+                    {
+                        if (isCraftingTea && !padButtonBClicked)
+                        {
+                            // tutaj dodac skladnik do tworzenia herbaty pod B
+                            padButtonBClicked = true;
+                            Debug.Write("Dupa");
+
+                        }
+                        else
+                        {
+                            // tutaj ewentualny dash/przewrot
+                        }
+
+                    }
+                    else if (gamePadState.IsButtonUp(Buttons.B))
+                    {
+                        padButtonBClicked = false;
+                    }
+                }
+
+
+                if (gamePadState.IsButtonDown(Buttons.LeftTrigger)) 
+                { 
+                    isCraftingTea = true;
+                } else if (gamePadState.IsButtonUp(Buttons.LeftTrigger))
+                {
+                    isCraftingTea = false;
+                }
+
+
+
 
             }
         }
