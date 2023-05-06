@@ -25,6 +25,10 @@ namespace TheGame
             enemiesList.Add(enemy);
         }
 
+        public void AddEnemies(List<Enemy> enemies)
+        {
+            enemiesList = enemies;
+        }
 
         public void Move(float deltaTime, Player player)
         {

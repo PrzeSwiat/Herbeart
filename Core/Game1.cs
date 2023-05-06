@@ -37,7 +37,7 @@ namespace TheGame
         World world;
         HUD hud;
         InteractionEventHandler interactionEventHandler;
-        
+        int i = 0;
         Player player;
         Enemies enemies;
 
@@ -84,15 +84,9 @@ namespace TheGame
 
             hud = new HUD("forest2", WindowWidth, WindowHeight);
             world = new World(Content);
-
+            //enemies.AddEnemies(world.returnEnemies());
             player = new Player(new Vector3(30,0,30), "mis4", "StarSparrow_Orange");
-            Enemy enemy = new Enemy(new Vector3(20, 2, 30), "player", "StarSparrow_Green");
-            Enemy enemy2 = new Enemy(new Vector3(20, 2, 45), "player", "StarSparrow_Green");
-            AppleTree apple = new AppleTree(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
 
-            enemies.AddEnemy(enemy);
-            enemies.AddEnemy(enemy2);
-            enemies.AddEnemy(apple);
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
 
@@ -117,17 +111,19 @@ namespace TheGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            Debug.Write(enemies.EnemiesList.Count);
+            Debug.Write("\n");
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            
             camera.CamPosition = player.GetPosition() + camera.CamPositionState;
             camera.nextpos = player.GetPosition();
             //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker , Vector3.Up);
             viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta);
-            enemies.Move(delta, player);
+            enemies.AddEnemies(world.returnEnemiesList(player.position.X));
 
+            enemies.Move(delta, player);
             camera.Update1(player.position);
             hud.Update(camera.CamPosition);
             SaveControl();
