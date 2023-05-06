@@ -133,7 +133,7 @@ namespace TheGame
                     {
                         case 48: //0
                             string treeModel = GenerateRandomString(treeModels);
-                            _tiles.Add(new Tile(treeModel, "green", -2.0f));
+                            _tiles.Add(new Tile(treeModel, "tree1_color", -2.0f));
                             break;
                         case 97: //a
                             _tiles.Add(new Tile("test", "trawa1", -2.0f));
