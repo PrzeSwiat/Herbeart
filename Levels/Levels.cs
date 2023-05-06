@@ -239,15 +239,12 @@ namespace TheGame
                 {
                     int index = GenerateRandomInt(groundList);
                     Vector3 groundPosition = groundPositions[index];
-                    enemiesPositions[i] = groundPosition;
+                    if(!enemiesPositions.Contains(groundPosition))
+                    {
+                        enemiesPositions[i] = groundPosition;
+                    }
                 }
-                if (enemyCount != enemiesPositions.Distinct().Count() || enemyCount == 0)
-                {
-                    //change
-                    Debug.Write("POWTARZA SIE");
-
-                }
-                else
+                if (enemyCount != 0)
                 {
                     for (int i = 0; i < enemyCount; i++)
                     {
