@@ -14,6 +14,8 @@ namespace TheGame
         private IntervalTimer timer1;
         private IntervalTimer timer2;
 
+        int damage = 3;
+
         public PlayerEffectHandler(Player player)
         {
             this.player = player;
@@ -26,6 +28,13 @@ namespace TheGame
             timer1.Start();
             timer2.Start();
         }
+
+        public void DamagePlayer(int damage)
+        {
+            this.damage = damage;
+            timer2.Start();
+        }
+
 
         public void EffectAddHealth()
         {

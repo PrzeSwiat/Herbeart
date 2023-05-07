@@ -41,7 +41,7 @@ namespace TheGame
 
         public void Update()    //przyda się do efektów podłoża (obszarowych)
         {
-            actualTime = DateTime.Now;
+            /*actualTime = DateTime.Now;
             TimeSpan time = actualTime - lastEventTime;
             if (time.TotalSeconds > 1)
             {
@@ -50,7 +50,7 @@ namespace TheGame
                 {
                     color = Color.White;
                 }
-            }
+            }*/
         }
 
         public void LoadContent(ContentManager content)
