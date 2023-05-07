@@ -64,10 +64,12 @@ namespace TheGame
             }
             GamePadClick();
         }
+
         public void setStun(bool bStun)
         {
             this.canMove = bStun;
         }
+
         public void AddHealth(int amount)
         {
             if (this.Health + amount > this.MaxHealth)
@@ -87,6 +89,7 @@ namespace TheGame
         }
 
 
+
         #region Getters
         //GET'ERS
 
@@ -99,6 +102,11 @@ namespace TheGame
         #endregion
         //.................
 
+
+        public void PlayerRegenarateHealth(int hp, int time)
+        {
+            playerEffects.RegenarateHP(hp, time);
+        }
 
 
         public void AddLeaf(Leaf leaf)
