@@ -37,7 +37,6 @@ namespace TheGame
         World world;
         HUD hud;
         InteractionEventHandler interactionEventHandler;
-        int i = 0;
         Player player;
         Enemies enemies;
 
@@ -84,7 +83,8 @@ namespace TheGame
 
             hud = new HUD("forest2", WindowWidth, WindowHeight);
             world = new World(Content);
-            //enemies.AddEnemies(world.returnEnemies());
+            AppleTree apple = new AppleTree(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
+            enemies.AddEnemy(apple);
             player = new Player(new Vector3(30,0,30), "mis4", "StarSparrow_Orange");
 
             serializator = new Serializator("zapis.txt");
@@ -111,8 +111,6 @@ namespace TheGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            Debug.Write(enemies.EnemiesList.Count);
-            Debug.Write("\n");
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             
             camera.CamPosition = player.GetPosition() + camera.CamPositionState;
@@ -121,11 +119,12 @@ namespace TheGame
             viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta);
-            enemies.AddEnemies(world.returnEnemiesList(player.position.X));
-
+            //enemies.AddEnemies(world.returnEnemiesList(player.position.X));
             enemies.Move(delta, player);
             camera.Update1(player.position);
             hud.Update(camera.CamPosition);
+
+            //interactionEventHandler.Update(enemies.EnemiesList);
             SaveControl();
 
             base.Update(gameTime);

@@ -16,6 +16,13 @@
     <None Remove="Levels\map2.txt" />
     <None Remove="Levels\map3.txt" />
     <None Remove="Levels\map4.txt" />
+    <None Remove="map5.txt" />
+    <None Remove="map6.txt" />
+    <None Remove="map_Down_1.txt" />
+    <None Remove="map_Down_Straight_1.txt" />
+    <None Remove="map_left_down.txt" />
+    <None Remove="map_Up_1.txt" />
+    <None Remove="map_Up_Straight_1.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="map1.txt">
@@ -28,6 +35,27 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="map4.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="map5.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="map6.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="map_Down_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="map_Down_Straight_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="map_left_down.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="map_Up_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="map_Up_Straight_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

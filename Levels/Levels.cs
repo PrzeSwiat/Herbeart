@@ -19,23 +19,115 @@ namespace TheGame
     internal class Levels
     {
         private List<Level> _levels;
-        private string[] maps = { "map2.txt", "map3.txt", "map4.txt" };
-        private int moduleSeparator = 80;
-
+        private string[] maps_straight = { "map2.txt", "map3.txt", "map4.txt" };
+        private string[] maps_down_straight = { "map_Up_Straight_1.txt" };
+        private string[] maps_up_straight = { "map_Down_Straight_1.txt" };
+        private string[] maps_up_down_straight = { };
+        private string[] maps_left_down = { "map_left_down.txt"};
+        private string[] maps_left_up = { "map_Up_1.txt" };
+        private string[] maps_down_right = { "map_Down_1.txt" };
+        private List<string> maps = new List<string>();
+        private string currentMap;
+        private int moduleSeparatorX = 80;
+        private int moduleSeparatorZCount = 0;
+        private int moduleSeparatorZ = 80;
 
         public Levels(ContentManager Content, int numberOfModules)
         {
             _levels = new List<Level>();
             
             int enemyCount;
-            _levels.Add(new Level(Content, "map1.txt", _levels.Count * moduleSeparator, 0));
+            _levels.Add(new Level(Content, "map1.txt", _levels.Count * moduleSeparatorX, 0, 0));
+            currentMap = "map1.txt";
+            
+
             for (int i = 0; i < numberOfModules; i++)
             {
+                maps = new List<string>();
+
+                string choosed = null;  //wybrana mapa
+
+                //wybieranie ilości przeciwników w levelu
                 if (numberOfModules < 4)
                     enemyCount = 2;
                 else
-                    enemyCount = 2;
-                _levels.Add(new Level(Content, Level.GenerateRandomString(maps), _levels.Count * moduleSeparator, enemyCount));
+                    enemyCount = 4;
+                Debug.Write(currentMap);
+                Debug.Write("\n");
+
+
+                //Przypadek prostych map - wylot z lewej i prawej
+                if (currentMap == "map1.txt" || maps_straight.Contains(currentMap))
+                {
+                    maps.AddRange(maps_straight);   //dalej prosto
+                    maps.AddRange(maps_left_up);    //idziemy do gory
+                    //maps.AddRange(maps_left_down);  //idziemy do dołu
+                    choosed = generateRandomStringFromList(maps);
+                    Debug.Write(moduleSeparatorZCount);
+                    Debug.Write("\n");
+                    _levels.Add(new Level(Content, choosed, _levels.Count * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+                    maps.Clear();
+                }
+
+                //Zakręt do góry - wylot z lewej i góry
+                if (maps_left_up.Contains(currentMap))                             
+                {
+                    maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
+                    choosed = generateRandomStringFromList(maps);
+                    
+                    Debug.Write(moduleSeparatorZCount);
+                    Debug.Write("\n");
+                    moduleSeparatorZCount -= 1;
+                    _levels.Add(new Level(Content, choosed, (_levels.Count-1) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+                    
+                    maps.Clear();
+                }
+
+                //Zakręt od dołu w prawo - wylot z dołu i po prawo
+                if (maps_down_right.Contains(currentMap))
+                {
+                    maps.AddRange(maps_straight);
+                    maps.AddRange(maps_left_up);
+                    choosed = generateRandomStringFromList(maps);
+                    //moduleSeparatorZCount += 1;
+                    Debug.Write(moduleSeparatorZCount);
+                    Debug.Write("\n");
+                    _levels.Add(new Level(Content, choosed, (_levels.Count - 1) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+                    maps.Clear();
+                }
+
+                //Zakręt do dołu - wylot z lewej i na dole
+/*                if (maps_left_down.Contains(currentMap))
+                {
+*//*                    maps.AddRange(maps_down_right);
+                    choosed = generateRandomStringFromList(maps);
+                    int moduleSeparatorZ = -80;
+                    _levels.Add(new Level(Content, choosed, (_levels.Count - 1) * moduleSeparator, enemyCount, moduleSeparatorZ));
+                    maps.Clear();*//*
+                }*/
+
+                /*                //Wylot z dołu, lewej i prawej
+                                if(maps_down_straight.Contains(currentMap))                             //Work in progres -  nie ruszac
+                                {
+                                    maps.AddRange(maps_up_straight);
+                                    maps.AddRange(maps_straight);
+                                    choosed = generateRandomStringFromList(maps);
+                                    _levels.Add(new Level(Content, choosed, _levels.Count * moduleSeparator, enemyCount));
+                                    maps.Clear();
+                                }
+
+                                //Wylot z góry, lewej, prawej
+                                if (maps_up_straight.Contains(currentMap))
+                                {
+                                    maps.AddRange(maps_up_straight);
+                                    maps.AddRange(maps_straight);
+                                    choosed = generateRandomStringFromList(maps);
+                                    _levels.Add(new Level(Content, choosed, _levels.Count * moduleSeparator, enemyCount));
+                                    maps.Clear();
+                                }*/
+
+                currentMap = choosed;
+
             }
             
         }
@@ -44,9 +136,9 @@ namespace TheGame
         {
             List<SceneObject> _sceneObjects = new List<SceneObject>();
 
-            int numberOfModule = (int)playerX / moduleSeparator;
+            int numberOfModule = ((int)playerX / moduleSeparatorX);
 
-            for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
+            for (int i = numberOfModule - 4; i <= numberOfModule + 8; i++)
             {
                 if (i >= 0 && i < _levels.Count - 1)
                 {
@@ -65,7 +157,7 @@ namespace TheGame
         public List<Enemy> returnEnemiesList(float playerX)
         {
             List<Enemy> enemiesList = new List<Enemy>();
-            int numberOfModule = (int)playerX / moduleSeparator;
+            int numberOfModule = (int)playerX / moduleSeparatorX;
 
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
@@ -80,7 +172,12 @@ namespace TheGame
             return enemiesList;
         }
         
-
+        public string generateRandomStringFromList(List<string> list)
+        {
+            Random random = new Random();
+            string randomString = list[random.Next(list.Count)];
+            return randomString;
+        }
 
         class Level
         {
@@ -97,12 +194,12 @@ namespace TheGame
             private List<Enemy> enemies;
             
             
-            public Level(ContentManager Content, string fileName, float separator, int enemyCount) 
+            public Level(ContentManager Content, string fileName, float separator, int enemyCount, float separatorZ) 
             {
                 _sceneObjects = new List<SceneObject>();
                 enemies = new List<Enemy>();
                 content = Content;
-                LoadSceneObjects(Content, fileName, separator, enemyCount);
+                LoadSceneObjects(Content, fileName, separator, enemyCount, separatorZ);
                 
             }
 
@@ -128,7 +225,7 @@ namespace TheGame
             public List<SceneObject> returnSceneObjects() { return _sceneObjects; }
 
 
-            private void LoadSceneObjects(ContentManager Content, string fileName, float separator, int enemyCount)
+            private void LoadSceneObjects(ContentManager Content, string fileName, float separatorX, int enemyCount, float separatorZ)
             {
                 LoadScene(fileName, enemyCount);
                 List<Vector3> groundPositions = new List<Vector3>();
@@ -142,7 +239,7 @@ namespace TheGame
                         float height = this._tiles[index].height;
                         string model = this._tiles[index].model;
                         string texture = this._tiles[index].texture;
-                        Vector3 wektor = new Vector3(j * tileSize + separator, height, i * tileSize);
+                        Vector3 wektor = new Vector3(j * tileSize + separatorX, height, i * tileSize + separatorZ);
                         if (model == ground)
                         {
                             Vector3 enemyWektor = wektor;

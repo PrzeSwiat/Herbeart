@@ -21,7 +21,7 @@ namespace TheGame
         public World(ContentManager Content)   
         {
             _worldArray = new List<SceneObject>();
-            level = new Levels(Content, 4);
+            level = new Levels(Content, 8);
             enemies = new List<Enemy>();
         }
 
