@@ -107,6 +107,10 @@ namespace TheGame
                         String model = this._tiles[index].model;
                         String texture = this._tiles[index].texture;
                         Vector3 wektor = new Vector3(j * tileSize + separator, height, i * tileSize);
+                        if (this._tiles[index].texture == "tree1_color")
+                        {
+                            _sceneObjects.Add(new SceneObject(wektor, "test", "trawa1"));
+                        }
                         _sceneObjects.Add(new SceneObject(wektor, model, texture));
                     }
                 }
