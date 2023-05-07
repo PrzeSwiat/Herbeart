@@ -240,6 +240,10 @@ namespace TheGame
                         string model = this._tiles[index].model;
                         string texture = this._tiles[index].texture;
                         Vector3 wektor = new Vector3(j * tileSize + separatorX, height, i * tileSize + separatorZ);
+                        if (this._tiles[index].texture == "tree1_color")
+                        {
+                            _sceneObjects.Add(new SceneObject(wektor, ground, "trawa1"));
+                        }
                         if (model == ground)
                         {
                             Vector3 enemyWektor = wektor;
@@ -273,7 +277,7 @@ namespace TheGame
                     {
                         case 48: //0
                             string treeModel = GenerateRandomString(treeModels);
-                            _tiles.Add(new Tile(treeModel, "green", -2.0f));
+                            _tiles.Add(new Tile(treeModel, "tree1_color", -2.0f));
                             break;
                         case 97: //a
                             _tiles.Add(new Tile(ground, "trawa1", -2.0f));
