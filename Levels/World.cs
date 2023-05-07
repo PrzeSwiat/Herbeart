@@ -25,9 +25,9 @@ namespace TheGame
             enemies = new List<Enemy>();
         }
 
-        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, float playerX)
+        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, float playerX, float playerY)
         {
-            _worldArray = level.returnSceneObjects(playerX);
+            _worldArray = level.returnSceneObjects(playerX, playerY);
             foreach (SceneObject sceneObject in _worldArray)
             {
                 sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, sceneObject.color);

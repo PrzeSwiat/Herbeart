@@ -139,15 +139,17 @@ namespace TheGame
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.position.X);
+            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.position.X, player.position.Z);
 
             enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
-            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color); 
+            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
+/*            Debug.Write(player.position.X + ", ");
+            Debug.Write(player.position.Z);
+            Debug.Write("\n");*/
 
 
-            
             //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
-            
+
             hud.DrawFrontground(_spriteBatch, player.Health);
 
             DrawBoundingBoxes();

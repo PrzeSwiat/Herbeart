@@ -31,15 +31,27 @@ namespace TheGame
         private int moduleSeparatorX = 80;
         private int moduleSeparatorZCount = 0;
         private int moduleSeparatorZ = 80;
+        List<Rectangle> modulesList;
+        Rectangle module;
+
 
         public Levels(ContentManager Content, int numberOfModules)
         {
             _levels = new List<Level>();
-            
+            modulesList = new List<Rectangle> ();
+            prepareMap(Content, numberOfModules);
+
+        }
+
+
+        public void prepareMap (ContentManager Content, int numberOfModules)
+        {
             int enemyCount;
             _levels.Add(new Level(Content, "map1.txt", _levels.Count * moduleSeparatorX, 0, 0));
+            module = new Rectangle(0, 0, moduleSeparatorX, moduleSeparatorZ);
+            modulesList.Add(module);
             currentMap = "map1.txt";
-            
+
 
             for (int i = 0; i < numberOfModules; i++)
             {
@@ -62,24 +74,33 @@ namespace TheGame
                     maps.AddRange(maps_straight);   //dalej prosto
                     maps.AddRange(maps_left_up);    //idziemy do gory
                     //maps.AddRange(maps_left_down);  //idziemy do dołu
+
                     choosed = generateRandomStringFromList(maps);
-                    Debug.Write(moduleSeparatorZCount);
-                    Debug.Write("\n");
-                    _levels.Add(new Level(Content, choosed, _levels.Count * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+
+                    module = new Rectangle((_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
+
+                    _levels.Add(new Level(Content, choosed, (_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+                    
+                    modulesList.Add(module);
+
                     maps.Clear();
                 }
 
                 //Zakręt do góry - wylot z lewej i góry
-                if (maps_left_up.Contains(currentMap))                             
+                if (maps_left_up.Contains(currentMap))
                 {
                     maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
+
                     choosed = generateRandomStringFromList(maps);
-                    
-                    Debug.Write(moduleSeparatorZCount);
-                    Debug.Write("\n");
+
                     moduleSeparatorZCount -= 1;
-                    _levels.Add(new Level(Content, choosed, (_levels.Count-1) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+
+                    module = new Rectangle((_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
+
+                    _levels.Add(new Level(Content, choosed, (_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));       //do sprawdzenia
                     
+                    modulesList.Add(module);
+
                     maps.Clear();
                 }
 
@@ -88,23 +109,27 @@ namespace TheGame
                 {
                     maps.AddRange(maps_straight);
                     maps.AddRange(maps_left_up);
+
                     choosed = generateRandomStringFromList(maps);
-                    //moduleSeparatorZCount += 1;
-                    Debug.Write(moduleSeparatorZCount);
-                    Debug.Write("\n");
-                    _levels.Add(new Level(Content, choosed, (_levels.Count - 1) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+                    
+                    module = new Rectangle((_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
+
+                    _levels.Add(new Level(Content, choosed, (_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+                    
+                    modulesList.Add(module);
+
                     maps.Clear();
                 }
 
                 //Zakręt do dołu - wylot z lewej i na dole
-/*                if (maps_left_down.Contains(currentMap))
-                {
-*//*                    maps.AddRange(maps_down_right);
-                    choosed = generateRandomStringFromList(maps);
-                    int moduleSeparatorZ = -80;
-                    _levels.Add(new Level(Content, choosed, (_levels.Count - 1) * moduleSeparator, enemyCount, moduleSeparatorZ));
-                    maps.Clear();*//*
-                }*/
+                /*                if (maps_left_down.Contains(currentMap))
+                                {
+                *//*                    maps.AddRange(maps_down_right);
+                                    choosed = generateRandomStringFromList(maps);
+                                    int moduleSeparatorZ = -80;
+                                    _levels.Add(new Level(Content, choosed, (_levels.Count - 1) * moduleSeparator, enemyCount, moduleSeparatorZ));
+                                    maps.Clear();*//*
+                                }*/
 
                 /*                //Wylot z dołu, lewej i prawej
                                 if(maps_down_straight.Contains(currentMap))                             //Work in progres -  nie ruszac
@@ -129,16 +154,25 @@ namespace TheGame
                 currentMap = choosed;
 
             }
-            
         }
 
-        public List<SceneObject> returnSceneObjects(float playerX)
+        public List<SceneObject> returnSceneObjects(float playerX, float playerY)
         {
             List<SceneObject> _sceneObjects = new List<SceneObject>();
 
-            int numberOfModule = ((int)playerX / moduleSeparatorX);
 
-            for (int i = numberOfModule - 4; i <= numberOfModule + 8; i++)
+            //int numberOfModule = ((int)playerX / moduleSeparatorX);
+            int numberOfModule = 1;
+
+            for (int i = 0; i < modulesList.Count; i++)
+            {
+                if (modulesList[i].Contains((int)playerX, (int)playerY))
+                {
+                    numberOfModule = i;
+                }
+            }
+
+            for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
                 if (i >= 0 && i < _levels.Count - 1)
                 {
