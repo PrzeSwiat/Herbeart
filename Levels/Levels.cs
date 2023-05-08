@@ -33,6 +33,9 @@ namespace TheGame
         private int moduleSeparatorZ = 80;
         List<Rectangle> modulesList;
         Rectangle module;
+        HashSet<Rectangle> visited;
+        
+        
 
 
         public Levels(ContentManager Content, int numberOfModules)
@@ -40,7 +43,7 @@ namespace TheGame
             _levels = new List<Level>();
             modulesList = new List<Rectangle> ();
             prepareMap(Content, numberOfModules);
-
+            visited = new HashSet<Rectangle>();
         }
 
 
@@ -160,17 +163,7 @@ namespace TheGame
         {
             List<SceneObject> _sceneObjects = new List<SceneObject>();
 
-
-            //int numberOfModule = ((int)playerX / moduleSeparatorX);
-            int numberOfModule = 1;
-
-            for (int i = 0; i < modulesList.Count; i++)
-            {
-                if (modulesList[i].Contains((int)playerX, (int)playerY))
-                {
-                    numberOfModule = i;
-                }
-            }
+            int numberOfModule = returnModuleNumber(playerX, playerY);
 
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
@@ -188,22 +181,37 @@ namespace TheGame
             return _sceneObjects;
         }
 
-        public List<Enemy> returnEnemiesList(float playerX)
+        public List<Enemy> returnEnemiesList(float playerX, float playerY)
         {
             List<Enemy> enemiesList = new List<Enemy>();
-            int numberOfModule = (int)playerX / moduleSeparatorX;
 
-            for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
+            int numberOfModule = returnModuleNumber(playerX, playerY);
+
+            if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count)
             {
-                if (i >= 0 && i < _levels.Count - 1)
+                foreach (Enemy enemy in _levels[numberOfModule+1].returnEnemies())
                 {
-                    foreach (Enemy enemy in _levels[i].returnEnemies())
-                    {
-                        enemiesList.Add(enemy);
-                    } 
+                    enemiesList.Add(enemy);
+                }
+                visited.Add(modulesList[numberOfModule]);    
+            }
+                
+            
+            return enemiesList;
+        }
+
+        public int returnModuleNumber(float playerX, float playerY)
+        {
+            int numberOfModule = 0;
+
+            for (int i = 0; i < modulesList.Count; i++)
+            {
+                if (modulesList[i].Contains((int)playerX, (int)playerY))
+                {
+                    numberOfModule = i;
                 }
             }
-            return enemiesList;
+            return numberOfModule;
         }
         
         public string generateRandomStringFromList(List<string> list)

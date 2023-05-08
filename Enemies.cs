@@ -27,7 +27,15 @@ namespace TheGame
 
         public void AddEnemies(List<Enemy> enemies)
         {
-            enemiesList = enemies;
+            foreach (Enemy enemy in enemies)
+            {
+                enemiesList.Add(enemy);
+            }
+        }
+
+        public void UpdateEnemiesList(float playerX, World world)
+        {
+            //enemiesList = world.returnEnemiesList(playerX);
         }
 
         public void Move(float deltaTime, Player player)
