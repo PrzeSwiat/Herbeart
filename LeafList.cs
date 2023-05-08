@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheGame.Leafs;
+using System.Diagnostics;
 
 namespace TheGame
 {
     internal class LeafList
     {
         private List<Leaf> LeafsList;
-
         public LeafList()
         {
             LeafsList = new List<Leaf>();
@@ -30,34 +30,51 @@ namespace TheGame
         }
         private void CreateControl(object obj, EventArgs e)
         {
-            Enemy enemy = (Enemy)obj;
-            LeafsList.Add(enemy.GetLeaf());
-            //Debug.Write(LeafList.Count + "\n");
+            //Enemy enemy = (Enemy)obj;
+            //LeafsList.Add(enemy.GetLeaf());
+             Debug.Write(obj.GetType() + "\n");
 
-            foreach (Leaf leaf in LeafsList)
+            /*Leaf leaf = null;
+            if(obj.GetType() == typeof(MelissaLeaf))
             {
-                leaf.LoadContent(ContentManager);
+                leaf = (MelissaLeaf)obj;
+            }
+            if (obj.GetType() == typeof(AppleLeaf))
+            {
+                leaf = (AppleLeaf)obj;
+            }
+            if (obj.GetType() == typeof(MintLeaf))
+            {
+                leaf = (MintLeaf)obj;
+            }
+            if (obj.GetType() == typeof(NettleLeaf))
+            {
+                leaf = (NettleLeaf)obj;
             }
 
+            LeafsList.Add(leaf);
+            /*
+            foreach (Leaf leaf1 in LeafsList)
+            {
+                leaf1.LoadContent(ContentManager);
+            }
+            */
+             //Debug.Write(LeafsList.Count + "\n");
         }
 
 
         public void LoadModels(ContentManager content)
         {
             ContentManager = content;
-            foreach (Leaf leaf in LeafsList.ToArray())
+            foreach (Leaf leaf in LeafsList)
             {
-
                 leaf.LoadContent(ContentManager);
-
             }
         }
 
         public void addLeaf(Leaf leaf)
         {
-
             LeafsList.Add(leaf);
-
         }
 
 
@@ -69,21 +86,32 @@ namespace TheGame
 
             }
         }
-        public void UpdateScene(List<Enemy> enemies)
-        {
-            foreach (Enemy enemy in enemies)
-            {
-                enemy.OnDestroy += CreateControl;
-            }
-        }
+
         public void RefreshInventory(Player player)
         {
-            foreach (Leaf leaf in LeafsList.ToList())
+            foreach (Leaf leaf in LeafsList)
             {
                 leaf.UpdateInventory(player);
 
-                leaf.OnDestroy += DestroyControl;
+                //leaf.OnDestroy += DestroyControl;
 
+            }
+        }
+
+        public void RefreshOnCreate(List<Enemy> enemies)
+        {
+            foreach (Enemy enemy in enemies.ToList())
+            {
+                enemy.leaf.OnCreate += CreateControl;
+            }
+        }
+
+        public void RefreshOnDestroy()
+        {
+            foreach(Leaf leaf in LeafsList.ToList())
+            {
+                
+                leaf.OnDestroy += DestroyControl;
             }
         }
     }

@@ -38,6 +38,7 @@ namespace TheGame
         public List<Enemy> returnEnemiesList(float playerX, float playerZ)
         {
             enemies = level.returnEnemiesList(playerX, playerZ);
+            //Debug.Write(enemies.Count + "\n");
             return enemies;
         }
 
