@@ -187,7 +187,7 @@ namespace TheGame
 
             int numberOfModule = returnModuleNumber(playerX, playerY);
 
-            if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count)
+            if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count - 1)
             {
                 foreach (Enemy enemy in _levels[numberOfModule+1].returnEnemies())
                 {
