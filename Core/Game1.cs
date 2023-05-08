@@ -39,12 +39,13 @@ namespace TheGame
         InteractionEventHandler interactionEventHandler;
         Player player;
         Enemies enemies;
-
+        LeafList Leafs;
         EffectHandler effectPrzemyslaw;
         EffectHandler effectWiktor;
 
         public Game1()
         {
+            Leafs = new LeafList();
             enemies = new Enemies();
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -83,8 +84,10 @@ namespace TheGame
 
             hud = new HUD("forest2", WindowWidth, WindowHeight);
             world = new World(Content);
-            AppleTree apple = new AppleTree(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
+            Mint apple = new Mint(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
+            Melissa apple1 = new Melissa(new Vector3(20, 2, 20), "player", "StarSparrow_Green");
             enemies.AddEnemy(apple);
+            enemies.AddEnemy(apple1);
             player = new Player(new Vector3(30,0,30), "mis4", "StarSparrow_Orange");
 
             serializator = new Serializator("zapis.txt");
@@ -102,9 +105,10 @@ namespace TheGame
             basicEffect.Projection = projectionMatrix;
             player.LoadContent(Content);
             enemies.LoadModels(Content);
-
+            Leafs.LoadModels(Content);
+            Leafs.UpdateScene(enemies.EnemiesList);
             //player.OnDestroy += DestroyControl;
-            
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -121,6 +125,7 @@ namespace TheGame
             player.Update(world, delta);
             //enemies.AddEnemies(world.returnEnemiesList(player.position.X));
             enemies.Move(delta, player);
+            Leafs.RefreshInventory(this.player);
             camera.Update1(player.position);
             hud.Update(camera.CamPosition);
 
@@ -147,9 +152,9 @@ namespace TheGame
             Debug.Write(player.position.Z);
             Debug.Write("\n");*/
 
-
+            Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
-
+            Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             hud.DrawFrontground(_spriteBatch, player.Health);
 
             DrawBoundingBoxes();
