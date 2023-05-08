@@ -76,7 +76,7 @@ namespace TheGame
         public List<Apple> bullet = new List<Apple>(); 
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            
+            this.leaf = new Leafs.AppleLeaf(worldPosition, "mis4", "StarSparrow_Orange");
         }
 
         public void RemoveBullet(object sender,EventArgs e)

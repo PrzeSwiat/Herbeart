@@ -400,7 +400,7 @@ namespace TheGame
                                 enemies.Add(apple);
                                 break;
                             case "mint":
-                                Mint mint = new Mint(enemiesPositions[i], "player", "StarSparrow_Green");
+                                Melissa mint = new Melissa(enemiesPositions[i], "player", "StarSparrow_Green");
                                 mint.LoadContent(content);
                                 enemies.Add(mint);
                                 break;

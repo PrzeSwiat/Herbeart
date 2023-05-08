@@ -39,12 +39,13 @@ namespace TheGame
         InteractionEventHandler interactionEventHandler;
         Player player;
         Enemies enemies;
-
+        LeafList Leafs;
         EffectHandler effectPrzemyslaw;
         EffectHandler effectWiktor;
 
         public Game1()
         {
+            Leafs = new LeafList();
             enemies = new Enemies();
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -102,9 +103,10 @@ namespace TheGame
             basicEffect.Projection = projectionMatrix;
             player.LoadContent(Content);
             enemies.LoadModels(Content);
-
+            Leafs.LoadModels(Content);
+            Leafs.UpdateScene(enemies.EnemiesList);
             //player.OnDestroy += DestroyControl;
-            
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -124,6 +126,7 @@ namespace TheGame
 /*            Debug.Write(enemies.EnemiesList.Count());
             Debug.Write("\n");*/
             enemies.Move(delta, player);
+            Leafs.RefreshInventory(this.player);
             camera.Update1(player.position);
             hud.Update(camera.CamPosition);
 
@@ -150,9 +153,9 @@ namespace TheGame
             Debug.Write(player.position.Z);
             Debug.Write("\n");*/
 
-
+            Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
-
+            Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             hud.DrawFrontground(_spriteBatch, player.Health);
 
             DrawBoundingBoxes();

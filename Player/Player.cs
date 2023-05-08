@@ -22,7 +22,7 @@ namespace TheGame
     [Serializable]
     internal class Player : Creature
     {
-        public List<Leaf> inventory;
+        public Inventory Inventory;
         private bool canMove = true;
         private float StunTimer = 0;
         private DateTime lastAttackTime, actualTime;
@@ -41,7 +41,7 @@ namespace TheGame
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
             SetScale(1.7f);
-
+             Inventory = new Inventory();
             AssignParameters(200, 20, 20);
             playerMovement = new PlayerMovement(this);
             isCraftingTea = false;
@@ -64,10 +64,12 @@ namespace TheGame
             }
             GamePadClick();
         }
+
         public void setStun(bool bStun)
         {
             this.canMove = bStun;
         }
+
         public void AddHealth(int amount)
         {
             if (this.Health + amount > this.MaxHealth)
@@ -87,6 +89,7 @@ namespace TheGame
         }
 
 
+
         #region Getters
         //GET'ERS
 
@@ -100,16 +103,13 @@ namespace TheGame
         //.................
 
 
-
-        public void AddLeaf(Leaf leaf)
+        public void PlayerRegenarateHealth(int hp, int time)
         {
-            inventory.Add(leaf);
+            playerEffects.RegenarateHP(hp, time);
         }
 
-        public void RemoveLeaf(Leaf leaf)
-        {
-            inventory.Remove(leaf);
-        }
+
+      
 
 
         public void GamePadClick()

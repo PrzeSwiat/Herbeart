@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using TheGame.Leafs;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
 
@@ -24,14 +25,14 @@ namespace TheGame
         public BoundingSphere attackShpere;
         public List<CreatureEffect> currentBadEffect;
         public List<float> badEffectTimes;
-
+        public Leaf leaf;
         public event EventHandler OnDestroy;
 
         private Vector2 direction;
 
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-
+            leaf = new Leaf(worldPosition, "mis4", "StarSparrow_Orange");
         }
 
         public void AssignParameters(int health, int strenght, float maxSpeed)
@@ -47,6 +48,8 @@ namespace TheGame
             health -= damage;
             if(health<=0)
             {
+                leaf.AddToWorld();
+                leaf.SetPosition(this.GetPosition());
                 OnDestroy?.Invoke(this,EventArgs.Empty);
             }
             else
@@ -122,7 +125,10 @@ namespace TheGame
         {
             this.direction.Normalize();
         }
-
+        public virtual Leaf GetLeaf()
+        {
+            return this.leaf;
+        }
 
     }
 }
