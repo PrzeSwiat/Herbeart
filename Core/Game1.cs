@@ -104,7 +104,6 @@ namespace TheGame
             player.LoadContent(Content);
             enemies.LoadModels(Content);
             Leafs.LoadModels(Content);
-            Leafs.UpdateScene(enemies.EnemiesList);
             //player.OnDestroy += DestroyControl;
 
         }
@@ -122,11 +121,17 @@ namespace TheGame
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta);
 
+            //Leafs.RefreshInventory(this.player);
+            //Leafs.RefreshOnCreate(enemies.EnemiesList);
+            //Leafs.RefreshOnDestroy();
+
             enemies.AddEnemies(world.returnEnemiesList(player.position.X, player.position.Z));
-/*            Debug.Write(enemies.EnemiesList.Count());
-            Debug.Write("\n");*/
             enemies.Move(delta, player);
-            Leafs.RefreshInventory(this.player);
+            enemies.RefreshOnDestroy();
+
+            
+
+           // Debug.Write(player.Inventory.appleLeafNumber + "\n");
             camera.Update1(player.position);
             hud.Update(camera.CamPosition);
 
@@ -158,7 +163,7 @@ namespace TheGame
             Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             hud.DrawFrontground(_spriteBatch, player.Health);
 
-            DrawBoundingBoxes();
+            //DrawBoundingBoxes();
         }
 
         #region DrawingBB

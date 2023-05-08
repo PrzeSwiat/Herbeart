@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Security.Cryptography;
@@ -14,6 +15,7 @@ namespace TheGame
     internal class Enemies
     {
         private List<Enemy> enemiesList;
+        ContentManager contentManager;
 
         public Enemies()
         {
@@ -33,10 +35,11 @@ namespace TheGame
             }
         }
 
-        public void UpdateEnemiesList(float playerX, World world)
+        /*
+        public void UpdateEnemiesList(List<Enemy> enemies)
         {
-            //enemiesList = world.returnEnemiesList(playerX);
-        }
+            enemiesList = enemies;
+        }*/
 
         public void Move(float deltaTime, Player player)
         {
@@ -115,10 +118,11 @@ namespace TheGame
 
         public void LoadModels(ContentManager content)
         {
+            contentManager = content;
             foreach (Enemy enemy in enemiesList)
             {
-                enemy.LoadContent(content);
-                enemy.OnDestroy += DestroyControl;
+                enemy.LoadContent(contentManager);
+                
             }
         }
 
@@ -142,12 +146,21 @@ namespace TheGame
 
         private void DestroyControl(object obj, EventArgs e)
         {
+            //Debug.Write("robiecałyczas\n");
             enemiesList.Remove((Enemy)obj);
         }
 
         public List<Enemy> EnemiesList
         {
             get { return enemiesList; }
+        }
+
+        public void RefreshOnDestroy()
+        {
+            foreach(Enemy enemy in enemiesList.ToList())
+            {
+                enemy.OnDestroy += DestroyControl;
+            }
         }
     }
 
