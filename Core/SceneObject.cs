@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using TheGame.Core;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
@@ -55,8 +56,11 @@ namespace TheGame
 
         public void LoadContent(ContentManager content)
         {
-            model = (content.Load<Model>(_modelFileName));
-            texture2D = (content.Load<Texture2D>(_textureFileName));
+            LoadedModels models = LoadedModels.Instance;
+
+            model = models.getModel(_modelFileName, content);
+            texture2D = models.getTexture(_textureFileName, content);
+            //texture2D = (content.Load<Texture2D>(_textureFileName));
             helper = CreateBoundingBox(this.model);
             boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
             boundingSphere = BoundingSphere.CreateFromBoundingBox(boundingBox);
