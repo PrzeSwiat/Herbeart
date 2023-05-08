@@ -54,34 +54,50 @@ namespace TheGame
             else
             {
                 KeyboardState state = Keyboard.GetState();
+                Boolean anyButtonClicked = false;
 
                 player.Direction = new Vector2(0, 0);
                 if (state.IsKeyDown(Keys.A))
                 {
                     player.setDirectionX(1.0f);
+                    anyButtonClicked = true;
                 }
                 if (state.IsKeyDown(Keys.D))
                 {
                     player.setDirectionX(-1.0f);
+                    anyButtonClicked = true;
                 }
                 if (state.IsKeyDown(Keys.W))
                 {
                     player.setDirectionY(1.0f);
+                    anyButtonClicked = true;
                 }
                 if (state.IsKeyDown(Keys.S))
                 {
                     player.setDirectionY(-1.0f);
+                    anyButtonClicked = true;
                 }
 
                 Vector2 w3 = new Vector2(0, -1);    // wektor wyjsciowy od ktorego obliczam kat czyli ten do dolu
                 Vector2 w4 = new Vector2(-player.Direction.X, player.Direction.Y);
 
-                rotation = angle(w3, w4);
+                if (!anyButtonClicked)
+                {
+                    rotation = player.GetRotation().Y;
+                }
+                else
+                {
+                    rotation = angle(w3, w4);
+                }
             }
             float Sphereang = rotation - player.GetRotation().Y;
             rotateSphere(Sphereang);
-            UpdateBB(0, world, new Vector3(player.Direction.X * deltaTime * player.MaxSpeed, 0, 0));
-            UpdateBB(0, world, new Vector3(0, 0, player.Direction.Y * deltaTime * player.MaxSpeed));
+            if (player.canMove)
+            {
+                UpdateBB(0, world, new Vector3(player.Direction.X * deltaTime * player.MaxSpeed, 0, 0));
+                UpdateBB(0, world, new Vector3(0, 0, player.Direction.Y * deltaTime * player.MaxSpeed));
+            }
+
             player.SetRotation(0, rotation, 0);
         }
 

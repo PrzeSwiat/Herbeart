@@ -13,6 +13,7 @@ namespace TheGame
         private Player player;
         private IntervalTimer regenarationTimer;
         private IntervalTimer damageTimer;
+        private NormalTimer stunTimer;
 
         int damage = 3;
         int HPregen = 0;
@@ -20,8 +21,9 @@ namespace TheGame
         public PlayerEffectHandler(Player player)
         {
             this.player = player;
-            regenarationTimer = new IntervalTimer(5000, 1000, EffectAddHealth);
-            damageTimer = new IntervalTimer(0, 1000, EffectTakeHealth);
+            regenarationTimer = new IntervalTimer(5, 1, EffectAddHealth);
+            damageTimer = new IntervalTimer(0, 1, EffectTakeHealth);
+            stunTimer = new NormalTimer(0, undoStun);
         }
 
         public void Start()
@@ -42,6 +44,19 @@ namespace TheGame
             HPregen = health;
             regenarationTimer.setTimerMaxTime(time);
             regenarationTimer.Start();
+        }
+
+        public void Stun(int time) 
+        {
+            player.canMove = false;
+            stunTimer.setTimerMaxTime(time);
+            stunTimer.Start();
+        }
+
+
+        private void undoStun()
+        {
+            player.canMove = true;
         }
 
         private void EffectAddHealth()
@@ -65,8 +80,8 @@ namespace TheGame
             public IntervalTimer(int maxTime, int intervalTime, Action timerCallBack)
             {
                 timer = new System.Timers.Timer();
-                timer.Interval = intervalTime;
-                this.maxTime = maxTime;
+                timer.Interval = intervalTime * 1000;
+                this.maxTime = maxTime * 1000;
                 this.timerCallBack = timerCallBack;
                 this.elapsedTime = 0;
 
@@ -80,12 +95,12 @@ namespace TheGame
 
             public void setTimerMaxTime(int maxTime)
             {
-                this.maxTime = maxTime;
+                this.maxTime = maxTime * 1000;
             }
 
             public void setTimerInterval(int interval)
             {
-                this.timer.Interval = interval;
+                this.timer.Interval = interval * 1000;
             }
 
             void Timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -125,7 +140,7 @@ namespace TheGame
             public NormalTimer(int maxTime, Action timerCallBack)
             {
                 timer = new System.Timers.Timer();
-                this.maxTime = maxTime;
+                this.maxTime = maxTime * 1000;
                 this.timerCallBack = timerCallBack;
                 this.elapsedTime = 0;
 
@@ -137,18 +152,22 @@ namespace TheGame
                 timer.Start();
             }
 
-            public void setTimerMaxTime(int maxTime)
+            public void setTimerMaxTime(int maxTime) // maxTime w sekundach
             {
-                this.maxTime = maxTime;
+                this.maxTime = maxTime * 1000;
             }
 
             void Timer_Elapsed(object sender, ElapsedEventArgs e)
             {
                 // Sprawdzenie, czy upłynął już maksymalny czas
-                if (this.elapsedTime <= this.maxTime)
+                if (this.elapsedTime < this.maxTime)
                 {
                     this.elapsedTime += (int)timer.Interval;
+                    
+                } else
+                {
                     timerCallBack();
+                    timer.Stop();
                 }
 
 

@@ -23,9 +23,10 @@ namespace TheGame
     internal class Player : Creature
     {
         public Inventory Inventory;
-        private bool canMove = true;
-        private float StunTimer = 0;
+        public bool canMove = true;
+        //private float StunTimer = 0;
         private DateTime lastAttackTime, actualTime;
+        private float atackSpeed = 0.5f;
 
 
         private PlayerMovement playerMovement;
@@ -37,6 +38,8 @@ namespace TheGame
         private Boolean padButtonBClicked;
         private Boolean padButtonXClicked;
         private Boolean padButtonYClicked;
+
+        MouseState lastMouseState, currentMouseState;
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
@@ -56,18 +59,17 @@ namespace TheGame
         public void Update(World world, float deltaTime) //Logic player here
         {
             Update();
-            if (canMove) { playerMovement.UpdatePlayerMovement(world, deltaTime); StunTimer = 2; }
-            else
-            {
-                StunTimer = StunTimer - deltaTime;
-                if (StunTimer < 0) { canMove = true; }
-            }
+            playerMovement.UpdatePlayerMovement(world, deltaTime);
+
             GamePadClick();
+
+            
+                
         }
 
-        public void setStun(bool bStun)
+        public void setStun(int time)
         {
-            this.canMove = bStun;
+            playerEffects.Stun(time);
         }
 
         public void AddHealth(int amount)
@@ -132,7 +134,7 @@ namespace TheGame
                         {
                             actualTime = DateTime.Now;
                             TimeSpan time = actualTime - lastAttackTime;
-                            if (time.TotalSeconds > 1)
+                            if (time.TotalSeconds > atackSpeed)
                             {
                                 OnAttackPressed?.Invoke(this, EventArgs.Empty);
                                 lastAttackTime = actualTime;
@@ -179,6 +181,25 @@ namespace TheGame
 
 
 
+
+            } else
+            {
+                lastMouseState = currentMouseState;
+
+                // Get the mouse state relevant for this frame
+                currentMouseState = Mouse.GetState();
+
+                // Recognize a single click of the left mouse button
+                if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    actualTime = DateTime.Now;
+                    TimeSpan time = actualTime - lastAttackTime;
+                    if (time.TotalSeconds > atackSpeed)
+                    {
+                        OnAttackPressed?.Invoke(this, EventArgs.Empty);
+                        lastAttackTime = actualTime;
+                    }
+                }
 
             }
         }

@@ -27,7 +27,7 @@ namespace TheGame
                 if (attackCounter == attacksToStun)
                 {
                     attackCounter = 0;
-                    player.setStun(false);
+                    player.setStun(2);
                 }
                 OnAttack?.Invoke(this, EventArgs.Empty);
                 lastAttackTime = actualTime;

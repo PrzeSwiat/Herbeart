@@ -67,8 +67,8 @@ namespace TheGame
                     enemyCount = 2;
                 else
                     enemyCount = 4;
-                Debug.Write(currentMap);
-                Debug.Write("\n");
+                //Debug.Write(currentMap);
+                //Debug.Write("\n");
 
 
                 //Przypadek prostych map - wylot z lewej i prawej
