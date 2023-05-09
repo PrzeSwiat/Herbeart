@@ -39,7 +39,7 @@ namespace TheGame.Leafs
 
             return false;
         }
-        public virtual void UpdateInventory(Player player)
+        public virtual bool UpdateInventory(Player player)
         {
             //Update();
 
@@ -47,7 +47,9 @@ namespace TheGame.Leafs
             {
                 //Debug.Write("przecina\n");
                 this.AddToInventory(player);
+                return true;
             }
+            return false;
 
         }
     }

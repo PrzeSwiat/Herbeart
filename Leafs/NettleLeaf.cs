@@ -16,22 +16,24 @@ namespace TheGame.Leafs
 
         public override void AddToInventory(Player player)
         {
-            if (this.ispossible == true)
-            {
+            
                 player.Inventory.addNettleLeaf();
-                Debug.Write("Dodalem Pokrzywe" + player.Inventory.MelissaLeafNumber + "\n");
-                this.RemoveFromWorld(); ispossible = false;
-            }
+                Debug.Write("Dodalem Pokrzywe" + player.Inventory.NettleLeafNumber + "\n");
+                this.RemoveFromWorld();
+                ispossible = false;
+            
 
         }
 
-        public override void UpdateInventory(Player player)
+        public override bool UpdateInventory(Player player)
         {
             if (this.chceckCollison(player))
             {
                 //Debug.Write("przecina\n");
                 this.AddToInventory(player);
+                return true;
             }
+            return false;
         }
     }
 }

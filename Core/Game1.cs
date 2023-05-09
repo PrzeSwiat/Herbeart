@@ -86,7 +86,7 @@ namespace TheGame
             world = new World(Content);
             AppleTree apple = new AppleTree(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
             //enemies.AddEnemy(apple);
-            player = new Player(new Vector3(30,0,30), "mis4", "StarSparrow_Orange");
+            player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
 
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);

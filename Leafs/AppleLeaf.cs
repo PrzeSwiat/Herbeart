@@ -17,23 +17,24 @@ namespace TheGame.Leafs
         }
         public override void AddToInventory(Player player)
         {
-            if (this.ispossible == true)
-            {
+            
                 player.Inventory.addAppleLeaf();
                 this.RemoveFromWorld();
                 Debug.Write("Dodalem apple" + player.Inventory.appleLeafNumber + "\n");
                 ispossible = false;
-            }
+            
 
         }
 
-        public override void UpdateInventory(Player player)
+        public override bool UpdateInventory(Player player)
         {
             if (this.chceckCollison(player))
             {
                 //Debug.Write("przecina\n");
                 this.AddToInventory(player);
+                return true;
             }
+        return false;
         }
     }
 }

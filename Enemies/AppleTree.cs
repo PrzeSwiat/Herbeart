@@ -86,7 +86,7 @@ namespace TheGame
 
         public  void Throw(int damage,Player player)
         {
-          bullet.Add(new Apple(this.boundingSphere.Center,"mis4", "StarSparrow_Orange", player.GetPosition()));
+          bullet.Add(new Apple(this.boundingSphere.Center,"Apple", "appleTexture", player.GetPosition()));
             
             
         }
