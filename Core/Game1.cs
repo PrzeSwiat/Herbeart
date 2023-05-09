@@ -84,8 +84,14 @@ namespace TheGame
 
             hud = new HUD("forest2", WindowWidth, WindowHeight);
             world = new World(Content);
-            AppleTree apple = new AppleTree(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
-            //enemies.AddEnemy(apple);
+            AppleTree apple = new AppleTree(new Vector3(25, 2, 25), "player", "StarSparrow_Green");
+            Mint apple1 = new Mint(new Vector3(20, 2, 20), "player", "StarSparrow_Green");
+            Melissa apple2 = new Melissa(new Vector3(23, 2, 23), "player", "StarSparrow_Green");
+            Nettle apple3 = new Nettle(new Vector3(22, 2, 21), "player", "StarSparrow_Green");
+            enemies.AddEnemy(apple);
+            enemies.AddEnemy(apple1);
+            enemies.AddEnemy(apple2);
+            enemies.AddEnemy(apple3);
             player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
 
             serializator = new Serializator("zapis.txt");

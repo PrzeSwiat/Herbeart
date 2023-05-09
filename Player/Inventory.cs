@@ -25,7 +25,7 @@ namespace TheGame
         {
             appleLeafNumber++;
         }
-        public void addAssassinLeaf()
+        public void addMelissaLeaf()
         {
             MelissaLeafNumber++;
         }
@@ -38,12 +38,12 @@ namespace TheGame
             MintLeafNumber++;
         }
         public void removeAppleLeaf() { appleLeafNumber--; }
-        public void removeAssassinLeaf() { MelissaLeafNumber--; }
+        public void removeMelissaLeaf() { MelissaLeafNumber--; }
         public void removeNettleLeaf() { NettleLeafNumber--; }
         public void removeMintLeaf() { MintLeafNumber--; }
 
         public bool checkappleLeafNumber() { return appleLeafNumber > 0; }
-        public bool checkassinLeafNumber() { return MelissaLeafNumber > 0; }
+        public bool checkMelissaLeafNumber() { return MelissaLeafNumber > 0; }
         public bool checknettleLeafNumber() { return NettleLeafNumber > 0; }
         public bool checkmintLeafNumber() { return MintLeafNumber > 0; }
     }
