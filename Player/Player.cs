@@ -50,6 +50,8 @@ namespace TheGame
             playerMovement = new PlayerMovement(this);
             isCraftingTea = false;
             padButtonAClicked = false;
+            padButtonYClicked = false;
+            padButtonXClicked = false;
 
             // Dołączenie metody, która będzie wykonywana przy każdym ticku timera
             playerEffects = new PlayerEffectHandler(this);
@@ -202,7 +204,7 @@ namespace TheGame
                 {
                     if (gamePadState.IsButtonDown(Buttons.Y))
                     {
-                        if (isCraftingTea && !padButtonBClicked)
+                        if (isCraftingTea && !padButtonYClicked)
                         {
                             if (this.Inventory.checkappleLeafNumber())
                             {
@@ -217,7 +219,7 @@ namespace TheGame
                                     craft.makeTea(this.Inventory);
                                 }
                             }
-                            padButtonBClicked = true;
+                            padButtonYClicked = true;
 
 
                         }
@@ -236,7 +238,7 @@ namespace TheGame
                 {
                     if (gamePadState.IsButtonDown(Buttons.X))
                     {
-                        if (isCraftingTea && !padButtonBClicked)
+                        if (isCraftingTea && !padButtonXClicked)
                         {
                             if (this.Inventory.checkMelissaLeafNumber())
                             {
@@ -251,7 +253,7 @@ namespace TheGame
                                     craft.makeTea(this.Inventory);
                                 }
                             }
-                            padButtonBClicked = true;
+                            padButtonXClicked = true;
 
 
                         }
@@ -263,7 +265,7 @@ namespace TheGame
                     }
                     else if (gamePadState.IsButtonUp(Buttons.X))
                     {
-                        padButtonBClicked = false;
+                        padButtonXClicked = false;
                     }
                 }
 
