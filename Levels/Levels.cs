@@ -224,7 +224,7 @@ namespace TheGame
         class Level
         {
             private string[] treeModels = { "tree1", "tree2", "tree3" };
-            private string[] enemyTypes = { "apple", "mint", "nettle" };
+            private string[] enemyTypes = { "apple", "mint", "nettle", "melissa" };
             //private string[] grassTextures = {"trawa1", "trawa2", "trawa3"};
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
@@ -293,7 +293,20 @@ namespace TheGame
                             groundListSize++;
                             groundPositions.Add(enemyWektor);
                         }
-                        _sceneObjects.Add(new SceneObject(wektor, model, texture));
+                        if (model == "tree1" || model == "tree2" || model =="tree3")
+                        {
+                            SceneObject one = new SceneObject(wektor, model, texture);
+                            Random rand = new Random();
+                            float rflot =( float)rand.NextDouble()*2*(float)Math.PI;
+                            one.SetScale(rflot/3);
+                            one.SetRotation(new Vector3(0,rflot,0));
+                            _sceneObjects.Add(one);
+                        }
+                        else
+                        {
+                            _sceneObjects.Add(new SceneObject(wektor, model, texture));
+                        }
+                        
                     }
                 }
                 GenerateEnemies(enemyCount, groundPositions, groundListSize);
@@ -319,6 +332,7 @@ namespace TheGame
                     {
                         case 48: //0
                             string treeModel = GenerateRandomString(treeModels);
+
                             _tiles.Add(new Tile(treeModel, "tree1_color", -2.0f));
                             break;
                         case 97: //a
@@ -399,15 +413,20 @@ namespace TheGame
                                 apple.LoadContent(content);
                                 enemies.Add(apple);
                                 break;
-                            case "mint":
-                                Melissa mint = new Melissa(enemiesPositions[i], "player", "StarSparrow_Green");
-                                mint.LoadContent(content);
-                                enemies.Add(mint);
+                            case "melissa":
+                                Melissa melissa = new Melissa(enemiesPositions[i], "player", "StarSparrow_Green");
+                                melissa.LoadContent(content);
+                                enemies.Add(melissa);
                                 break;
                             case "nettle":
                                 Nettle nettle = new Nettle(enemiesPositions[i], "player", "StarSparrow_Green");
                                 nettle.LoadContent(content);
                                 enemies.Add(nettle);
+                                break;
+                            case "mint":
+                                Mint mint = new Mint(enemiesPositions[i], "player", "StarSparrow_Green");
+                                mint.LoadContent(content);
+                                enemies.Add(mint);
                                 break;
                         }
                     }

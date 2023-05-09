@@ -44,7 +44,7 @@ namespace TheGame
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
-            SetScale(1.7f);
+            SetScale(1f);
              Inventory = new Inventory();
             AssignParameters(200, 20, 20);
             playerMovement = new PlayerMovement(this);
