@@ -92,8 +92,61 @@ namespace TheGame
             return distance;
         }
 
+        public void DrawBB(GraphicsDevice graphicsDevice)
+        {
+            Vector3[] corners = boundingBox.GetCorners();
+
+            var bottom = new[]
+            {
+                new VertexPositionColor(corners[2], Color.White),
+                new VertexPositionColor(corners[3], Color.White),
+                new VertexPositionColor(corners[7], Color.White),
+                new VertexPositionColor(corners[6], Color.White),
+                new VertexPositionColor(corners[2], Color.White),
+            };
+
+            var top = new[]
+            {
+                new VertexPositionColor(corners[4], Color.White),
+                new VertexPositionColor(corners[5], Color.White),
+                new VertexPositionColor(corners[1], Color.White),
+                new VertexPositionColor(corners[0], Color.White),
+                new VertexPositionColor(corners[4], Color.White),
+            };
+
+            var rf = new[]
+            {
+                new VertexPositionColor(corners[1], Color.White),
+                new VertexPositionColor(corners[2], Color.White)
+            };
+            var lf = new[]
+            {
+                new VertexPositionColor(corners[3], Color.White),
+                new VertexPositionColor(corners[0], Color.White)
+            };
+            var rb = new[]
+            {
+                new VertexPositionColor(corners[5], Color.White),
+                new VertexPositionColor(corners[6], Color.White)
+            };
+            var lb = new[]
+            {
+                new VertexPositionColor(corners[4], Color.White),
+                new VertexPositionColor(corners[7], Color.White)
+            };
+
+            //Sciany dolna i górna
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, bottom, 0, 4);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, top, 0, 4);
+            //boki
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rf, 0, 1);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lf, 0, 1);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rb, 0, 1);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lb, 0, 1);
+        }
+
         #region Getters
-            //GET'ERS
+        //GET'ERS
         public Vector3 GetPosition()
         {
             return position;
