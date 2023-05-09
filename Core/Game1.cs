@@ -39,12 +39,13 @@ namespace TheGame
         InteractionEventHandler interactionEventHandler;
         Player player;
         Enemies enemies;
-
+        LeafList Leafs;
         EffectHandler effectPrzemyslaw;
         EffectHandler effectWiktor;
 
         public Game1()
         {
+            Leafs = new LeafList();
             enemies = new Enemies();
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -83,9 +84,15 @@ namespace TheGame
 
             hud = new HUD("forest2", WindowWidth, WindowHeight);
             world = new World(Content);
-            AppleTree apple = new AppleTree(new Vector3(10, 2, 5), "player", "StarSparrow_Green");
-            enemies.AddEnemy(apple);
-            player = new Player(new Vector3(30,0,30), "mis4", "StarSparrow_Orange");
+            AppleTree apple = new AppleTree(new Vector3(25, 2, 25), "player", "StarSparrow_Green");
+            Mint apple1 = new Mint(new Vector3(20, 2, 20), "player", "StarSparrow_Green");
+            Melissa apple2 = new Melissa(new Vector3(23, 2, 23), "player", "StarSparrow_Green");
+            Nettle apple3 = new Nettle(new Vector3(22, 2, 21), "player", "StarSparrow_Green");
+           // enemies.AddEnemy(apple);
+           // enemies.AddEnemy(apple1);
+          //  enemies.AddEnemy(apple2);
+           // enemies.AddEnemy(apple3);
+            player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
 
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
@@ -102,9 +109,9 @@ namespace TheGame
             basicEffect.Projection = projectionMatrix;
             player.LoadContent(Content);
             enemies.LoadModels(Content);
-
+            Leafs.LoadModels(Content);
             //player.OnDestroy += DestroyControl;
-            
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -119,12 +126,23 @@ namespace TheGame
             viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta);
-            //enemies.AddEnemies(world.returnEnemiesList(player.position.X));
+
+            //Leafs.RefreshInventory(this.player);
+            //Leafs.RefreshOnCreate(enemies.EnemiesList);
+            //Leafs.RefreshOnDestroy();
+
+            enemies.AddEnemies(world.returnEnemiesList(player.position.X, player.position.Z));
             enemies.Move(delta, player);
+            enemies.RefreshOnDestroy();
+
+
+            Leafs.RefreshInventory(this.player);
+            Leafs.UpdateScene(enemies.EnemiesList);
+            // Debug.Write(player.Inventory.appleLeafNumber + "\n");
             camera.Update1(player.position);
             hud.Update(camera.CamPosition);
 
-            //interactionEventHandler.Update(enemies.EnemiesList);
+            interactionEventHandler.Update(enemies.EnemiesList);
             SaveControl();
 
             base.Update(gameTime);
@@ -139,18 +157,17 @@ namespace TheGame
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.position.X);
+            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.position.X, player.position.Z);
 
             enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
-            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color); 
+            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
 
 
-            
+            Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
-            
             hud.DrawFrontground(_spriteBatch, player.Health);
 
-            DrawBoundingBoxes();
+            //DrawBoundingBoxes();
         }
 
         #region DrawingBB

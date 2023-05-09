@@ -22,12 +22,14 @@ namespace TheGame
     [Serializable]
     internal class Player : Creature
     {
-        public List<Leaf> inventory;
-        private bool canMove = true;
-        private float StunTimer = 0;
+        public Inventory Inventory;
+        private Crafting craft = new Crafting();
+        public bool canMove = true;
+        //private float StunTimer = 0;
         private DateTime lastAttackTime, actualTime;
+        private float atackSpeed = 0.5f;
 
-
+        public string test = "";
         private PlayerMovement playerMovement;
         private PlayerEffectHandler playerEffects;
         public event EventHandler OnAttackPressed;
@@ -38,14 +40,18 @@ namespace TheGame
         private Boolean padButtonXClicked;
         private Boolean padButtonYClicked;
 
+        MouseState lastMouseState, currentMouseState;
+
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
-            SetScale(1.7f);
-
+            SetScale(1f);
+             Inventory = new Inventory();
             AssignParameters(200, 20, 20);
             playerMovement = new PlayerMovement(this);
             isCraftingTea = false;
             padButtonAClicked = false;
+            padButtonYClicked = false;
+            padButtonXClicked = false;
 
             // Dołączenie metody, która będzie wykonywana przy każdym ticku timera
             playerEffects = new PlayerEffectHandler(this);
@@ -56,18 +62,19 @@ namespace TheGame
         public void Update(World world, float deltaTime) //Logic player here
         {
             Update();
-            if (canMove) { playerMovement.UpdatePlayerMovement(world, deltaTime); StunTimer = 2; }
-            else
-            {
-                StunTimer = StunTimer - deltaTime;
-                if (StunTimer < 0) { canMove = true; }
-            }
+            playerMovement.UpdatePlayerMovement(world, deltaTime);
+
             GamePadClick();
+
+            
+                
         }
-        public void setStun(bool bStun)
+
+        public void setStun(int time)
         {
-            this.canMove = bStun;
+            playerEffects.Stun(time);
         }
+
         public void AddHealth(int amount)
         {
             if (this.Health + amount > this.MaxHealth)
@@ -87,6 +94,7 @@ namespace TheGame
         }
 
 
+
         #region Getters
         //GET'ERS
 
@@ -100,16 +108,13 @@ namespace TheGame
         //.................
 
 
-
-        public void AddLeaf(Leaf leaf)
+        public void PlayerRegenarateHealth(int hp, int time)
         {
-            inventory.Add(leaf);
+            playerEffects.RegenarateHP(hp, time);
         }
 
-        public void RemoveLeaf(Leaf leaf)
-        {
-            inventory.Remove(leaf);
-        }
+
+      
 
 
         public void GamePadClick()
@@ -125,14 +130,28 @@ namespace TheGame
                     {
                         if (isCraftingTea && !padButtonAClicked) // W momencie jak lewy triger jest wcisniety
                         {
-                            // tutaj dodac skladnik do tworzenia herbaty pod A
+
+                            if(this.Inventory.checknettleLeafNumber())
+                            {
+                                if (craft.howLong() < 3)
+                                {
+                                    this.Inventory.removeNettleLeaf();
+                                    craft.addA();
+                                    Debug.Write(craft.recepture);
+                                }
+                                if(craft.howLong() >= 3)
+                                {
+                                    craft.makeTea(this.Inventory);
+                                }
+                            }
                             padButtonAClicked = true;
 
                         } else // normalny atak gracza
                         {
+
                             actualTime = DateTime.Now;
                             TimeSpan time = actualTime - lastAttackTime;
-                            if (time.TotalSeconds > 1)
+                            if (time.TotalSeconds > atackSpeed)
                             {
                                 OnAttackPressed?.Invoke(this, EventArgs.Empty);
                                 lastAttackTime = actualTime;
@@ -152,8 +171,22 @@ namespace TheGame
                         if (isCraftingTea && !padButtonBClicked)
                         {
                             // tutaj dodac skladnik do tworzenia herbaty pod B
+
+                            if (this.Inventory.checkmintLeafNumber())
+                            {
+                                if (craft.howLong() < 3)
+                                {
+                                    this.Inventory.removeMintLeaf();
+                                    craft.addB();
+                                    Debug.Write(craft.recepture);
+                                }
+                                if (craft.howLong() >= 3)
+                                {
+                                    craft.makeTea(this.Inventory);
+                                }
+                            }
                             padButtonBClicked = true;
-                            Debug.Write("Dupa");
+                            
 
                         }
                         else
@@ -167,6 +200,74 @@ namespace TheGame
                         padButtonBClicked = false;
                     }
                 }
+                if (capabilities.HasBButton)
+                {
+                    if (gamePadState.IsButtonDown(Buttons.Y))
+                    {
+                        if (isCraftingTea && !padButtonYClicked)
+                        {
+                            if (this.Inventory.checkappleLeafNumber())
+                            {
+                                if (craft.howLong() < 3)
+                                {
+                                    this.Inventory.removeAppleLeaf();
+                                    craft.addY();
+                                    Debug.Write(craft.recepture);
+                                }
+                                if (craft.howLong() >= 3)
+                                {
+                                    craft.makeTea(this.Inventory);
+                                }
+                            }
+                            padButtonYClicked = true;
+
+
+                        }
+                        else
+                        {
+                            // tutaj ewentualny dash/przewrot
+                        }
+
+                    }
+                    else if (gamePadState.IsButtonUp(Buttons.Y))
+                    {
+                        padButtonBClicked = false;
+                    }
+                }
+                if (capabilities.HasBButton)
+                {
+                    if (gamePadState.IsButtonDown(Buttons.X))
+                    {
+                        if (isCraftingTea && !padButtonXClicked)
+                        {
+                            if (this.Inventory.checkMelissaLeafNumber())
+                            {
+                                if (craft.howLong() < 3)
+                                {
+                                    this.Inventory.removeMelissaLeaf();
+                                    craft.addX();
+                                    Debug.Write(craft.recepture);
+                                }
+                                if (craft.howLong() >= 3)
+                                {
+                                    craft.makeTea(this.Inventory);
+                                }
+                            }
+                            padButtonXClicked = true;
+
+
+                        }
+                        else
+                        {
+                            // tutaj ewentualny dash/przewrot
+                        }
+
+                    }
+                    else if (gamePadState.IsButtonUp(Buttons.X))
+                    {
+                        padButtonXClicked = false;
+                    }
+                }
 
 
                 if (gamePadState.IsButtonDown(Buttons.LeftTrigger)) 
@@ -174,11 +275,31 @@ namespace TheGame
                     isCraftingTea = true;
                 } else if (gamePadState.IsButtonUp(Buttons.LeftTrigger))
                 {
+                    craft.makeTea(this.Inventory);
                     isCraftingTea = false;
                 }
 
 
 
+
+            } else
+            {
+                lastMouseState = currentMouseState;
+
+                // Get the mouse state relevant for this frame
+                currentMouseState = Mouse.GetState();
+
+                // Recognize a single click of the left mouse button
+                if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    actualTime = DateTime.Now;
+                    TimeSpan time = actualTime - lastAttackTime;
+                    if (time.TotalSeconds > atackSpeed)
+                    {
+                        OnAttackPressed?.Invoke(this, EventArgs.Empty);
+                        lastAttackTime = actualTime;
+                    }
+                }
 
             }
         }

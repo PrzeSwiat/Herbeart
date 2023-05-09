@@ -31,7 +31,7 @@ namespace TheGame
 
         public void Update(List<Enemy> enemiesList)
         {
-            this.enemies = enemies.ToList();
+            this.enemies = enemiesList;
         }
 
         #region PLAYER
