@@ -27,7 +27,7 @@ namespace TheGame
         public List<float> badEffectTimes;
         public Leaf leaf;
         public event EventHandler OnDestroy;
-
+        public bool canDestroy = true;
         private Vector2 direction;
 
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)

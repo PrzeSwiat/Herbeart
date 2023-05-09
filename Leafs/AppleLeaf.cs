@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace TheGame.Leafs
             {
                 player.Inventory.addAppleLeaf();
                 this.RemoveFromWorld();
+                Debug.Write("Dodalem apple" + player.Inventory.appleLeafNumber + "\n");
                 ispossible = false;
             }
 

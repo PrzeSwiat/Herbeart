@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace TheGame.Leafs
             if (this.ispossible == true)
             {
                 player.Inventory.addNettleLeaf();
+                Debug.Write("Dodalem Pokrzywe" + player.Inventory.MelissaLeafNumber + "\n");
                 this.RemoveFromWorld(); ispossible = false;
             }
 

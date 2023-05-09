@@ -129,9 +129,10 @@ namespace TheGame
             enemies.Move(delta, player);
             enemies.RefreshOnDestroy();
 
-            
 
-           // Debug.Write(player.Inventory.appleLeafNumber + "\n");
+            Leafs.RefreshInventory(this.player);
+            Leafs.UpdateScene(enemies.EnemiesList);
+            // Debug.Write(player.Inventory.appleLeafNumber + "\n");
             camera.Update1(player.position);
             hud.Update(camera.CamPosition);
 
