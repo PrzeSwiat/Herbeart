@@ -17,7 +17,7 @@ namespace TheGame.Leafs
         public override void AddToInventory(Player player)
         {
            
-                player.Inventory.addAssassinLeaf();
+                player.Inventory.addMelissaLeaf();
                 Debug.Write("Dodalem Melise" + player.Inventory.MelissaLeafNumber + "\n");
                 this.RemoveFromWorld();
                 ispossible = false;
