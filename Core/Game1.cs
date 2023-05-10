@@ -21,8 +21,8 @@ namespace TheGame
     public class Game1 : Game
     {
         //DON'T TOUCH IT MORTALS
-        int WindowWidth = 1920;
-        int WindowHeight = 1280;
+        int WindowWidth = 1280;
+        int WindowHeight = 900;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Matrix projectionMatrix;
@@ -177,7 +177,7 @@ namespace TheGame
             
             foreach(SceneObject obj in world.GetWorldList())
             {
-                //obj.DrawBB(_graphics.GraphicsDevice);
+                obj.DrawBB(_graphics.GraphicsDevice);
             }
             foreach (Enemy enemy in enemies.EnemiesList)
             {
@@ -193,7 +193,7 @@ namespace TheGame
                 //DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
 
-            //player.DrawBB(_graphics.GraphicsDevice);
+            player.DrawBB(_graphics.GraphicsDevice);
             //DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }
 

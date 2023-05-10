@@ -18,7 +18,7 @@ namespace TheGame
     internal class SceneObject
     {
         public Vector3 position;
-        public Vector3 rotation = new Vector3(0.0f,0.0f,0.0f);
+        public Vector3 rotation = new Vector3(0.0f, 0.0f, 0.0f);
         public float scale = 1;
         protected Model model;
         protected Texture2D texture2D;
@@ -27,17 +27,17 @@ namespace TheGame
         public BoundingSphere boundingSphere;
         public BoundingBox boundingBox;
         public BoundingBox helper;
-        public Vector3 boundingboxrotation = new Vector3(0.0f,0.0f,0.0f);
+        public Vector3 boundingboxrotation = new Vector3(0.0f, 0.0f, 0.0f);
         public Color color = Color.White;
 
         private DateTime lastEventTime, actualTime;
 
-        public SceneObject(Vector3 worldPosition, string modelFileName , string textureFileName)
+        public SceneObject(Vector3 worldPosition, string modelFileName, string textureFileName)
         {
             position = worldPosition;
             _modelFileName = modelFileName;
             _textureFileName = textureFileName;
-            
+
         }
 
         public void Update()    //przyda się do efektów podłoża (obszarowych)
@@ -62,7 +62,23 @@ namespace TheGame
             texture2D = models.getTexture(_textureFileName, content);
             //texture2D = (content.Load<Texture2D>(_textureFileName));
             helper = CreateBoundingBox(this.model);
-            boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
+
+            if (_modelFileName == "tree1" || _modelFileName == "tree2" || _modelFileName == "tree3")
+            {
+                helper.Min = new Vector3(-1, 0, -1);
+                helper.Max = new Vector3(1, 6, 1);
+                boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
+            } else if (_modelFileName == "mis")
+            {
+                helper.Min = new Vector3(-1f, 0, -1f);
+                helper.Max = new Vector3(1f, 4, 1f);
+                boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
+                Debug.Write(helper.Min + "\n" + helper.Max);
+            } else
+            {
+                boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
+            }
+            
             boundingSphere = BoundingSphere.CreateFromBoundingBox(boundingBox);
             boundingSphere.Center += new Vector3(0, 0, 3);
 
