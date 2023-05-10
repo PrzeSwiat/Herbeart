@@ -28,9 +28,11 @@ namespace TheGame
         private string[] maps_down_right = { "map_Down_1.txt" };
         private List<string> maps = new List<string>();
         private string currentMap;
+
         private int moduleSeparatorX = 80;
         private int moduleSeparatorZCount = 0;
         private int moduleSeparatorZ = 80;
+
         List<Rectangle> modulesList;
         Rectangle module;
         HashSet<Rectangle> visited;
@@ -282,10 +284,6 @@ namespace TheGame
                         string model = this._tiles[index].model;
                         string texture = this._tiles[index].texture;
                         Vector3 wektor = new Vector3(j * tileSize + separatorX, height, i * tileSize + separatorZ);
-                        if (this._tiles[index].texture == "tree1_color")
-                        {
-                            _sceneObjects.Add(new SceneObject(wektor, ground, "trawa1"));
-                        }
                         if (model == ground)
                         {
                             Vector3 enemyWektor = wektor;
@@ -293,14 +291,16 @@ namespace TheGame
                             groundListSize++;
                             groundPositions.Add(enemyWektor);
                         }
-                        if (model == "tree1" || model == "tree2" || model =="tree3")
+                        if (treeModels.Contains(model))
                         {
-                            SceneObject one = new SceneObject(wektor, model, texture);
+                            _sceneObjects.Add(new SceneObject(wektor, ground, "trawa1"));       //dodanie trawy pod drzewka
+                            SceneObject tree = new SceneObject(wektor, model, texture);
                             Random rand = new Random();
-                            float rflot =( float)rand.NextDouble()*2*(float)Math.PI;
-                            one.SetScale(rflot/3);
-                            one.SetRotation(new Vector3(0,rflot,0));
-                            _sceneObjects.Add(one);
+                            float rflot =( float)rand.NextDouble()*2*(float)Math.PI;            //zmiana obrotu drzewa losowo
+                            float size = (float)rand.Next(2, 3);                                //zmiana wielkosci drzewa losowo
+                            tree.SetScale(size);
+                            tree.SetRotation(new Vector3(0,rflot,0));
+                            _sceneObjects.Add(tree);
                         }
                         else
                         {
