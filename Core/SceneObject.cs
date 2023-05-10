@@ -117,6 +117,15 @@ namespace TheGame
                         , viewMatrix, projectionMatrix, GetTexture2D());
         }
 
+        public void WiktorDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color)
+        {
+            effectHandler.WiktorDraw(GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
+                       * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
+                       Matrix.CreateRotationZ(GetRotation().Z)
+                       * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
+                        , viewMatrix, projectionMatrix, GetTexture2D());
+        }
+
         public double GetDistance(SceneObject entity)
         {
             double distance = (double)Vector3.Distance(this.position, entity.GetPosition());

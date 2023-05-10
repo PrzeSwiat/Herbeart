@@ -165,6 +165,7 @@ namespace TheGame
 
             Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            //player.WiktorDraw(effectWiktor, worldMatrix, viewMatrix, projectionMatrix, player.color);
             hud.DrawFrontground(_spriteBatch, player.Health);
 
             DrawBoundingBoxes();

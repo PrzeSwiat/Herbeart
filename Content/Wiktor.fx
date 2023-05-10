@@ -1,124 +1,90 @@
-﻿#if OPENGL
-#define SV_POSITION POSITION
-#define VS_SHADERMODEL vs_3_0
-#define PS_SHADERMODEL ps_3_0
-#else
-#define VS_SHADERMODEL vs_4_0_level_9_1
-#define PS_SHADERMODEL ps_4_0_level_9_1
-#endif
+﻿float4x4 World;
+float4x4 View;
+float4x4 Projection;
+float4x4 WorldInverseTranspose;
 
+float4 AmbientColor = float4(1, 1, 1, 1);
+float AmbientIntensity = 0.1;
 
-float4x4 wvp : WorldViewProjection;
-float4x4 world : World;
+float3 DiffuseLightDirection = float3(1, 0, 0);
+float4 DiffuseColor = float4(1, 1, 1, 1);
+float DiffuseIntensity = 1.0;
 
-#define FogStart 160
-#define MaxShadows 8
-#define DepthColor 0.01
-#define MaxLightningStrength 0.7
-#define MaxMagicLightStrength 0.3
+float Shininess = 200;
+float4 SpecularColor = float4(1, 1, 1, 1);
+float SpecularIntensity = 1;
+float3 ViewVector = float3(1, 0, 0);
 
+float Transparency = 0.5;
 
-int ShadowQty = 0;
-float3 LightSourcePosition[MaxShadows];
-float LightSourceRadius[MaxShadows];
-int LightSourceType[MaxShadows];
-
-float Opacity;
-
-struct VS_IN
-{
-    float4 Position : SV_POSITION;
-    float4 vcolor : COLOR0;
-};
-struct VS_OUT
-{
-    float4 Position : SV_POSITION;
-    float4 PosWVP : TEXCOORD0;
-    float4 PosWorld : TEXCOORD1;
-    float4 vcolor : COLOR0;
-
+texture ModelTexture;
+sampler2D textureSampler = sampler_state {
+    Texture = (ModelTexture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    AddressU = Clamp;
+    AddressV = Clamp;
 };
 
-VS_OUT VS_FlatVertexColored(VS_IN input)
+struct VertexShaderInput
 {
-    VS_OUT output = (VS_OUT)0;
-    output.Position = mul(input.Position, wvp);
-    output.PosWVP = mul(input.Position, wvp);
-    output.vcolor = input.vcolor;
-    output.PosWorld = mul(input.Position, world);
+    float4 Position : POSITION0;
+    float4 Normal : NORMAL0;
+    float2 TextureCoordinate : TEXCOORD0;
+};
+
+struct VertexShaderOutput
+{
+    float4 Position : POSITION0;
+    float4 Color : COLOR0;
+    float3 Normal : TEXCOORD0;
+    float2 TextureCoordinate : TEXCOORD1;
+};
+
+VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
+{
+    VertexShaderOutput output;
+
+    float4 worldPosition = mul(input.Position, World);
+    float4 viewPosition = mul(worldPosition, View);
+    output.Position = mul(viewPosition, Projection);
+
+    float4 normal = normalize(mul(input.Normal, WorldInverseTranspose));
+    float lightIntensity = dot(normal, DiffuseLightDirection);
+    output.Color = saturate(DiffuseColor * DiffuseIntensity * lightIntensity);
+
+    output.Normal = normal;
+
+    output.TextureCoordinate = input.TextureCoordinate;
     return output;
 }
 
-float4 PS_VertexColoredWidthPointShadows(VS_OUT input) : COLOR0
+float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-    //return input.PosWorld / 10000;
-    float4 output = input.vcolor;
+    float3 light = normalize(DiffuseLightDirection);
+    float3 normal = normalize(input.Normal);
+    float3 r = normalize(2 * dot(light, normal) * normal - light);
+    float3 v = normalize(mul(normalize(ViewVector), World));
+    float dotProduct = dot(r, v);
 
-    for (int i = 0; i < ShadowQty; i++)
-    {
-        float3 shadowDist = LightSourcePosition[i] - input.PosWorld.xyz;
-        if (LightSourceType[i] == 0)
-        { //SHADOW
-            shadowDist.y *= 0.5; //makes the shadows flatter
-            float dist = length(shadowDist);
-            dist /= LightSourceRadius[i];
-            float colMultiply = 0.6 + dist * dist;
+    float4 specular = SpecularIntensity * SpecularColor * max(pow(dotProduct, Shininess), 0) * length(input.Color);
 
-            if (colMultiply < 1)
-            {
-                output.rgb *= colMultiply;
-            }
+    float4 textureColor = tex2D(textureSampler, input.TextureCoordinate);
+    textureColor.a = 1;
 
-
-        }
-        else if (LightSourceType[i] == 1)
-        { //FIRE
-            float dist = length(shadowDist);
-            float strength = LightSourceRadius[i] - dist * dist;
-            if (strength > 0)
-            {
-                output.r += 0.03 * strength;
-                output.g += 0.006 * strength;
-                output.b += 0.004 * strength;
-            }
-        }
-        else if (LightSourceType[i] == 3)
-        { //MAGIC LIGHT, has a bluegreen color
-            float dist = length(shadowDist);
-            float strength = 1 - (dist / LightSourceRadius[i]);
-            if (strength > 0)
-            {
-                if (strength > MaxMagicLightStrength)  strength = MaxMagicLightStrength;
-
-                output.r += 0.1 * strength;
-                output.g += 0.6 * strength;
-                output.b += strength;
-            }
-        }
-
-    }
-
-    //Fog effect
-    if (input.PosWVP.z > FogStart)
-    {
-        float t = saturate((input.PosWVP.z - FogStart * 3) * 0.001f);
-        float3 farColorMid = float3(0.20703125, 0.62745098039, 0.80392156862); // copied from BackgroundScenery.cs
-        float3 farColorBtm = float3(0.8515625, 0.9375, 0.97265625); // copied from BackgroundScenery.cs
-        float3 farColor = lerp(farColorBtm, farColorMid, 0.4);
-        // 0.4 is an approximation. Later when we're using deferred rendering, we can do this properly.
-
-        output.rgb = lerp(output.rgb, farColor, t);
-    }
-    output.rgba *= Opacity; //for chunks that fade in
-    clip(output.a - 0.1);
-    return output;
+    float4 color = saturate(textureColor * (input.Color) + AmbientColor * AmbientIntensity + specular);
+    color.a = Transparency;
+    return color;
 }
 
-technique Flat
+technique Textured
 {
-    pass Pass0
+    pass Pass1
     {
-        VertexShader = compile VS_SHADERMODEL VS_FlatVertexColored();
-        PixelShader = compile PS_SHADERMODEL PS_VertexColoredWidthPointShadows();
+        AlphaBlendEnable = TRUE;
+        DestBlend = INVSRCALPHA;
+        SrcBlend = SRCALPHA;
+        VertexShader = compile vs_2_0 VertexShaderFunction();
+        PixelShader = compile ps_2_0 PixelShaderFunction();
     }
 }
