@@ -18,6 +18,7 @@
     <None Remove="Levels\map4.txt" />
     <None Remove="map5.txt" />
     <None Remove="map6.txt" />
+    <None Remove="Maps\map_up_right.txt" />
     <None Remove="map_Down_1.txt" />
     <None Remove="map_Down_Straight_1.txt" />
     <None Remove="map_left_down.txt" />
@@ -25,37 +26,40 @@
     <None Remove="map_Up_Straight_1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="map1.txt">
+    <Content Include="Maps\map1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map2.txt">
+    <Content Include="Maps\map2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map3.txt">
+    <Content Include="Maps\map3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map4.txt">
+    <Content Include="Maps\map4.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map5.txt">
+    <Content Include="Maps\map5.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map6.txt">
+    <Content Include="Maps\map6.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map_Down_1.txt">
+    <Content Include="Maps\map_Down_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map_Down_Straight_1.txt">
+    <Content Include="Maps\map_Down_Straight_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map_left_down.txt">
+    <Content Include="Maps\map_left_down.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map_Up_1.txt">
+    <Content Include="Maps\map_Up_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map_Up_Straight_1.txt">
+    <Content Include="Maps\map_up_right.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_Up_Straight_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
