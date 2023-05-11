@@ -10,40 +10,91 @@ namespace TheGame
 {
     internal class Crafting
     {
-        public string recepture;
-        public Crafting() { 
-        recepture = string.Empty;
+        private string recepture;
+
+        public Crafting() 
+        { 
+            recepture = string.Empty;
         }
-        public void addA()
+
+        public void addIngredient(char button, Inventory inventory)
         {
-            recepture += "A";
+
+            switch (button)
+            {
+                case 'A':
+                    if (inventory.checknettleLeafNumber())
+                    {
+                        recepture += button;
+                        inventory.removeNettleLeaf();
+                    }
+                    break;
+                case 'B':
+                    if (inventory.checkmintLeafNumber())
+                    {
+                        recepture += button;
+                        inventory.removeMintLeaf();
+                    }
+                    break;
+                case 'X':
+                    if (inventory.checkMelissaLeafNumber())
+                    {
+                        recepture += button;
+                        inventory.removeMelissaLeaf();
+                    }
+                    break;
+                case 'Y': 
+                    if (inventory.checkappleLeafNumber())
+                    {
+                        recepture += button;
+                        inventory.removeAppleLeaf();
+                    }
+                    
+                    break;
+                default:
+                    break;
+            }
+            if (howLong() == 3)
+            {
+                makeTea(inventory);
+            }
         }
-        public void addB() {  recepture += "B";}
-        public void addY() {  recepture += "Y";}
-        public void addX() { recepture += "X"; }
+
         public void restartRecepture() { recepture = string.Empty; }
+        
         public void makeTea(Inventory inventory)
         {
-            if(recepture == "ABY") {
-                Debug.Write("Na uspokojenie" + "\n");
-            }else if(recepture == "ABX")
+            switch (recepture)
             {
-                Debug.Write("Na stres" + "\n");
-            }
-            else
-            {
-                foreach(char c in recepture) {
-                if(c == 'A') inventory.addNettleLeaf();  
-                else if (c == 'B') inventory.addMintLeaf();
-                else if (c == 'Y') inventory.addAppleLeaf();
-                else if (c == 'X') inventory.addMelissaLeaf();
-                    
-                }
+                case "ABY":
+                    Debug.Write("Na uspokojenie" + "\n");
+                    break;
+
+                case "ABX":
+                    Debug.Write("Na stres" + "\n");
+                    break;
+
+                default:
+                    foreach (char c in recepture)
+                    {
+                        if (c == 'A') inventory.addNettleLeaf();
+                        else if (c == 'B') inventory.addMintLeaf();
+                        else if (c == 'Y') inventory.addAppleLeaf();
+                        else if (c == 'X') inventory.addMelissaLeaf();
+
+                    }
+                    break;
                 
             }
 
             restartRecepture();
         }
+
+        public string getRecepture()
+        {
+            return this.recepture;
+        }
+
         public int howLong()
         {
             return recepture.Length;
