@@ -23,6 +23,7 @@ namespace TheGame
         private int BackgroundX, BackgroundY;
         private int health = 200;
         private int[] numberOfLeafs;
+        private string[] buttons;
         //private int licznik = 0;
 
         private DateTime lastChangeTime, actualTime;
@@ -36,7 +37,9 @@ namespace TheGame
             BackgroundHeight = 200;
             WindowWidth = windowWidth;
             WindowHeight = windowHeight;
-            skyRec = new Rectangle(0,0, BackgroundWidth, BackgroundHeight);
+            skyRec = new Rectangle(0, 0, BackgroundWidth, BackgroundHeight);
+
+            buttons = new string[] { "A", "B", "X", "Y" };
         }
 
         public void LoadContent(ContentManager content)
@@ -102,6 +105,7 @@ namespace TheGame
                 rect.X = 20 + i * 50;
                 spriteBatch.Draw(itemFrame, rect, Color.Gray);
                 spriteBatch.DrawString(Font, numberOfItems[i].ToString(), new Vector2(50 + i * 50, WindowHeight - 90), Color.Black);
+                spriteBatch.DrawString(Font, buttons[i].ToString(), new Vector2(50 + i * 50, WindowHeight - 50), Color.Black);
             }
    
             

@@ -24,10 +24,10 @@ namespace TheGame
         public int[] returnLeafsList()
         {
             int[] leafs = new int[4];
-            leafs[0] = appleLeafNumber;
+            leafs[0] = nettleLeafNumber;
             leafs[1] = mintLeafNumber;
             leafs[2] = melissaLeafNumber;
-            leafs[3] = nettleLeafNumber;
+            leafs[3] = appleLeafNumber;
             return leafs;
         }
 
