@@ -70,7 +70,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float4 specular = SpecularIntensity * SpecularColor * max(pow(dotProduct, Shininess), 0) * length(input.Color);
 
     float4 textureColor = tex2D(textureSampler, input.TextureCoordinate);
-    textureColor.a = 1;
+    //textureColor.a = 1;
 
     float4 color = saturate(textureColor * (input.Color) + AmbientColor * AmbientIntensity + specular);
     color.a = Transparency;

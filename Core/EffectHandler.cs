@@ -173,8 +173,8 @@ namespace TheGame
                     _effect.Parameters["AmbientIntensity"].SetValue(0.1f);
                     _effect.Parameters["ModelTexture"].SetValue(texture2D);
                     _effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(1, 0, 0));
-                    _effect.Parameters["DiffuseIntensity"].SetValue(1.0f);
-                    _effect.Parameters["Transparency"].SetValue(0.2f);
+                    _effect.Parameters["DiffuseIntensity"].SetValue(0.5f);
+                    _effect.Parameters["Transparency"].SetValue(0.35f);
 
                     Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
                     _effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);

@@ -20,8 +20,10 @@ namespace TheGame
     {
         private List<Level> _levels;
         private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt" };
-        private string[] maps_down_straight = { "Maps/map_Up_Straight_1.txt" };
-        private string[] maps_up_straight = { "Maps/map_Down_Straight_1.txt" };
+/*        private string[] maps_down_straight = { "Maps/map_Up_Straight_1.txt" };
+        private string[] maps_up_straight = { "Maps/map_Down_Straight_1.txt" };*/
+        private string[] maps_up_down = { "Maps/map_up_down_1.txt"};
+        private string[] maps_down_up = { "Maps/map_down_up_1.txt" };
         private string[] maps_up_right = { "Maps/map_up_right.txt" };
         private string[] maps_left_down = { "Maps/map_left_down.txt" };
         private string[] maps_left_up = { "Maps/map_Up_1.txt" };
@@ -81,34 +83,20 @@ namespace TheGame
                     maps.AddRange(maps_left_up);    //idziemy do gory
                     maps.AddRange(maps_left_down);  //idziemy do dołu
 
-                    choosed = generateRandomStringFromList(maps);
+                    prepareModule(Content, enemyCount);
 
-                    module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
-
-                    _levels.Add(new Level(Content, choosed, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
-                    
-                    modulesList.Add(module);
-
-                    maps.Clear();
                 }
 
                 //Zakręt do góry - wylot z lewej i góry
                 if (maps_left_up.Contains(currentMap))
                 {
                     maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
-
-                    choosed = generateRandomStringFromList(maps);
+                    maps.AddRange(maps_up_down);
 
                     moduleSeparatorZCount--;
                     moduleHeightChange++;
 
-                    module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
-
-                    _levels.Add(new Level(Content, choosed, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));       //do sprawdzenia
-                    
-                    modulesList.Add(module);
-
-                    maps.Clear();
+                    prepareModule(Content, enemyCount);
                 }
 
                 //Zakręt od dołu w prawo - wylot z dołu i po prawo
@@ -117,19 +105,33 @@ namespace TheGame
                     maps.AddRange(maps_straight);
                     maps.AddRange(maps_left_up);
 
-                    choosed = generateRandomStringFromList(maps);
-                    
-                    module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
-
-                    _levels.Add(new Level(Content, choosed, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
-                    
-                    modulesList.Add(module);
-
-                    maps.Clear();
+                    prepareModule(Content, enemyCount);
                 }
 
                 //Zakręt w dół - wylot z lewej i z dołu
                 if (maps_left_down.Contains(currentMap))
+                {
+                    maps.AddRange(maps_up_right);
+                    maps.AddRange(maps_up_down);
+
+                    moduleSeparatorZCount++;
+                    moduleHeightChange++;
+
+                    prepareModule(Content, enemyCount);
+                }
+
+                //Wylot z góry i z prawej
+                if (maps_up_right.Contains(currentMap))
+                {
+                    maps.AddRange(maps_straight);   //dalej prosto
+                    maps.AddRange(maps_left_up);    //idziemy do gory
+                    maps.AddRange(maps_left_down);  //idziemy do dołu
+
+                    prepareModule(Content, enemyCount);
+                }
+                
+/*                //Prosta od góry do dołu              //work in progress
+                if (maps_up_down.Contains(currentMap))
                 {
                     maps.AddRange(maps_up_right);
 
@@ -147,14 +149,15 @@ namespace TheGame
                     maps.Clear();
                 }
 
-                //Wylot z góry i z prawej
-                if (maps_up_right.Contains(currentMap))
+                //Prosta od dołu do góry
+                if (maps_down_up.Contains(currentMap))
                 {
-                    maps.AddRange(maps_straight);   //dalej prosto
-                    maps.AddRange(maps_left_up);    //idziemy do gory
-                    maps.AddRange(maps_left_down);  //idziemy do dołu
+                    maps.AddRange(maps_down_right);
 
                     choosed = generateRandomStringFromList(maps);
+
+                    moduleSeparatorZCount--;
+                    moduleHeightChange++;
 
                     module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
 
@@ -163,8 +166,7 @@ namespace TheGame
                     modulesList.Add(module);
 
                     maps.Clear();
-                }
-                //Zakręt do dołu - wylot z lewej i na dole
+                }*/
 
 
                 /*                //Wylot z dołu, lewej i prawej
@@ -187,9 +189,24 @@ namespace TheGame
                                     maps.Clear();
                                 }*/
 
-                currentMap = choosed;
+                
 
             }
+        }
+
+        public void prepareModule(ContentManager Content, int enemyCount)
+        {
+            string choosed = generateRandomStringFromList(maps);
+
+            module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
+
+            _levels.Add(new Level(Content, choosed, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+
+            modulesList.Add(module);
+
+            maps.Clear();
+
+            currentMap = choosed;
         }
 
         public List<SceneObject> returnSceneObjects(float playerX, float playerY)
