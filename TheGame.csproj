@@ -49,7 +49,7 @@
     <Content Include="Maps\map_down_up_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Maps\map_Down_1.txt">
+    <Content Include="Maps\map_down_right_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Maps\map_Down_Straight_1.txt">

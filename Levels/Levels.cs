@@ -19,17 +19,19 @@ namespace TheGame
     internal class Levels
     {
         private List<Level> _levels;
+
         private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt" };
 /*        private string[] maps_down_straight = { "Maps/map_Up_Straight_1.txt" };
         private string[] maps_up_straight = { "Maps/map_Down_Straight_1.txt" };*/
-        private string[] maps_up_down = { "Maps/map_up_down_1.txt"};
-        private string[] maps_down_up = { "Maps/map_down_up_1.txt" };
+        //private string[] maps_up_down = { "Maps/map_up_down_1.txt"};
+        //private string[] maps_down_up = { "Maps/map_down_up_1.txt" };
         private string[] maps_up_right = { "Maps/map_up_right.txt" };
         private string[] maps_left_down = { "Maps/map_left_down.txt" };
         private string[] maps_left_up = { "Maps/map_Up_1.txt" };
-        private string[] maps_down_right = { "Maps/map_Down_1.txt" };
+        private string[] maps_down_right = { "Maps/map_down_right_1.txt" };
         private List<string> maps = new List<string>();
         private string currentMap;
+        private string choosedMap;
 
         private int moduleSeparatorX = 80;
         private int moduleSeparatorZCount = 0;
@@ -65,13 +67,14 @@ namespace TheGame
             {
                 maps = new List<string>();
 
-                string choosed = null;  //wybrana mapa
+                //string choosed = null;  //wybrana mapa
 
                 //wybieranie ilości przeciwników w levelu
                 if (numberOfModules < 4)
                     enemyCount = 2;
                 else
                     enemyCount = 4;
+
                 Debug.Write(currentMap);
                 Debug.Write("\n");
 
@@ -91,7 +94,7 @@ namespace TheGame
                 if (maps_left_up.Contains(currentMap))
                 {
                     maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
-                    maps.AddRange(maps_up_down);
+                    //maps.AddRange(maps_up_down);
 
                     moduleSeparatorZCount--;
                     moduleHeightChange++;
@@ -112,7 +115,7 @@ namespace TheGame
                 if (maps_left_down.Contains(currentMap))
                 {
                     maps.AddRange(maps_up_right);
-                    maps.AddRange(maps_up_down);
+                    //maps.AddRange(maps_up_down);
 
                     moduleSeparatorZCount++;
                     moduleHeightChange++;
@@ -129,44 +132,44 @@ namespace TheGame
 
                     prepareModule(Content, enemyCount);
                 }
-                
-/*                //Prosta od góry do dołu              //work in progress
-                if (maps_up_down.Contains(currentMap))
-                {
-                    maps.AddRange(maps_up_right);
 
-                    choosed = generateRandomStringFromList(maps);
+                /*                //Prosta od góry do dołu              //work in progress
+                                if (maps_up_down.Contains(currentMap))
+                                {
+                                    maps.AddRange(maps_up_right);
 
-                    moduleSeparatorZCount++;
-                    moduleHeightChange++;
+                                    choosed = generateRandomStringFromList(maps);
 
-                    module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
+                                    moduleSeparatorZCount++;
+                                    moduleHeightChange++;
 
-                    _levels.Add(new Level(Content, choosed, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+                                    module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
 
-                    modulesList.Add(module);
+                                    _levels.Add(new Level(Content, choosed, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
 
-                    maps.Clear();
-                }
+                                    modulesList.Add(module);
 
-                //Prosta od dołu do góry
-                if (maps_down_up.Contains(currentMap))
-                {
-                    maps.AddRange(maps_down_right);
+                                    maps.Clear();
+                                }
 
-                    choosed = generateRandomStringFromList(maps);
+                                //Prosta od dołu do góry
+                                if (maps_down_up.Contains(currentMap))
+                                {
+                                    maps.AddRange(maps_down_right);
 
-                    moduleSeparatorZCount--;
-                    moduleHeightChange++;
+                                    choosed = generateRandomStringFromList(maps);
 
-                    module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
+                                    moduleSeparatorZCount--;
+                                    moduleHeightChange++;
 
-                    _levels.Add(new Level(Content, choosed, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+                                    module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
 
-                    modulesList.Add(module);
+                                    _levels.Add(new Level(Content, choosed, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
 
-                    maps.Clear();
-                }*/
+                                    modulesList.Add(module);
+
+                                    maps.Clear();
+                                }*/
 
 
                 /*                //Wylot z dołu, lewej i prawej
@@ -189,24 +192,22 @@ namespace TheGame
                                     maps.Clear();
                                 }*/
 
-                
 
+                currentMap = choosedMap;
             }
         }
 
         public void prepareModule(ContentManager Content, int enemyCount)
         {
-            string choosed = generateRandomStringFromList(maps);
+            choosedMap = generateRandomStringFromList(maps);
 
             module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
 
-            _levels.Add(new Level(Content, choosed, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+            _levels.Add(new Level(Content, choosedMap, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
 
             modulesList.Add(module);
 
             maps.Clear();
-
-            currentMap = choosed;
         }
 
         public List<SceneObject> returnSceneObjects(float playerX, float playerY)
