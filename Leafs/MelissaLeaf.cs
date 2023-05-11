@@ -18,7 +18,7 @@ namespace TheGame.Leafs
         {
            
                 player.Inventory.addMelissaLeaf();
-                Debug.Write("Dodalem Melise" + player.Inventory.MelissaLeafNumber + "\n");
+                Debug.Write("Dodalem Melise" + player.Inventory.getMellisaLeafNumber() + "\n");
                 this.RemoveFromWorld();
                 ispossible = false;
             

@@ -20,7 +20,7 @@ namespace TheGame.Leafs
             
                 player.Inventory.addAppleLeaf();
                 this.RemoveFromWorld();
-                Debug.Write("Dodalem apple" + player.Inventory.appleLeafNumber + "\n");
+                Debug.Write("Dodalem apple" + player.Inventory.getAppleLeaftNumber() + "\n");
                 ispossible = false;
             
 

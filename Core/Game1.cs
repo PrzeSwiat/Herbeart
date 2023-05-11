@@ -140,7 +140,7 @@ namespace TheGame
             Leafs.UpdateScene(enemies.EnemiesList);
             // Debug.Write(player.Inventory.appleLeafNumber + "\n");
             camera.Update1(player.position);
-            hud.Update(camera.CamPosition);
+            hud.Update(camera.CamPosition, player.Inventory.returnLeafsList());
 
             interactionEventHandler.Update(enemies.EnemiesList);
             SaveControl();

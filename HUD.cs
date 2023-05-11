@@ -22,7 +22,8 @@ namespace TheGame
         private int BackgroundWidth, BackgroundHeight, WindowWidth, WindowHeight;
         private int BackgroundX, BackgroundY;
         private int health = 200;
-        private int licznik = 0;
+        private int[] numberOfLeafs;
+        //private int licznik = 0;
 
         private DateTime lastChangeTime, actualTime;
 
@@ -46,10 +47,12 @@ namespace TheGame
             Font = content.Load<SpriteFont>("Fonts");
         }
 
-        public void Update(Vector3 camPos)
+        public void Update(Vector3 camPos, int[] leafs)
         {
             BackgroundX = (int)camPos.X % BackgroundWidth - BackgroundWidth;
             BackgroundY = (int)camPos.Z % BackgroundHeight - BackgroundHeight;
+
+            numberOfLeafs = leafs;
         }
 
         public void DrawBackground(SpriteBatch spriteBatch)
@@ -77,12 +80,8 @@ namespace TheGame
         {
             spriteBatch.Begin();
 
-            int[] numbers = { 1, 2, 3 };
-
-            DrawInventory(spriteBatch, numbers);
+            DrawInventory(spriteBatch, numberOfLeafs);
             DrawHealthBar(spriteBatch, hp);
-            health -= 1;
-            if (health < 0) health = 200;
 
             spriteBatch.End();
         }
@@ -98,20 +97,13 @@ namespace TheGame
             Rectangle rect = new Rectangle(0, WindowHeight - 100, 50, 50);
             actualTime = DateTime.Now;
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 rect.X = 20 + i * 50;
                 spriteBatch.Draw(itemFrame, rect, Color.Gray);
-                spriteBatch.DrawString(Font, licznik.ToString(), new Vector2(50 + i * 50, WindowHeight - 90), Color.Black);
+                spriteBatch.DrawString(Font, numberOfItems[i].ToString(), new Vector2(50 + i * 50, WindowHeight - 90), Color.Black);
             }
-            TimeSpan time = actualTime - lastChangeTime;
-            if (time.TotalSeconds > 3)
-            {
-                licznik += 1;
-                lastChangeTime = actualTime;
-                if (licznik == 3) licznik = 0;
-                
-            }
+   
             
         }
 

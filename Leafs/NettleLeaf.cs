@@ -18,7 +18,7 @@ namespace TheGame.Leafs
         {
             
                 player.Inventory.addNettleLeaf();
-                Debug.Write("Dodalem Pokrzywe" + player.Inventory.NettleLeafNumber + "\n");
+                Debug.Write("Dodalem Pokrzywe" + player.Inventory.getNettleLeafNumber() + "\n");
                 this.RemoveFromWorld();
                 ispossible = false;
             
