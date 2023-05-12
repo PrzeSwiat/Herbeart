@@ -73,7 +73,6 @@ namespace TheGame
                 helper.Min = new Vector3(-1f, 0, -1f);
                 helper.Max = new Vector3(1f, 4, 1f);
                 boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
-                Debug.Write(helper.Min + "\n" + helper.Max);
             } else
             {
                 boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
@@ -160,6 +159,19 @@ namespace TheGame
             graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rb, 0, 1);
             graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lb, 0, 1);
         }
+
+        public float returnBBwidth()
+        {
+            float width = this.boundingBox.Max.X - this.boundingBox.Min.X;
+            return width;
+        }
+
+        public float returnBBheight()
+        {
+            float height = this.boundingBox.Max.Z - this.boundingBox.Min.Z;
+            return height;
+        }
+
 
         #region Getters
         //GET'ERS
