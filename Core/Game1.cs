@@ -32,12 +32,14 @@ namespace TheGame
         EffectHandler effectHandler;
         Serializator serializator;
         //.................
+        
 
         private BasicEffect basicEffect;
         World world;
         HUD hud;
         InteractionEventHandler interactionEventHandler;
         Player player;
+        Player animacyjnaPacynka;
         Enemies enemies;
         LeafList Leafs;
         EffectHandler effectPrzemyslaw;
@@ -93,6 +95,7 @@ namespace TheGame
             //  enemies.AddEnemy(apple2);
            // enemies.AddEnemy(apple3);
             player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
+            animacyjnaPacynka = new Player(new Vector3(0, 0, 30), "nasze", "StarSparrow_Green");
 
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
@@ -110,7 +113,10 @@ namespace TheGame
             player.LoadContent(Content);
             enemies.LoadModels(Content);
             Leafs.LoadModels(Content);
+            animacyjnaPacynka.LoadContent(Content);
             //player.OnDestroy += DestroyControl;
+            animacyjnaPacynka.LoadAnimation(GraphicsDevice);
+           // player.LoadAnimation();
 
         }
 
@@ -142,6 +148,9 @@ namespace TheGame
             camera.Update1(player.position);
             hud.Update(camera.CamPosition, player.Inventory.returnLeafsList());
 
+            
+            animacyjnaPacynka.animation.Update(gameTime.ElapsedGameTime.TotalSeconds);
+
             interactionEventHandler.Update(enemies.EnemiesList);
             SaveControl();
 
@@ -167,6 +176,8 @@ namespace TheGame
             //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
             //player.WiktorDraw(effectWiktor, worldMatrix, viewMatrix, projectionMatrix, player.color);
             hud.DrawFrontground(_spriteBatch, player.Health);
+
+            animacyjnaPacynka.AnimationDraw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
 
             DrawBoundingBoxes();
         }

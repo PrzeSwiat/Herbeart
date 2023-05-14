@@ -31,7 +31,9 @@ namespace TheGame
         public Color color = Color.White;
         private float sphereRadius, distanceFromCenter = 0;
 
+        public Animations animation;
         private DateTime lastEventTime, actualTime;
+        SkinnedEffect skinnedEffect;
 
         public SceneObject(Vector3 worldPosition, string modelFileName, string textureFileName)
         {
@@ -61,11 +63,25 @@ namespace TheGame
                 }
             }*/
         }
+        public void LoadAnimation(GraphicsDevice device)
+        {
+            skinnedEffect = new SkinnedEffect(device);
+            skinnedEffect.EnableDefaultLighting(); // włącz domyślne oświetlenie
+            skinnedEffect.WeightsPerVertex = 4; // ustaw ilość wag na wierzchołek
+
+            animation = new Animations(_modelFileName, model);
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = skinnedEffect;
+                }
+            }
+        }
 
         public void LoadContent(ContentManager content)
         {
             LoadedModels models = LoadedModels.Instance;
-
             model = models.getModel(_modelFileName, content);
             texture2D = models.getTexture(_textureFileName, content);
             //texture2D = (content.Load<Texture2D>(_textureFileName));
@@ -97,6 +113,8 @@ namespace TheGame
             
             //Debug.Write("2");
 
+
+           
         }
 
         public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color)
@@ -125,6 +143,16 @@ namespace TheGame
                        * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
                         , viewMatrix, projectionMatrix, GetTexture2D());
         }
+
+        public void AnimationDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        {
+            effectHandler.AnimationDraw(animation,GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
+                       * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
+                       Matrix.CreateRotationZ(GetRotation().Z)
+                       * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
+                        , viewMatrix, projectionMatrix, GetTexture2D());
+        }
+
 
         public double GetDistance(SceneObject entity)
         {

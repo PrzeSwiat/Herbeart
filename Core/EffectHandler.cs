@@ -183,6 +183,22 @@ namespace TheGame
             }
         }
 
+        public void AnimationDraw(Animations animation,Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D)
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (SkinnedEffect effect in mesh.Effects)
+                {
+                    effect.View = view;
+                    effect.Projection = projection;
+                    effect.World = world;
+                    effect.SetBoneTransforms(animation.boneTransforms);
+                    effect.Texture = texture2D;
+                }
+                mesh.Draw();
+            }
+        }
+
 
     }
 }
