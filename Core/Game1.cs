@@ -205,7 +205,7 @@ namespace TheGame
                 //DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
 
-            player.DrawBB(_graphics.GraphicsDevice);
+            //player.DrawBB(_graphics.GraphicsDevice);
             //DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }
 
