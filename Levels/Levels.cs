@@ -262,7 +262,7 @@ namespace TheGame
             //private string[] grassTextures = {"trawa1", "trawa2", "trawa3"};
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
-            private int tileSize = 4;
+            private int tileSize = 6;
             private int moduleWidth = 20;
             private int moduleHeight = 20;
             private string ground = "test";
