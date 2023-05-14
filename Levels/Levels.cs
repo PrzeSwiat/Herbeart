@@ -34,10 +34,10 @@ namespace TheGame
         private string currentMap;
         private string choosedMap;
         #region Module parametrs and rectangles
-        private int moduleSeparatorX = 80;
+        private int moduleSeparatorX = 120;
         private int moduleSeparatorZCount = 0;
         private int moduleHeightChange = 0;
-        private int moduleSeparatorZ = 80;
+        private int moduleSeparatorZ = 120;
         List<Rectangle> modulesList;
         Rectangle module;
         HashSet<Rectangle> visited;
