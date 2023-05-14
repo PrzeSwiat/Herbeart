@@ -41,7 +41,7 @@ namespace TheGame
             SetPosition(position);
 
             // Check if the bullet has collided with the player
-            if (this.boundingSphere.Intersects(player.boundingBox))
+            if (this.boundingBox.Intersects(player.boundingBox))
             {
                 player.Health -= 5;
                 
