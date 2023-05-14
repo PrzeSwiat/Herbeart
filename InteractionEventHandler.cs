@@ -26,7 +26,7 @@ namespace TheGame
             {
                 enemy.OnAttack += EnemyAttack;
             }
-            //Debug.Write(enemies.Count);
+
         }
 
         public void Update(List<Enemy> enemiesList)

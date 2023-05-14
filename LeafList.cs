@@ -21,9 +21,6 @@ namespace TheGame
 
         ContentManager ContentManager;
 
-
-
-
         private void DestroyControl(object obj, EventArgs e)
         {
             LeafsList.Remove((Leaf)obj);
@@ -43,8 +40,6 @@ namespace TheGame
             }
 
         }
-
-
         public void LoadModels(ContentManager content)
         {
             ContentManager = content;

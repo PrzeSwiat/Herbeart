@@ -16,21 +16,17 @@ namespace TheGame.Leafs
         }
 
         public override void AddToInventory(Player player)
-        {
-            
+        {         
                 player.Inventory.addMintLeaf();
                 Debug.Write("Dodalem miete" + player.Inventory.getMintLeafNumber() + "\n");
                 this.RemoveFromWorld(); 
                 ispossible = false;
-            
-
         }
 
         public override bool UpdateInventory(Player player)
         {
             if (this.chceckCollison(player))
             {
-                //Debug.Write("przecina\n");
                 this.AddToInventory(player);
                 return true;
             }

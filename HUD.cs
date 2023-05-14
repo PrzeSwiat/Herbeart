@@ -18,13 +18,11 @@ namespace TheGame
         private SpriteFont Font;
         private Texture2D skyTex, red, itemFrame;
         private Rectangle skyRec;
-        //private int MoveSpeed = 2;
         private int BackgroundWidth, BackgroundHeight, WindowWidth, WindowHeight;
         private int BackgroundX, BackgroundY;
         private int health = 200;
         private int[] numberOfLeafs;
         private string[] buttons;
-        //private int licznik = 0;
 
         private DateTime lastChangeTime, actualTime;
 

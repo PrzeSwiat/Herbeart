@@ -141,7 +141,6 @@ namespace TheGame
 
         private void DestroyControl(object obj, EventArgs e)
         {
-            //Debug.Write("robiecałyczas\n");
             enemiesList.Remove((Enemy)obj);
         }
 

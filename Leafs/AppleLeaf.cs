@@ -22,15 +22,12 @@ namespace TheGame.Leafs
                 this.RemoveFromWorld();
                 Debug.Write("Dodalem apple" + player.Inventory.getAppleLeaftNumber() + "\n");
                 ispossible = false;
-            
-
         }
 
         public override bool UpdateInventory(Player player)
         {
             if (this.chceckCollison(player))
             {
-                //Debug.Write("przecina\n");
                 this.AddToInventory(player);
                 return true;
             }

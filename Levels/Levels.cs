@@ -438,22 +438,22 @@ namespace TheGame
                         switch (enemyType)
                         {
                             case "apple":
-                                AppleTree apple = new AppleTree(groundPosition, "player", "StarSparrow_Green");
+                                AppleTree apple = new AppleTree(groundPosition, "jablonka", "StarSparrow_Green");
                                 apple.LoadContent(content);
                                 enemies.Add(apple);
                                 break;
                             case "melissa":
-                                Melissa melissa = new Melissa(groundPosition, "player", "StarSparrow_Green");
+                                Melissa melissa = new Melissa(groundPosition, "melisa", "StarSparrow_Green");
                                 melissa.LoadContent(content);
                                 enemies.Add(melissa);
                                 break;
                             case "nettle":
-                                Nettle nettle = new Nettle(groundPosition, "player", "StarSparrow_Green");
+                                Nettle nettle = new Nettle(groundPosition, "pokrzywa", "StarSparrow_Green");
                                 nettle.LoadContent(content);
                                 enemies.Add(nettle);
                                 break;
                             case "mint":
-                                Mint mint = new Mint(groundPosition, "player", "StarSparrow_Green");
+                                Mint mint = new Mint(groundPosition, "mieta", "StarSparrow_Green");
                                 mint.LoadContent(content);
                                 enemies.Add(mint);
                                 break;

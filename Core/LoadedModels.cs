@@ -38,7 +38,6 @@ namespace TheGame.Core
             } else
             {
                 loadedModels.Add(name, content.Load<Model>(name));
-                //Debug.Write("XD" + "\n");
                 return loadedModels[name];
             }
         }
@@ -52,7 +51,6 @@ namespace TheGame.Core
             else
             {
                 loadedTextures.Add(name, content.Load<Texture2D>(name));
-                //Debug.Write("XD" + "\n");
                 return loadedTextures[name];
             }
         }

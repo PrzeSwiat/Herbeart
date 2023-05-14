@@ -28,7 +28,6 @@ namespace TheGame.Leafs
         {
             if (this.chceckCollison(player))
             {
-                //Debug.Write("przecina\n");
                 this.AddToInventory(player);
                 return true;
             }

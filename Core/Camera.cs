@@ -83,8 +83,6 @@ namespace TheGame
 
         public void Update()
         {
-            // camOffset = Vector3.Lerp(camPosition,nextpos*1.1f,camSlow);
-            // camTracker += Vector3.Normalize(Vector3.Lerp(camPosition, camOffset, 5f));
             camOffset = Vector3.Lerp(camPosition, nextpos, camSlow);
             camTracker += Vector3.Normalize(Vector3.Lerp(nextpos, camOffset, 20f));
         }

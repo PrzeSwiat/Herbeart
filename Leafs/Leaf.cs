@@ -41,11 +41,9 @@ namespace TheGame.Leafs
         }
         public virtual bool UpdateInventory(Player player)
         {
-            //Update();
 
             if (this.chceckCollison(player))
             {
-                //Debug.Write("przecina\n");
                 this.AddToInventory(player);
                 return true;
             }

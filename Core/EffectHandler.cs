@@ -44,7 +44,6 @@ namespace TheGame
             Vector3 att = new Vector3(0.1f, 0.1f, 0.1f);
             Lights[0] = new PointLight(pos1, Color.White.ToVector4(), att, 20);
             Lights[1] = new PointLight(pos2, Color.White.ToVector4(), att, 20);
-            //lightpos = new List<Vector3>();
         }
 
         private Vector3[] getPointLightPositions(PointLight[] lights)
@@ -91,14 +90,6 @@ namespace TheGame
             return ranges;
         }
 
-        /*public void AddLight(Vector3 vector3)
-        {
-            lightpos.Add(vector3);
-        }
-        public List<Vector3> GetLights()
-        {
-            return lightpos;
-        }*/
 
 
         public void BasicDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D, Color color)

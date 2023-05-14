@@ -13,15 +13,12 @@ namespace TheGame.Leafs
         public NettleLeaf(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
         }
-
         public override void AddToInventory(Player player)
         {
-            
                 player.Inventory.addNettleLeaf();
                 Debug.Write("Dodalem Pokrzywe" + player.Inventory.getNettleLeafNumber() + "\n");
                 this.RemoveFromWorld();
                 ispossible = false;
-            
 
         }
 
@@ -29,7 +26,6 @@ namespace TheGame.Leafs
         {
             if (this.chceckCollison(player))
             {
-                //Debug.Write("przecina\n");
                 this.AddToInventory(player);
                 return true;
             }

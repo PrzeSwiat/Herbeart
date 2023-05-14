@@ -27,9 +27,8 @@ namespace TheGame
         
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            
             leaf = new Leaf(worldPosition, "mis4", "StarSparrow_Orange");
-
+            attackSpeed = 0.5f;
             boundingSphere = BoundingSphere.CreateFromBoundingBox(this.boundingBox);
 
         }
@@ -58,7 +57,7 @@ namespace TheGame
             {
                 color = Color.Red;
             }
-            Debug.Write("test");
+            
         }
 
       
