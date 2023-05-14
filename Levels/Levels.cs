@@ -21,9 +21,9 @@ namespace TheGame
         private List<Level> _levels;
         #region Maps
         private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt" };
-/*        private string[] maps_down_straight = { "Maps/map_Up_Straight_1.txt" };
-        private string[] maps_up_straight = { "Maps/map_Down_Straight_1.txt" };*/
-        private string[] maps_up_down = { "Maps/map_up_down_1.txt"};
+        /*        private string[] maps_down_straight = { "Maps/map_Up_Straight_1.txt" };
+                private string[] maps_up_straight = { "Maps/map_Down_Straight_1.txt" };*/
+        private string[] maps_up_down = { "Maps/map_up_down_1.txt" };
         private string[] maps_down_up = { "Maps/map_down_up_1.txt" };
         private string[] maps_up_right = { "Maps/map_up_right.txt" };
         private string[] maps_left_down = { "Maps/map_left_down.txt" };
@@ -48,13 +48,13 @@ namespace TheGame
         public Levels(ContentManager Content, int numberOfModules)
         {
             _levels = new List<Level>();
-            modulesList = new List<Rectangle> ();
+            modulesList = new List<Rectangle>();
             prepareMap(Content, numberOfModules);
             visited = new HashSet<Rectangle>();
         }
 
 
-        public void prepareMap (ContentManager Content, int numberOfModules)
+        public void prepareMap(ContentManager Content, int numberOfModules)
         {
             int enemyCount;
             _levels.Add(new Level(Content, "Maps/map1.txt", _levels.Count * moduleSeparatorX, 0, 0));
@@ -190,7 +190,7 @@ namespace TheGame
             modulesList.Add(module);
 
             maps.Clear();
-            
+
         }
 
         public List<SceneObject> returnSceneObjects(float playerX, float playerY)
@@ -208,7 +208,7 @@ namespace TheGame
                         _sceneObjects.Add(obj);
                     }
                 }
-                
+
             }
 
 
@@ -223,14 +223,14 @@ namespace TheGame
 
             if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count - 2)
             {
-                foreach (Enemy enemy in _levels[numberOfModule+1].returnEnemies())
+                foreach (Enemy enemy in _levels[numberOfModule + 1].returnEnemies())
                 {
                     enemiesList.Add(enemy);
                 }
-                visited.Add(modulesList[numberOfModule]);    
+                visited.Add(modulesList[numberOfModule]);
             }
-                
-            
+
+
             return enemiesList;
         }
 
@@ -247,7 +247,7 @@ namespace TheGame
             }
             return numberOfModule;
         }
-        
+
         public string generateRandomStringFromList(List<string> list)
         {
             Random random = new Random();
@@ -259,6 +259,7 @@ namespace TheGame
         {
             private string[] treeModels = { "tree1", "tree2", "tree3" };
             private string[] enemyTypes = { "apple", "mint", "nettle", "melissa" };
+            private string[] otherModels = { "rock2", "rock18" };
             //private string[] grassTextures = {"trawa1", "trawa2", "trawa3"};
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
@@ -268,15 +269,17 @@ namespace TheGame
             private string ground = "test";
             private ContentManager content;
             private List<Enemy> enemies;
-            
-            
-            public Level(ContentManager Content, string fileName, float separator, int enemyCount, float separatorZ) 
+            private List<Vector3> groundPositions;
+
+
+            public Level(ContentManager Content, string fileName, float separator, int enemyCount, float separatorZ)
             {
                 _sceneObjects = new List<SceneObject>();
                 enemies = new List<Enemy>();
+                groundPositions = new List<Vector3>();
                 content = Content;
                 LoadSceneObjects(Content, fileName, separator, enemyCount, separatorZ);
-                
+
             }
 
             public List<Enemy> returnEnemies()
@@ -304,8 +307,6 @@ namespace TheGame
             private void LoadSceneObjects(ContentManager Content, string fileName, float separatorX, int enemyCount, float separatorZ)
             {
                 LoadScene(fileName, enemyCount);
-                List<Vector3> groundPositions = new List<Vector3>();
-                int groundListSize = 0;
 
                 for (int i = 0; i < moduleHeight; i++)
                 {
@@ -320,7 +321,6 @@ namespace TheGame
                         {
                             Vector3 enemyWektor = wektor;
                             enemyWektor.Y = 2;
-                            groundListSize++;
                             groundPositions.Add(enemyWektor);
                         }
                         if (treeModels.Contains(model))
@@ -328,20 +328,23 @@ namespace TheGame
                             _sceneObjects.Add(new SceneObject(wektor, ground, "trawa1"));       //dodanie trawy pod drzewka
                             SceneObject tree = new SceneObject(wektor, model, texture);
                             Random rand = new Random();
-                            float rflot =( float)rand.NextDouble()*2*(float)Math.PI;            //zmiana obrotu drzewa losowo
-                            float size = (float)rand.Next(200, 300)/100;                                //zmiana wielkosci drzewa losowo
+                            float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
+                            float size = (float)rand.Next(200, 300) / 100;                                //zmiana wielkosci drzewa losowo
                             tree.SetScale(size);
-                            tree.SetRotation(new Vector3(0,rflot,0));
+                            tree.SetRotation(new Vector3(0, rflot, 0));
                             _sceneObjects.Add(tree);
                         }
                         else
                         {
                             _sceneObjects.Add(new SceneObject(wektor, model, texture));
                         }
-                        
+
                     }
                 }
-                GenerateEnemies(enemyCount, groundPositions, groundListSize);
+                Random random = new Random();
+                int objectsCount = random.Next(5, 10);
+                GenerateOtherObjects(objectsCount);
+                GenerateEnemies(enemyCount);
                 ObjectInitializer(Content);
             }
 
@@ -356,7 +359,7 @@ namespace TheGame
             public void LoadScene(string fileName, int enemyCount)
             {
                 List<int> tileList = ReadFile(fileName);
-               _tiles = new List<Tile>();
+                _tiles = new List<Tile>();
 
                 for (int i = 0; i < tileList.Count; i++)
                 {
@@ -419,44 +422,38 @@ namespace TheGame
                 return index;
             }
 
-            public void GenerateEnemies(int enemyCount, List<Vector3> groundPositions, int groundListSize)
-            {
 
-                int[] groundList = new int[groundListSize];
-                Vector3[] enemiesPositions = new Vector3[enemyCount];
-                for (int i = 0; i < enemyCount; i++)
-                {
-                    int index = GenerateRandomInt(groundList);
-                    Vector3 groundPosition = groundPositions[index];
-                    if(!enemiesPositions.Contains(groundPosition))
-                    {
-                        enemiesPositions[i] = groundPosition;
-                    }
-                }
+            public void GenerateEnemies(int enemyCount)
+            {
                 if (enemyCount != 0)
                 {
                     for (int i = 0; i < enemyCount; i++)
                     {
+                        int[] groundList = new int[groundPositions.Count];
+                        int index = GenerateRandomInt(groundList);
+                        Vector3 groundPosition = groundPositions[index];
+                        groundPositions.RemoveAt(index);
+
                         string enemyType = GenerateRandomString(enemyTypes);
                         switch (enemyType)
                         {
                             case "apple":
-                                AppleTree apple = new AppleTree(enemiesPositions[i], "player", "StarSparrow_Green");
+                                AppleTree apple = new AppleTree(groundPosition, "player", "StarSparrow_Green");
                                 apple.LoadContent(content);
                                 enemies.Add(apple);
                                 break;
                             case "melissa":
-                                Melissa melissa = new Melissa(enemiesPositions[i], "player", "StarSparrow_Green");
+                                Melissa melissa = new Melissa(groundPosition, "player", "StarSparrow_Green");
                                 melissa.LoadContent(content);
                                 enemies.Add(melissa);
                                 break;
                             case "nettle":
-                                Nettle nettle = new Nettle(enemiesPositions[i], "player", "StarSparrow_Green");
+                                Nettle nettle = new Nettle(groundPosition, "player", "StarSparrow_Green");
                                 nettle.LoadContent(content);
                                 enemies.Add(nettle);
                                 break;
                             case "mint":
-                                Mint mint = new Mint(enemiesPositions[i], "player", "StarSparrow_Green");
+                                Mint mint = new Mint(groundPosition, "player", "StarSparrow_Green");
                                 mint.LoadContent(content);
                                 enemies.Add(mint);
                                 break;
@@ -465,9 +462,46 @@ namespace TheGame
                 }
             }
 
+            public void GenerateOtherObjects(int count)
+            {
+                if (count != 0)
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        int[] groundList = new int[groundPositions.Count];
+                        int index = GenerateRandomInt(groundList);
+                        Vector3 groundPosition = groundPositions[index];
+                        groundPositions.RemoveAt(index);
+
+                        string objectType = GenerateRandomString(otherModels);
+                        
+                        switch (objectType)
+                        {
+                            case "rock2":
+                                SceneObject stone = new SceneObject(groundPosition, "rock2", "black");
+                                Random rand = new Random();
+                                float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
+                                float size = (float)rand.Next(80, 100) / 100;                               //zmiana wielkosci drzewa losowo
+                                stone.SetScale(size);
+                                stone.SetRotation(new Vector3(0, rflot, 0));
+                                _sceneObjects.Add(stone);
+                                break;
+                            case "rock18":
+                                SceneObject stone1 = new SceneObject(groundPosition, "rock18", "black");
+                                Random rand1 = new Random();
+                                float rflot1 = (float)rand1.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
+                                float size1 = (float)rand1.Next(80, 100) / 100;                                //zmiana wielkosci drzewa losowo
+                                stone1.SetScale(size1);
+                                stone1.SetRotation(new Vector3(0, rflot1, 0));
+                                _sceneObjects.Add(stone1);
+                                break;
+                        }
+                    }
+                }
+            }
         }
 
-            
-       
+
+
     }
 }
