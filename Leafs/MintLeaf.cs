@@ -19,7 +19,7 @@ namespace TheGame.Leafs
         {
             
                 player.Inventory.addMintLeaf();
-                Debug.Write("Dodalem miete" + player.Inventory.MintLeafNumber + "\n");
+                Debug.Write("Dodalem miete" + player.Inventory.getMintLeafNumber() + "\n");
                 this.RemoveFromWorld(); 
                 ispossible = false;
             

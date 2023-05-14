@@ -18,6 +18,10 @@
     <None Remove="Levels\map4.txt" />
     <None Remove="map5.txt" />
     <None Remove="map6.txt" />
+    <None Remove="Maps\map_down_up_1.txt" />
+    <None Remove="Maps\map_end.txt" />
+    <None Remove="Maps\map_up_down_1.txt" />
+    <None Remove="Maps\map_up_right.txt" />
     <None Remove="map_Down_1.txt" />
     <None Remove="map_Down_Straight_1.txt" />
     <None Remove="map_left_down.txt" />
@@ -25,37 +29,49 @@
     <None Remove="map_Up_Straight_1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="map1.txt">
+    <Content Include="Maps\map1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map2.txt">
+    <Content Include="Maps\map2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map3.txt">
+    <Content Include="Maps\map3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map4.txt">
+    <Content Include="Maps\map4.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map5.txt">
+    <Content Include="Maps\map5.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map6.txt">
+    <Content Include="Maps\map6.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map_Down_1.txt">
+    <Content Include="Maps\map_down_up_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map_Down_Straight_1.txt">
+    <Content Include="Maps\map_down_right_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map_left_down.txt">
+    <Content Include="Maps\map_Down_Straight_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map_Up_1.txt">
+    <Content Include="Maps\map_end.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="map_Up_Straight_1.txt">
+    <Content Include="Maps\map_left_down.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_Up_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_up_down_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_up_right.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_Up_Straight_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -64,6 +80,7 @@
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

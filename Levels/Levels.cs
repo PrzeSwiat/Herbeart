@@ -19,23 +19,30 @@ namespace TheGame
     internal class Levels
     {
         private List<Level> _levels;
-        private string[] maps_straight = { "map2.txt", "map3.txt", "map4.txt" };
-        private string[] maps_down_straight = { "map_Up_Straight_1.txt" };
-        private string[] maps_up_straight = { "map_Down_Straight_1.txt" };
-        private string[] maps_up_down_straight = { };
-        private string[] maps_left_down = { "map_left_down.txt"};
-        private string[] maps_left_up = { "map_Up_1.txt" };
-        private string[] maps_down_right = { "map_Down_1.txt" };
+        #region Maps
+        private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt" };
+/*        private string[] maps_down_straight = { "Maps/map_Up_Straight_1.txt" };
+        private string[] maps_up_straight = { "Maps/map_Down_Straight_1.txt" };*/
+        private string[] maps_up_down = { "Maps/map_up_down_1.txt"};
+        private string[] maps_down_up = { "Maps/map_down_up_1.txt" };
+        private string[] maps_up_right = { "Maps/map_up_right.txt" };
+        private string[] maps_left_down = { "Maps/map_left_down.txt" };
+        private string[] maps_left_up = { "Maps/map_Up_1.txt" };
+        private string[] maps_down_right = { "Maps/map_down_right_1.txt" };
+        #endregion
         private List<string> maps = new List<string>();
         private string currentMap;
-        private int moduleSeparatorX = 80;
+        private string choosedMap;
+        #region Module parametrs and rectangles
+        private int moduleSeparatorX = 120;
         private int moduleSeparatorZCount = 0;
-        private int moduleSeparatorZ = 80;
+        private int moduleHeightChange = 0;
+        private int moduleSeparatorZ = 120;
         List<Rectangle> modulesList;
         Rectangle module;
         HashSet<Rectangle> visited;
-        
-        
+        #endregion
+
 
 
         public Levels(ContentManager Content, int numberOfModules)
@@ -50,61 +57,45 @@ namespace TheGame
         public void prepareMap (ContentManager Content, int numberOfModules)
         {
             int enemyCount;
-            _levels.Add(new Level(Content, "map1.txt", _levels.Count * moduleSeparatorX, 0, 0));
+            _levels.Add(new Level(Content, "Maps/map1.txt", _levels.Count * moduleSeparatorX, 0, 0));
             module = new Rectangle(0, 0, moduleSeparatorX, moduleSeparatorZ);
             modulesList.Add(module);
-            currentMap = "map1.txt";
+            currentMap = "Maps/map1.txt";
 
 
-            for (int i = 0; i < numberOfModules; i++)
+            for (int i = 0; i < numberOfModules + 1; i++)
             {
                 maps = new List<string>();
-
-                string choosed = null;  //wybrana mapa
 
                 //wybieranie ilości przeciwników w levelu
                 if (numberOfModules < 4)
                     enemyCount = 2;
                 else
                     enemyCount = 4;
-                //Debug.Write(currentMap);
-                //Debug.Write("\n");
 
+                Debug.Write(currentMap);
+                Debug.Write("\n");
 
                 //Przypadek prostych map - wylot z lewej i prawej
-                if (currentMap == "map1.txt" || maps_straight.Contains(currentMap))
+                if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
                 {
                     maps.AddRange(maps_straight);   //dalej prosto
                     maps.AddRange(maps_left_up);    //idziemy do gory
-                    //maps.AddRange(maps_left_down);  //idziemy do dołu
+                    maps.AddRange(maps_left_down);  //idziemy do dołu
 
-                    choosed = generateRandomStringFromList(maps);
-
-                    module = new Rectangle((_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
-
-                    _levels.Add(new Level(Content, choosed, (_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
-                    
-                    modulesList.Add(module);
-
-                    maps.Clear();
+                    prepareModule(Content, enemyCount);
                 }
 
                 //Zakręt do góry - wylot z lewej i góry
                 if (maps_left_up.Contains(currentMap))
                 {
                     maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
+                    maps.AddRange(maps_down_up);
 
-                    choosed = generateRandomStringFromList(maps);
+                    moduleSeparatorZCount--;
+                    moduleHeightChange++;
 
-                    moduleSeparatorZCount -= 1;
-
-                    module = new Rectangle((_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
-
-                    _levels.Add(new Level(Content, choosed, (_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));       //do sprawdzenia
-                    
-                    modulesList.Add(module);
-
-                    maps.Clear();
+                    prepareModule(Content, enemyCount);
                 }
 
                 //Zakręt od dołu w prawo - wylot z dołu i po prawo
@@ -113,26 +104,55 @@ namespace TheGame
                     maps.AddRange(maps_straight);
                     maps.AddRange(maps_left_up);
 
-                    choosed = generateRandomStringFromList(maps);
-                    
-                    module = new Rectangle((_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
-
-                    _levels.Add(new Level(Content, choosed, (_levels.Count - Math.Abs(moduleSeparatorZCount)) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
-                    
-                    modulesList.Add(module);
-
-                    maps.Clear();
+                    prepareModule(Content, enemyCount);
                 }
 
-                //Zakręt do dołu - wylot z lewej i na dole
-                /*                if (maps_left_down.Contains(currentMap))
-                                {
-                *//*                    maps.AddRange(maps_down_right);
-                                    choosed = generateRandomStringFromList(maps);
-                                    int moduleSeparatorZ = -80;
-                                    _levels.Add(new Level(Content, choosed, (_levels.Count - 1) * moduleSeparator, enemyCount, moduleSeparatorZ));
-                                    maps.Clear();*//*
-                                }*/
+                //Zakręt w dół - wylot z lewej i z dołu
+                if (maps_left_down.Contains(currentMap))
+                {
+                    maps.AddRange(maps_up_right);
+                    maps.AddRange(maps_up_down);
+
+                    moduleSeparatorZCount++;
+                    moduleHeightChange++;
+
+                    prepareModule(Content, enemyCount);
+                }
+
+                //Wylot z góry i z prawej
+                if (maps_up_right.Contains(currentMap))
+                {
+                    maps.AddRange(maps_straight);   //dalej prosto
+                    maps.AddRange(maps_left_up);    //idziemy do gory
+                    maps.AddRange(maps_left_down);  //idziemy do dołu
+
+                    prepareModule(Content, enemyCount);
+                }
+                //Prosta od góry do dołu              //work in progress
+                if (maps_up_down.Contains(currentMap))
+                {
+                    maps.AddRange(maps_up_right);
+
+                    moduleSeparatorZCount++;
+                    moduleHeightChange++;
+
+                    prepareModule(Content, enemyCount);
+
+                }
+
+                //Prosta od dołu do góry
+                if (maps_down_up.Contains(currentMap))
+                {
+                    maps.AddRange(maps_down_right);
+
+                    moduleSeparatorZCount--;
+                    moduleHeightChange++;
+
+                    prepareModule(Content, enemyCount);
+
+                }
+
+
 
                 /*                //Wylot z dołu, lewej i prawej
                                 if(maps_down_straight.Contains(currentMap))                             //Work in progres -  nie ruszac
@@ -154,9 +174,23 @@ namespace TheGame
                                     maps.Clear();
                                 }*/
 
-                currentMap = choosed;
+                currentMap = choosedMap;
 
             }
+        }
+
+        public void prepareModule(ContentManager Content, int enemyCount)
+        {
+            choosedMap = generateRandomStringFromList(maps);
+
+            module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
+
+            _levels.Add(new Level(Content, choosedMap, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+
+            modulesList.Add(module);
+
+            maps.Clear();
+            
         }
 
         public List<SceneObject> returnSceneObjects(float playerX, float playerY)
@@ -187,7 +221,7 @@ namespace TheGame
 
             int numberOfModule = returnModuleNumber(playerX, playerY);
 
-            if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count - 1)
+            if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count - 2)
             {
                 foreach (Enemy enemy in _levels[numberOfModule+1].returnEnemies())
                 {
@@ -228,7 +262,7 @@ namespace TheGame
             //private string[] grassTextures = {"trawa1", "trawa2", "trawa3"};
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
-            private int tileSize = 4;
+            private int tileSize = 6;
             private int moduleWidth = 20;
             private int moduleHeight = 20;
             private string ground = "test";
@@ -282,10 +316,6 @@ namespace TheGame
                         string model = this._tiles[index].model;
                         string texture = this._tiles[index].texture;
                         Vector3 wektor = new Vector3(j * tileSize + separatorX, height, i * tileSize + separatorZ);
-                        if (this._tiles[index].texture == "tree1_color")
-                        {
-                            _sceneObjects.Add(new SceneObject(wektor, ground, "trawa1"));
-                        }
                         if (model == ground)
                         {
                             Vector3 enemyWektor = wektor;
@@ -293,14 +323,16 @@ namespace TheGame
                             groundListSize++;
                             groundPositions.Add(enemyWektor);
                         }
-                        if (model == "tree1" || model == "tree2" || model =="tree3")
+                        if (treeModels.Contains(model))
                         {
-                            SceneObject one = new SceneObject(wektor, model, texture);
+                            _sceneObjects.Add(new SceneObject(wektor, ground, "trawa1"));       //dodanie trawy pod drzewka
+                            SceneObject tree = new SceneObject(wektor, model, texture);
                             Random rand = new Random();
-                            float rflot =( float)rand.NextDouble()*2*(float)Math.PI;
-                            one.SetScale(rflot/3);
-                            one.SetRotation(new Vector3(0,rflot,0));
-                            _sceneObjects.Add(one);
+                            float rflot =( float)rand.NextDouble()*2*(float)Math.PI;            //zmiana obrotu drzewa losowo
+                            float size = (float)rand.Next(200, 300)/100;                                //zmiana wielkosci drzewa losowo
+                            tree.SetScale(size);
+                            tree.SetRotation(new Vector3(0,rflot,0));
+                            _sceneObjects.Add(tree);
                         }
                         else
                         {

@@ -32,12 +32,14 @@ namespace TheGame
         EffectHandler effectHandler;
         Serializator serializator;
         //.................
+        
 
         private BasicEffect basicEffect;
         World world;
         HUD hud;
         InteractionEventHandler interactionEventHandler;
         Player player;
+        Player animacyjnaPacynka;
         Enemies enemies;
         LeafList Leafs;
         EffectHandler effectPrzemyslaw;
@@ -63,7 +65,7 @@ namespace TheGame
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
             
-            projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 100), (WindowWidth / 100), -(WindowHeight / 50), (WindowHeight / 100), 1f, 100f);      // orthographic view 
+            projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 50), (WindowWidth / 50), -(WindowHeight / 50), (WindowHeight / 50), 1f, 100f);      // orthographic view 
             //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
                 // PERSPECTIVE point of view
@@ -90,9 +92,10 @@ namespace TheGame
             Nettle apple3 = new Nettle(new Vector3(22, 2, 21), "player", "StarSparrow_Green");
            // enemies.AddEnemy(apple);
            // enemies.AddEnemy(apple1);
-          //  enemies.AddEnemy(apple2);
+            //  enemies.AddEnemy(apple2);
            // enemies.AddEnemy(apple3);
             player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
+            animacyjnaPacynka = new Player(new Vector3(0, 0, 30), "nasze", "StarSparrow_Green");
 
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
@@ -110,7 +113,10 @@ namespace TheGame
             player.LoadContent(Content);
             enemies.LoadModels(Content);
             Leafs.LoadModels(Content);
+            animacyjnaPacynka.LoadContent(Content);
             //player.OnDestroy += DestroyControl;
+            animacyjnaPacynka.LoadAnimation(GraphicsDevice);
+           // player.LoadAnimation();
 
         }
 
@@ -140,7 +146,10 @@ namespace TheGame
             Leafs.UpdateScene(enemies.EnemiesList);
             // Debug.Write(player.Inventory.appleLeafNumber + "\n");
             camera.Update1(player.position);
-            hud.Update(camera.CamPosition);
+            hud.Update(camera.CamPosition, player.Inventory.returnLeafsList());
+
+            
+            animacyjnaPacynka.animation.Update(gameTime.ElapsedGameTime.TotalSeconds);
 
             interactionEventHandler.Update(enemies.EnemiesList);
             SaveControl();
@@ -165,9 +174,12 @@ namespace TheGame
 
             Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
+            //player.WiktorDraw(effectWiktor, worldMatrix, viewMatrix, projectionMatrix, player.color);
             hud.DrawFrontground(_spriteBatch, player.Health);
 
-            //DrawBoundingBoxes();
+            animacyjnaPacynka.AnimationDraw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
+
+            DrawBoundingBoxes();
         }
 
         #region DrawingBB
@@ -177,67 +189,27 @@ namespace TheGame
             
             foreach(SceneObject obj in world.GetWorldList())
             {
-                //DrawBB(obj.boundingBox.GetCorners());
+                //obj.DrawBB(_graphics.GraphicsDevice);
             }
             foreach (Enemy enemy in enemies.EnemiesList)
             {
-                DrawBB(enemy.boundingBox.GetCorners());
-                DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
+                //enemy.DrawBB(_graphics.GraphicsDevice);
+                if(enemy.GetType() == typeof(AppleTree))
+                {
+                    AppleTree apple1 = (AppleTree)enemy;
+                    foreach(Apple apple in apple1.bullet)
+                    {
+                        //apple.DrawBB(GraphicsDevice);
+                    }
+                }
+                //DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
-            //DrawBB(player.boundingBox.GetCorners());
-            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
+
+            player.DrawBB(_graphics.GraphicsDevice);
+            //DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }
 
-        public void DrawBB(Vector3[] corners)
-        {
-            var bottom = new[] 
-            { 
-                new VertexPositionColor(corners[2], Color.White),
-                new VertexPositionColor(corners[3], Color.White),
-                new VertexPositionColor(corners[7], Color.White),
-                new VertexPositionColor(corners[6], Color.White),
-                new VertexPositionColor(corners[2], Color.White),
-            };
-
-            var top = new[]
-            {
-                new VertexPositionColor(corners[4], Color.White),
-                new VertexPositionColor(corners[5], Color.White),
-                new VertexPositionColor(corners[1], Color.White),
-                new VertexPositionColor(corners[0], Color.White),
-                new VertexPositionColor(corners[4], Color.White),
-            };
-
-            var rf = new[]
-            {
-                new VertexPositionColor(corners[1], Color.White),
-                new VertexPositionColor(corners[2], Color.White)
-            };
-            var lf = new[]
-            {
-                new VertexPositionColor(corners[3], Color.White),
-                new VertexPositionColor(corners[0], Color.White)
-            };
-            var rb = new[]
-            {
-                new VertexPositionColor(corners[5], Color.White),
-                new VertexPositionColor(corners[6], Color.White)
-            };
-            var lb = new[]
-            {
-                new VertexPositionColor(corners[4], Color.White),
-                new VertexPositionColor(corners[7], Color.White)
-            };
-
-            //Sciany dolna i górna
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, bottom, 0, 4);
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, top, 0,4);
-            //boki
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rf, 0, 1);
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lf, 0, 1);
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rb, 0, 1);
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lb, 0, 1);
-        }
+        
 
         public void DrawBS(Vector3 center, float radius)
         {

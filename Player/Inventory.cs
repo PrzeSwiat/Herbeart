@@ -8,17 +8,47 @@ namespace TheGame
 {
     internal class Inventory
     {
-        public int appleLeafNumber;
-        public int MintLeafNumber;
-        public int MelissaLeafNumber;
-        public int NettleLeafNumber;
+        private int appleLeafNumber;
+        private int mintLeafNumber;
+        private int melissaLeafNumber;
+        private int nettleLeafNumber;
 
         public Inventory()
         {
             appleLeafNumber = 0;
-            MelissaLeafNumber = 0;
-            MintLeafNumber = 0;
-            NettleLeafNumber = 0;
+            melissaLeafNumber = 0;
+            mintLeafNumber = 0;
+            nettleLeafNumber = 0;
+        }
+
+        public int[] returnLeafsList()
+        {
+            int[] leafs = new int[4];
+            leafs[0] = nettleLeafNumber;
+            leafs[1] = mintLeafNumber;
+            leafs[2] = melissaLeafNumber;
+            leafs[3] = appleLeafNumber;
+            return leafs;
+        }
+
+        public int getAppleLeaftNumber()
+        {
+            return appleLeafNumber;
+        }
+
+        public int getMintLeafNumber()
+        {
+            return mintLeafNumber;
+        }
+
+        public int getMellisaLeafNumber()
+        {
+            return melissaLeafNumber;
+        }
+
+        public int getNettleLeafNumber()
+        {
+            return nettleLeafNumber;
         }
 
         public void addAppleLeaf()
@@ -27,24 +57,24 @@ namespace TheGame
         }
         public void addMelissaLeaf()
         {
-            MelissaLeafNumber++;
+            melissaLeafNumber++;
         }
         public void addNettleLeaf()
         {
-            NettleLeafNumber++;
+            nettleLeafNumber++;
         }
         public void addMintLeaf()
         {
-            MintLeafNumber++;
+            mintLeafNumber++;
         }
         public void removeAppleLeaf() { appleLeafNumber--; }
-        public void removeMelissaLeaf() { MelissaLeafNumber--; }
-        public void removeNettleLeaf() { NettleLeafNumber--; }
-        public void removeMintLeaf() { MintLeafNumber--; }
+        public void removeMelissaLeaf() { melissaLeafNumber--; }
+        public void removeNettleLeaf() { nettleLeafNumber--; }
+        public void removeMintLeaf() { mintLeafNumber--; }
 
         public bool checkappleLeafNumber() { return appleLeafNumber > 0; }
-        public bool checkMelissaLeafNumber() { return MelissaLeafNumber > 0; }
-        public bool checknettleLeafNumber() { return NettleLeafNumber > 0; }
-        public bool checkmintLeafNumber() { return MintLeafNumber > 0; }
+        public bool checkMelissaLeafNumber() { return melissaLeafNumber > 0; }
+        public bool checknettleLeafNumber() { return nettleLeafNumber > 0; }
+        public bool checkmintLeafNumber() { return mintLeafNumber > 0; }
     }
 }

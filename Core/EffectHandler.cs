@@ -160,6 +160,44 @@ namespace TheGame
             }
         }
 
+        public void WiktorDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D)
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = _effect;
+                    _effect.Parameters["World"].SetValue(world * mesh.ParentBone.Transform);
+                    _effect.Parameters["View"].SetValue(view);
+                    _effect.Parameters["Projection"].SetValue(projection);
+                    _effect.Parameters["AmbientIntensity"].SetValue(0.1f);
+                    _effect.Parameters["ModelTexture"].SetValue(texture2D);
+                    _effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(1, 0, 0));
+                    _effect.Parameters["DiffuseIntensity"].SetValue(0.5f);
+                    _effect.Parameters["Transparency"].SetValue(0.35f);
+
+                    Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
+                    _effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
+                }
+                mesh.Draw();
+            }
+        }
+
+        public void AnimationDraw(Animations animation,Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D)
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (SkinnedEffect effect in mesh.Effects)
+                {
+                    effect.View = view;
+                    effect.Projection = projection;
+                    effect.World = world;
+                    effect.SetBoneTransforms(animation.boneTransforms);
+                    effect.Texture = texture2D;
+                }
+                mesh.Draw();
+            }
+        }
 
 
     }
