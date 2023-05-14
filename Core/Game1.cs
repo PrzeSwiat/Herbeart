@@ -178,7 +178,7 @@ namespace TheGame
             
             foreach(SceneObject obj in world.GetWorldList())
             {
-                obj.DrawBB(_graphics.GraphicsDevice);
+                //obj.DrawBB(_graphics.GraphicsDevice);
             }
             foreach (Enemy enemy in enemies.EnemiesList)
             {
