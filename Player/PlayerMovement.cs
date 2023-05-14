@@ -96,15 +96,15 @@ namespace TheGame
             if (player.canMove)
             {
                 Vector3 wec = new Vector3(player.Direction.X, 0, player.Direction.Y);
-                //UpdateBB(0, world, new Vector3(player.Direction.X * deltaTime * player.MaxSpeed, 0, player.Direction.Y * deltaTime * player.MaxSpeed), wec);
-                UpdateBB1(0, world, new Vector3(player.Direction.X * deltaTime * player.MaxSpeed, 0, 0), player.Direction);
-                UpdateBB2(0, world, new Vector3(0, 0, player.Direction.Y * deltaTime * player.MaxSpeed), player.Direction);
+                UpdateBB(0, world.GetWorldList(), new Vector3(player.Direction.X * deltaTime * player.MaxSpeed, 0, player.Direction.Y * deltaTime * player.MaxSpeed), wec);
+                //UpdateBB1(0, world, new Vector3(player.Direction.X * deltaTime * player.MaxSpeed, 0, 0), player.Direction);
+                //UpdateBB2(0, world, new Vector3(0, 0, player.Direction.Y * deltaTime * player.MaxSpeed), player.Direction);
             }
 
             player.SetRotation(0, rotation, 0);
         }
 
-        public void UpdateBB(float ang, World world, Vector3 moveVec, Vector3 normal)
+        public void UpdateBB(float ang, List<SceneObject> worldList, Vector3 moveVec, Vector3 normal)
         {
             Vector3 center = ((player.boundingBox.Min + player.boundingBox.Max) / 2);
             // Przenieś punkt środka boxa do punktu (0, 0, 0)
@@ -128,33 +128,67 @@ namespace TheGame
 
             player.boundingBox = new BoundingBox(min, max);
 
+
+            // check kolizji na X
             BoundingBox boksik = player.boundingBox;
-            player.boundingBox = new BoundingBox(player.boundingBox.Min - moveVec, player.boundingBox.Max - moveVec);
+            Vector3 helpVec = new Vector3(moveVec.X, 0, 0);
+            player.boundingBox = new BoundingBox(player.boundingBox.Min - helpVec, player.boundingBox.Max - helpVec);
             // Wyznacz punkt środka boxa
 
-            if (this.collision(world.GetWorldList()))
+            if (this.collision(worldList))
             {
-                float movedDistance = CalculatePenetrationDepth(world);
+                float movedDistance = CalculatePenetrationDepthX(worldList);
                 if (movedDistance != 0)
                 {
                     movedDistance += 0.01f;
-                    Debug.Write(CalculatePenetrationDepth(world) + "\n");
-                    player.boundingBox.Min += movedDistance * normal;
-                    player.boundingBox.Max += movedDistance * normal;
+                    //Debug.Write(CalculatePenetrationDepth(worldList) + "\n");
+                    //flaot 
+                    player.boundingBox.Min.X += movedDistance * normal.X;
+                    player.boundingBox.Max.X += movedDistance * normal.X;
                     player.SetPosition((player.boundingBox.Min + player.boundingBox.Max) / 2);
-                    //player.boundingSphere.Center = ;
+
+                    helpVec.X -= movedDistance * normal.X;
+                    player.boundingSphere.Center -= helpVec;
                 }
             }
             else
             {
-                player.SetPosition(player.GetPosition() - moveVec);
-                player.boundingSphere.Center -= moveVec;
+                player.SetPosition(player.GetPosition() - helpVec);
+                //player.UpdateBoundingSphere();
+                player.boundingSphere.Center -= helpVec;
             }
+
+            // check kolizji na Z
+            boksik = player.boundingBox;
+            helpVec = new Vector3(0, 0, moveVec.Z);
+            player.boundingBox = new BoundingBox(player.boundingBox.Min - helpVec, player.boundingBox.Max - helpVec);
+
+            if (this.collision(worldList))
+            {
+                float movedDistance = CalculatePenetrationDepthZ(worldList);
+                if (movedDistance != 0)
+                {
+                    movedDistance += 0.01f;
+                    //Debug.Write(CalculatePenetrationDepth(worldList) + "\n");
+                    player.boundingBox.Min.Z += movedDistance * normal.Z;
+                    player.boundingBox.Max.Z += movedDistance * normal.Z;
+                    player.SetPosition((player.boundingBox.Min + player.boundingBox.Max) / 2);
+                    helpVec.Z -= movedDistance * normal.Z;
+                    player.boundingSphere.Center -= helpVec;
+                }
+            }
+            else
+            {
+                player.SetPosition(player.GetPosition() - helpVec);
+                //player.UpdateBoundingSphere();
+                player.boundingSphere.Center -= helpVec;
+            }
+
 
 
         }
 
-        public void UpdateBB1(float ang, World world, Vector3 moveVec, Vector2 normal)
+        /*public void UpdateBB1(float ang, World world, Vector3 moveVec, Vector2 normal)
         {
             Vector3 center = ((player.boundingBox.Min + player.boundingBox.Max) / 2);
             // Przenieś punkt środka boxa do punktu (0, 0, 0)
@@ -234,6 +268,7 @@ namespace TheGame
             if (this.collision(world.GetWorldList()))
             {
                 float movedDistance = CalculatePenetrationDepth(world);
+                Debug.Write(movedDistance + "\n");
                 if (movedDistance != 0) 
                 {
                     movedDistance += 0.01f;
@@ -241,7 +276,8 @@ namespace TheGame
                     player.boundingBox.Max.Z += movedDistance * normal.Y;
                     player.SetPosition((player.boundingBox.Min + player.boundingBox.Max) / 2);
                 }
-                //player.boundingBox = boksik;
+                
+                    
             }
             else
             {
@@ -250,26 +286,46 @@ namespace TheGame
             }
 
 
-        }
+        }*/
 
-        float CalculatePenetrationDepth(World world)
+        float CalculatePenetrationDepthX(List<SceneObject> worldList)
         {
-            float penetrationDepth;
-            float dx = 0, dz = 0;
+            float penetrationDepth = 0;
+            //float dx = 0, dz = 0;
 
-            foreach (SceneObject obj in world.GetWorldList())
+            foreach (SceneObject obj in worldList)
             {
                 if (player.boundingBox.Intersects(obj.boundingBox))
                 {
-                    dx = Math.Min(player.boundingBox.Max.X - obj.boundingBox.Min.X, obj.boundingBox.Max.X - player.boundingBox.Min.X);
-                    dz = Math.Min(player.boundingBox.Max.Z - obj.boundingBox.Min.Z, obj.boundingBox.Max.Z - player.boundingBox.Min.Z);
+                    penetrationDepth = Math.Min(player.boundingBox.Max.X - obj.boundingBox.Min.X, obj.boundingBox.Max.X - player.boundingBox.Min.X);
+                    //dz = Math.Min(player.boundingBox.Max.Z - obj.boundingBox.Min.Z, obj.boundingBox.Max.Z - player.boundingBox.Min.Z);
                 }
             }
             
-            penetrationDepth = Math.Min(dx, dz);
+            //penetrationDepth = Math.Min(dx, dz);
             
             return penetrationDepth;
         }
+
+        float CalculatePenetrationDepthZ(List<SceneObject> worldList)
+        {
+            float penetrationDepth = 0;
+            //float dx = 0, dz = 0;
+
+            foreach (SceneObject obj in worldList)
+            {
+                if (player.boundingBox.Intersects(obj.boundingBox))
+                {
+                    //dx = Math.Min(player.boundingBox.Max.X - obj.boundingBox.Min.X, obj.boundingBox.Max.X - player.boundingBox.Min.X);
+                    penetrationDepth = Math.Min(player.boundingBox.Max.Z - obj.boundingBox.Min.Z, obj.boundingBox.Max.Z - player.boundingBox.Min.Z);
+                }
+            }
+
+            //penetrationDepth = Math.Min(dx, dz);
+
+            return penetrationDepth;
+        }
+
 
         public void rotateSphere(float Angle)
         {

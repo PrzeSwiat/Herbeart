@@ -29,6 +29,7 @@ namespace TheGame
         public BoundingBox helper;
         public Vector3 boundingboxrotation = new Vector3(0.0f, 0.0f, 0.0f);
         public Color color = Color.White;
+        private float sphereRadius, distanceFromCenter = 0;
 
         private DateTime lastEventTime, actualTime;
 
@@ -37,7 +38,14 @@ namespace TheGame
             position = worldPosition;
             _modelFileName = modelFileName;
             _textureFileName = textureFileName;
+        }
 
+        public SceneObject(Vector3 worldPosition, string modelFileName, string textureFileName, float distance)
+        {
+            position = worldPosition;
+            _modelFileName = modelFileName;
+            _textureFileName = textureFileName;
+            this.distanceFromCenter = distance;
         }
 
         public void Update()    //przyda się do efektów podłoża (obszarowych)
@@ -65,8 +73,8 @@ namespace TheGame
 
             if (_modelFileName == "tree1" || _modelFileName == "tree2" || _modelFileName == "tree3")
             {
-                helper.Min = new Vector3(-1, 0, -1);
-                helper.Max = new Vector3(1, 6, 1);
+                helper.Min = new Vector3(-1.5f, 0, -1.5f);
+                helper.Max = new Vector3(1.5f, 6, 1.5f);
                 boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
             } else if (_modelFileName == "mis")
             {
@@ -79,7 +87,15 @@ namespace TheGame
             }
             
             boundingSphere = BoundingSphere.CreateFromBoundingBox(boundingBox);
-            boundingSphere.Center += new Vector3(0, 0, 3);
+            if (distanceFromCenter != 0)
+            {
+                boundingSphere.Center += new Vector3(0, 0, distanceFromCenter);
+            } else
+            {
+                boundingSphere.Center += new Vector3(0, 0, 3);
+            }
+            
+            //Debug.Write("2");
 
         }
 

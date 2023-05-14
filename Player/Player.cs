@@ -52,7 +52,10 @@ namespace TheGame
             padButtonAClicked = false;
             padButtonYClicked = false;
             padButtonXClicked = false;
-
+            
+            //Matrix bs = Matrix.Transpose();
+            //this.boundingSphere.Transform()
+            //this.boundingSphere.Radius = 
             // Dołączenie metody, która będzie wykonywana przy każdym ticku timera
             playerEffects = new PlayerEffectHandler(this);
             // Uruchomienie timera
@@ -62,12 +65,10 @@ namespace TheGame
         public void Update(World world, float deltaTime) //Logic player here
         {
             Update();
+
             playerMovement.UpdatePlayerMovement(world, deltaTime);
 
             GamePadClick();
-
-            
-                
         }
 
         public void setStun(int time)
