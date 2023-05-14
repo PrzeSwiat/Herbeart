@@ -30,7 +30,7 @@ namespace TheGame
             leafs[3] = appleLeafNumber;
             return leafs;
         }
-
+        #region Getters
         public int getAppleLeaftNumber()
         {
             return appleLeafNumber;
@@ -50,7 +50,8 @@ namespace TheGame
         {
             return nettleLeafNumber;
         }
-
+        #endregion
+        #region AddANDRemove
         public void addAppleLeaf()
         {
             appleLeafNumber++;
@@ -71,7 +72,7 @@ namespace TheGame
         public void removeMelissaLeaf() { melissaLeafNumber--; }
         public void removeNettleLeaf() { nettleLeafNumber--; }
         public void removeMintLeaf() { mintLeafNumber--; }
-
+        #endregion
         public bool checkappleLeafNumber() { return appleLeafNumber > 0; }
         public bool checkMelissaLeafNumber() { return melissaLeafNumber > 0; }
         public bool checknettleLeafNumber() { return nettleLeafNumber > 0; }

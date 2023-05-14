@@ -18,11 +18,11 @@ namespace TheGame
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            AssignParameters(100, 10, 2);
             Direction = new Vector2(0, 0);
             lastAttackTime = DateTime.Now;
             actualTime = lastAttackTime;
             SetScale(0.5f);
+            this.setRadius(3);
             
         }
 
@@ -98,10 +98,7 @@ namespace TheGame
             MoveBoundingBoxForwards(currentSpeed * deltaTime);
         }
 
-        public virtual void FollowPlayer(Vector3 playerPosition, float deltaTime, bool shouldChase)
-        {
-
-        }
+        
         public void rotateSphere(float Angle)
         {
             Matrix rotationMatrix = Matrix.CreateRotationY(Angle);

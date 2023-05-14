@@ -24,15 +24,13 @@ namespace TheGame
     {
         public Inventory Inventory;
         private Crafting Crafting;
-        public bool canMove = true;
-        private DateTime lastAttackTime, actualTime;
-        private float atackSpeed = 0.5f;
-
-        //public string test = "";
+        private DateTime lastAttackTime;
+        private DateTime actualTime;
         private PlayerMovement playerMovement;
         private PlayerEffectHandler playerEffects;
         public event EventHandler OnAttackPressed;
 
+        private bool canMove = true;
         private Boolean isCraftingTea;
         private Boolean padButtonAClicked;
         private Boolean padButtonBClicked;
@@ -43,6 +41,7 @@ namespace TheGame
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
+            
             SetScale(1f);
             AssignParameters(200, 20, 20);
 
@@ -53,22 +52,16 @@ namespace TheGame
             padButtonAClicked = false;
             padButtonYClicked = false;
             padButtonXClicked = false;
-            
-            //Matrix bs = Matrix.Transpose();
-            //this.boundingSphere.Transform()
-            //this.boundingSphere.Radius = 
-            // Dołączenie metody, która będzie wykonywana przy każdym ticku timera
             playerEffects = new PlayerEffectHandler(this);
             // Uruchomienie timera
             playerEffects.Start();
+            this.setRadius(3);
         }
 
         public void Update(World world, float deltaTime) //Logic player here
         {
             Update();
-
             playerMovement.UpdatePlayerMovement(world, deltaTime);
-
             GamePadClick();
         }
 
@@ -99,27 +92,14 @@ namespace TheGame
             }
             else { this.Health -= amount; }
         }
-
-
-
-        #region Getters
-        //GET'ERS
-
-        //.................
-        #endregion
-
-        #region Setters
-        //SET'ERS
-
-        #endregion
-        //.................
-
-
-        
-
-
-      
-
+        public bool getcanMove()
+        {
+            return this.canMove;
+        }
+        public void setcanMove(bool can)
+        {
+            this.canMove=can;
+        }
 
         public void GamePadClick()
         {
@@ -143,7 +123,7 @@ namespace TheGame
 
                             actualTime = DateTime.Now;
                             TimeSpan time = actualTime - lastAttackTime;
-                            if (time.TotalSeconds > atackSpeed)
+                            if (time.TotalSeconds > this.getAttackSpeed())
                             {
                                 OnAttackPressed?.Invoke(this, EventArgs.Empty);
                                 lastAttackTime = actualTime;
@@ -245,7 +225,7 @@ namespace TheGame
                 {
                     actualTime = DateTime.Now;
                     TimeSpan time = actualTime - lastAttackTime;
-                    if (time.TotalSeconds > atackSpeed)
+                    if (time.TotalSeconds > this.getAttackSpeed())
                     {
                         OnAttackPressed?.Invoke(this, EventArgs.Empty);
                         lastAttackTime = actualTime;

@@ -3,12 +3,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 using TheGame.Core;
 using Color = Microsoft.Xna.Framework.Color;
 
@@ -24,16 +18,10 @@ namespace TheGame
         protected Texture2D texture2D;
         public string _modelFileName;
         public string _textureFileName;
-        public BoundingSphere boundingSphere;
-        public BoundingBox boundingBox;
-        public BoundingBox helper;
-        public Vector3 boundingboxrotation = new Vector3(0.0f, 0.0f, 0.0f);
         public Color color = Color.White;
-        private float sphereRadius, distanceFromCenter = 0;
-
         public Animations animation;
-        private DateTime lastEventTime, actualTime;
         SkinnedEffect skinnedEffect;
+        public BoundingBox boundingBox;
 
         public SceneObject(Vector3 worldPosition, string modelFileName, string textureFileName)
         {
@@ -42,26 +30,11 @@ namespace TheGame
             _textureFileName = textureFileName;
         }
 
-        public SceneObject(Vector3 worldPosition, string modelFileName, string textureFileName, float distance)
-        {
-            position = worldPosition;
-            _modelFileName = modelFileName;
-            _textureFileName = textureFileName;
-            this.distanceFromCenter = distance;
-        }
+      
 
-        public void Update()    //przyda się do efektów podłoża (obszarowych)
+        public void Update()    
         {
-            /*actualTime = DateTime.Now;
-            TimeSpan time = actualTime - lastEventTime;
-            if (time.TotalSeconds > 1)
-            {
-                lastEventTime = actualTime;
-                if (color != Color.White)
-                {
-                    color = Color.White;
-                }
-            }*/
+        
         }
         public void LoadAnimation(GraphicsDevice device)
         {
@@ -79,13 +52,12 @@ namespace TheGame
             }
         }
 
-        public void LoadContent(ContentManager content)
+        public virtual void LoadContent(ContentManager content)
         {
             LoadedModels models = LoadedModels.Instance;
             model = models.getModel(_modelFileName, content);
             texture2D = models.getTexture(_textureFileName, content);
-            //texture2D = (content.Load<Texture2D>(_textureFileName));
-            helper = CreateBoundingBox(this.model);
+            BoundingBox helper = CreateBoundingBox(this.model);
 
             if (_modelFileName == "tree1" || _modelFileName == "tree2" || _modelFileName == "tree3")
             {
@@ -102,17 +74,7 @@ namespace TheGame
                 boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
             }
             
-            boundingSphere = BoundingSphere.CreateFromBoundingBox(boundingBox);
-            if (distanceFromCenter != 0)
-            {
-                boundingSphere.Center += new Vector3(0, 0, distanceFromCenter);
-            } else
-            {
-                boundingSphere.Center += new Vector3(0, 0, 3);
-            }
             
-            //Debug.Write("2");
-
 
            
         }
@@ -126,24 +88,6 @@ namespace TheGame
                          , viewMatrix, projectionMatrix, GetTexture2D(), color);
         }
 
-        public void PrzemyslawDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color)
-        {
-            effectHandler.PrzemyslawDraw(GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
-                       * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
-                       Matrix.CreateRotationZ(GetRotation().Z)
-                       * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
-                        , viewMatrix, projectionMatrix, GetTexture2D());
-        }
-
-        public void WiktorDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color)
-        {
-            effectHandler.WiktorDraw(GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
-                       * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
-                       Matrix.CreateRotationZ(GetRotation().Z)
-                       * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
-                        , viewMatrix, projectionMatrix, GetTexture2D());
-        }
-
         public void AnimationDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             effectHandler.AnimationDraw(animation,GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
@@ -154,76 +98,12 @@ namespace TheGame
         }
 
 
-        public double GetDistance(SceneObject entity)
-        {
-            double distance = (double)Vector3.Distance(this.position, entity.GetPosition());
-            return distance;
-        }
 
-        public void DrawBB(GraphicsDevice graphicsDevice)
-        {
-            Vector3[] corners = boundingBox.GetCorners();
+   
 
-            var bottom = new[]
-            {
-                new VertexPositionColor(corners[2], Color.White),
-                new VertexPositionColor(corners[3], Color.White),
-                new VertexPositionColor(corners[7], Color.White),
-                new VertexPositionColor(corners[6], Color.White),
-                new VertexPositionColor(corners[2], Color.White),
-            };
 
-            var top = new[]
-            {
-                new VertexPositionColor(corners[4], Color.White),
-                new VertexPositionColor(corners[5], Color.White),
-                new VertexPositionColor(corners[1], Color.White),
-                new VertexPositionColor(corners[0], Color.White),
-                new VertexPositionColor(corners[4], Color.White),
-            };
+        
 
-            var rf = new[]
-            {
-                new VertexPositionColor(corners[1], Color.White),
-                new VertexPositionColor(corners[2], Color.White)
-            };
-            var lf = new[]
-            {
-                new VertexPositionColor(corners[3], Color.White),
-                new VertexPositionColor(corners[0], Color.White)
-            };
-            var rb = new[]
-            {
-                new VertexPositionColor(corners[5], Color.White),
-                new VertexPositionColor(corners[6], Color.White)
-            };
-            var lb = new[]
-            {
-                new VertexPositionColor(corners[4], Color.White),
-                new VertexPositionColor(corners[7], Color.White)
-            };
-
-            //Sciany dolna i górna
-            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, bottom, 0, 4);
-            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, top, 0, 4);
-            //boki
-            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rf, 0, 1);
-            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lf, 0, 1);
-            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rb, 0, 1);
-            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lb, 0, 1);
-        }
-
-        public float returnBBwidth()
-        {
-            float width = this.boundingBox.Max.X - this.boundingBox.Min.X;
-            return width;
-        }
-
-        public float returnBBheight()
-        {
-            float height = this.boundingBox.Max.Z - this.boundingBox.Min.Z;
-            return height;
-        }
 
 
         #region Getters
@@ -348,38 +228,59 @@ namespace TheGame
             vertices.Add(new Vector3(x, b, c));
             return vertices;
         }
-        private RectangleF CreateRectangle(Model model)
+        public void DrawBB(GraphicsDevice graphicsDevice)
         {
-            Vector3 min = new Vector3(float.MaxValue);
-            Vector3 max = new Vector3(float.MinValue);
+            Vector3[] corners = boundingBox.GetCorners();
 
-            foreach (ModelMesh mesh in model.Meshes)
+            var bottom = new[]
             {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    VertexBuffer vertexBuffer = part.VertexBuffer;
-                    int vertexStride = vertexBuffer.VertexDeclaration.VertexStride;
-                    int numVertices = vertexBuffer.VertexCount;
-                    byte[] vertexData = new byte[vertexStride * numVertices];
-                    vertexBuffer.GetData(vertexData);
+                new VertexPositionColor(corners[2], Color.White),
+                new VertexPositionColor(corners[3], Color.White),
+                new VertexPositionColor(corners[7], Color.White),
+                new VertexPositionColor(corners[6], Color.White),
+                new VertexPositionColor(corners[2], Color.White),
+            };
 
-                    for (int i = 0; i < numVertices; i++)
-                    {
-                        Vector3 vertex = Vector3.Transform(
-                            new Vector3(
-                                BitConverter.ToSingle(vertexData, i * vertexStride),
-                                BitConverter.ToSingle(vertexData, i * vertexStride + 4),
-                                BitConverter.ToSingle(vertexData, i * vertexStride + 8)),
-                            mesh.ParentBone.Transform);
+            var top = new[]
+            {
+                new VertexPositionColor(corners[4], Color.White),
+                new VertexPositionColor(corners[5], Color.White),
+                new VertexPositionColor(corners[1], Color.White),
+                new VertexPositionColor(corners[0], Color.White),
+                new VertexPositionColor(corners[4], Color.White),
+            };
 
-                        min = Vector3.Min(min, vertex);
-                        max = Vector3.Max(max, vertex);
-                    }
-                }
-            }
+            var rf = new[]
+            {
+                new VertexPositionColor(corners[1], Color.White),
+                new VertexPositionColor(corners[2], Color.White)
+            };
+            var lf = new[]
+            {
+                new VertexPositionColor(corners[3], Color.White),
+                new VertexPositionColor(corners[0], Color.White)
+            };
+            var rb = new[]
+            {
+                new VertexPositionColor(corners[5], Color.White),
+                new VertexPositionColor(corners[6], Color.White)
+            };
+            var lb = new[]
+            {
+                new VertexPositionColor(corners[4], Color.White),
+                new VertexPositionColor(corners[7], Color.White)
+            };
 
-            return new RectangleF(min.X,min.Z,max.X-min.X, max.Z - min.Z);
+            //Sciany dolna i górna
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, bottom, 0, 4);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, top, 0, 4);
+            //boki
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rf, 0, 1);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lf, 0, 1);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rb, 0, 1);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lb, 0, 1);
         }
+
         #endregion
     }
 }

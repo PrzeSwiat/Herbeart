@@ -79,6 +79,7 @@ namespace TheGame
                 if (enemy.canDestroy == true)
                 {
                     enemy.OnDestroy += CreateControl;
+
                     enemy.canDestroy = false;
                 }
             }

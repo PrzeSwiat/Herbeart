@@ -48,7 +48,7 @@ namespace TheGame
 
         public void Stun(int time) 
         {
-            player.canMove = false;
+            player.setcanMove(false);
             stunTimer.setTimerMaxTime(time);
             stunTimer.Start();
         }
@@ -56,7 +56,7 @@ namespace TheGame
 
         private void undoStun()
         {
-            player.canMove = true;
+            player.setcanMove(true);
         }
 
         private void EffectAddHealth()

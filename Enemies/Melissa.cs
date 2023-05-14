@@ -15,6 +15,7 @@ namespace TheGame
         private int attacksToStun = 5;
         public Melissa(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
+            AssignParameters(100, 10, 2);
             this.leaf = new Leafs.MelissaLeaf(worldPosition, "mis4", "StarSparrow_Orange");
         }
 

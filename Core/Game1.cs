@@ -2,18 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel.Design.Serialization;
-using System.Diagnostics;
-using System.Drawing;
-using System.Reflection;
-using System.Reflection.Metadata;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Threading;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
@@ -42,8 +30,7 @@ namespace TheGame
         Player animacyjnaPacynka;
         Enemies enemies;
         LeafList Leafs;
-        EffectHandler effectPrzemyslaw;
-        EffectHandler effectWiktor;
+
 
         public Game1()
         {
@@ -80,33 +67,30 @@ namespace TheGame
 
 
             effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
-            effectPrzemyslaw = new EffectHandler(Content.Load<Effect>("Przemyslaw"));
-            effectWiktor = new EffectHandler(Content.Load<Effect>("Wiktor"));
-
-
             hud = new HUD("forest2", WindowWidth, WindowHeight);
             world = new World(Content);
-            AppleTree apple = new AppleTree(new Vector3(25, 2, 25), "player", "StarSparrow_Green");
-            Mint apple1 = new Mint(new Vector3(20, 2, 20), "player", "StarSparrow_Green");
-            Melissa apple2 = new Melissa(new Vector3(23, 2, 23), "player", "StarSparrow_Green");
-            Nettle apple3 = new Nettle(new Vector3(22, 2, 21), "player", "StarSparrow_Green");
+            player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
+            animacyjnaPacynka = new Player(new Vector3(0, 0, 30), "nasze", "StarSparrow_Green");
+            serializator = new Serializator("zapis.txt");
+            interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
+
+
+            /* Inventory debug
+            AppleTree apple = new AppleTree(new Vector3(25, 0, 25), "player", "StarSparrow_Green");
+            Mint apple1 = new Mint(new Vector3(20, 0, 20), "player", "StarSparrow_Green");
+            Melissa apple2 = new Melissa(new Vector3(23, 0, 23), "player", "StarSparrow_Green");
+            Nettle apple3 = new Nettle(new Vector3(22, 0, 21), "player", "StarSparrow_Green");
            // enemies.AddEnemy(apple);
            // enemies.AddEnemy(apple1);
             //  enemies.AddEnemy(apple2);
            // enemies.AddEnemy(apple3);
-            player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
-            animacyjnaPacynka = new Player(new Vector3(0, 0, 30), "nasze", "StarSparrow_Green");
-
-            serializator = new Serializator("zapis.txt");
-            interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
-
+            */
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            //world.ObjectInitializer(Content);
             hud.LoadContent(Content);
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.Projection = projectionMatrix;
@@ -114,9 +98,7 @@ namespace TheGame
             enemies.LoadModels(Content);
             Leafs.LoadModels(Content);
             animacyjnaPacynka.LoadContent(Content);
-            //player.OnDestroy += DestroyControl;
             animacyjnaPacynka.LoadAnimation(GraphicsDevice);
-           // player.LoadAnimation();
 
         }
 
@@ -128,57 +110,34 @@ namespace TheGame
             
             camera.CamPosition = player.GetPosition() + camera.CamPositionState;
             camera.nextpos = player.GetPosition();
-            //viewMatrix = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker , Vector3.Up);
             viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta);
-
-            //Leafs.RefreshInventory(this.player);
-            //Leafs.RefreshOnCreate(enemies.EnemiesList);
-            //Leafs.RefreshOnDestroy();
-
             enemies.AddEnemies(world.returnEnemiesList(player.position.X, player.position.Z));
             enemies.Move(delta, player);
             enemies.RefreshOnDestroy();
-
-
             Leafs.RefreshInventory(this.player);
             Leafs.UpdateScene(enemies.EnemiesList);
-            // Debug.Write(player.Inventory.appleLeafNumber + "\n");
             camera.Update1(player.position);
             hud.Update(camera.CamPosition, player.Inventory.returnLeafsList());
-
-            
             animacyjnaPacynka.animation.Update(gameTime.ElapsedGameTime.TotalSeconds);
-
             interactionEventHandler.Update(enemies.EnemiesList);
             SaveControl();
-
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            
             base.Draw(gameTime);
-
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
             world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.position.X, player.position.Z);
-
             enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
             player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
-
-
             Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
-            //player.PrzemyslawDraw(effectPrzemyslaw, worldMatrix, viewMatrix, projectionMatrix, player.color);
-            //player.WiktorDraw(effectWiktor, worldMatrix, viewMatrix, projectionMatrix, player.color);
             hud.DrawFrontground(_spriteBatch, player.Health);
-
             animacyjnaPacynka.AnimationDraw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
-
             DrawBoundingBoxes();
         }
 
@@ -202,11 +161,11 @@ namespace TheGame
                         //apple.DrawBB(GraphicsDevice);
                     }
                 }
-                //DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
+                DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
 
-            //player.DrawBB(_graphics.GraphicsDevice);
-            //DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
+            player.DrawBB(_graphics.GraphicsDevice);
+            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }
 
         

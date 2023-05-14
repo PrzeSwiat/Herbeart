@@ -35,11 +35,6 @@ namespace TheGame
             }
         }
 
-        /*
-        public void UpdateEnemiesList(List<Enemy> enemies)
-        {
-            enemiesList = enemies;
-        }*/
 
         public void Move(float deltaTime, Player player)
         {

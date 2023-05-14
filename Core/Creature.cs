@@ -1,13 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using TheGame.Leafs;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
@@ -22,25 +16,33 @@ namespace TheGame
         private int strenght;
         private float maxSpeed;
         private float attackSpeed;
-        public BoundingSphere attackShpere;
-        public List<CreatureEffect> currentBadEffect;
-        public List<float> badEffectTimes;
-        public Leaf leaf;
-        public event EventHandler OnDestroy;
-        public bool canDestroy = true;
+        public Leaf leaf; 
         private Vector2 direction;
 
+        public BoundingSphere boundingSphere;
+        private float sphereRadius =0;
+        private float distanceFromCenter = 0;
+        public bool canDestroy = true;
+        public event EventHandler OnDestroy;
+        
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
+            
             leaf = new Leaf(worldPosition, "mis4", "StarSparrow_Orange");
+
+            boundingSphere = BoundingSphere.CreateFromBoundingBox(this.boundingBox);
+
         }
 
+
+   
         public void AssignParameters(int health, int strenght, float maxSpeed)
         {
             this.health = health;
             this.strenght = strenght;
             this.maxSpeed = maxSpeed;
-            this.maxHealth = 200;
+            this.maxHealth = this.health;
+            
         }
 
         public virtual void Hit(int damage)
@@ -56,27 +58,37 @@ namespace TheGame
             {
                 color = Color.Red;
             }
+            Debug.Write("test");
         }
 
-        public void ApplyBadEffect(CreatureEffect effect)
-        {
-            currentBadEffect.Add(effect);
-        }
-
-        public void RemoveBadEffect(CreatureEffect effect)
-        {
-            currentBadEffect.Remove(effect);
-        }
+      
 
         public void MoveModelForwards(float speed)
         {
             position += new Vector3(direction.X, 0f, direction.Y) * speed;
         }
 
-
-        public void Drop()
+        public double GetDistance(SceneObject entity)
         {
+            double distance = (double)Vector3.Distance(this.position, entity.GetPosition());
+            return distance;
+        }
 
+        public override void LoadContent(ContentManager content)
+        {
+            base.LoadContent(content);
+            
+            boundingSphere.Radius = this.sphereRadius;
+            if (distanceFromCenter != 0)
+            {
+                boundingSphere.Center += this.GetPosition() + new Vector3(0, 0, distanceFromCenter);
+            }
+            else
+            {
+                boundingSphere.Center += this.GetPosition() + new Vector3(0, 0, 3);
+
+            }
+            
         }
 
         // -------------- G E T T E R S --------------------
@@ -120,6 +132,10 @@ namespace TheGame
         {
             this.direction.Y = y;
         }
+        public void setRadius(float radius)
+        {
+            this.sphereRadius = radius;
+        }
 
         public void NormalizeDirection()
         {
@@ -129,6 +145,11 @@ namespace TheGame
         {
             return this.leaf;
         }
+        public float getAttackSpeed()
+        {
+            return this.attackSpeed;
+        }
+        
 
     }
 }

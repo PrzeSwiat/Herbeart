@@ -11,61 +11,6 @@ namespace TheGame
 {
 
 
-    internal class Apple : SceneObject
-    {
-        float dmg;
-        Vector3 velocity;
-        float speed =10f;
-        public event EventHandler OnDestroy;
-        public Apple(Vector3 worldPosition, string modelFileName, string textureFileName, Vector3 endPosition) : base(worldPosition, modelFileName, textureFileName)
-        {
-           
-            Vector3 startPosition = this.GetPosition();
-            startPosition.Y += 3;
-            Vector3 direction = Vector3.Normalize(endPosition - startPosition);
-            position = startPosition;
-            velocity = Vector3.Normalize(direction);
-            velocity.X = velocity.X * speed;
-            velocity.Y = velocity.Y * 6 ;
-            velocity.Z = velocity.Z * speed;
-            
-
-
-        }
-        public void Update(float deltaTime, Player player)
-        {
- 
-            // Move the bullet
-            position += velocity * deltaTime;
-           // position.Y = 0.2f;
-            SetPosition(position);
-
-            // Check if the bullet has collided with the player
-            if (this.boundingBox.Intersects(player.boundingBox))
-            {
-                player.Health -= 5;
-                
-                
-                OnDestroy?.Invoke(this, EventArgs.Empty);
-              
-            }
-
-            // Check if the bullet has hit the ground
-            if (position.Y <= 0)
-            {
-                
-                
-                OnDestroy?.Invoke(this, EventArgs.Empty);
-            }
-
-            // Decrease the time to live of the bullet
-           
-        }
-        
-
-
-    }
-
     internal class AppleTree : Enemy
     {
         float PossibledistanceToPlayer = 20f;
@@ -76,6 +21,7 @@ namespace TheGame
         public List<Apple> bullet = new List<Apple>(); 
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
+            AssignParameters(100, 10, 2);
             this.leaf = new Leafs.AppleLeaf(worldPosition, "mis4", "StarSparrow_Orange");
         }
 
@@ -167,5 +113,60 @@ namespace TheGame
             
 
         }
+    }
+
+    internal class Apple : SceneObject
+    {
+        float dmg;
+        Vector3 velocity;
+        float speed = 10f;
+        public event EventHandler OnDestroy;
+        public Apple(Vector3 worldPosition, string modelFileName, string textureFileName, Vector3 endPosition) : base(worldPosition, modelFileName, textureFileName)
+        {
+
+            Vector3 startPosition = this.GetPosition();
+            startPosition.Y += 3;
+            Vector3 direction = Vector3.Normalize(endPosition - startPosition);
+            position = startPosition;
+            velocity = Vector3.Normalize(direction);
+            velocity.X = velocity.X * speed;
+            velocity.Y = velocity.Y * 6;
+            velocity.Z = velocity.Z * speed;
+
+
+
+        }
+        public void Update(float deltaTime, Player player)
+        {
+
+            // Move the bullet
+            position += velocity * deltaTime;
+            // position.Y = 0.2f;
+            SetPosition(position);
+
+            // Check if the bullet has collided with the player
+            if (this.boundingBox.Intersects(player.boundingBox))
+            {
+                player.Health -= 5;
+
+
+                OnDestroy?.Invoke(this, EventArgs.Empty);
+
+            }
+
+            // Check if the bullet has hit the ground
+            if (position.Y <= 0)
+            {
+
+
+                OnDestroy?.Invoke(this, EventArgs.Empty);
+            }
+
+            // Decrease the time to live of the bullet
+
+        }
+
+
+
     }
 }
