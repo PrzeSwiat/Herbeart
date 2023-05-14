@@ -89,8 +89,8 @@ namespace TheGame
 
             if (_modelFileName == "tree1" || _modelFileName == "tree2" || _modelFileName == "tree3")
             {
-                helper.Min = new Vector3(-1.5f, 0, -1.5f);
-                helper.Max = new Vector3(1.5f, 6, 1.5f);
+                helper.Min = new Vector3(-2f, 0, -2f);
+                helper.Max = new Vector3(2f, 6, 2f);
                 boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
             } else if (_modelFileName == "mis")
             {
