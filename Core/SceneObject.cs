@@ -22,6 +22,7 @@ namespace TheGame
         public Animations animation;
         SkinnedEffect skinnedEffect;
         public BoundingBox boundingBox;
+        private DateTime lastEventTime, actualTime;
 
         public SceneObject(Vector3 worldPosition, string modelFileName, string textureFileName)
         {
@@ -32,9 +33,18 @@ namespace TheGame
 
       
 
-        public void Update()    
+        public void Update()    //  USUWANIE NADANEGO KOLORU 
         {
-        
+            actualTime = DateTime.Now;
+            TimeSpan time = actualTime - lastEventTime;
+            if (time.TotalSeconds > 1)
+            {
+                lastEventTime = actualTime;
+                if (color != Color.White)
+                {
+                    color = Color.White;
+                }
+            }
         }
         public void LoadAnimation(GraphicsDevice device)
         {
