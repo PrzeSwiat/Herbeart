@@ -41,7 +41,7 @@ namespace TheGame
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
-            SetScale(1f);
+            SetScale(1.5f);
             AssignParameters(200, 20, 20);
 
             playerEffects = new PlayerEffectHandler(this);

@@ -342,7 +342,7 @@ namespace TheGame
                     }
                 }
                 Random random = new Random();
-                int objectsCount = random.Next(5, 10);
+                int objectsCount = random.Next(2, 5);
                 GenerateOtherObjects(objectsCount);
                 GenerateEnemies(enemyCount);
                 ObjectInitializer(Content);
