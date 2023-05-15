@@ -2,13 +2,29 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace TheGame
 {
     internal class PlayerMovement
     {
         private Player player;
-        public PlayerMovement(Player player) { this.player = player; }
+        private Boolean isCraftingTea;
+        private Boolean padButtonAClicked;
+        private Boolean padButtonBClicked;
+        private Boolean padButtonXClicked;
+        private Boolean padButtonYClicked;
+
+        MouseState lastMouseState, currentMouseState;
+
+        public PlayerMovement(Player player) 
+        { 
+            this.player = player;
+            isCraftingTea = false;
+            padButtonAClicked = false;
+            padButtonYClicked = false;
+            padButtonXClicked = false;
+        }
 
         public void UpdatePlayerMovement(World world, float deltaTime)
         {
@@ -18,6 +34,8 @@ namespace TheGame
             if (capabilities.IsConnected)
             {
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+                GamePadClick(capabilities, gamePadState);
+
                 if (capabilities.HasLeftXThumbStick)
                 {
                     double thumbLeftX = -Math.Round(gamePadState.ThumbSticks.Left.X);
@@ -87,6 +105,18 @@ namespace TheGame
                 {
                     rotation = angle(w3, w4);
                 }
+
+                lastMouseState = currentMouseState;
+                // Get the mouse state relevant for this frame
+                currentMouseState = Mouse.GetState();
+
+                // Recognize a single click of the left mouse button
+                if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    player.Attack();
+                }
+
+                
             }
             float Sphereang = rotation - player.GetRotation().Y;
             rotateSphere(Sphereang);
@@ -179,7 +209,127 @@ namespace TheGame
 
 
         }
-    
+
+        public void GamePadClick(GamePadCapabilities capabilities, GamePadState gamePadState)
+        {
+            if (capabilities.IsConnected)
+            {
+                // Button A
+                if (capabilities.HasAButton)
+                {
+                    if (gamePadState.IsButtonDown(Buttons.A))
+                    {
+                        if (isCraftingTea && !padButtonAClicked) // W momencie jak lewy triger jest wcisniety
+                        {
+                            player.AddIngredientA();
+                            padButtonAClicked = true;
+
+                        }
+                        else // normalny atak gracza
+                        {
+                            player.Attack();
+                        }
+
+                    }
+                    else if (gamePadState.IsButtonUp(Buttons.A))
+                    {
+                        padButtonAClicked = false;
+                    }
+                }
+
+                // Button B
+                if (capabilities.HasBButton)
+                {
+                    if (gamePadState.IsButtonDown(Buttons.B))
+                    {
+                        if (isCraftingTea && !padButtonBClicked)
+                        {
+                            player.AddIngredientB();
+                            padButtonBClicked = true;
+                        }
+                        else
+                        {
+                            // tutaj ewentualny dash/przewrot
+                        }
+
+                    }
+                    else if (gamePadState.IsButtonUp(Buttons.B))
+                    {
+                        padButtonBClicked = false;
+                    }
+                }
+                if (capabilities.HasYButton)
+                {
+                    if (gamePadState.IsButtonDown(Buttons.Y))
+                    {
+                        if (isCraftingTea && !padButtonYClicked)
+                        {
+                            player.AddIngredientY();
+                            padButtonYClicked = true;
+                        }
+                        else
+                        {
+                            // tutaj ewentualny dash/przewrot
+                        }
+
+                    }
+                    else if (gamePadState.IsButtonUp(Buttons.Y))
+                    {
+                        padButtonYClicked = false;
+                    }
+                }
+                if (capabilities.HasXButton)
+                {
+                    if (gamePadState.IsButtonDown(Buttons.X))
+                    {
+                        if (isCraftingTea && !padButtonXClicked)
+                        {
+                            player.AddIngredientX();
+                            padButtonXClicked = true;
+                        }
+                        else
+                        {
+                            // tutaj ewentualny dash/przewrot
+                        }
+
+                    }
+                    else if (gamePadState.IsButtonUp(Buttons.X))
+                    {
+                        padButtonXClicked = false;
+                    }
+                }
+
+
+                if (gamePadState.IsButtonDown(Buttons.LeftTrigger))
+                {
+                    isCraftingTea = true;
+                }
+                else if (gamePadState.IsButtonUp(Buttons.LeftTrigger))
+                {
+                    this.player.Crafting.cleanRecepture(this.player.Inventory);
+                    isCraftingTea = false;
+                }
+
+
+
+
+            }
+            /*else          DO STEROWANIA WSAD
+            {
+                lastMouseState = currentMouseState;
+
+                // Get the mouse state relevant for this frame
+                currentMouseState = Mouse.GetState();
+
+                // Recognize a single click of the left mouse button
+                if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    player.Attack();
+                }
+
+            }*/
+        }
+
         float CalculatePenetrationDepthX(List<SceneObject> worldList)
         {
             float penetrationDepth = 0;

@@ -20,9 +20,8 @@ namespace TheGame
         private Rectangle skyRec;
         private int BackgroundWidth, BackgroundHeight, WindowWidth, WindowHeight;
         private int BackgroundX, BackgroundY;
-        private int health = 200;
-        private int[] numberOfLeafs;
-        private string[] buttons;
+        private Dictionary<string, int> leafs;
+        //private string[] buttons;
 
         private DateTime lastChangeTime, actualTime;
 
@@ -37,7 +36,7 @@ namespace TheGame
             WindowHeight = windowHeight;
             skyRec = new Rectangle(0, 0, BackgroundWidth, BackgroundHeight);
 
-            buttons = new string[] { "A", "B", "X", "Y" };
+            //buttons = new string[] { "A", "B", "X", "Y" };
         }
 
         public void LoadContent(ContentManager content)
@@ -48,12 +47,12 @@ namespace TheGame
             Font = content.Load<SpriteFont>("Fonts");
         }
 
-        public void Update(Vector3 camPos, int[] leafs)
+        public void Update(Vector3 camPos, Dictionary<string, int> leafs)
         {
             BackgroundX = (int)camPos.X % BackgroundWidth - BackgroundWidth;
             BackgroundY = (int)camPos.Z % BackgroundHeight - BackgroundHeight;
 
-            numberOfLeafs = leafs;
+            this.leafs = leafs;
         }
 
         public void DrawBackground(SpriteBatch spriteBatch)
@@ -81,7 +80,7 @@ namespace TheGame
         {
             spriteBatch.Begin();
 
-            DrawInventory(spriteBatch, numberOfLeafs);
+            DrawInventory(spriteBatch);
             DrawHealthBar(spriteBatch, hp);
 
             spriteBatch.End();
@@ -93,7 +92,7 @@ namespace TheGame
             spriteBatch.Draw(red, rect, Color.Red);
         }
 
-        public void DrawInventory(SpriteBatch spriteBatch, int[] numberOfItems)
+        public void DrawInventory(SpriteBatch spriteBatch)
         {
             Rectangle rect = new Rectangle(0, WindowHeight - 100, 50, 50);
             actualTime = DateTime.Now;
@@ -102,8 +101,8 @@ namespace TheGame
             {
                 rect.X = 20 + i * 50;
                 spriteBatch.Draw(itemFrame, rect, Color.Gray);
-                spriteBatch.DrawString(Font, numberOfItems[i].ToString(), new Vector2(50 + i * 50, WindowHeight - 90), Color.Black);
-                spriteBatch.DrawString(Font, buttons[i].ToString(), new Vector2(50 + i * 50, WindowHeight - 50), Color.Black);
+                spriteBatch.DrawString(Font, leafs.ElementAt(i).Key, new Vector2(50 + i * 50, WindowHeight - 90), Color.Black);
+                spriteBatch.DrawString(Font, leafs.ElementAt(i).Value.ToString(), new Vector2(50 + i * 50, WindowHeight - 50), Color.Black);
             }
    
             

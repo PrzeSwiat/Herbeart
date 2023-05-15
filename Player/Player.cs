@@ -23,7 +23,7 @@ namespace TheGame
     internal class Player : Creature
     {
         public Inventory Inventory;
-        private Crafting Crafting;
+        public Crafting Crafting;
         private DateTime lastAttackTime;
         private DateTime actualTime;
         private PlayerMovement playerMovement;
@@ -31,13 +31,7 @@ namespace TheGame
         public event EventHandler OnAttackPressed;
 
         private bool canMove = true;
-        private Boolean isCraftingTea;
-        private Boolean padButtonAClicked;
-        private Boolean padButtonBClicked;
-        private Boolean padButtonXClicked;
-        private Boolean padButtonYClicked;
-
-        MouseState lastMouseState, currentMouseState;
+        
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
@@ -48,10 +42,10 @@ namespace TheGame
             Inventory = new Inventory();
             Crafting = new Crafting(playerEffects);
             playerMovement = new PlayerMovement(this);
-            isCraftingTea = false;
+           /* isCraftingTea = false;
             padButtonAClicked = false;
             padButtonYClicked = false;
-            padButtonXClicked = false;
+            padButtonXClicked = false;*/
             
             // Uruchomienie timera
             playerEffects.Start();
@@ -62,7 +56,35 @@ namespace TheGame
         {
             Update();
             playerMovement.UpdatePlayerMovement(world, deltaTime);
-            GamePadClick();
+            //GamePadClick();
+        }
+
+        public void Attack()
+        {
+            actualTime = DateTime.Now;
+            TimeSpan time = actualTime - lastAttackTime;
+            if (time.TotalSeconds > this.getAttackSpeed())
+            {
+                OnAttackPressed?.Invoke(this, EventArgs.Empty);
+                lastAttackTime = actualTime;
+            }
+        }
+
+        public void AddIngredientA()
+        {
+            Crafting.addIngredient('A', Inventory);
+        }
+        public void AddIngredientB()
+        {
+            Crafting.addIngredient('B', Inventory);
+        }
+        public void AddIngredientX()
+        {
+            Crafting.addIngredient('X', Inventory);
+        }
+        public void AddIngredientY()
+        {
+            Crafting.addIngredient('Y', Inventory);
         }
 
         public void setOriginalSpeed()
@@ -73,6 +95,11 @@ namespace TheGame
         public void setStun(int time)
         {
             playerEffects.Stun(time);
+        }
+
+        public void setOriginalStrenght()
+        {
+            this.Strength = this.MaxStrength;
         }
 
         public void PlayerRegenarateHealth(int hp, int time)
@@ -106,139 +133,7 @@ namespace TheGame
             this.canMove=can;
         }
 
-        public void GamePadClick()
-        {
-            GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
-            if (capabilities.IsConnected)
-            {
-                GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-                // Button A
-                if (capabilities.HasAButton)
-                {
-                    if (gamePadState.IsButtonDown(Buttons.A))
-                    {
-                        if (isCraftingTea && !padButtonAClicked) // W momencie jak lewy triger jest wcisniety
-                        {
-                            Crafting.addIngredient('A', Inventory);
-                            Debug.Write(Crafting.getRecepture() + "\n");
-                            padButtonAClicked = true;
-
-                        } else // normalny atak gracza
-                        {
-
-                            actualTime = DateTime.Now;
-                            TimeSpan time = actualTime - lastAttackTime;
-                            if (time.TotalSeconds > this.getAttackSpeed())
-                            {
-                                OnAttackPressed?.Invoke(this, EventArgs.Empty);
-                                lastAttackTime = actualTime;
-                            }
-                        }
-                        
-                    } else if (gamePadState.IsButtonUp(Buttons.A)) {
-                        padButtonAClicked = false;
-                    }
-                }
-
-                // Button B
-                if (capabilities.HasBButton)
-                {
-                    if (gamePadState.IsButtonDown(Buttons.B))
-                    {
-                        if (isCraftingTea && !padButtonBClicked)
-                        {
-                            Crafting.addIngredient('B', Inventory);
-                            Debug.Write(Crafting.getRecepture() + "\n");
-                            padButtonBClicked = true;
-                        }
-                        else
-                        {
-                            // tutaj ewentualny dash/przewrot
-                        }
-
-                    }
-                    else if (gamePadState.IsButtonUp(Buttons.B))
-                    {
-                        padButtonBClicked = false;
-                    }
-                }
-                if (capabilities.HasYButton)
-                {
-                    if (gamePadState.IsButtonDown(Buttons.Y))
-                    {
-                        if (isCraftingTea && !padButtonYClicked)
-                        {
-                            Crafting.addIngredient('Y', Inventory);
-                            Debug.Write(Crafting.getRecepture() + "\n");
-                            padButtonYClicked = true;
-                        }
-                        else
-                        {
-                            // tutaj ewentualny dash/przewrot
-                        }
-
-                    }
-                    else if (gamePadState.IsButtonUp(Buttons.Y))
-                    {
-                        padButtonYClicked = false;
-                    }
-                }
-                if (capabilities.HasXButton)
-                {
-                    if (gamePadState.IsButtonDown(Buttons.X))
-                    {
-                        if (isCraftingTea && !padButtonXClicked)
-                        {
-                            Crafting.addIngredient('X', Inventory);
-                            Debug.Write(Crafting.getRecepture() + "\n");
-                            padButtonXClicked = true;
-                        }
-                        else
-                        {
-                            // tutaj ewentualny dash/przewrot
-                        }
-
-                    }
-                    else if (gamePadState.IsButtonUp(Buttons.X))
-                    {
-                        padButtonXClicked = false;
-                    }
-                }
-
-
-                if (gamePadState.IsButtonDown(Buttons.LeftTrigger)) 
-                { 
-                    isCraftingTea = true;
-                } else if (gamePadState.IsButtonUp(Buttons.LeftTrigger))
-                {
-                    Crafting.makeTea(this.Inventory);
-                    isCraftingTea = false;
-                }
-
-
-
-
-            } else
-            {
-                lastMouseState = currentMouseState;
-
-                // Get the mouse state relevant for this frame
-                currentMouseState = Mouse.GetState();
-
-                // Recognize a single click of the left mouse button
-                if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
-                {
-                    actualTime = DateTime.Now;
-                    TimeSpan time = actualTime - lastAttackTime;
-                    if (time.TotalSeconds > this.getAttackSpeed())
-                    {
-                        OnAttackPressed?.Invoke(this, EventArgs.Empty);
-                        lastAttackTime = actualTime;
-                    }
-                }
-
-            }
-        }
+        
 
     }
 }

@@ -73,8 +73,8 @@ namespace TheGame
                 else
                     enemyCount = 4;
 
-                Debug.Write(currentMap);
-                Debug.Write("\n");
+                /*Debug.Write(currentMap);
+                Debug.Write("\n");*/
 
                 //Przypadek prostych map - wylot z lewej i prawej
                 if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))

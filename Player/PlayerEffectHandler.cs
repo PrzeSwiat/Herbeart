@@ -13,10 +13,11 @@ namespace TheGame
         private Player player;
         private IntervalTimer regenarationTimer;
         private IntervalTimer damageTimer;
-        private NormalTimer stunTimer, speedTimer;
+        private NormalTimer stunTimer, speedTimer, powerTimer;
 
         int damage = 2;
         int HPregen = 0;
+        int strenght = 0;
 
         public PlayerEffectHandler(Player player)
         {
@@ -25,6 +26,7 @@ namespace TheGame
             damageTimer = new IntervalTimer(0, 1, EffectTakeHealth);
             stunTimer = new NormalTimer(0, undoStun);
             speedTimer = new NormalTimer(0, undoSpeed);
+            powerTimer = new NormalTimer(0, undoDamage);
         }
 
         public void Start()
@@ -72,6 +74,13 @@ namespace TheGame
             speedTimer.Start();
         }
 
+        public void BuffStrenght(int DMG, int time)
+        {
+            player.Strength += DMG;
+            powerTimer.setTimerMaxTime(time);
+            powerTimer.Start();
+        }
+
 
         // FUNKCJE DO TIMEROW
         private void undoSpeed()
@@ -82,6 +91,11 @@ namespace TheGame
         private void undoStun()
         {
             player.setcanMove(true);
+        }
+
+        private void undoDamage()
+        {
+            player.setOriginalStrenght();
         }
 
         private void EffectAddHealth()

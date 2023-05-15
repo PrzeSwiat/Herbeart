@@ -119,7 +119,7 @@ namespace TheGame
             Leafs.RefreshInventory(this.player);
             Leafs.UpdateScene(enemies.EnemiesList);
             camera.Update1(player.position);
-            hud.Update(camera.CamPosition, player.Inventory.returnLeafsList());
+            hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
             animacyjnaPacynka.animation.Update(gameTime.ElapsedGameTime.TotalSeconds);
             interactionEventHandler.Update(enemies.EnemiesList);
             SaveControl();

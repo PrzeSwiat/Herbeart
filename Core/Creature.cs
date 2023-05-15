@@ -11,9 +11,8 @@ namespace TheGame
     [Serializable]
     internal class Creature : SceneObject
     {
-        private int maxHealth;
-        private int health;
-        private int strenght;
+        private int maxHealth, health;
+        private int maxStrenght, strenght;
         private float maxSpeed, actualSpeed;
         private float attackSpeed;
         public Leaf leaf; 
@@ -35,12 +34,13 @@ namespace TheGame
 
 
    
-        public void AssignParameters(int health, int strenght, float maxSpeed)
+        public void AssignParameters(int health, int strenght, float speed)
         {
             this.maxHealth = health;
             this.health = this.maxHealth;
-            this.strenght = strenght;
-            this.maxSpeed = maxSpeed;
+            this.maxStrenght = strenght;
+            this.strenght = this.maxStrenght;
+            this.maxSpeed = speed;
             this.actualSpeed = this.maxSpeed;
         }
 
@@ -108,6 +108,12 @@ namespace TheGame
         {
             get { return this.strenght; }
             set { this.strenght = value; }
+        }
+
+        public int MaxStrength
+        {
+            get { return this.maxStrenght; }
+            set { this.maxStrenght = value; }
         }
 
         public float ActualSpeed

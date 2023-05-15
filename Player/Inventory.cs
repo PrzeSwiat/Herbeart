@@ -10,24 +10,25 @@ namespace TheGame
     {
         private int appleLeafNumber;
         private int mintLeafNumber;
-        private int melissaLeafNumber;
+        private int meliseLeafNumber;
         private int nettleLeafNumber;
 
         public Inventory()
         {
-            appleLeafNumber = 0;
-            melissaLeafNumber = 0;
-            mintLeafNumber = 0;
-            nettleLeafNumber = 0;
+            appleLeafNumber = 3;
+            meliseLeafNumber = 3;
+            mintLeafNumber = 3;
+            nettleLeafNumber = 3;
         }
 
-        public int[] returnLeafsList()
+        public Dictionary<string, int> returnLeafs()
         {
-            int[] leafs = new int[4];
-            leafs[0] = nettleLeafNumber;
-            leafs[1] = mintLeafNumber;
-            leafs[2] = melissaLeafNumber;
-            leafs[3] = appleLeafNumber;
+            Dictionary<string, int> leafs = new Dictionary<string, int>();
+            leafs.Add("A", appleLeafNumber);
+            leafs.Add("B", meliseLeafNumber);
+            leafs.Add("X", mintLeafNumber);
+            leafs.Add("Y", nettleLeafNumber);
+            
             return leafs;
         }
         #region Getters
@@ -43,7 +44,7 @@ namespace TheGame
 
         public int getMellisaLeafNumber()
         {
-            return melissaLeafNumber;
+            return meliseLeafNumber;
         }
 
         public int getNettleLeafNumber()
@@ -58,7 +59,7 @@ namespace TheGame
         }
         public void addMelissaLeaf()
         {
-            melissaLeafNumber++;
+            meliseLeafNumber++;
         }
         public void addNettleLeaf()
         {
@@ -69,13 +70,13 @@ namespace TheGame
             mintLeafNumber++;
         }
         public void removeAppleLeaf() { appleLeafNumber--; }
-        public void removeMelissaLeaf() { melissaLeafNumber--; }
+        public void removeMeliseLeaf() { meliseLeafNumber--; }
         public void removeNettleLeaf() { nettleLeafNumber--; }
         public void removeMintLeaf() { mintLeafNumber--; }
         #endregion
-        public bool checkappleLeafNumber() { return appleLeafNumber > 0; }
-        public bool checkMelissaLeafNumber() { return melissaLeafNumber > 0; }
-        public bool checknettleLeafNumber() { return nettleLeafNumber > 0; }
-        public bool checkmintLeafNumber() { return mintLeafNumber > 0; }
+        public bool checkAppleLeafNumber() { return appleLeafNumber > 0; }
+        public bool checkMeliseLeafNumber() { return meliseLeafNumber > 0; }
+        public bool checkNettleLeafNumber() { return nettleLeafNumber > 0; }
+        public bool checkMintLeafNumber() { return mintLeafNumber > 0; }
     }
 }

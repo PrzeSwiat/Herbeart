@@ -22,35 +22,34 @@ namespace TheGame
 
         public void addIngredient(char button, Inventory inventory)
         {
-
             switch (button)
             {
                 case 'A':
-                    if (inventory.checknettleLeafNumber())
+                    if (inventory.checkAppleLeafNumber())
                     {
                         recepture += button;
-                        inventory.removeNettleLeaf();
+                        inventory.removeAppleLeaf();
                     }
                     break;
                 case 'B':
-                    if (inventory.checkmintLeafNumber())
+                    if (inventory.checkMeliseLeafNumber())
+                    {
+                        recepture += button;
+                        inventory.removeMeliseLeaf();
+                    }
+                    break;
+                case 'X':
+                    if (inventory.checkMintLeafNumber())
                     {
                         recepture += button;
                         inventory.removeMintLeaf();
                     }
                     break;
-                case 'X':
-                    if (inventory.checkMelissaLeafNumber())
-                    {
-                        recepture += button;
-                        inventory.removeMelissaLeaf();
-                    }
-                    break;
                 case 'Y': 
-                    if (inventory.checkappleLeafNumber())
+                    if (inventory.checkNettleLeafNumber())
                     {
                         recepture += button;
-                        inventory.removeAppleLeaf();
+                        inventory.removeNettleLeaf();
                     }
                     
                     break;
@@ -64,28 +63,44 @@ namespace TheGame
         }
 
         public void restartRecepture() { recepture = string.Empty; }
+
+        public void cleanRecepture(Inventory inventory)
+        {
+            foreach (char c in recepture)
+            {
+                if (c == 'A') inventory.addAppleLeaf();
+                else if (c == 'B') inventory.addMelissaLeaf();
+                else if (c == 'Y') inventory.addNettleLeaf();
+                else if (c == 'X') inventory.addMintLeaf();
+            }
+
+            restartRecepture();
+        }
         
-        public void makeTea(Inventory inventory)
+        private void makeTea(Inventory inventory)
         {
             switch (recepture)
             {
-                case "ABY":
-                    playerEffects.RegenarateHP(100);
+                case "AAB":
+                    playerEffects.RegenarateHP(200);
                     break;
 
-                case "ABX":
+                case "AXY":
                     playerEffects.RegenarateHP(150);
                     playerEffects.Haste(10, 10);
+                    break;
+                case "XBY":
+                    playerEffects.RegenarateHP(100);
+                    playerEffects.BuffStrenght(20, 20);
                     break;
 
                 default:
                     foreach (char c in recepture)
                     {
-                        if (c == 'A') inventory.addNettleLeaf();
-                        else if (c == 'B') inventory.addMintLeaf();
-                        else if (c == 'Y') inventory.addAppleLeaf();
-                        else if (c == 'X') inventory.addMelissaLeaf();
-
+                        if (c == 'A') inventory.addAppleLeaf();
+                        else if (c == 'B') inventory.addMelissaLeaf();
+                        else if (c == 'Y') inventory.addNettleLeaf();
+                        else if (c == 'X') inventory.addMintLeaf();
                     }
                     break;
                 
