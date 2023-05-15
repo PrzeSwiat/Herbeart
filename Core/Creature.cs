@@ -14,7 +14,7 @@ namespace TheGame
         private int maxHealth;
         private int health;
         private int strenght;
-        private float maxSpeed;
+        private float maxSpeed, actualSpeed;
         private float attackSpeed;
         public Leaf leaf; 
         private Vector2 direction;
@@ -37,11 +37,11 @@ namespace TheGame
    
         public void AssignParameters(int health, int strenght, float maxSpeed)
         {
-            this.health = health;
+            this.maxHealth = health;
+            this.health = this.maxHealth;
             this.strenght = strenght;
             this.maxSpeed = maxSpeed;
-            this.maxHealth = this.health;
-            
+            this.actualSpeed = this.maxSpeed;
         }
 
         public virtual void Hit(int damage)
@@ -108,6 +108,12 @@ namespace TheGame
         {
             get { return this.strenght; }
             set { this.strenght = value; }
+        }
+
+        public float ActualSpeed
+        {
+            get { return this.actualSpeed; }
+            set { this.actualSpeed = value; }
         }
 
         public float MaxSpeed

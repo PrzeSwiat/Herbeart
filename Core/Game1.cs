@@ -75,16 +75,16 @@ namespace TheGame
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
 
 
-            /* Inventory debug
-            AppleTree apple = new AppleTree(new Vector3(25, 0, 25), "player", "StarSparrow_Green");
-            Mint apple1 = new Mint(new Vector3(20, 0, 20), "player", "StarSparrow_Green");
+            
+            /*AppleTree apple = new AppleTree(new Vector3(25, 0, 25), "player", "StarSparrow_Green");
+            Mint mint = new Mint(new Vector3(20, 0, 20), "player", "StarSparrow_Green");
             Melissa apple2 = new Melissa(new Vector3(23, 0, 23), "player", "StarSparrow_Green");
             Nettle apple3 = new Nettle(new Vector3(22, 0, 21), "player", "StarSparrow_Green");
-           // enemies.AddEnemy(apple);
-           // enemies.AddEnemy(apple1);
-            //  enemies.AddEnemy(apple2);
-           // enemies.AddEnemy(apple3);
-            */
+            // enemies.AddEnemy(apple);
+            //enemies.AddEnemy(mint);
+            // enemies.AddEnemy(apple2);
+            // enemies.AddEnemy(apple3);*/
+            
             base.Initialize();
         }
 
@@ -161,11 +161,11 @@ namespace TheGame
                         //apple.DrawBB(GraphicsDevice);
                     }
                 }
-                DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
+                //DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
 
-            player.DrawBB(_graphics.GraphicsDevice);
-            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
+            //player.DrawBB(_graphics.GraphicsDevice);
+            //DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }
 
         

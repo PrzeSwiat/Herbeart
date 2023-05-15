@@ -32,6 +32,7 @@ namespace TheGame
 
                     rotation = angle(w1, w2);
                     player.Direction = new Vector2(LeftjoystickX, LeftjoystickY);
+                    player.NormalizeDirection();
 
                     // JUZ WCALE NIE UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
                     if (thumbLeftX == 0 && thumbLeftY == 0)
@@ -92,7 +93,7 @@ namespace TheGame
             if (player.getcanMove())
             {
                 Vector3 wec = new Vector3(player.Direction.X, 0, player.Direction.Y);
-                UpdateBB(0, world.GetWorldList(), new Vector3(player.Direction.X * deltaTime * player.MaxSpeed, 0, player.Direction.Y * deltaTime * player.MaxSpeed), wec);
+                UpdateBB(0, world.GetWorldList(), new Vector3(player.Direction.X * deltaTime * player.ActualSpeed, 0, player.Direction.Y * deltaTime * player.ActualSpeed), wec);
 
             }
 
@@ -131,7 +132,8 @@ namespace TheGame
 
             if (this.collision(worldList))
             {
-                float movedDistance = CalculatePenetrationDepthX(worldList);
+                player.boundingBox = boksik;
+                /*float movedDistance = CalculatePenetrationDepthX(worldList);
                 if (movedDistance != 0)
                 {
                     movedDistance += 0.01f;
@@ -141,7 +143,7 @@ namespace TheGame
 
                     helpVec.X -= movedDistance * normal.X;
                     player.boundingSphere.Center -= helpVec;
-                }
+                }*/
             }
             else
             {
@@ -156,7 +158,8 @@ namespace TheGame
 
             if (this.collision(worldList))
             {
-                float movedDistance = CalculatePenetrationDepthZ(worldList);
+                player.boundingBox = boksik;
+                /*float movedDistance = CalculatePenetrationDepthZ(worldList);
                 if (movedDistance != 0)
                 {
                     movedDistance += 0.01f;
@@ -165,7 +168,7 @@ namespace TheGame
                     player.SetPosition((player.boundingBox.Min + player.boundingBox.Max) / 2);
                     helpVec.Z -= movedDistance * normal.Z;
                     player.boundingSphere.Center -= helpVec;
-                }
+                }*/
             }
             else
             {

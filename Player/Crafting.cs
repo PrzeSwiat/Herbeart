@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -11,10 +12,12 @@ namespace TheGame
     internal class Crafting
     {
         private string recepture;
+        private PlayerEffectHandler playerEffects;
 
-        public Crafting() 
+        public Crafting(PlayerEffectHandler playerEffects) 
         { 
             recepture = string.Empty;
+            this.playerEffects = playerEffects;
         }
 
         public void addIngredient(char button, Inventory inventory)
@@ -67,11 +70,12 @@ namespace TheGame
             switch (recepture)
             {
                 case "ABY":
-                    Debug.Write("Na uspokojenie" + "\n");
+                    playerEffects.RegenarateHP(100);
                     break;
 
                 case "ABX":
-                    Debug.Write("Na stres" + "\n");
+                    playerEffects.RegenarateHP(150);
+                    playerEffects.Haste(10, 10);
                     break;
 
                 default:

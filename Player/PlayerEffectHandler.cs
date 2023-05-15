@@ -13,9 +13,9 @@ namespace TheGame
         private Player player;
         private IntervalTimer regenarationTimer;
         private IntervalTimer damageTimer;
-        private NormalTimer stunTimer;
+        private NormalTimer stunTimer, speedTimer;
 
-        int damage = 3;
+        int damage = 2;
         int HPregen = 0;
 
         public PlayerEffectHandler(Player player)
@@ -24,22 +24,34 @@ namespace TheGame
             regenarationTimer = new IntervalTimer(5, 1, EffectAddHealth);
             damageTimer = new IntervalTimer(0, 1, EffectTakeHealth);
             stunTimer = new NormalTimer(0, undoStun);
+            speedTimer = new NormalTimer(0, undoSpeed);
         }
 
         public void Start()
         {
-            regenarationTimer.Start();
             damageTimer.Start();
         }
 
-        public void DamagePlayer(int damage)
+        // FUNKCJE PLAYEROWE
+
+        public void DamagePlayer(int dmg)
+        {
+            player.SubstractHealth(dmg);
+        }
+
+        public void DamagePlayer(int damage, int time)
         {
             this.damage = damage;
+            damageTimer.setTimerMaxTime(time);
             damageTimer.Start();
         }
 
+        public void RegenarateHP(int HP) // single use
+        {
+            player.AddHealth(HP);
+        }
 
-        public void RegenarateHP(int health, int time)
+        public void RegenarateHP(int health, int time) //interwal
         {
             HPregen = health;
             regenarationTimer.setTimerMaxTime(time);
@@ -53,6 +65,19 @@ namespace TheGame
             stunTimer.Start();
         }
 
+        public void Haste(float speed, int time)
+        {
+            player.ActualSpeed += speed;
+            speedTimer.setTimerMaxTime(time);
+            speedTimer.Start();
+        }
+
+
+        // FUNKCJE DO TIMEROW
+        private void undoSpeed()
+        {
+            player.setOriginalSpeed();
+        }
 
         private void undoStun()
         {

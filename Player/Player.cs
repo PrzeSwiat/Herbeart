@@ -41,18 +41,18 @@ namespace TheGame
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
-            
             SetScale(1f);
             AssignParameters(200, 20, 20);
 
+            playerEffects = new PlayerEffectHandler(this);
             Inventory = new Inventory();
-            Crafting = new Crafting();
+            Crafting = new Crafting(playerEffects);
             playerMovement = new PlayerMovement(this);
             isCraftingTea = false;
             padButtonAClicked = false;
             padButtonYClicked = false;
             padButtonXClicked = false;
-            playerEffects = new PlayerEffectHandler(this);
+            
             // Uruchomienie timera
             playerEffects.Start();
             this.setRadius(3);
@@ -63,6 +63,11 @@ namespace TheGame
             Update();
             playerMovement.UpdatePlayerMovement(world, deltaTime);
             GamePadClick();
+        }
+
+        public void setOriginalSpeed()
+        {
+            this.ActualSpeed = MaxSpeed;
         }
 
         public void setStun(int time)
