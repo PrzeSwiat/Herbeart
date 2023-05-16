@@ -43,7 +43,6 @@ namespace TheGame
                 if (player.boundingSphere.Intersects(enemy.boundingBox))
                 {
                     enemy.Hit(player.Strength);
-                    Debug.Write(player.Strength + "\n");
                 }
             }
             

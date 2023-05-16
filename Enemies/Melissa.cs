@@ -13,6 +13,8 @@ namespace TheGame
         public event EventHandler OnAttack;
         private int attackCounter = 0;
         private int attacksToStun = 5;
+        private int stunTime = 2;
+
         public Melissa(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(200, 10, 2);
@@ -28,12 +30,12 @@ namespace TheGame
                 if (attackCounter == attacksToStun)
                 {
                     attackCounter = 0;
-                    player.setStun(2);
+                    player.setStun(stunTime);
                 }
                 OnAttack?.Invoke(this, EventArgs.Empty);
                 lastAttackTime = actualTime;
                 attackCounter++;
-                player.Hit(5);
+                player.Hit(this.Strength);
             }
         }
     }

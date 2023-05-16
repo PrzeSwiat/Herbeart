@@ -279,7 +279,6 @@ namespace TheGame
                 groundPositions = new List<Vector3>();
                 content = Content;
                 LoadSceneObjects(Content, fileName, separator, enemyCount, separatorZ);
-
             }
 
             public List<Enemy> returnEnemies()
@@ -320,7 +319,7 @@ namespace TheGame
                         if (model == ground)
                         {
                             Vector3 enemyWektor = wektor;
-                            enemyWektor.Y = 2;
+                            enemyWektor.Y = 0;      // DLACZEGO ? PO CO
                             groundPositions.Add(enemyWektor);
                         }
                         if (treeModels.Contains(model))

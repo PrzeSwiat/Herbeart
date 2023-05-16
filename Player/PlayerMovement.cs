@@ -314,20 +314,6 @@ namespace TheGame
 
 
             }
-            /*else          DO STEROWANIA WSAD
-            {
-                lastMouseState = currentMouseState;
-
-                // Get the mouse state relevant for this frame
-                currentMouseState = Mouse.GetState();
-
-                // Recognize a single click of the left mouse button
-                if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
-                {
-                    player.Attack();
-                }
-
-            }*/
         }
 
         float CalculatePenetrationDepthX(List<SceneObject> worldList)

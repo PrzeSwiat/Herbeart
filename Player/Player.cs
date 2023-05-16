@@ -56,7 +56,6 @@ namespace TheGame
         {
             Update();
             playerMovement.UpdatePlayerMovement(world, deltaTime);
-            //GamePadClick();
         }
 
         public void Attack()
