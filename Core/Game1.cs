@@ -18,6 +18,7 @@ namespace TheGame
         Matrix worldMatrix;
         Camera camera;
         EffectHandler effectHandler;
+        EffectHandler effectPlayerHandler;
         Serializator serializator;
         //.................
         
@@ -66,7 +67,9 @@ namespace TheGame
             //.................
 
 
-            effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
+            //effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
+            effectHandler = new EffectHandler(Content.Load<Effect>("MainShader"));
+            effectPlayerHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
             hud = new HUD("forest2", WindowWidth, WindowHeight);
             world = new World(Content);
             player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
@@ -132,10 +135,10 @@ namespace TheGame
             base.Draw(gameTime);
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.position.X, player.position.Z);
-            enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
-            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
-            Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
+            world.MainDraw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.position.X, player.position.Z,this.player.GetPosition());
+            enemies.MainDraw(effectPlayerHandler, worldMatrix, viewMatrix, projectionMatrix, Content, this.player.GetPosition());
+            player.Draw(effectPlayerHandler, worldMatrix, viewMatrix, projectionMatrix);
+            Leafs.MainDraw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content, this.player.GetPosition());
             hud.DrawFrontground(_spriteBatch, player.Health);
             animacyjnaPacynka.AnimationDraw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             DrawBoundingBoxes();

@@ -59,11 +59,11 @@ namespace TheGame
         }
 
 
-        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ContentManager content)
+        public void MainDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ContentManager content, Vector3 Lightpos)
         {
             foreach (Leaf leaf in LeafsList)
             {
-                leaf.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, leaf.color);
+                leaf.MainDraw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, leaf.color, Lightpos);
 
             }
         }

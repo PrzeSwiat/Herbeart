@@ -121,18 +121,18 @@ namespace TheGame
             }
         }
 
-        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ContentManager content)
+        public void MainDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ContentManager content, Vector3 Lightpos)
         {
             foreach (Enemy enemy in enemiesList)
             {
-                enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, enemy.color);
+                enemy.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
                 if (enemy.GetType() == typeof(AppleTree))
                 {
                     AppleTree tree = (AppleTree)enemy;
                     foreach (Apple apple in tree.bullet)
                     {
                         apple.LoadContent(content);
-                        apple.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, apple.color);
+                        apple.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
                     }
                 }
             }

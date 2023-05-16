@@ -136,6 +136,12 @@
 /processorParam:TextureFormat=Compressed
 /build:japco.obj;Apple.obj
 
+#begin MainShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:MainShader.fx
+
 #begin melisa.obj
 /importer:FbxImporter
 /processor:ModelProcessor

@@ -89,13 +89,21 @@ namespace TheGame
            
         }
 
-        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color)
+        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             effectHandler.BasicDraw(GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
                         * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
                         Matrix.CreateRotationZ(GetRotation().Z)
                         * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
-                         , viewMatrix, projectionMatrix, GetTexture2D(), color);
+                         , viewMatrix, projectionMatrix, GetTexture2D());
+        }
+        public void MainDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color,Vector3 Lightpos)
+        {
+            effectHandler.MainDraw(GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
+                        * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
+                        Matrix.CreateRotationZ(GetRotation().Z)
+                        * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
+                         , viewMatrix, projectionMatrix, GetTexture2D(), color,Lightpos);
         }
 
         public void AnimationDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
