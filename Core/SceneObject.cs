@@ -62,11 +62,11 @@ namespace TheGame
             }
         }
 
-        public virtual void LoadContent(ContentManager content)
+        public virtual void LoadContent()
         {
             LoadedModels models = LoadedModels.Instance;
-            model = models.getModel(_modelFileName, content);
-            texture2D = models.getTexture(_textureFileName, content);
+            model = models.getModel(_modelFileName);
+            texture2D = models.getTexture(_textureFileName);
             BoundingBox helper = CreateBoundingBox(this.model);
 
             if (_modelFileName == "tree1" || _modelFileName == "tree2" || _modelFileName == "tree3")
@@ -89,7 +89,7 @@ namespace TheGame
            
         }
 
-        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color)
+        public virtual void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color)
         {
             effectHandler.BasicDraw(GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
                         * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *

@@ -19,8 +19,6 @@ namespace TheGame
             LeafsList = new List<Leaf>();
         }
 
-        ContentManager ContentManager;
-
         private void DestroyControl(object obj, EventArgs e)
         {
             LeafsList.Remove((Leaf)obj);
@@ -36,17 +34,16 @@ namespace TheGame
                 
             foreach (Leaf leaf in LeafsList)
             {
-                leaf.LoadContent(ContentManager);
+                leaf.LoadContent();
             }
 
         }
-        public void LoadModels(ContentManager content)
+        public void LoadModels()
         {
-            ContentManager = content;
             foreach (Leaf leaf in LeafsList.ToArray())
             {
 
-                leaf.LoadContent(ContentManager);
+                leaf.LoadContent();
 
             }
         }
@@ -59,7 +56,7 @@ namespace TheGame
         }
 
 
-        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ContentManager content)
+        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             foreach (Leaf leaf in LeafsList)
             {

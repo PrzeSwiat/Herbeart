@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using TheGame.Core;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
@@ -20,7 +21,7 @@ namespace TheGame
         EffectHandler effectHandler;
         Serializator serializator;
         //.................
-        
+       
 
         private BasicEffect basicEffect;
         World world;
@@ -34,10 +35,11 @@ namespace TheGame
 
         public Game1()
         {
-            Leafs = new LeafList();
-            enemies = new Enemies();
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            Leafs = new LeafList();
+            enemies = new Enemies();
             IsMouseVisible = true;
             _graphics.PreferredBackBufferWidth = WindowWidth;
             _graphics.PreferredBackBufferHeight = WindowHeight;
@@ -68,7 +70,7 @@ namespace TheGame
 
             effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
             hud = new HUD("forest2", WindowWidth, WindowHeight);
-            world = new World(Content);
+            world = new World();
             player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
             animacyjnaPacynka = new Player(new Vector3(0, 0, 30), "nasze", "StarSparrow_Green");
             serializator = new Serializator("zapis.txt");
@@ -90,14 +92,17 @@ namespace TheGame
 
         protected override void LoadContent()
         {
+            Globals.content = this.Content;
+
+            world.LoadContent();
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            hud.LoadContent(Content);
+            hud.LoadContent();
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.Projection = projectionMatrix;
-            player.LoadContent(Content);
-            enemies.LoadModels(Content);
-            Leafs.LoadModels(Content);
-            animacyjnaPacynka.LoadContent(Content);
+            player.LoadContent();
+            enemies.LoadModels();
+            Leafs.LoadModels();
+            animacyjnaPacynka.LoadContent();
             animacyjnaPacynka.LoadAnimation(GraphicsDevice);
 
         }
@@ -112,7 +117,7 @@ namespace TheGame
             camera.nextpos = player.GetPosition();
             viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
-            player.Update(world, delta);
+            player.Update(world, delta, enemies);
             enemies.AddEnemies(world.returnEnemiesList(player.position.X, player.position.Z));
             enemies.Move(delta, player);
             enemies.RefreshOnDestroy();
@@ -133,9 +138,9 @@ namespace TheGame
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.position.X, player.position.Z);
-            enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
+            enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
-            Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, Content);
+            Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             hud.DrawFrontground(_spriteBatch, player.Health);
             animacyjnaPacynka.AnimationDraw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             DrawBoundingBoxes();
@@ -237,7 +242,7 @@ namespace TheGame
                 if (copied != null)
                 {
                     player = copied;
-                    player.LoadContent(Content);
+                    player.LoadContent();
                 }
 
             }

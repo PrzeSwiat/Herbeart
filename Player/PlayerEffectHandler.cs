@@ -17,7 +17,6 @@ namespace TheGame
 
         int damage = 2;
         int HPregen = 0;
-        int strenght = 0;
 
         public PlayerEffectHandler(Player player)
         {

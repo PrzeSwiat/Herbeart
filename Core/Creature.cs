@@ -15,15 +15,15 @@ namespace TheGame
         private int maxStrenght, strenght;
         private float maxSpeed, actualSpeed;
         private float attackSpeed;
-        public Leaf leaf; 
-        private Vector2 direction;
+        public Leaf leaf;
+        public Vector2 direction;
 
         public BoundingSphere boundingSphere;
-        private float sphereRadius =0;
+        private float sphereRadius = 0;
         private float distanceFromCenter = 0;
         public bool canDestroy = true;
         public event EventHandler OnDestroy;
-        
+
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             leaf = new Leaf(worldPosition, "mis4", "StarSparrow_Orange");
@@ -33,7 +33,7 @@ namespace TheGame
         }
 
 
-   
+
         public void AssignParameters(int health, int strenght, float speed)
         {
             this.maxHealth = health;
@@ -47,20 +47,18 @@ namespace TheGame
         public virtual void Hit(int damage)
         {
             health -= damage;
-            if(health<=0)
+            if (health <= 0)
             {
                 leaf.AddToWorld();
                 leaf.SetPosition(this.GetPosition());
-                OnDestroy?.Invoke(this,EventArgs.Empty);
+                OnDestroy?.Invoke(this, EventArgs.Empty);
             }
             else
             {
                 color = Color.Red;
             }
-            
-        }
 
-      
+        }
 
         public void MoveModelForwards(float speed)
         {
@@ -73,10 +71,10 @@ namespace TheGame
             return distance;
         }
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent()
         {
-            base.LoadContent(content);
-            
+            base.LoadContent();
+
             boundingSphere.Radius = this.sphereRadius;
             if (distanceFromCenter != 0)
             {
@@ -87,7 +85,7 @@ namespace TheGame
                 boundingSphere.Center += this.GetPosition() + new Vector3(0, 0, 3);
 
             }
-            
+
         }
 
         // -------------- G E T T E R S --------------------
@@ -160,7 +158,14 @@ namespace TheGame
         {
             return this.attackSpeed;
         }
-        
+
+        public Vector2 getLookingDirection()
+        {
+            float dx = (float)Math.Cos(this.rotation.Y);
+            float dy = (float)Math.Sin(this.rotation.Y);
+            return new Vector2(-dy, -dx);
+        }
+    
 
     }
 }

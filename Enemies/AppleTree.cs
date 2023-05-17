@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace TheGame
 {
-
-
     internal class AppleTree : Enemy
     {
         float PossibledistanceToPlayer = 20f;
@@ -33,8 +31,6 @@ namespace TheGame
         public  void Throw(int damage,Player player)
         {
           bullet.Add(new Apple(this.boundingSphere.Center,"Apple", "appleTexture", player.GetPosition()));
-            
-            
         }
 
 

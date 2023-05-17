@@ -33,6 +33,7 @@ namespace TheGame
         private List<string> maps = new List<string>();
         private string currentMap;
         private string choosedMap;
+        private int numberOfModules;
         #region Module parametrs and rectangles
         private int moduleSeparatorX = 120;
         private int moduleSeparatorZCount = 0;
@@ -45,19 +46,26 @@ namespace TheGame
 
 
 
-        public Levels(ContentManager Content, int numberOfModules)
+        public Levels(int numberOfModules)
         {
             _levels = new List<Level>();
             modulesList = new List<Rectangle>();
-            prepareMap(Content, numberOfModules);
             visited = new HashSet<Rectangle>();
+            this.numberOfModules = numberOfModules;
+        }
+
+        public void LoadContent()
+        {
+            prepareMap();
         }
 
 
-        public void prepareMap(ContentManager Content, int numberOfModules)
+        public void prepareMap()
         {
             int enemyCount;
-            _levels.Add(new Level(Content, "Maps/map1.txt", _levels.Count * moduleSeparatorX, 0, 0));
+            Level level = new Level("Maps/map1.txt", _levels.Count * moduleSeparatorX, 0, 0);
+            level.LoadContent();
+            _levels.Add(level);
             module = new Rectangle(0, 0, moduleSeparatorX, moduleSeparatorZ);
             modulesList.Add(module);
             currentMap = "Maps/map1.txt";
@@ -73,9 +81,6 @@ namespace TheGame
                 else
                     enemyCount = 4;
 
-                /*Debug.Write(currentMap);
-                Debug.Write("\n");*/
-
                 //Przypadek prostych map - wylot z lewej i prawej
                 if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
                 {
@@ -83,7 +88,7 @@ namespace TheGame
                     maps.AddRange(maps_left_up);    //idziemy do gory
                     maps.AddRange(maps_left_down);  //idziemy do dołu
 
-                    prepareModule(Content, enemyCount);
+                    prepareModule(enemyCount);
                 }
 
                 //Zakręt do góry - wylot z lewej i góry
@@ -95,7 +100,7 @@ namespace TheGame
                     moduleSeparatorZCount--;
                     moduleHeightChange++;
 
-                    prepareModule(Content, enemyCount);
+                    prepareModule(enemyCount);
                 }
 
                 //Zakręt od dołu w prawo - wylot z dołu i po prawo
@@ -104,7 +109,7 @@ namespace TheGame
                     maps.AddRange(maps_straight);
                     maps.AddRange(maps_left_up);
 
-                    prepareModule(Content, enemyCount);
+                    prepareModule(enemyCount);
                 }
 
                 //Zakręt w dół - wylot z lewej i z dołu
@@ -116,7 +121,7 @@ namespace TheGame
                     moduleSeparatorZCount++;
                     moduleHeightChange++;
 
-                    prepareModule(Content, enemyCount);
+                    prepareModule(enemyCount);
                 }
 
                 //Wylot z góry i z prawej
@@ -126,7 +131,7 @@ namespace TheGame
                     maps.AddRange(maps_left_up);    //idziemy do gory
                     maps.AddRange(maps_left_down);  //idziemy do dołu
 
-                    prepareModule(Content, enemyCount);
+                    prepareModule(enemyCount);
                 }
                 //Prosta od góry do dołu              //work in progress
                 if (maps_up_down.Contains(currentMap))
@@ -136,7 +141,7 @@ namespace TheGame
                     moduleSeparatorZCount++;
                     moduleHeightChange++;
 
-                    prepareModule(Content, enemyCount);
+                    prepareModule(enemyCount);
 
                 }
 
@@ -148,7 +153,7 @@ namespace TheGame
                     moduleSeparatorZCount--;
                     moduleHeightChange++;
 
-                    prepareModule(Content, enemyCount);
+                    prepareModule(enemyCount);
 
                 }
 
@@ -179,13 +184,14 @@ namespace TheGame
             }
         }
 
-        public void prepareModule(ContentManager Content, int enemyCount)
+        public void prepareModule(int enemyCount)
         {
             choosedMap = generateRandomStringFromList(maps);
 
             module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
-
-            _levels.Add(new Level(Content, choosedMap, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ));
+            Level level = new Level(choosedMap, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ);
+            level.LoadContent();
+            _levels.Add(level);
 
             modulesList.Add(module);
 
@@ -267,18 +273,28 @@ namespace TheGame
             private int moduleWidth = 20;
             private int moduleHeight = 20;
             private string ground = "test";
-            private ContentManager content;
             private List<Enemy> enemies;
             private List<Vector3> groundPositions;
 
+            private string fileName;
+            private float separator, separatorZ;
+            private int enemyCount;
 
-            public Level(ContentManager Content, string fileName, float separator, int enemyCount, float separatorZ)
+            public Level(string fileName, float separator, int enemyCount, float separatorZ)
             {
                 _sceneObjects = new List<SceneObject>();
                 enemies = new List<Enemy>();
                 groundPositions = new List<Vector3>();
-                content = Content;
-                LoadSceneObjects(Content, fileName, separator, enemyCount, separatorZ);
+
+                this.fileName = fileName; 
+                this.separator = separator;
+                this.separatorZ = separatorZ;
+                this.enemyCount = enemyCount;
+            }
+
+            public void LoadContent()
+            {
+                LoadSceneObjects();
             }
 
             public List<Enemy> returnEnemies()
@@ -303,7 +319,7 @@ namespace TheGame
             public List<SceneObject> returnSceneObjects() { return _sceneObjects; }
 
 
-            private void LoadSceneObjects(ContentManager Content, string fileName, float separatorX, int enemyCount, float separatorZ)
+            private void LoadSceneObjects()
             {
                 LoadScene(fileName, enemyCount);
 
@@ -315,7 +331,7 @@ namespace TheGame
                         float height = this._tiles[index].height;
                         string model = this._tiles[index].model;
                         string texture = this._tiles[index].texture;
-                        Vector3 wektor = new Vector3(j * tileSize + separatorX, height, i * tileSize + separatorZ);
+                        Vector3 wektor = new Vector3(j * tileSize + this.separator, height, i * tileSize + separatorZ);
                         if (model == ground)
                         {
                             Vector3 enemyWektor = wektor;
@@ -344,14 +360,14 @@ namespace TheGame
                 int objectsCount = random.Next(2, 5);
                 GenerateOtherObjects(objectsCount);
                 GenerateEnemies(enemyCount);
-                ObjectInitializer(Content);
+                ObjectInitializer();
             }
 
-            public void ObjectInitializer(ContentManager Content)
+            public void ObjectInitializer()
             {
                 foreach (SceneObject obj in _sceneObjects)
                 {
-                    obj.LoadContent(Content);
+                    obj.LoadContent();
                 }
             }
 
@@ -438,22 +454,22 @@ namespace TheGame
                         {
                             case "apple":
                                 AppleTree apple = new AppleTree(groundPosition, "jablonka", "StarSparrow_Green");
-                                apple.LoadContent(content);
+                                apple.LoadContent();
                                 enemies.Add(apple);
                                 break;
                             case "melissa":
                                 Melissa melissa = new Melissa(groundPosition, "melisa", "StarSparrow_Green");
-                                melissa.LoadContent(content);
+                                melissa.LoadContent();
                                 enemies.Add(melissa);
                                 break;
                             case "nettle":
                                 Nettle nettle = new Nettle(groundPosition, "pokrzywa", "StarSparrow_Green");
-                                nettle.LoadContent(content);
+                                nettle.LoadContent();
                                 enemies.Add(nettle);
                                 break;
                             case "mint":
                                 Mint mint = new Mint(groundPosition, "mieta", "StarSparrow_Green");
-                                mint.LoadContent(content);
+                                mint.LoadContent();
                                 enemies.Add(mint);
                                 break;
                         }

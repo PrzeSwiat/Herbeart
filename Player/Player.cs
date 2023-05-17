@@ -10,12 +10,14 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Xml;
+using TheGame.Core;
 
 namespace TheGame
 {
@@ -29,6 +31,9 @@ namespace TheGame
         private PlayerMovement playerMovement;
         private PlayerEffectHandler playerEffects;
         public event EventHandler OnAttackPressed;
+        private List<Apple> apples = new List<Apple>();
+        private Model appleModel;
+        private Texture2D appleTexture;
 
         private bool canMove = true;
         
@@ -52,10 +57,32 @@ namespace TheGame
             this.setRadius(3);
         }
 
-        public void Update(World world, float deltaTime) //Logic player here
+        public void Update(World world, float deltaTime, Enemies enemies) //Logic player here
         {
             Update();
+            foreach (Apple apple in apples)
+            {
+                apple.Update(deltaTime, enemies);
+            }
             playerMovement.UpdatePlayerMovement(world, deltaTime);
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+            LoadedModels models = LoadedModels.Instance;
+            appleModel = models.getModel("Apple");
+            appleTexture = models.getTexture("appleTexture");
+        }
+
+        public override void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Microsoft.Xna.Framework.Color color)
+        {
+            base.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, color);
+
+            foreach(Apple apple in apples)
+            {
+                apple.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, color);
+            }
         }
 
         public void Attack()
@@ -66,6 +93,15 @@ namespace TheGame
             {
                 OnAttackPressed?.Invoke(this, EventArgs.Empty);
                 lastAttackTime = actualTime;
+            }
+        }
+
+        public void ThrowableA()
+        {
+            if(Inventory.checkAppleLeafNumber())
+            {
+                Inventory.removeAppleLeaf();
+                apples.Add(new Apple(this.position, this.getLookingDirection(), appleModel, appleTexture));
             }
         }
 
@@ -132,7 +168,58 @@ namespace TheGame
             this.canMove=can;
         }
 
-        
+        internal class Apple : SceneObject
+        {
+            private int dmg;
+            Vector3 velocity;
+            private float speed = 10f;
+            public event EventHandler OnDestroy;
+
+            public Apple(Vector3 Position, Vector2 direction, Model model, Texture2D texture) : base(Position, "Apple", "appleTexture")
+            {
+                this.model = model;
+                this.texture2D = texture;
+                this.boundingBox = CreateBoundingBox(this.model);
+                Vector3 startPosition = this.GetPosition();
+                startPosition.Y += 3;
+                position = startPosition;
+                velocity = new Vector3(-direction.X, 0, -direction.Y);
+                velocity.X = velocity.X * speed;
+                velocity.Z = velocity.Z * speed;
+                
+            }
+
+            public void Update(float deltaTime, Enemies enemies)
+            {
+                // Move the bullet
+                position += velocity * deltaTime;
+                SetPosition(position);
+
+                // Check if the bullet has collided with the player
+                foreach (Enemy enemy in enemies.EnemiesList)
+                {
+                    if (this.boundingBox.Intersects(enemy.boundingBox))
+                    {
+                        enemy.Hit(dmg);
+                        //Debug.Write("SDSD");
+                        OnDestroy?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+                
+
+                // Check if the bullet has hit the ground
+                if (position.Y <= 0)
+                {
+                    OnDestroy?.Invoke(this, EventArgs.Empty);
+                }
+
+                // Decrease the time to live of the bullet
+
+            }
+
+
+
+        }
 
     }
 }

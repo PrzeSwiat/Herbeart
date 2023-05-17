@@ -30,19 +30,19 @@ namespace TheGame.Core
             }
         }
 
-        public Model getModel(String name, ContentManager content)
+        public Model getModel(String name)
         {
             if (loadedModels.ContainsKey(name))
             {
                 return loadedModels[name];
             } else
             {
-                loadedModels.Add(name, content.Load<Model>(name));
+                loadedModels.Add(name, Globals.content.Load<Model>(name));
                 return loadedModels[name];
             }
         }
 
-        public Texture2D getTexture(String name, ContentManager content)
+        public Texture2D getTexture(String name)
         {
             if (loadedTextures.ContainsKey(name))
             {
@@ -50,7 +50,7 @@ namespace TheGame.Core
             }
             else
             {
-                loadedTextures.Add(name, content.Load<Texture2D>(name));
+                loadedTextures.Add(name, Globals.content.Load<Texture2D>(name));
                 return loadedTextures[name];
             }
         }

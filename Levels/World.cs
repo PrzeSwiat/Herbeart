@@ -18,11 +18,16 @@ namespace TheGame
         private Levels level;
         private List<Enemy> enemies;
 
-        public World(ContentManager Content)   
+        public World()   
         {
             _worldArray = new List<SceneObject>();
-            level = new Levels(Content, 100);
+            level = new Levels(100);
             enemies = new List<Enemy>();
+        }
+
+        public void LoadContent()
+        {
+            level.LoadContent();
         }
 
         public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, float playerX, float playerZ)
@@ -38,7 +43,6 @@ namespace TheGame
         public List<Enemy> returnEnemiesList(float playerX, float playerZ)
         {
             enemies = level.returnEnemiesList(playerX, playerZ);
-            //Debug.Write(enemies.Count + "\n");
             return enemies;
         }
 

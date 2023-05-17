@@ -15,7 +15,6 @@ namespace TheGame
     internal class Enemies
     {
         private List<Enemy> enemiesList;
-        ContentManager contentManager;
 
         public Enemies()
         {
@@ -107,21 +106,19 @@ namespace TheGame
                 System.Random random = new System.Random();
                 float x = (float)(random.NextDouble() * 2 * distanceFroMCenterX - distanceFroMCenterX);
                 float z = (float)(random.NextDouble() * 2 * distanceFroMCenterZ - distanceFroMCenterZ);
-                enemiesList.Add(new Enemy(new Vector3(x, 2, z), "player", "StarSparrow_Green"));
+                enemiesList.Add(new Enemy(new Vector3(x, 0, z), "player", "StarSparrow_Green"));
             }
         }
 
-        public void LoadModels(ContentManager content)
+        public void LoadModels()
         {
-            contentManager = content;
             foreach (Enemy enemy in enemiesList)
             {
-                enemy.LoadContent(contentManager);
-                
+                enemy.LoadContent();
             }
         }
 
-        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ContentManager content)
+        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             foreach (Enemy enemy in enemiesList)
             {
@@ -131,7 +128,7 @@ namespace TheGame
                     AppleTree tree = (AppleTree)enemy;
                     foreach (Apple apple in tree.bullet)
                     {
-                        apple.LoadContent(content);
+                        apple.LoadContent();
                         apple.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, apple.color);
                     }
                 }

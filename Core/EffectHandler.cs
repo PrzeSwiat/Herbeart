@@ -36,7 +36,7 @@ namespace TheGame
         public EffectHandler(Effect effect)
         {
             _effect = effect;
-            Vector3 pos1 = new Vector3(8, 1, 0);
+            Vector3 pos1 = new Vector3(30, 1, 20);
             Vector3 pos2 = new Vector3(0, 1, 0);
 
             Lights = new PointLight[2];

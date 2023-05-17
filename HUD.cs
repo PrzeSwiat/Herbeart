@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using TheGame.Core;
 
 namespace TheGame
 {
@@ -39,12 +40,13 @@ namespace TheGame
             //buttons = new string[] { "A", "B", "X", "Y" };
         }
 
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
-            skyTex = content.Load<Texture2D>(_texFilename);
-            red = content.Load<Texture2D>("Red");
-            itemFrame = content.Load<Texture2D>("itemFrame");
-            Font = content.Load<SpriteFont>("Fonts");
+            LoadedModels models = LoadedModels.Instance;
+            skyTex = models.getTexture(_texFilename);
+            red = models.getTexture("Red");
+            itemFrame = models.getTexture("itemFrame");
+            Font = Globals.content.Load<SpriteFont>("Fonts");
         }
 
         public void Update(Vector3 camPos, Dictionary<string, int> leafs)

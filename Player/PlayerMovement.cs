@@ -289,6 +289,7 @@ namespace TheGame
                         }
                         else
                         {
+                            player.ThrowableA();
                             // tutaj ewentualny dash/przewrot
                         }
 

@@ -104,7 +104,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     }
 
     if (!anyInRange) {
-        //return float4(finalAmbient, diffuse.a);
+        return float4(finalAmbient, diffuse.a);
     }
     float4 diffa = tex2D(textureSampler, input.TextureCoordinate);
     float3 fini = diffa * AmbientColor * AmbientIntensity;
