@@ -12,7 +12,7 @@ using Quaternion = Assimp.Quaternion;
 
 namespace TheGame
 {
-    internal class Animations
+    public class Animations
     {
         public bool HasAnimation;
         public AssimpContext importer;

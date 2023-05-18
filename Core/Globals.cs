@@ -10,12 +10,16 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace TheGame.Core
+namespace TheGame
 {
     public class Globals
     {
         public static ContentManager content;
         public static GraphicsDeviceManager _graphics;
 
+        public static EffectHandler effectHandler;
+        public static Matrix projectionMatrix;
+        public static Matrix viewMatrix;
+        public static Matrix worldMatrix;
     }
 }

@@ -30,12 +30,12 @@ namespace TheGame
             level.LoadContent();
         }
 
-        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, float playerX, float playerZ)
+        public void Draw(float playerX, float playerZ)
         {
             _worldArray = level.returnSceneObjects(playerX, playerZ);
             foreach (SceneObject sceneObject in _worldArray)
             {
-                sceneObject.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, sceneObject.color);
+                sceneObject.Draw();
             }
             
         }

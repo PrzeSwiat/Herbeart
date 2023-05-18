@@ -56,11 +56,11 @@ namespace TheGame
         }
 
 
-        public void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        public void Draw()
         {
             foreach (Leaf leaf in LeafsList)
             {
-                leaf.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, leaf.color);
+                leaf.Draw();
 
             }
         }

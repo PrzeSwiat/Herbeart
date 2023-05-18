@@ -27,7 +27,7 @@ namespace TheGame
         public float Range { get { return lightRange; } }
     }
 
-    internal class EffectHandler
+    public class EffectHandler
     {
         private Effect _effect;
         private PointLight[] Lights;

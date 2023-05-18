@@ -90,22 +90,22 @@ namespace TheGame
            
         }
 
-        public virtual void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Color color)
+        public virtual void Draw()
         {
-            effectHandler.BasicDraw(GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
+            Globals.effectHandler.BasicDraw(GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
                         * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
                         Matrix.CreateRotationZ(GetRotation().Z)
                         * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
-                         , viewMatrix, projectionMatrix, GetTexture2D(), color);
+                         , Globals.viewMatrix, Globals.projectionMatrix, GetTexture2D(), this.color);
         }
 
-        public void AnimationDraw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        public void AnimationDraw()
         {
-            effectHandler.AnimationDraw(animation,GetModel(), worldMatrix * Matrix.CreateScale(GetScale())
+            Globals.effectHandler.AnimationDraw(animation,GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
                        * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
                        Matrix.CreateRotationZ(GetRotation().Z)
                        * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
-                        , viewMatrix, projectionMatrix, GetTexture2D());
+                        , Globals.viewMatrix, Globals.projectionMatrix, GetTexture2D());
         }
 
 

@@ -13,11 +13,8 @@ namespace TheGame
         int WindowWidth = 1280;
         int WindowHeight = 900;
         private SpriteBatch _spriteBatch;
-        Matrix projectionMatrix;
-        Matrix viewMatrix;
-        Matrix worldMatrix;
         Camera camera;
-        EffectHandler effectHandler;
+        //EffectHandler effectHandler;
         Serializator serializator;
         //.................
        
@@ -52,8 +49,8 @@ namespace TheGame
             
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
-            
-            projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 50), (WindowWidth / 50), -(WindowHeight / 50), (WindowHeight / 50), 1f, 100f);      // orthographic view 
+
+            Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 50), (WindowWidth / 50), -(WindowHeight / 50), (WindowHeight / 50), 1f, 100f);      // orthographic view 
             //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
                 // PERSPECTIVE point of view
@@ -63,11 +60,11 @@ namespace TheGame
                  // tells the world of our orientantion
                                                                                       // (the same as:
                                                                                       // Vector3(0,1,0) - up and down is along y axis)
-                worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
+                Globals.worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
             //.................
 
 
-            effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
+            Globals.effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
             hud = new HUD("forest2", WindowWidth, WindowHeight);
             world = new World();
             player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
@@ -97,7 +94,7 @@ namespace TheGame
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             hud.LoadContent();
             basicEffect = new BasicEffect(GraphicsDevice);
-            basicEffect.Projection = projectionMatrix;
+            basicEffect.Projection = Globals.projectionMatrix;
             player.LoadContent();
             enemies.LoadModels();
             Leafs.LoadModels();
@@ -114,7 +111,7 @@ namespace TheGame
             
             camera.CamPosition = player.GetPosition() + camera.CamPositionState;
             camera.nextpos = player.GetPosition();
-            viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
+            Globals.viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta, enemies);
             enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
@@ -136,12 +133,12 @@ namespace TheGame
             base.Draw(gameTime);
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.GetPosition().X, player.GetPosition().Z);
-            enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
-            player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
-            Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
+            world.Draw(player.GetPosition().X, player.GetPosition().Z);
+            enemies.Draw();
+            player.Draw();
+            Leafs.Draw();
             hud.DrawFrontground(_spriteBatch, player.Health);
-            animacyjnaPacynka.AnimationDraw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
+            animacyjnaPacynka.AnimationDraw();
             //DrawBoundingBoxes();
         }
 

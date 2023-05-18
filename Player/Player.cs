@@ -67,13 +67,13 @@ namespace TheGame
             base.LoadContent();
         }
 
-        public override void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Microsoft.Xna.Framework.Color color)
+        public override void Draw()
         {
-            base.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, color);
+            base.Draw();
 
             foreach(Apple apple in apples)
             {
-                apple.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, color);
+                apple.Draw();
                 //apple.DrawBB(); why not working ???
             }
         }
