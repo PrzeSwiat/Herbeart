@@ -123,38 +123,35 @@ namespace TheGame
             Vector3 startPosition = this.GetPosition();
             startPosition.Y += 3;
             Vector3 direction = Vector3.Normalize(endPosition - startPosition);
-            position = startPosition;
+            this.SetPosition(startPosition);
             velocity = Vector3.Normalize(direction);
             velocity.X = velocity.X * speed;
             velocity.Y = velocity.Y * 6;
             velocity.Z = velocity.Z * speed;
 
 
-
+             
         }
         public void Update(float deltaTime, Player player)
         {
 
             // Move the bullet
-            position += velocity * deltaTime;
+            //position += velocity * deltaTime;
             // position.Y = 0.2f;
-            SetPosition(position);
+            SetPosition(this.GetPosition() + velocity * deltaTime);
 
             // Check if the bullet has collided with the player
             if (this.boundingBox.Intersects(player.boundingBox))
             {
-                player.Health -= 5;
-
+                player.Hit(5);
 
                 OnDestroy?.Invoke(this, EventArgs.Empty);
 
             }
 
             // Check if the bullet has hit the ground
-            if (position.Y <= 0)
+            if (this.GetPosition().Y <= 0)
             {
-
-
                 OnDestroy?.Invoke(this, EventArgs.Empty);
             }
 

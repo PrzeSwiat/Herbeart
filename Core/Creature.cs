@@ -32,8 +32,6 @@ namespace TheGame
 
         }
 
-
-
         public void AssignParameters(int health, int strenght, float speed)
         {
             this.maxHealth = health;
@@ -62,12 +60,12 @@ namespace TheGame
 
         public void MoveModelForwards(float speed)
         {
-            position += new Vector3(direction.X, 0f, direction.Y) * speed;
+            this.SetPosition(this.GetPosition() + new Vector3(direction.X, 0f, direction.Y) * speed);
         }
 
         public double GetDistance(SceneObject entity)
         {
-            double distance = (double)Vector3.Distance(this.position, entity.GetPosition());
+            double distance = (double)Vector3.Distance(this.GetPosition(), entity.GetPosition());
             return distance;
         }
 
@@ -89,6 +87,11 @@ namespace TheGame
         }
 
         // -------------- G E T T E R S --------------------
+
+        public void MoveBoundingSphere(Vector3 vec)
+        {
+            this.boundingSphere.Center -= vec;
+        }
 
         public int MaxHealth
         {

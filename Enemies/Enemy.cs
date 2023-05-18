@@ -23,7 +23,6 @@ namespace TheGame
             actualTime = lastAttackTime;
             SetScale(1.5f);
             this.setRadius(3);
-            
         }
 
         protected virtual void Attack(Player player)

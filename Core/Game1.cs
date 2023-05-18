@@ -12,7 +12,6 @@ namespace TheGame
         //DON'T TOUCH IT MORTALS
         int WindowWidth = 1280;
         int WindowHeight = 900;
-        private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Matrix projectionMatrix;
         Matrix viewMatrix;
@@ -35,15 +34,15 @@ namespace TheGame
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            Globals._graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
             Leafs = new LeafList();
             enemies = new Enemies();
             IsMouseVisible = true;
-            _graphics.PreferredBackBufferWidth = WindowWidth;
-            _graphics.PreferredBackBufferHeight = WindowHeight;
-            _graphics.ApplyChanges();
+            Globals._graphics.PreferredBackBufferWidth = WindowWidth;
+            Globals._graphics.PreferredBackBufferHeight = WindowHeight;
+            Globals._graphics.ApplyChanges();
             
         }
         
@@ -118,12 +117,12 @@ namespace TheGame
             viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
             player.Update(world, delta, enemies);
-            enemies.AddEnemies(world.returnEnemiesList(player.position.X, player.position.Z));
-            enemies.Move(delta, player);
+            enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
+            enemies.Move(delta, player);    // i po co 3 funkcje a nie 1
             enemies.RefreshOnDestroy();
             Leafs.RefreshInventory(this.player);
             Leafs.UpdateScene(enemies.EnemiesList);
-            camera.Update1(player.position);
+            camera.Update1(player.GetPosition());
             hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
             animacyjnaPacynka.animation.Update(gameTime.ElapsedGameTime.TotalSeconds);
             interactionEventHandler.Update(enemies.EnemiesList);
@@ -137,13 +136,13 @@ namespace TheGame
             base.Draw(gameTime);
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.position.X, player.position.Z);
+            world.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.GetPosition().X, player.GetPosition().Z);
             enemies.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             player.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, player.color);
             Leafs.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
             hud.DrawFrontground(_spriteBatch, player.Health);
             animacyjnaPacynka.AnimationDraw(effectHandler, worldMatrix, viewMatrix, projectionMatrix);
-            DrawBoundingBoxes();
+            //DrawBoundingBoxes();
         }
 
         #region DrawingBB
@@ -153,24 +152,24 @@ namespace TheGame
             
             foreach(SceneObject obj in world.GetWorldList())
             {
-                //obj.DrawBB(_graphics.GraphicsDevice);
+                //obj.DrawBB();
             }
             foreach (Enemy enemy in enemies.EnemiesList)
             {
-                //enemy.DrawBB(_graphics.GraphicsDevice);
+                enemy.DrawBB();
                 if(enemy.GetType() == typeof(AppleTree))
                 {
                     AppleTree apple1 = (AppleTree)enemy;
                     foreach(Apple apple in apple1.bullet)
                     {
-                        //apple.DrawBB(GraphicsDevice);
+                        //apple.DrawBB();
                     }
                 }
                 //DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
 
-            //player.DrawBB(_graphics.GraphicsDevice);
-            //DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
+            player.DrawBB();
+            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }
 
         

@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Xml;
@@ -32,8 +33,6 @@ namespace TheGame
         private PlayerEffectHandler playerEffects;
         public event EventHandler OnAttackPressed;
         private List<Apple> apples = new List<Apple>();
-        private Model appleModel;
-        private Texture2D appleTexture;
 
         private bool canMove = true;
         
@@ -47,10 +46,6 @@ namespace TheGame
             Inventory = new Inventory();
             Crafting = new Crafting(playerEffects);
             playerMovement = new PlayerMovement(this);
-           /* isCraftingTea = false;
-            padButtonAClicked = false;
-            padButtonYClicked = false;
-            padButtonXClicked = false;*/
             
             // Uruchomienie timera
             playerEffects.Start();
@@ -60,7 +55,7 @@ namespace TheGame
         public void Update(World world, float deltaTime, Enemies enemies) //Logic player here
         {
             Update();
-            foreach (Apple apple in apples)
+            foreach (Apple apple in apples.ToList())
             {
                 apple.Update(deltaTime, enemies);
             }
@@ -70,9 +65,6 @@ namespace TheGame
         public override void LoadContent()
         {
             base.LoadContent();
-            LoadedModels models = LoadedModels.Instance;
-            appleModel = models.getModel("Apple");
-            appleTexture = models.getTexture("appleTexture");
         }
 
         public override void Draw(EffectHandler effectHandler, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Microsoft.Xna.Framework.Color color)
@@ -82,6 +74,7 @@ namespace TheGame
             foreach(Apple apple in apples)
             {
                 apple.Draw(effectHandler, worldMatrix, viewMatrix, projectionMatrix, color);
+                //apple.DrawBB(); why not working ???
             }
         }
 
@@ -96,12 +89,15 @@ namespace TheGame
             }
         }
 
-        public void ThrowableA()
+        public void ThrowableY()
         {
             if(Inventory.checkAppleLeafNumber())
             {
                 Inventory.removeAppleLeaf();
-                apples.Add(new Apple(this.position, this.getLookingDirection(), appleModel, appleTexture));
+                Apple apple = new Apple(this.GetPosition(), this.getLookingDirection());
+                apple.LoadContent();
+                apple.OnDestroy += RemoveBullet;
+                apples.Add(apple);
             }
         }
 
@@ -168,58 +164,52 @@ namespace TheGame
             this.canMove=can;
         }
 
+        public void RemoveBullet(object sender, EventArgs e)
+        {
+            apples.Remove((Apple)sender);
+        }
+
         internal class Apple : SceneObject
         {
-            private int dmg;
-            Vector3 velocity;
-            private float speed = 10f;
+            private Vector3 velocity;
+            private int dmg = 100;
+            private float speed = 20f;
+            private float time = 0, maxTime = 4;
+
             public event EventHandler OnDestroy;
 
-            public Apple(Vector3 Position, Vector2 direction, Model model, Texture2D texture) : base(Position, "Apple", "appleTexture")
+            public Apple(Vector3 Position, Vector2 direction) : base(Position, "Apple", "appleTexture")
             {
-                this.model = model;
-                this.texture2D = texture;
-                this.boundingBox = CreateBoundingBox(this.model);
-                Vector3 startPosition = this.GetPosition();
-                startPosition.Y += 3;
-                position = startPosition;
-                velocity = new Vector3(-direction.X, 0, -direction.Y);
-                velocity.X = velocity.X * speed;
-                velocity.Z = velocity.Z * speed;
-                
+                Vector3 startPosition = Position;
+                startPosition.Y = 2;
+                this.SetPosition(startPosition);
+                velocity = new Vector3(-direction.X * speed, 0, -direction.Y * speed);
             }
 
             public void Update(float deltaTime, Enemies enemies)
             {
+                time += deltaTime;
                 // Move the bullet
-                position += velocity * deltaTime;
-                SetPosition(position);
+                this.Move(velocity * deltaTime);
 
                 // Check if the bullet has collided with the player
-                foreach (Enemy enemy in enemies.EnemiesList)
+                foreach (Enemy enemy in enemies.EnemiesList.ToList())
                 {
                     if (this.boundingBox.Intersects(enemy.boundingBox))
                     {
                         enemy.Hit(dmg);
-                        //Debug.Write("SDSD");
                         OnDestroy?.Invoke(this, EventArgs.Empty);
                     }
                 }
-                
 
                 // Check if the bullet has hit the ground
-                if (position.Y <= 0)
+                if (time >= maxTime)
                 {
                     OnDestroy?.Invoke(this, EventArgs.Empty);
                 }
-
-                // Decrease the time to live of the bullet
-
             }
-
-
-
         }
+
 
     }
 }

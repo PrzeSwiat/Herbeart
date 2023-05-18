@@ -24,10 +24,10 @@ namespace TheGame
         public Dictionary<string, int> returnLeafs()
         {
             Dictionary<string, int> leafs = new Dictionary<string, int>();
-            leafs.Add("A", appleLeafNumber);
-            leafs.Add("B", meliseLeafNumber);
-            leafs.Add("X", mintLeafNumber);
-            leafs.Add("Y", nettleLeafNumber);
+            leafs.Add("A", mintLeafNumber);
+            leafs.Add("B", nettleLeafNumber);
+            leafs.Add("X", meliseLeafNumber);
+            leafs.Add("Y", appleLeafNumber);
             
             return leafs;
         }
@@ -42,7 +42,7 @@ namespace TheGame
             return mintLeafNumber;
         }
 
-        public int getMellisaLeafNumber()
+        public int getMeliseLeafNumber()
         {
             return meliseLeafNumber;
         }
@@ -57,7 +57,7 @@ namespace TheGame
         {
             appleLeafNumber++;
         }
-        public void addMelissaLeaf()
+        public void addMeliseLeaf()
         {
             meliseLeafNumber++;
         }

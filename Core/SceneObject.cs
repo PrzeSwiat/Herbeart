@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TheGame.Core;
 using Color = Microsoft.Xna.Framework.Color;
 
@@ -11,7 +12,7 @@ namespace TheGame
     [Serializable]
     internal class SceneObject
     {
-        public Vector3 position;
+        private Vector3 position;
         public Vector3 rotation = new Vector3(0.0f, 0.0f, 0.0f);
         public float scale = 1;
         protected Model model;
@@ -81,7 +82,7 @@ namespace TheGame
                 boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
             } else
             {
-                boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
+                this.boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
             }
             
             
@@ -114,7 +115,12 @@ namespace TheGame
 
         
 
-
+        public void Move(Vector3 vec)
+        {
+            SetPosition(this.GetPosition() + vec);
+            this.boundingBox.Min += vec;
+            this.boundingBox.Max += vec;
+        }
 
         #region Getters
         //GET'ERS
@@ -151,6 +157,15 @@ namespace TheGame
 
         #region Setters
         //SET'ERS
+
+        public void SetBoundingBox(BoundingBox box)
+        {
+            this.boundingBox = box;
+            Vector3 pos = (this.boundingBox.Min + this.boundingBox.Max) / 2;
+            pos.Y = this.boundingBox.Min.Y;
+            SetPosition(pos);
+        }
+
         public void SetPosition(float x, float y, float z)
         {
             position = new Vector3(x,y,z);
@@ -158,7 +173,7 @@ namespace TheGame
         public void SetPosition(Vector3 pos)
         {
             position = pos;
-        }
+        } 
         public void SetRotation(Vector3 rot)
         {
             rotation = rot;
@@ -238,9 +253,11 @@ namespace TheGame
             vertices.Add(new Vector3(x, b, c));
             return vertices;
         }
-        public void DrawBB(GraphicsDevice graphicsDevice)
+        public void DrawBB()
         {
-            Vector3[] corners = boundingBox.GetCorners();
+            GraphicsDevice graphicsDevice = Globals._graphics.GraphicsDevice;
+            
+            Vector3[] corners = this.boundingBox.GetCorners();
 
             var bottom = new[]
             {

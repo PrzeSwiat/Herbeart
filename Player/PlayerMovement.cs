@@ -10,6 +10,7 @@ namespace TheGame
     {
         private Player player;
         private Boolean isCraftingTea;
+        private Boolean isThrowing;
         private Boolean padButtonAClicked;
         private Boolean padButtonBClicked;
         private Boolean padButtonXClicked;
@@ -21,7 +22,9 @@ namespace TheGame
         { 
             this.player = player;
             isCraftingTea = false;
+            isThrowing = false;
             padButtonAClicked = false;
+            padButtonBClicked = false;
             padButtonYClicked = false;
             padButtonXClicked = false;
         }
@@ -130,85 +133,6 @@ namespace TheGame
             player.SetRotation(0, rotation, 0);
         }
 
-        public void UpdateBB(float ang, List<SceneObject> worldList, Vector3 moveVec, Vector3 normal)
-        {
-            Vector3 center = ((player.boundingBox.Min + player.boundingBox.Max) / 2);
-            Matrix translation1 = Matrix.CreateTranslation(-center);
-            Matrix rotation = Matrix.CreateRotationY(ang);
-            Matrix translation2 = Matrix.CreateTranslation(center);
-            Matrix transform = translation1 * rotation * translation2;
-            Vector3[] vertices = player.boundingBox.GetCorners();
-
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                vertices[i] = Vector3.Transform(vertices[i], transform);
-            }
-            Vector3 min = vertices[0];
-            Vector3 max = vertices[0];
-            for (int i = 1; i < vertices.Length; i++)
-            {
-                min = Vector3.Min(min, vertices[i]);
-                max = Vector3.Max(max, vertices[i]);
-            }
-
-            player.boundingBox = new BoundingBox(min, max);
-
-
-            // check kolizji na X
-            BoundingBox boksik = player.boundingBox;
-            Vector3 helpVec = new Vector3(moveVec.X, 0, 0);
-            player.boundingBox = new BoundingBox(player.boundingBox.Min - helpVec, player.boundingBox.Max - helpVec);
-            // Wyznacz punkt środka boxa
-
-            if (this.collision(worldList))
-            {
-                player.boundingBox = boksik;
-                /*float movedDistance = CalculatePenetrationDepthX(worldList);
-                if (movedDistance != 0)
-                {
-                    movedDistance += 0.01f;
-                    player.boundingBox.Min.X += movedDistance * normal.X;
-                    player.boundingBox.Max.X += movedDistance * normal.X;
-                    player.SetPosition((player.boundingBox.Min + player.boundingBox.Max) / 2);
-
-                    helpVec.X -= movedDistance * normal.X;
-                    player.boundingSphere.Center -= helpVec;
-                }*/
-            }
-            else
-            {
-                player.SetPosition(player.GetPosition() - helpVec);
-                player.boundingSphere.Center -= helpVec;
-            }
-
-            // check kolizji na Z
-            boksik = player.boundingBox;
-            helpVec = new Vector3(0, 0, moveVec.Z);
-            player.boundingBox = new BoundingBox(player.boundingBox.Min - helpVec, player.boundingBox.Max - helpVec);
-
-            if (this.collision(worldList))
-            {
-                player.boundingBox = boksik;
-                /*float movedDistance = CalculatePenetrationDepthZ(worldList);
-                if (movedDistance != 0)
-                {
-                    movedDistance += 0.01f;
-                    player.boundingBox.Min.Z += movedDistance * normal.Z;
-                    player.boundingBox.Max.Z += movedDistance * normal.Z;
-                    player.SetPosition((player.boundingBox.Min + player.boundingBox.Max) / 2);
-                    helpVec.Z -= movedDistance * normal.Z;
-                    player.boundingSphere.Center -= helpVec;
-                }*/
-            }
-            else
-            {
-                player.SetPosition(player.GetPosition() - helpVec);
-                player.boundingSphere.Center -= helpVec;
-            }
-
-
-
-        }
 
         public void GamePadClick(GamePadCapabilities capabilities, GamePadState gamePadState)
         {
@@ -219,17 +143,24 @@ namespace TheGame
                 {
                     if (gamePadState.IsButtonDown(Buttons.A))
                     {
-                        if (isCraftingTea && !padButtonAClicked) // W momencie jak lewy triger jest wcisniety
+                        if (!padButtonAClicked)
                         {
-                            player.AddIngredientA();
-                            padButtonAClicked = true;
+                            if (isCraftingTea && !isThrowing)           // Tworzenie herbatek
+                            {
+                                player.AddIngredientA();
+                                padButtonAClicked = true;
+                            } 
+                            else if (!isCraftingTea && isThrowing)    // Rzucane
+                            {
+                                padButtonAClicked = true;
 
+                            } 
+                            else                                      // normalny atak gracza
+                            {
+                                player.Attack();
+                                padButtonAClicked = true;
+                            }
                         }
-                        else // normalny atak gracza
-                        {
-                            player.Attack();
-                        }
-
                     }
                     else if (gamePadState.IsButtonUp(Buttons.A))
                     {
@@ -242,15 +173,24 @@ namespace TheGame
                 {
                     if (gamePadState.IsButtonDown(Buttons.B))
                     {
-                        if (isCraftingTea && !padButtonBClicked)
+                        if (!padButtonBClicked)
                         {
-                            player.AddIngredientB();
-                            padButtonBClicked = true;
+                            if (isCraftingTea && !isThrowing)
+                            {
+                                player.AddIngredientB();
+                                padButtonBClicked = true;
+                            } 
+                            else if (!isCraftingTea && isThrowing)
+                            {
+                                padButtonBClicked = true;
+                            }
+                            else 
+                            {
+                                padButtonBClicked = true;
+                                // tutaj ewentualny dash/przewrot
+                            }
                         }
-                        else
-                        {
-                            // tutaj ewentualny dash/przewrot
-                        }
+                            
 
                     }
                     else if (gamePadState.IsButtonUp(Buttons.B))
@@ -262,15 +202,24 @@ namespace TheGame
                 {
                     if (gamePadState.IsButtonDown(Buttons.Y))
                     {
-                        if (isCraftingTea && !padButtonYClicked)
+                        if (!padButtonYClicked)
                         {
-                            player.AddIngredientY();
-                            padButtonYClicked = true;
+                            if (isCraftingTea && !isThrowing)
+                            {
+                                player.AddIngredientY();
+                                padButtonYClicked = true;
+                            } else if (!isCraftingTea && isThrowing)
+                            {
+                                padButtonYClicked = true;
+                                player.ThrowableY();
+                            }
+                            else
+                            {
+                                padButtonYClicked = true;
+                                // tutaj ewentualny dash/przewrot
+                            }
                         }
-                        else
-                        {
-                            // tutaj ewentualny dash/przewrot
-                        }
+                        
 
                     }
                     else if (gamePadState.IsButtonUp(Buttons.Y))
@@ -282,16 +231,24 @@ namespace TheGame
                 {
                     if (gamePadState.IsButtonDown(Buttons.X))
                     {
-                        if (isCraftingTea && !padButtonXClicked)
+                        if (!padButtonXClicked)
                         {
-                            player.AddIngredientX();
-                            padButtonXClicked = true;
+                            if (isCraftingTea && !isThrowing)
+                            {
+                                player.AddIngredientX();
+                                padButtonXClicked = true;
+                            } 
+                            else if (!isCraftingTea && isThrowing)
+                            {
+                                padButtonXClicked = true;
+                            }
+                            else
+                            {
+                                padButtonXClicked = true;
+                                // tutaj ewentualny dash/przewrot
+                            }
                         }
-                        else
-                        {
-                            player.ThrowableA();
-                            // tutaj ewentualny dash/przewrot
-                        }
+                        
 
                     }
                     else if (gamePadState.IsButtonUp(Buttons.X))
@@ -311,6 +268,14 @@ namespace TheGame
                     isCraftingTea = false;
                 }
 
+                if (gamePadState.IsButtonDown(Buttons.RightTrigger))
+                {
+                    isThrowing = true;
+                }
+                else if (gamePadState.IsButtonUp(Buttons.RightTrigger))
+                {
+                    isThrowing = false;
+                }
 
 
 
@@ -347,13 +312,50 @@ namespace TheGame
             return penetrationDepth;
         }
 
+        public void UpdateBB(float ang, List<SceneObject> worldList, Vector3 moveVec, Vector3 normal)
+        {
+            BoundingBox boksik = player.boundingBox;
+            Vector3 helpVec = new Vector3(moveVec.X, 0, 0);
+            boksik.Min -= helpVec;
+            boksik.Max -= helpVec;
 
+            if (!collide(boksik, worldList))
+            {
+                player.SetBoundingBox(boksik);
+                player.MoveBoundingSphere(helpVec);
+            }
+
+            // check kolizji na Z
+            boksik = player.boundingBox;
+            helpVec = new Vector3(0, 0, moveVec.Z);
+            boksik.Min -= helpVec;
+            boksik.Max -= helpVec;
+
+            if (!collide(boksik, worldList))
+            {
+                player.SetBoundingBox(boksik);
+                player.MoveBoundingSphere(helpVec);
+            }
+
+        }
         public void rotateSphere(float Angle)
         {
             Matrix rotationMatrix = Matrix.CreateRotationY(Angle);
             player.boundingSphere.Center -= player.GetPosition();
             player.boundingSphere.Center = Vector3.Transform(player.boundingSphere.Center, rotationMatrix);
             player.boundingSphere.Center += player.GetPosition();
+        }
+
+        public bool collide(BoundingBox box, List<SceneObject> objects)
+        {
+            foreach (SceneObject obj in objects)
+            {
+                if (box.Intersects(obj.boundingBox))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool collision(List<SceneObject> objects)

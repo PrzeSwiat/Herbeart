@@ -15,6 +15,7 @@ namespace TheGame.Core
     public class Globals
     {
         public static ContentManager content;
+        public static GraphicsDeviceManager _graphics;
 
     }
 }

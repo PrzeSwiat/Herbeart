@@ -25,31 +25,31 @@ namespace TheGame
             switch (button)
             {
                 case 'A':
-                    if (inventory.checkAppleLeafNumber())
-                    {
-                        recepture += button;
-                        inventory.removeAppleLeaf();
-                    }
-                    break;
-                case 'B':
-                    if (inventory.checkMeliseLeafNumber())
-                    {
-                        recepture += button;
-                        inventory.removeMeliseLeaf();
-                    }
-                    break;
-                case 'X':
                     if (inventory.checkMintLeafNumber())
                     {
                         recepture += button;
                         inventory.removeMintLeaf();
                     }
                     break;
-                case 'Y': 
+                case 'B':
                     if (inventory.checkNettleLeafNumber())
                     {
                         recepture += button;
                         inventory.removeNettleLeaf();
+                    }
+                    break;
+                case 'X':
+                    if (inventory.checkMeliseLeafNumber())
+                    {
+                        recepture += button;
+                        inventory.removeMeliseLeaf();
+                    }
+                    break;
+                case 'Y': 
+                    if (inventory.checkAppleLeafNumber())
+                    {
+                        recepture += button;
+                        inventory.removeAppleLeaf();
                     }
                     
                     break;
@@ -68,10 +68,10 @@ namespace TheGame
         {
             foreach (char c in recepture)
             {
-                if (c == 'A') inventory.addAppleLeaf();
-                else if (c == 'B') inventory.addMelissaLeaf();
-                else if (c == 'Y') inventory.addNettleLeaf();
-                else if (c == 'X') inventory.addMintLeaf();
+                if (c == 'A') inventory.addMintLeaf();
+                else if (c == 'B') inventory.addNettleLeaf();
+                else if (c == 'Y') inventory.addAppleLeaf();
+                else if (c == 'X') inventory.addMeliseLeaf();
             }
 
             restartRecepture();
@@ -97,10 +97,10 @@ namespace TheGame
                 default:
                     foreach (char c in recepture)
                     {
-                        if (c == 'A') inventory.addAppleLeaf();
-                        else if (c == 'B') inventory.addMelissaLeaf();
-                        else if (c == 'Y') inventory.addNettleLeaf();
-                        else if (c == 'X') inventory.addMintLeaf();
+                        if (c == 'A') inventory.addMintLeaf();
+                        else if (c == 'B') inventory.addNettleLeaf();
+                        else if (c == 'Y') inventory.addAppleLeaf();
+                        else if (c == 'X') inventory.addMeliseLeaf();
                     }
                     break;
                 
