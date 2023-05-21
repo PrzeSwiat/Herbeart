@@ -479,23 +479,23 @@ namespace TheGame
             {
                 switch (enemyType)
                 {
-                    case "apple":
-                        AppleTree apple = new AppleTree(groundPosition, "jablonka", "StarSparrow_Green");
+                    case "Objects/apple":
+                        AppleTree apple = new AppleTree(groundPosition, "Objects/jablonka", "Textures/StarSparrow_Green");
                         apple.LoadContent();
                         enemies.Add(apple);
                         break;
-                    case "melissa":
-                        Melissa melissa = new Melissa(groundPosition, "melisa", "StarSparrow_Green");
+                    case "Objects/melissa":
+                        Melissa melissa = new Melissa(groundPosition, "Objects/melisa", "Textures/StarSparrow_Green");
                         melissa.LoadContent();
                         enemies.Add(melissa);
                         break;
-                    case "nettle":
-                        Nettle nettle = new Nettle(groundPosition, "pokrzywa", "StarSparrow_Green");
+                    case "Objects/nettle":
+                        Nettle nettle = new Nettle(groundPosition, "Objects/pokrzywa", "Textures/StarSparrow_Green");
                         nettle.LoadContent();
                         enemies.Add(nettle);
                         break;
-                    case "mint":
-                        Mint mint = new Mint(groundPosition, "mieta", "StarSparrow_Green");
+                    case "Objects/mint":
+                        Mint mint = new Mint(groundPosition, "Objects/mieta", "Textures/StarSparrow_Green");
                         mint.LoadContent();
                         enemies.Add(mint);
                         break;
@@ -520,14 +520,14 @@ namespace TheGame
                         float size = (float)rand.Next(80, 100) / 100;
                         switch (objectType)
                         {
-                            case "rock2":
-                                SceneObject stone = new SceneObject(groundPosition, "rock2", "black");
+                            case "Objects/rock2":
+                                SceneObject stone = new SceneObject(groundPosition, "Objects/rock2", "Textures/black");
                                 stone.SetScale(size);
                                 stone.SetRotation(new Vector3(0, rflot, 0));
                                 _sceneObjects.Add(stone);
                                 break;
-                            case "rock18":
-                                SceneObject stone1 = new SceneObject(groundPosition, "rock18", "black");
+                            case "Objects/rock18":
+                                SceneObject stone1 = new SceneObject(groundPosition, "Objects/rock18", "Textures/black");
                                 stone1.SetScale(size);
                                 stone1.SetRotation(new Vector3(0, rflot, 0));
                                 _sceneObjects.Add(stone1);
