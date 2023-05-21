@@ -56,29 +56,29 @@ namespace TheGame
 
         public void LoadContent()
         {
-            prepareRandomMap();
+            prepareMap();
         }
 
         public void prepareFirstLevels()
         {
             //Moduł 1 - z salą weselną
-            prepareModule("Maps/map1.txt", 0, false);
+            prepareModule("Maps/map1.txt", 0);
 
             //Moduł 2
-            prepareModule("Maps/map2.txt", 0, false);
-            _levels[1].GenerateEnemy("mint");
-            _levels[1].GenerateEnemy("mint");
+            prepareModule("Maps/map2.txt", 0);
+            _levels[1].GenerateEnemy("mint", new Vector3(moduleSeparatorX + 30, 0, 50));
+            _levels[1].GenerateEnemy("mint", new Vector3(moduleSeparatorX + 30, 0, 60));
 
             //Moduł 3
-            prepareModule("Maps/map3.txt", 0, false);
-            _levels[2].GenerateEnemy("mint");
-            _levels[2].GenerateEnemy("nettle");
+            prepareModule("Maps/map3.txt", 0);
+            _levels[2].GenerateEnemy("mint", new Vector3(2 * moduleSeparatorX + 30, 0, 50));
+            _levels[2].GenerateEnemy("nettle", new Vector3(2 * moduleSeparatorX + 30, 0, 60));
 
             currentMap = "Maps/map3.txt";
 
         }
 
-        public void prepareRandomMap()
+        public void prepareMap()
         {
             int enemyCount;
 
@@ -202,17 +202,17 @@ namespace TheGame
         {
             choosedMap = generateRandomStringFromList(maps);
 
-            prepareModule(choosedMap, enemyCount, true);
+            prepareModule(choosedMap, enemyCount);
 
             maps.Clear();
 
         }
 
-        public void prepareModule(string map, int enemyCount, bool randomEnemies)
+        public void prepareModule(string map, int enemyCount)
         {
             module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
             Level level = new Level(map, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ);
-            level.LoadContent(randomEnemies);
+            level.LoadContent();
             _levels.Add(level);
             modulesList.Add(module);
         }
@@ -295,24 +295,24 @@ namespace TheGame
             private List<Vector3> groundPositions;
 
             private string fileName;
-            private float separator, separatorZ;
+            private float separatorX, separatorZ;
             private int enemyCount;
 
-            public Level(string fileName, float separator, int enemyCount, float separatorZ)
+            public Level(string fileName, float separatorX, int enemyCount, float separatorZ)
             {
                 _sceneObjects = new List<SceneObject>();
                 enemies = new List<Enemy>();
                 groundPositions = new List<Vector3>();
 
                 this.fileName = fileName; 
-                this.separator = separator;
+                this.separatorX = separatorX;
                 this.separatorZ = separatorZ;
                 this.enemyCount = enemyCount;
             }
 
-            public void LoadContent(bool generateRandom)
+            public void LoadContent()
             {
-                LoadSceneObjects(generateRandom);
+                LoadSceneObjects();
             }
 
             public List<Enemy> returnEnemies()
@@ -337,7 +337,7 @@ namespace TheGame
             public List<SceneObject> returnSceneObjects() { return _sceneObjects; }
 
 
-            private void LoadSceneObjects(bool generateRandom)
+            private void LoadSceneObjects()
             {
                 LoadScene(fileName, enemyCount);
 
@@ -349,7 +349,7 @@ namespace TheGame
                         float height = this._tiles[index].height;
                         string model = this._tiles[index].model;
                         string texture = this._tiles[index].texture;
-                        Vector3 wektor = new Vector3(j * tileSize + this.separator, height, i * tileSize + separatorZ);
+                        Vector3 wektor = new Vector3(j * tileSize + separatorX, height, i * tileSize + separatorZ);
                         if (model == ground)
                         {
                             Vector3 enemyWektor = wektor;
@@ -377,7 +377,7 @@ namespace TheGame
                 Random random = new Random();
                 int objectsCount = random.Next(2, 5);
                 GenerateOtherObjects(objectsCount);
-                if (generateRandom) 
+                if (enemyCount != 0) 
                 { 
                     GenerateRandomEnemies(enemyCount); 
                 }
@@ -466,17 +466,17 @@ namespace TheGame
                     for (int i = 0; i < this.enemyCount; i++)
                     {
                         string enemyType = GenerateRandomString(enemyTypes);
-                        GenerateEnemy(enemyType);
+                        int[] groundList = new int[groundPositions.Count];
+                        int index = GenerateRandomInt(groundList);
+                        Vector3 groundPosition = groundPositions[index];
+                        groundPositions.RemoveAt(index);
+                        GenerateEnemy(enemyType, groundPosition);
                     }
                 }
             }
 
-            public void GenerateEnemy(string enemyType)
+            public void GenerateEnemy(string enemyType, Vector3 groundPosition)
             {
-                int[] groundList = new int[groundPositions.Count];
-                int index = GenerateRandomInt(groundList);
-                Vector3 groundPosition = groundPositions[index];
-                groundPositions.RemoveAt(index);
                 switch (enemyType)
                 {
                     case "apple":
