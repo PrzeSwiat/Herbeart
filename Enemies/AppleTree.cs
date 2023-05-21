@@ -20,7 +20,7 @@ namespace TheGame
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(100, 10, 2);
-            this.leaf = new Leafs.AppleLeaf(worldPosition, "mis4", "StarSparrow_Orange");
+            this.leaf = new Leafs.AppleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
         }
 
         public void RemoveBullet(object sender,EventArgs e)
@@ -30,7 +30,7 @@ namespace TheGame
 
         public  void Throw(int damage,Player player)
         {
-          bullet.Add(new Apple(this.boundingSphere.Center,"Apple", "appleTexture", player.GetPosition()));
+          bullet.Add(new Apple(this.boundingSphere.Center, "Apple", "Textures/appleTexture", player.GetPosition()));
         }
 
 

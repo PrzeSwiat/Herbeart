@@ -178,7 +178,7 @@ namespace TheGame
 
             public event EventHandler OnDestroy;
 
-            public Apple(Vector3 Position, Vector2 direction) : base(Position, "Apple", "appleTexture")
+            public Apple(Vector3 Position, Vector2 direction) : base(Position, "Objects/Apple", "Textures/appleTexture")
             {
                 Vector3 startPosition = Position;
                 startPosition.Y = 2;

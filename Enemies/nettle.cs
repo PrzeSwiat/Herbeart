@@ -15,7 +15,7 @@ namespace TheGame
         public Nettle(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(80, 12, 2);
-            this.leaf = new Leafs.NettleLeaf(worldPosition, "mis4", "StarSparrow_Orange");
+            this.leaf = new Leafs.NettleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
             lastHealth = this.Health;
         }
 

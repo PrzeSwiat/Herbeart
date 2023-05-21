@@ -16,6 +16,7 @@ namespace TheGame
         Camera camera;
         //EffectHandler effectHandler;
         Serializator serializator;
+        AudioMenager audioMenager;
         //.................
        
 
@@ -27,7 +28,6 @@ namespace TheGame
         Player animacyjnaPacynka;
         Enemies enemies;
         LeafList Leafs;
-
 
         public Game1()
         {
@@ -65,13 +65,13 @@ namespace TheGame
 
 
             Globals.effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
-            hud = new HUD("forest2", WindowWidth, WindowHeight);
+            hud = new HUD("Textures/forest2", WindowWidth, WindowHeight);
             world = new World();
-            player = new Player(new Vector3(30,0,30), "mis", "MisTexture");
-            animacyjnaPacynka = new Player(new Vector3(0, 0, 30), "nasze", "StarSparrow_Green");
+            player = new Player(new Vector3(30,0,30), "Objects/mis", "Textures/MisTexture");
+            animacyjnaPacynka = new Player(new Vector3(0, 0, 30), "Animations/nasze", "Textures/StarSparrow_Green");
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
-
+            audioMenager = new AudioMenager(Content);
 
             
             /*AppleTree apple = new AppleTree(new Vector3(25, 0, 25), "player", "StarSparrow_Green");
@@ -100,7 +100,7 @@ namespace TheGame
             Leafs.LoadModels();
             animacyjnaPacynka.LoadContent();
             animacyjnaPacynka.LoadAnimation(GraphicsDevice);
-
+           // audioMenager.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)

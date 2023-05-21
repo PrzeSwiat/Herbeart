@@ -106,7 +106,7 @@ namespace TheGame
                 System.Random random = new System.Random();
                 float x = (float)(random.NextDouble() * 2 * distanceFroMCenterX - distanceFroMCenterX);
                 float z = (float)(random.NextDouble() * 2 * distanceFroMCenterZ - distanceFroMCenterZ);
-                enemiesList.Add(new Enemy(new Vector3(x, 0, z), "player", "StarSparrow_Green"));
+                enemiesList.Add(new Enemy(new Vector3(x, 0, z), "Objects/player", "Textures/StarSparrow_Green"));
             }
         }
 

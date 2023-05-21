@@ -44,8 +44,8 @@ namespace TheGame
         {
             LoadedModels models = LoadedModels.Instance;
             skyTex = models.getTexture(_texFilename);
-            red = models.getTexture("Red");
-            itemFrame = models.getTexture("itemFrame");
+            red = models.getTexture("Textures/Red");
+            itemFrame = models.getTexture("Textures/itemFrame");
             Font = Globals.content.Load<SpriteFont>("Fonts");
         }
 

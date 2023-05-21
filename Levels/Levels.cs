@@ -263,16 +263,16 @@ namespace TheGame
 
         class Level
         {
-            private string[] treeModels = { "tree1", "tree2", "tree3" };
-            private string[] enemyTypes = { "apple", "mint", "nettle", "melissa" };
-            private string[] otherModels = { "rock2", "rock18" };
+            private string[] treeModels = { "Objects/tree1", "Objects/tree2", "Objects/tree3" };
+            private string[] enemyTypes = { "Objects/apple", "Objects/mint", "Objects/nettle", "Objects/melissa" };
+            private string[] otherModels = { "Objects/rock2", "Objects/rock18" };
             //private string[] grassTextures = {"trawa1", "trawa2", "trawa3"};
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
             private int tileSize = 6;
             private int moduleWidth = 20;
             private int moduleHeight = 20;
-            private string ground = "test";
+            private string ground = "Objects/test";
             private List<Enemy> enemies;
             private List<Vector3> groundPositions;
 
@@ -340,7 +340,7 @@ namespace TheGame
                         }
                         if (treeModels.Contains(model))
                         {
-                            _sceneObjects.Add(new SceneObject(wektor, ground, "trawa1"));       //dodanie trawy pod drzewka
+                            _sceneObjects.Add(new SceneObject(wektor, ground, "Textures/trawa1"));       //dodanie trawy pod drzewka
                             SceneObject tree = new SceneObject(wektor, model, texture);
                             Random rand = new Random();
                             float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
@@ -383,16 +383,16 @@ namespace TheGame
                         case 48: //0
                             string treeModel = GenerateRandomString(treeModels);
 
-                            _tiles.Add(new Tile(treeModel, "tree1_color", -2.0f));
+                            _tiles.Add(new Tile(treeModel, "Textures/tree1_color", -2.0f));
                             break;
                         case 97: //a
-                            _tiles.Add(new Tile(ground, "trawa1", -2.0f));
+                            _tiles.Add(new Tile(ground, "Textures/trawa1", -2.0f));
                             break;
                         case 98:
-                            _tiles.Add(new Tile(ground, "trawa2", -2.0f));
+                            _tiles.Add(new Tile(ground, "Textures/trawa2", -2.0f));
                             break;
                         case 99:
-                            _tiles.Add(new Tile(ground, "trawa3", -2.0f));
+                            _tiles.Add(new Tile(ground, "Textures/trawa3", -2.0f));
                             break;
                     }
                 }
@@ -452,23 +452,23 @@ namespace TheGame
                         string enemyType = GenerateRandomString(enemyTypes);
                         switch (enemyType)
                         {
-                            case "apple":
-                                AppleTree apple = new AppleTree(groundPosition, "jablonka", "StarSparrow_Green");
+                            case "Objects/apple":
+                                AppleTree apple = new AppleTree(groundPosition, "Objects/jablonka", "Textures/StarSparrow_Green");
                                 apple.LoadContent();
                                 enemies.Add(apple);
                                 break;
-                            case "melissa":
-                                Melissa melissa = new Melissa(groundPosition, "melisa", "StarSparrow_Green");
+                            case "Objects/melissa":
+                                Melissa melissa = new Melissa(groundPosition, "Objects/melisa", "Textures/StarSparrow_Green");
                                 melissa.LoadContent();
                                 enemies.Add(melissa);
                                 break;
-                            case "nettle":
-                                Nettle nettle = new Nettle(groundPosition, "pokrzywa", "StarSparrow_Green");
+                            case "Objects/nettle":
+                                Nettle nettle = new Nettle(groundPosition, "Objects/pokrzywa", "Textures/StarSparrow_Green");
                                 nettle.LoadContent();
                                 enemies.Add(nettle);
                                 break;
-                            case "mint":
-                                Mint mint = new Mint(groundPosition, "mieta", "StarSparrow_Green");
+                            case "Objects/mint":
+                                Mint mint = new Mint(groundPosition, "Objects/mieta", "Textures/StarSparrow_Green");
                                 mint.LoadContent();
                                 enemies.Add(mint);
                                 break;
@@ -492,8 +492,8 @@ namespace TheGame
                         
                         switch (objectType)
                         {
-                            case "rock2":
-                                SceneObject stone = new SceneObject(groundPosition, "rock2", "black");
+                            case "Objects/rock2":
+                                SceneObject stone = new SceneObject(groundPosition, "Objects/rock2", "Textures/black");
                                 Random rand = new Random();
                                 float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
                                 float size = (float)rand.Next(80, 100) / 100;                               //zmiana wielkosci drzewa losowo
@@ -501,8 +501,8 @@ namespace TheGame
                                 stone.SetRotation(new Vector3(0, rflot, 0));
                                 _sceneObjects.Add(stone);
                                 break;
-                            case "rock18":
-                                SceneObject stone1 = new SceneObject(groundPosition, "rock18", "black");
+                            case "Objects/rock18":
+                                SceneObject stone1 = new SceneObject(groundPosition, "Objects/rock18", "Textures/black");
                                 Random rand1 = new Random();
                                 float rflot1 = (float)rand1.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
                                 float size1 = (float)rand1.Next(80, 100) / 100;                                //zmiana wielkosci drzewa losowo
