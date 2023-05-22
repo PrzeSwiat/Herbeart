@@ -121,7 +121,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Objects/mieta.obj
 
-#begin Objects/mis.obj
+#begin MainShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:MainShader.fx
+
+#begin melisa.obj
 /importer:FbxImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
