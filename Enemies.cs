@@ -118,18 +118,18 @@ namespace TheGame
             }
         }
 
-        public void Draw()
+        public void Draw(Vector3 lightpos)
         {
             foreach (Enemy enemy in enemiesList)
             {
-                enemy.Draw();
+                enemy.DrawPlayer();
                 if (enemy.GetType() == typeof(AppleTree))
                 {
                     AppleTree tree = (AppleTree)enemy;
                     foreach (Apple apple in tree.bullet)
                     {
                         apple.LoadContent();
-                        apple.Draw();
+                        apple.Draw(lightpos);
                     }
                 }
             }
