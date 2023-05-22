@@ -17,12 +17,15 @@ namespace TheGame
     {
         private string _texFilename;
         private SpriteFont Font;
+        private SpriteFont Menu;
+        private SpriteFont Menu2;
         private Texture2D skyTex, red, itemFrame;
         private Rectangle skyRec;
         private int BackgroundWidth, BackgroundHeight, WindowWidth, WindowHeight;
         private int BackgroundX, BackgroundY;
         private Dictionary<string, int> leafs;
         //private string[] buttons;
+        GamePadState prevState;
 
         private DateTime lastChangeTime, actualTime;
 
@@ -47,6 +50,8 @@ namespace TheGame
             red = models.getTexture("Textures/Red");
             itemFrame = models.getTexture("Textures/itemFrame");
             Font = Globals.content.Load<SpriteFont>("Fonts");
+            Menu = Globals.content.Load<SpriteFont>("Menu");
+            Menu2 = Globals.content.Load<SpriteFont>("Menu2");
         }
 
         public void Update(Vector3 camPos, Dictionary<string, int> leafs)
@@ -110,6 +115,27 @@ namespace TheGame
             
         }
 
+        public void MainMenuCheck()
+        {
+
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            if (gamePadState.Buttons.Start == ButtonState.Pressed && prevState.Buttons.Start == ButtonState.Released)
+            {
+                Globals.Pause = !Globals.Pause;
+            }
+            prevState = gamePadState;
+
+        }
+
+        public void DrawMainMenu(SpriteBatch spriteBatch)
+        {
+            Rectangle rect = new Rectangle(-WindowWidth,-WindowHeight,2*WindowWidth,2*WindowHeight);
+            spriteBatch.Begin();
+            spriteBatch.Draw(red,rect, Color.Black);
+            spriteBatch.DrawString(Menu,"Herbeart", new Vector2(WindowWidth/2 - WindowWidth/5,WindowHeight*1/10), Color.White);
+            spriteBatch.DrawString(Menu2, "Press 'Start' to start the game", new Vector2(WindowWidth / 15, WindowHeight * 4 / 10), Color.White);
+            spriteBatch.End();
+        }
 
 
     }

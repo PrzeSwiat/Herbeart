@@ -22,5 +22,8 @@ namespace TheGame
         public static Matrix projectionMatrix;
         public static Matrix viewMatrix;
         public static Matrix worldMatrix;
+
+        public static bool Pause;
+        public static float time;
     }
 }

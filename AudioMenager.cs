@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static Assimp.Metadata;
 
@@ -16,10 +17,14 @@ namespace TheGame
     internal class AudioMenager
     {
         Song mainSong;
+        Song mainMenuSong;
         ContentManager Content;
         TimeSpan timeMainSong;
         TimeSpan durationMainSong;
+        TimeSpan durationMainMenuSong;
         public event EventHandler onPlay;
+        public event EventHandler onMenuPlay;
+        bool perv = false;
 
         public AudioMenager(ContentManager content)
         {
@@ -31,25 +36,41 @@ namespace TheGame
         public void LoadContent()
         {
             mainSong = Content.Load<Song>("SoundFx/ForestMain");
-            
+            mainMenuSong = Content.Load<Song>("SoundFx/wolves");
+
             durationMainSong = mainSong.Duration;
+            durationMainMenuSong = mainMenuSong.Duration;
             onPlay += PlayAgain;
-            onPlay?.Invoke(this, EventArgs.Empty);
+            onMenuPlay += PlayMainMenu;
         }
 
         public void MainPlay()
         {
             timeMainSong = MediaPlayer.PlayPosition;
-           // Debug.WriteLine(timeMainSong.TotalSeconds + " : " + durationMainSong.TotalSeconds);
-            if (timeMainSong.TotalSeconds>=(durationMainSong.TotalSeconds - 0.1f))
+
+            if (Globals.Pause && !perv)
+            {
+               onMenuPlay?.Invoke(this, EventArgs.Empty);
+            }
+            if ((timeMainSong.TotalSeconds>=(durationMainSong.TotalSeconds - 0.1f) || Math.Round(Globals.time,1) == 0) && !Globals.Pause)
             {
                 onPlay?.Invoke(this, EventArgs.Empty);
             }
+
+            perv = Globals.Pause;
         }
 
         private void PlayAgain(object obj, EventArgs e)
         {
+            MediaPlayer.Stop();
             MediaPlayer.Play(mainSong);
+        }
+
+        private void PlayMainMenu(object obj, EventArgs e)
+        {
+            MediaPlayer.Stop();
+            MediaPlayer.Play(mainMenuSong);
+            
         }
 
 
@@ -64,7 +85,7 @@ namespace TheGame
         private SoundEffectInstance death;
         private SoundEffectInstance pickupItem;
         private List<SoundEffectInstance> randomNoises;
-        private List<SoundEffectInstance> Speech;
+        private List<SoundEffectInstance> speech;
         Player player;
         List<Enemy> enemies;
         
@@ -74,6 +95,8 @@ namespace TheGame
             Content = content;
             player = _player;
             enemies = _enemies;
+            randomNoises = new List<SoundEffectInstance>();
+            speech = new List<SoundEffectInstance>();
         }
 
         public void LoadContent()
@@ -95,12 +118,18 @@ namespace TheGame
             death = Content.Load<SoundEffect>("SoundFX/death").CreateInstance();
             death.Pitch = -1;
             death.Volume = 0.5f;
+
             //player Pickup item
 
             //player Drinks
 
             //player Random noises
 
+            SoundEffectInstance roar = Content.Load<SoundEffect>("SoundFX/nastyRoar").CreateInstance();
+            roar.Pitch = -0.3f;
+            roar.Volume = 0.5f;
+            randomNoises.Add(roar);
+            player.onRandomNoise += PlayerRandomNoises;
             //player Speech
 
 
@@ -144,7 +173,12 @@ namespace TheGame
         }
         private void PlayerRandomNoises(object obj, EventArgs e)
         {
-
+            Random random = new Random();
+            int rand = random.Next(0, randomNoises.Count-1);
+            if (death.State != SoundState.Playing)
+            {
+                randomNoises[rand].Play();
+            }
         }
 
         private void PlayerSpeech(object obj, EventArgs e)

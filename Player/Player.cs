@@ -37,7 +37,7 @@ namespace TheGame
         private bool canMove = true;
 
         public event EventHandler onMove;
-
+        public event EventHandler onRandomNoise;
 
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
@@ -68,6 +68,14 @@ namespace TheGame
             {
                 onMove?.Invoke(this, EventArgs.Empty);
             }
+
+            Random random = new Random();
+            int rand = random.Next(0, 1000);
+            if(rand == 0)
+            {
+                onRandomNoise?.Invoke(this, EventArgs.Empty);
+            }
+
         }
 
         public override void LoadContent()
