@@ -154,7 +154,7 @@ namespace TheGame
                 GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                 world.Draw(player.GetPosition());
                 enemies.Draw(player.GetPosition());
-                player.DrawPlayer();
+                player.DrawPlayer(player.GetPosition());
                 Leafs.Draw(player.GetPosition());
                 hud.DrawFrontground(_spriteBatch, player.Health);
                 animacyjnaPacynka.AnimationDraw();
