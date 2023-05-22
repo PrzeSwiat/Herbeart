@@ -14,7 +14,8 @@ namespace TheGame
         int WindowHeight = 900;
         private SpriteBatch _spriteBatch;
         Camera camera;
-        //EffectHandler effectHandler;
+        EffectHandler effectHandler;
+        EffectHandler effectPlayerHandler;
         Serializator serializator;
         AudioMenager audioMenager;
         //.................

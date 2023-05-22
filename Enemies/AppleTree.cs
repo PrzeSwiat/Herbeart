@@ -30,7 +30,7 @@ namespace TheGame
 
         public  void Throw(int damage,Player player)
         {
-          bullet.Add(new Apple(this.boundingSphere.Center, "Apple", "Textures/appleTexture", player.GetPosition()));
+          bullet.Add(new Apple(this.boundingSphere.Center, "Objects/japco", "Textures/appleTexture", player.GetPosition()));
         }
 
 
