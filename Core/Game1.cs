@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using TheGame.Core;
+using System.Diagnostics;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
@@ -114,6 +114,7 @@ namespace TheGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             audioMenager.MainPlay();
             camera.CamPosition = player.GetPosition() + camera.CamPositionState;
             camera.nextpos = player.GetPosition();
@@ -142,7 +143,7 @@ namespace TheGame
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             world.Draw(player.GetPosition());
             enemies.Draw(player.GetPosition());
-            player.DrawPlayer();
+            player.DrawPlayer(player.GetPosition());
             Leafs.Draw(player.GetPosition());
             hud.DrawFrontground(_spriteBatch, player.Health);
             animacyjnaPacynka.AnimationDraw();

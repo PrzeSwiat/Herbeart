@@ -13,14 +13,16 @@ namespace TheGame
     {
         private string recepture;
         private PlayerEffectHandler playerEffects;
+        private Inventory inventory;
 
-        public Crafting(PlayerEffectHandler playerEffects) 
+        public Crafting(Inventory inv, PlayerEffectHandler playerEffects) 
         { 
             recepture = string.Empty;
+            this.inventory = inv;
             this.playerEffects = playerEffects;
         }
 
-        public void addIngredient(char button, Inventory inventory)
+        public void addIngredient(char button)
         {
             switch (button)
             {
@@ -58,13 +60,13 @@ namespace TheGame
             }
             if (howLong() == 3)
             {
-                makeTea(inventory);
+                makeTea();
             }
         }
 
         public void restartRecepture() { recepture = string.Empty; }
 
-        public void cleanRecepture(Inventory inventory)
+        public void cleanRecepture()
         {
             foreach (char c in recepture)
             {
@@ -77,7 +79,7 @@ namespace TheGame
             restartRecepture();
         }
         
-        private void makeTea(Inventory inventory)
+        private void makeTea()
         {
             switch (recepture)
             {

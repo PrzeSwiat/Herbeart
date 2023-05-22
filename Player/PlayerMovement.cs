@@ -196,6 +196,7 @@ namespace TheGame
                             } 
                             else if (!isCraftingTea && isThrowing)
                             {
+                                player.ThrowNettle();
                                 padButtonBClicked = true;
                             }
                             else 
@@ -278,7 +279,7 @@ namespace TheGame
                 }
                 else if (gamePadState.IsButtonUp(Buttons.LeftTrigger))
                 {
-                    this.player.Crafting.cleanRecepture(this.player.Inventory);
+                    this.player.Crafting.cleanRecepture();
                     isCraftingTea = false;
                 }
 

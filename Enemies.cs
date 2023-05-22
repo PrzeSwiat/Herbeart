@@ -122,7 +122,7 @@ namespace TheGame
         {
             foreach (Enemy enemy in enemiesList)
             {
-                enemy.DrawPlayer();
+                enemy.DrawPlayer(lightpos);
                 if (enemy.GetType() == typeof(AppleTree))
                 {
                     AppleTree tree = (AppleTree)enemy;
