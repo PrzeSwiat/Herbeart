@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
@@ -57,38 +58,38 @@ namespace TheGame
     class SoundActorPlayer
     {
         ContentManager Content;
-        private Cue cue;
-        private AudioEmitter emitter = new AudioEmitter();
-        private AudioListener listener = new AudioListener();
+        private SoundEffect soundEffect;
         Player player;
         List<Enemy> enemies;
-
+        SoundEffectInstance soundEffectInstance;
 
         public SoundActorPlayer(ContentManager content, Player _player, List<Enemy> _enemies)
         {
             Content = content;
-            emitter = new AudioEmitter();
-            listener = new AudioListener();
             player = _player;
             enemies = _enemies;
         }
 
         public void LoadContent()
         {
-            cue = Content.Load<Cue>("SoundFX/steps");
+            soundEffect = Content.Load<SoundEffect>("SoundFX/steps");
             player.onMove += PlayerSteps;
+            soundEffectInstance = soundEffect.CreateInstance();
+            soundEffectInstance.Pitch = -1;
         }
 
         public void Update(Vector3 CamPos)
         {
-            listener.Position = CamPos;
+
         }
 
 
         private void PlayerSteps(object obj, EventArgs e)
         {
-            emitter.Position = player.GetPosition();
-            cue.Play();
+            if(soundEffectInstance.State != SoundState.Playing)
+            {
+                soundEffectInstance.Play();
+            }
         }
 
     }

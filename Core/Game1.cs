@@ -51,7 +51,7 @@ namespace TheGame
             
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
-            soundActorPlayer = new SoundActorPlayer(Content, player,enemies.EnemiesList);
+            
             Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 50), (WindowWidth / 50), -(WindowHeight / 50), (WindowHeight / 50), 1f, 100f);      // orthographic view 
             //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
@@ -74,8 +74,8 @@ namespace TheGame
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
             audioMenager = new AudioMenager(Content);
+            soundActorPlayer = new SoundActorPlayer(Content, player, enemies.EnemiesList);
 
-            
             /*AppleTree apple = new AppleTree(new Vector3(25, 0, 25), "player", "StarSparrow_Green");
             Mint mint = new Mint(new Vector3(20, 0, 20), "player", "StarSparrow_Green");
             Melissa apple2 = new Melissa(new Vector3(23, 0, 23), "player", "StarSparrow_Green");
@@ -84,7 +84,7 @@ namespace TheGame
             //enemies.AddEnemy(mint);
             // enemies.AddEnemy(apple2);
             // enemies.AddEnemy(apple3);*/
-            
+
             base.Initialize();
         }
 
@@ -103,8 +103,7 @@ namespace TheGame
             animacyjnaPacynka.LoadContent();
             animacyjnaPacynka.LoadAnimation(GraphicsDevice);
             audioMenager.LoadContent();
-           // soundActorPlayer.LoadContent();
-            // audioMenager.LoadContent();
+            soundActorPlayer.LoadContent();
 
         }
 
@@ -128,7 +127,7 @@ namespace TheGame
             hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
             animacyjnaPacynka.animation.Update(gameTime.ElapsedGameTime.TotalSeconds);
             interactionEventHandler.Update(enemies.EnemiesList);
-            //soundActorPlayer.Update(camera.CamPosition);
+            soundActorPlayer.Update(camera.CamPosition);
 
             SaveControl();
             base.Update(gameTime);
