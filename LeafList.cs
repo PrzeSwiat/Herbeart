@@ -56,11 +56,11 @@ namespace TheGame
         }
 
 
-        public void Draw()
+        public void Draw(Vector3 lightpos)
         {
             foreach (Leaf leaf in LeafsList)
             {
-                leaf.Draw();
+                leaf.Draw(lightpos);
 
             }
         }

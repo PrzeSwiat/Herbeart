@@ -18,6 +18,7 @@ namespace TheGame
         public static GraphicsDeviceManager _graphics;
 
         public static EffectHandler effectHandler;
+        public static EffectHandler effectHandler1;
         public static Matrix projectionMatrix;
         public static Matrix viewMatrix;
         public static Matrix worldMatrix;

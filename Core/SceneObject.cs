@@ -90,15 +90,23 @@ namespace TheGame
            
         }
 
-        public virtual void Draw()
+        public virtual void Draw(Vector3 lightpos)
+        {
+            Globals.effectHandler1.MainDraw(GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
+                        * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
+                        Matrix.CreateRotationZ(GetRotation().Z)
+                        * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
+                         , Globals.viewMatrix, Globals.projectionMatrix, GetTexture2D(), lightpos);
+        }
+
+        public virtual void DrawPlayer()
         {
             Globals.effectHandler.BasicDraw(GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
                         * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
                         Matrix.CreateRotationZ(GetRotation().Z)
                         * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
-                         , Globals.viewMatrix, Globals.projectionMatrix, GetTexture2D(), this.color);
+                         , Globals.viewMatrix, Globals.projectionMatrix, GetTexture2D());
         }
-
         public void AnimationDraw()
         {
             Globals.effectHandler.AnimationDraw(animation,GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())

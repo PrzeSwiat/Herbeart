@@ -68,6 +68,7 @@ namespace TheGame
 
 
             Globals.effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
+            Globals.effectHandler1 = new EffectHandler(Content.Load<Effect>("MainShader"));
             hud = new HUD("Textures/forest2", WindowWidth, WindowHeight);
             world = new World();
             player = new Player(new Vector3(30,0,30), "Objects/mis", "Textures/MisTexture");
@@ -141,10 +142,10 @@ namespace TheGame
             base.Draw(gameTime);
             hud.DrawBackground(_spriteBatch);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            world.Draw(player.GetPosition().X, player.GetPosition().Z);
-            enemies.Draw();
-            player.Draw();
-            Leafs.Draw();
+            world.Draw(player.GetPosition());
+            enemies.Draw(player.GetPosition());
+            player.DrawPlayer();
+            Leafs.Draw(player.GetPosition());
             hud.DrawFrontground(_spriteBatch, player.Health);
             animacyjnaPacynka.AnimationDraw();
 

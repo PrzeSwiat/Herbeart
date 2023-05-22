@@ -30,12 +30,12 @@ namespace TheGame
             level.LoadContent();
         }
 
-        public void Draw(float playerX, float playerZ)
+        public void Draw(Vector3 player)
         {
-            _worldArray = level.returnSceneObjects(playerX, playerZ);
+            _worldArray = level.returnSceneObjects(player.X, player.Z);
             foreach (SceneObject sceneObject in _worldArray)
             {
-                sceneObject.Draw();
+                sceneObject.Draw(player);
             }
             
         }

@@ -75,13 +75,13 @@ namespace TheGame
             base.LoadContent();
         }
 
-        public override void Draw()
+        public override void Draw(Vector3 lightpos)
         {
-            base.Draw();
+            base.Draw(lightpos);
 
             foreach(Apple apple in apples)
             {
-                apple.Draw();
+                apple.Draw(lightpos);
                 //apple.DrawBB(); why not working ???
             }
         }
