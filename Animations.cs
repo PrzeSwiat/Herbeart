@@ -57,7 +57,7 @@ namespace TheGame
             }
             catch(Exception)
             {
-                scene = importer.ImportFile("../../../Content/nasze.fbx");
+                scene = importer.ImportFile("Animations/nasze.fbx");
                 HasAnimation = false;
             }
             Debug.WriteLine(scene.ToString());
