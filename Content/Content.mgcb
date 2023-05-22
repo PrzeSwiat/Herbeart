@@ -45,6 +45,12 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts.spritefont
 
+#begin MainShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:MainShader.fx
+
 #begin Objects/jablonka.obj
 /importer:FbxImporter
 /processor:ModelProcessor
@@ -121,13 +127,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Objects/mieta.obj
 
-#begin MainShader.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:MainShader.fx
-
-#begin melisa.obj
+#begin Objects/mis.obj
 /importer:FbxImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
@@ -369,7 +369,7 @@
 
 #begin SoundFX/death.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:SoundFX/death.mp3
 
@@ -381,13 +381,13 @@
 
 #begin SoundFX/nastyRoar.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:SoundFX/nastyRoar.mp3
 
 #begin SoundFX/punch.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:SoundFX/punch.mp3
 
@@ -399,7 +399,7 @@
 
 #begin SoundFX/wolves.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:SoundFX/wolves.mp3
 

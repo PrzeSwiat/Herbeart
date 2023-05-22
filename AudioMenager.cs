@@ -58,10 +58,16 @@ namespace TheGame
     class SoundActorPlayer
     {
         ContentManager Content;
-        private SoundEffect soundEffect;
+        private SoundEffectInstance steps;
+        private SoundEffectInstance attack;
+        private SoundEffectInstance hit;
+        private SoundEffectInstance death;
+        private SoundEffectInstance pickupItem;
+        private List<SoundEffectInstance> randomNoises;
+        private List<SoundEffectInstance> Speech;
         Player player;
         List<Enemy> enemies;
-        SoundEffectInstance soundEffectInstance;
+        
 
         public SoundActorPlayer(ContentManager content, Player _player, List<Enemy> _enemies)
         {
@@ -72,25 +78,78 @@ namespace TheGame
 
         public void LoadContent()
         {
-            soundEffect = Content.Load<SoundEffect>("SoundFX/steps");
+            //player Steps
             player.onMove += PlayerSteps;
-            soundEffectInstance = soundEffect.CreateInstance();
-            soundEffectInstance.Pitch = -1;
+            steps = Content.Load<SoundEffect>("SoundFX/steps").CreateInstance();
+            steps.Volume = 0.1f;
+
+            //player Attack
+            player.OnAttackPressed += PlayerAttack;
+            attack = Content.Load<SoundEffect>("SoundFX/punch").CreateInstance();
+            attack.Volume = 0.5f;
+
+            //player Hit
+
+            //player Death
+            player.OnDestroy += PlayerDeath;
+            death = Content.Load<SoundEffect>("SoundFX/death").CreateInstance();
+            death.Pitch = -1;
+            death.Volume = 0.5f;
+            //player Pickup item
+
+            //player Drinks
+
+            //player Random noises
+
+            //player Speech
+
+
         }
-
-        public void Update(Vector3 CamPos)
-        {
-
-        }
-
 
         private void PlayerSteps(object obj, EventArgs e)
         {
-            if(soundEffectInstance.State != SoundState.Playing)
+            if(steps.State != SoundState.Playing)
             {
-                soundEffectInstance.Play();
+                steps.Play();
             }
         }
 
+        private void PlayerAttack(object obj, EventArgs e)
+        {
+            if (attack.State != SoundState.Playing)
+            {
+                attack.Play();
+            }
+        }
+
+        private void PlayerHit(object obj, EventArgs e)
+        {
+
+        }
+        private void PlayerDeath(object obj, EventArgs e)
+        {
+            if (death.State != SoundState.Playing)
+            {
+                death.Play();
+            }
+        }
+
+        private void PlayerPickupItem(object obj, EventArgs e)
+        {
+
+        }
+        private void PlayerDrinks(object obj, EventArgs e)
+        {
+
+        }
+        private void PlayerRandomNoises(object obj, EventArgs e)
+        {
+
+        }
+
+        private void PlayerSpeech(object obj, EventArgs e)
+        {
+
+        }
     }
 }

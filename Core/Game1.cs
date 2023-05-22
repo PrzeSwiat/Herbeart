@@ -129,7 +129,6 @@ namespace TheGame
             hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
             animacyjnaPacynka.animation.Update(gameTime.ElapsedGameTime.TotalSeconds);
             interactionEventHandler.Update(enemies.EnemiesList);
-            soundActorPlayer.Update(camera.CamPosition);
 
             SaveControl();
             base.Update(gameTime);
