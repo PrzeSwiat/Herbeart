@@ -28,6 +28,8 @@ namespace TheGame
         Player animacyjnaPacynka;
         Enemies enemies;
         LeafList Leafs;
+        SoundActorPlayer soundActorPlayer;
+
 
         public Game1()
         {
@@ -49,7 +51,7 @@ namespace TheGame
             
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
-
+            soundActorPlayer = new SoundActorPlayer(Content, player,enemies.EnemiesList);
             Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 50), (WindowWidth / 50), -(WindowHeight / 50), (WindowHeight / 50), 1f, 100f);      // orthographic view 
             //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
@@ -100,7 +102,10 @@ namespace TheGame
             Leafs.LoadModels();
             animacyjnaPacynka.LoadContent();
             animacyjnaPacynka.LoadAnimation(GraphicsDevice);
-           // audioMenager.LoadContent();
+            audioMenager.LoadContent();
+           // soundActorPlayer.LoadContent();
+            // audioMenager.LoadContent();
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -108,7 +113,7 @@ namespace TheGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            
+            audioMenager.MainPlay();
             camera.CamPosition = player.GetPosition() + camera.CamPositionState;
             camera.nextpos = player.GetPosition();
             Globals.viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
@@ -123,6 +128,8 @@ namespace TheGame
             hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
             animacyjnaPacynka.animation.Update(gameTime.ElapsedGameTime.TotalSeconds);
             interactionEventHandler.Update(enemies.EnemiesList);
+            //soundActorPlayer.Update(camera.CamPosition);
+
             SaveControl();
             base.Update(gameTime);
         }
@@ -139,6 +146,7 @@ namespace TheGame
             Leafs.Draw();
             hud.DrawFrontground(_spriteBatch, player.Health);
             animacyjnaPacynka.AnimationDraw();
+
             //DrawBoundingBoxes();
         }
 

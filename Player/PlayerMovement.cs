@@ -15,6 +15,7 @@ namespace TheGame
         private Boolean padButtonBClicked;
         private Boolean padButtonXClicked;
         private Boolean padButtonYClicked;
+        public bool isMoving;
 
         MouseState lastMouseState, currentMouseState;
 
@@ -60,6 +61,7 @@ namespace TheGame
                     {
                         player.Direction = new Vector2(0, 0);
                         rotation = player.GetRotation().Y;
+                        isMoving = false;
                     }
 
                     ///Right THUMBSTICK
@@ -67,6 +69,7 @@ namespace TheGame
                     {
                         w2 = new Vector2(RightjoystickX, RightjoystickY);
                         rotation = angle(w1, w2);
+                        isMoving = true;
                     }
                 }
             }

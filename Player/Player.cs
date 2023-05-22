@@ -35,7 +35,10 @@ namespace TheGame
         private List<Apple> apples = new List<Apple>();
 
         private bool canMove = true;
-        
+
+        public event EventHandler onMove;
+
+
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
@@ -60,6 +63,11 @@ namespace TheGame
                 apple.Update(deltaTime, enemies);
             }
             playerMovement.UpdatePlayerMovement(world, deltaTime);
+
+            if(playerMovement.isMoving)
+            {
+                onMove?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         public override void LoadContent()

@@ -361,6 +361,42 @@
 /processorParam:DebugMode=Auto
 /build:ShaderOne.fx
 
+#begin SoundFX/death.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:SoundFX/death.mp3
+
+#begin SoundFX/ForestMain.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:SoundFX/ForestMain.mp3
+
+#begin SoundFX/nastyRoar.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:SoundFX/nastyRoar.mp3
+
+#begin SoundFX/punch.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:SoundFX/punch.mp3
+
+#begin SoundFX/steps.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:SoundFX/steps.mp3
+
+#begin SoundFX/wolves.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:SoundFX/wolves.mp3
+
 #begin Textures/appleTexture.png
 /importer:TextureImporter
 /processor:TextureProcessor
