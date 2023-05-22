@@ -14,7 +14,7 @@ namespace TheGame
         private int maxHealth, health;
         private int maxStrenght, strenght;
         private float maxSpeed, actualSpeed;
-        private float attackSpeed;
+        private float attackSpeed, actualAttackSpeed;
         public Leaf leaf;
         public Vector2 direction;
 
@@ -27,7 +27,9 @@ namespace TheGame
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             leaf = new Leaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
-            attackSpeed = 0.5f;
+            attackSpeed = 1.0f;
+            actualAttackSpeed = attackSpeed;
+
             boundingSphere = BoundingSphere.CreateFromBoundingBox(this.boundingBox);
 
         }
@@ -91,6 +93,18 @@ namespace TheGame
         public void MoveBoundingSphere(Vector3 vec)
         {
             this.boundingSphere.Center -= vec;
+        }
+
+        public float ActualAttackSpeed
+        {
+            get { return this.actualAttackSpeed; }
+            set { this.actualAttackSpeed = value; }
+        }
+
+        public float AttackSpeed
+        {
+            get { return this.attackSpeed; }
+            set { this.attackSpeed = value; }
         }
 
         public int MaxHealth

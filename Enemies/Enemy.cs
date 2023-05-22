@@ -15,7 +15,6 @@ namespace TheGame
         private DateTime lastAttackTime, actualTime;
         private bool collides = false;
 
-
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             Direction = new Vector2(0, 0);
@@ -29,7 +28,7 @@ namespace TheGame
         {
             actualTime = DateTime.Now;
             TimeSpan time = actualTime - lastAttackTime;
-            if (time.TotalSeconds > 1)
+            if (time.TotalSeconds > this.AttackSpeed)
             {
                 OnAttack?.Invoke(this, EventArgs.Empty);
                 lastAttackTime = actualTime;
@@ -55,6 +54,18 @@ namespace TheGame
             {
                 MoveForwards(deltaTime, true);
             }
+        }
+
+        public void Slow (float slowMultiplier)
+        {
+            this.ActualAttackSpeed = this.AttackSpeed * slowMultiplier;
+            this.ActualSpeed = this.MaxSpeed * slowMultiplier;
+        }
+
+        public void SetNormalSpeed()
+        {
+            this.ActualAttackSpeed = this.AttackSpeed;
+            this.ActualSpeed = this.MaxSpeed;
         }
 
 
@@ -89,7 +100,7 @@ namespace TheGame
 
         public void MoveForwards(float deltaTime, bool shouldChase)
         {
-            float currentSpeed = this.MaxSpeed;
+            float currentSpeed = this.ActualSpeed;
             if (!shouldChase) { currentSpeed *= -1; }
 
 

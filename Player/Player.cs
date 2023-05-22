@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -34,7 +35,8 @@ namespace TheGame
         private PlayerEffectHandler playerEffects;
         public event EventHandler OnAttackPressed;
         private List<Apple> apples = new List<Apple>();
-        private List<NettleLeaf> nettles = new List<NettleLeaf>();   // zmienic na private
+        private List<NettleLeaf> nettles = new List<NettleLeaf>();
+        private List<MintLeaf> mints = new List<MintLeaf>();
 
         private bool canMove = true;
 
@@ -71,6 +73,10 @@ namespace TheGame
             {
                 nettle.Update(deltaTime, enemies);
             }
+            foreach (MintLeaf mint in mints.ToList())
+            {
+                mint.Update(deltaTime, enemies);
+            }
 
             if (playerMovement.isMoving)
             {
@@ -105,6 +111,11 @@ namespace TheGame
                 nettle.Draw(lightpos);
             }
 
+            foreach (MintLeaf mint in mints)
+            {
+                mint.Draw(lightpos);
+            }
+
         }
 
         public void Attack()
@@ -118,7 +129,7 @@ namespace TheGame
             }
         }
 
-        public void ThrowableY()
+        public void ThrowApple()
         {
             if(Inventory.checkAppleLeafNumber())
             {
@@ -143,6 +154,20 @@ namespace TheGame
 
             }
         }
+
+        public void ThrowMint()
+        {
+            if (Inventory.checkMintLeafNumber())
+            {
+                Inventory.removeMintLeaf();
+                MintLeaf mint = new MintLeaf(GetPosition(), 0.5f, 10);
+                mint.OnDestroy += RemoveMint;
+                mint.LoadContent();
+                mint.SetScale(2);
+                mints.Add(mint);
+            }
+        }
+
 
         public void AddIngredientA()
         {
@@ -216,6 +241,68 @@ namespace TheGame
         {
             nettles.Remove((NettleLeaf)sender);
         }
+        public void RemoveMint(object sender, EventArgs e)
+        {
+            mints.Remove((MintLeaf)sender);
+        }
+
+
+        public class MintLeaf : SceneObject
+        {
+            public BoundingSphere BSphere;
+            private float slowness;
+            private float maxTime, elapsedTime, interval;
+            private DateTime lastIntervalTime;
+            public event EventHandler OnDestroy;
+
+            public MintLeaf(Vector3 position, float slow, float maxTime) : base(position, "Objects/test", "Textures/orange")
+            {
+                position.Y = 0;
+                this.BSphere = new BoundingSphere(position, 3);
+
+                this.slowness = slow;
+                this.maxTime = maxTime;
+                this.elapsedTime = 0;
+                this.interval = 1;
+                this.lastIntervalTime = DateTime.Now;
+            }
+
+            public void Update(float delta, Enemies enemies)
+            {
+                elapsedTime += delta;
+                DateTime actualTime = DateTime.Now;
+
+                if (elapsedTime < maxTime)
+                {
+                    TimeSpan span = actualTime - lastIntervalTime;
+                    if (span.TotalSeconds >= interval)
+                    {
+                        lastIntervalTime = actualTime;
+
+                        foreach (Enemy enemy in enemies.EnemiesList.ToList())
+                        {
+                            if (this.BSphere.Intersects(enemy.boundingBox))
+                            {
+                                enemy.Slow(this.slowness);
+                            } else
+                            {
+                                enemy.SetNormalSpeed();
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    OnDestroy?.Invoke(this, EventArgs.Empty);
+                }
+            }
+
+
+
+        }
+
 
         public class NettleLeaf : SceneObject
         {
@@ -227,7 +314,7 @@ namespace TheGame
 
             public NettleLeaf(Vector3 position, int damage, float maxTime) : base(position, "Objects/test", "Textures/appleTexture")
             {
-                position.Y = 2;
+                position.Y = 0;
                 this.BSphere = new BoundingSphere(position, 3);
 
                 this.damage = damage;

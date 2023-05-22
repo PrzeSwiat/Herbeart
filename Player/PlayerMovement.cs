@@ -166,8 +166,8 @@ namespace TheGame
                             } 
                             else if (!isCraftingTea && isThrowing)    // Rzucane
                             {
+                                player.ThrowMint();
                                 padButtonAClicked = true;
-
                             } 
                             else                                      // normalny atak gracza
                             {
@@ -226,7 +226,7 @@ namespace TheGame
                             } else if (!isCraftingTea && isThrowing)
                             {
                                 padButtonYClicked = true;
-                                player.ThrowableY();
+                                player.ThrowApple();
                             }
                             else
                             {
