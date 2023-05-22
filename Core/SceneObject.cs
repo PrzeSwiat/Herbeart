@@ -99,7 +99,7 @@ namespace TheGame
                          , Globals.viewMatrix, Globals.projectionMatrix, GetTexture2D(), lightpos);
         }
 
-        public virtual void DrawPlayer()
+        public virtual void DrawPlayer(Vector3 lightpos)
         {
             Globals.effectHandler.BasicDraw(GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
                         * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *

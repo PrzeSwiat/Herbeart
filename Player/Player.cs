@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Xml;
 using TheGame.Core;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
 {
@@ -33,11 +34,13 @@ namespace TheGame
         private PlayerEffectHandler playerEffects;
         public event EventHandler OnAttackPressed;
         private List<Apple> apples = new List<Apple>();
+        private List<NettleLeaf> nettles = new List<NettleLeaf>();   // zmienic na private
 
         private bool canMove = true;
 
         public event EventHandler onMove;
         public event EventHandler onRandomNoise;
+
 
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
@@ -47,7 +50,7 @@ namespace TheGame
 
             playerEffects = new PlayerEffectHandler(this);
             Inventory = new Inventory();
-            Crafting = new Crafting(playerEffects);
+            Crafting = new Crafting(Inventory, playerEffects);
             playerMovement = new PlayerMovement(this);
             
             // Uruchomienie timera
@@ -58,13 +61,18 @@ namespace TheGame
         public void Update(World world, float deltaTime, Enemies enemies) //Logic player here
         {
             Update();
+            playerMovement.UpdatePlayerMovement(world, deltaTime);
+
             foreach (Apple apple in apples.ToList())
             {
                 apple.Update(deltaTime, enemies);
             }
-            playerMovement.UpdatePlayerMovement(world, deltaTime);
+            foreach (NettleLeaf nettle in nettles.ToList())
+            {
+                nettle.Update(deltaTime, enemies);
+            }
 
-            if(playerMovement.isMoving)
+            if (playerMovement.isMoving)
             {
                 onMove?.Invoke(this, EventArgs.Empty);
             }
@@ -83,15 +91,20 @@ namespace TheGame
             base.LoadContent();
         }
 
-        public override void Draw(Vector3 lightpos)
+        public override void DrawPlayer(Vector3 lightpos)
         {
-            base.Draw(lightpos);
-
+            base.DrawPlayer(lightpos);
             foreach(Apple apple in apples)
             {
-                apple.Draw(lightpos);
+                apple.DrawPlayer(lightpos);
                 //apple.DrawBB(); why not working ???
             }
+
+            foreach (NettleLeaf nettle in nettles)
+            {
+                nettle.Draw(lightpos);
+            }
+
         }
 
         public void Attack()
@@ -112,26 +125,40 @@ namespace TheGame
                 Inventory.removeAppleLeaf();
                 Apple apple = new Apple(this.GetPosition(), this.getLookingDirection());
                 apple.LoadContent();
-                apple.OnDestroy += RemoveBullet;
+                apple.OnDestroy += RemoveApple;
                 apples.Add(apple);
+            }
+        }
+
+        public void ThrowNettle()
+        {
+            if (Inventory.checkNettleLeafNumber()) 
+            {
+                Inventory.removeNettleLeaf();
+                NettleLeaf nettle = new NettleLeaf(GetPosition(), 50, 10);
+                nettle.OnDestroy += RemoveNettle;
+                nettle.LoadContent();
+                nettle.SetScale(2);
+                nettles.Add(nettle);
+
             }
         }
 
         public void AddIngredientA()
         {
-            Crafting.addIngredient('A', Inventory);
+            Crafting.addIngredient('A');
         }
         public void AddIngredientB()
         {
-            Crafting.addIngredient('B', Inventory);
+            Crafting.addIngredient('B');
         }
         public void AddIngredientX()
         {
-            Crafting.addIngredient('X', Inventory);
+            Crafting.addIngredient('X');
         }
         public void AddIngredientY()
         {
-            Crafting.addIngredient('Y', Inventory);
+            Crafting.addIngredient('Y');
         }
 
         public void setOriginalSpeed()
@@ -180,9 +207,66 @@ namespace TheGame
             this.canMove=can;
         }
 
-        public void RemoveBullet(object sender, EventArgs e)
+        public void RemoveApple(object sender, EventArgs e)
         {
             apples.Remove((Apple)sender);
+        }
+
+        public void RemoveNettle(object sender, EventArgs e)
+        {
+            nettles.Remove((NettleLeaf)sender);
+        }
+
+        public class NettleLeaf : SceneObject
+        {
+            public BoundingSphere BSphere;
+            private int damage;
+            private float maxTime, elapsedTime, interval;
+            private DateTime lastIntervalTime;
+            public event EventHandler OnDestroy;
+
+            public NettleLeaf(Vector3 position, int damage, float maxTime) : base(position, "Objects/test", "Textures/appleTexture")
+            {
+                position.Y = 2;
+                this.BSphere = new BoundingSphere(position, 3);
+
+                this.damage = damage;
+                this.maxTime = maxTime;
+                this.elapsedTime = 0;
+                this.interval = 1;
+                this.lastIntervalTime = DateTime.Now;
+            }
+
+            public void Update(float delta, Enemies enemies)
+            {
+                elapsedTime += delta;
+                DateTime actualTime = DateTime.Now;
+
+                if (elapsedTime < maxTime)
+                {
+                    TimeSpan span = actualTime - lastIntervalTime;
+                    if (span.TotalSeconds >= interval)
+                    {
+                        lastIntervalTime = actualTime;
+
+                        foreach(Enemy enemy in enemies.EnemiesList.ToList())
+                        {
+                            if (this.BSphere.Intersects(enemy.boundingBox))
+                            {
+                                enemy.Hit(damage);
+                            }
+                        }
+
+                    }
+
+                } else
+                {
+                    OnDestroy?.Invoke(this, EventArgs.Empty);
+                }
+            }
+
+          
+
         }
 
         internal class Apple : SceneObject
@@ -194,7 +278,7 @@ namespace TheGame
 
             public event EventHandler OnDestroy;
 
-            public Apple(Vector3 Position, Vector2 direction) : base(Position, "Objects/Apple", "Textures/appleTexture")
+            public Apple(Vector3 Position, Vector2 direction) : base(Position, "Objects/japco", "Textures/appleTexture")
             {
                 Vector3 startPosition = Position;
                 startPosition.Y = 2;
