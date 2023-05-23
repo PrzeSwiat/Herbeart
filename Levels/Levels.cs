@@ -43,6 +43,11 @@ namespace TheGame
         Rectangle module;
         HashSet<Rectangle> visited;
         #endregion
+        #region Enemies Types
+        private string mint = "Objects/mint";
+        private string nettle = "Objects/nettle";
+        private string apple = "Objects/apple";
+        #endregion
 
 
 
@@ -66,13 +71,13 @@ namespace TheGame
 
             //Moduł 2
             prepareModule("Maps/map2.txt", 0);
-            _levels[1].GenerateEnemy("mint", new Vector3(moduleSeparatorX + 30, 0, 50));
-            _levels[1].GenerateEnemy("mint", new Vector3(moduleSeparatorX + 30, 0, 60));
+            _levels[1].GenerateEnemy("Objects/mint", new Vector3(moduleSeparatorX + 30, 0, 50));
+            _levels[1].GenerateEnemy("Objects/mint", new Vector3(moduleSeparatorX + 30, 0, 60));
 
             //Moduł 3
             prepareModule("Maps/map3.txt", 0);
-            _levels[2].GenerateEnemy("mint", new Vector3(2 * moduleSeparatorX + 30, 0, 50));
-            _levels[2].GenerateEnemy("nettle", new Vector3(2 * moduleSeparatorX + 30, 0, 60));
+            _levels[2].GenerateEnemy("Objects/mint", new Vector3(2 * moduleSeparatorX + 30, 0, 50));
+            _levels[2].GenerateEnemy("Objects/nettle", new Vector3(2 * moduleSeparatorX + 30, 0, 60));
 
             currentMap = "Maps/map3.txt";
 
