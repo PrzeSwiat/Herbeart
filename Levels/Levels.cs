@@ -96,7 +96,7 @@ namespace TheGame
                 maps = new List<string>();
 
                 //wybieranie ilości przeciwników w levelu
-                if (numberOfModules < 4)
+                if (numberOfModules < 6)
                     enemyCount = 2;
                 else
                     enemyCount = 4;
@@ -104,6 +104,7 @@ namespace TheGame
 /*                if (numberOfModules % 20 == 0)          //wesele!
                 {
                     prepareModule("Maps/map2.txt", 0);
+                    currentMap = "Maps/map2.txt";
                 }*/
 
                 //Przypadek prostych map - wylot z lewej i prawej
@@ -273,7 +274,7 @@ namespace TheGame
         {
             private string[] treeModels = { "Objects/tree1", "Objects/tree2", "Objects/tree3" };
             private string[] enemyTypes = { "Objects/apple", "Objects/mint", "Objects/nettle", "Objects/melissa" };
-            private string[] otherModels = { "Objects/rock2", "Objects/rock18" };
+            private string[] otherModels = { "Objects/rock2", "Objects/rock18", "Objects/tree1" };
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
             private int tileSize = 6;
@@ -362,8 +363,9 @@ namespace TheGame
                     }
                 }
                 _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/floor"));
+
                 Random random = new Random();
-                int objectsCount = random.Next(2, 5);
+                int objectsCount = random.Next(4, 7);
                 GenerateOtherObjects(objectsCount);
                 if (enemyCount != 0) 
                 { 
@@ -504,22 +506,28 @@ namespace TheGame
                         string objectType = GenerateRandomString(otherModels);
 
                         Random rand = new Random();
-                        float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu losowo
-                        float size = (float)rand.Next(80, 100) / 100;
+                        float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI; //zmiana obrotu losowo
                         switch (objectType)
                         {
                             case "Objects/rock2":
                                 SceneObject stone = new SceneObject(groundPosition, "Objects/rock2", "Textures/black");
-                                stone.SetScale(size);
+                                stone.SetScale((float)rand.Next(80, 100) / 100);
                                 stone.SetRotation(new Vector3(0, rflot, 0));
                                 _sceneObjects.Add(stone);
                                 break;
                             case "Objects/rock18":
                                 SceneObject stone1 = new SceneObject(groundPosition, "Objects/rock18", "Textures/black");
-                                stone1.SetScale(size);
+                                stone1.SetScale((float)rand.Next(80, 100) / 100);
                                 stone1.SetRotation(new Vector3(0, rflot, 0));
                                 _sceneObjects.Add(stone1);
                                 break;
+                            case "Objects/tree1":
+                                SceneObject tree = new SceneObject(groundPosition, "Objects/tree1", "Textures/tree1_color");           
+                                tree.SetScale((float)rand.Next(75, 150) / 100);
+                                tree.SetRotation(new Vector3(0, rflot, 0));
+                                _sceneObjects.Add(tree);
+                                break;
+
                         }
                     }
                 }
