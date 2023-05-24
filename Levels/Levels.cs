@@ -44,9 +44,10 @@ namespace TheGame
         HashSet<Rectangle> visited;
         #endregion
         #region Enemies Types
-        private string mint = "Objects/mint";
-        private string nettle = "Objects/nettle";
-        private string apple = "Objects/apple";
+        private string mintEnemy = "Objects/mint";
+        private string nettleEnemy = "Objects/nettle";
+        private string appleEnemy = "Objects/apple";
+        private string melissaEnemy = "Objects/melissa";
         #endregion
 
 
@@ -71,13 +72,13 @@ namespace TheGame
 
             //Moduł 2
             prepareModule("Maps/map2.txt", 0);
-            _levels[1].GenerateEnemy("Objects/mint", new Vector3(moduleSeparatorX + 30, 0, 50));
-            _levels[1].GenerateEnemy("Objects/mint", new Vector3(moduleSeparatorX + 30, 0, 60));
+            _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 50));
+            _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 60));
 
             //Moduł 3
             prepareModule("Maps/map3.txt", 0);
-            _levels[2].GenerateEnemy("Objects/mint", new Vector3(2 * moduleSeparatorX + 30, 0, 50));
-            _levels[2].GenerateEnemy("Objects/nettle", new Vector3(2 * moduleSeparatorX + 30, 0, 60));
+            _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 50));
+            _levels[2].GenerateEnemy(nettleEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 60));
 
             currentMap = "Maps/map3.txt";
 
@@ -99,6 +100,11 @@ namespace TheGame
                     enemyCount = 2;
                 else
                     enemyCount = 4;
+
+                if (numberOfModules % 20 == 0)          //wesele!
+                {
+                    prepareModule("Maps/map2.txt", 0);
+                }
 
                 //Przypadek prostych map - wylot z lewej i prawej
                 if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
@@ -175,28 +181,6 @@ namespace TheGame
                     prepareRandomModule(enemyCount);
 
                 }
-
-
-
-                /*                //Wylot z dołu, lewej i prawej
-                                if(maps_down_straight.Contains(currentMap))                             //Work in progres -  nie ruszac
-                                {
-                                    maps.AddRange(maps_up_straight);
-                                    maps.AddRange(maps_straight);
-                                    choosed = generateRandomStringFromList(maps);
-                                    _levels.Add(new Level(Content, choosed, _levels.Count * moduleSeparator, enemyCount));
-                                    maps.Clear();
-                                }
-
-                                //Wylot z góry, lewej, prawej
-                                if (maps_up_straight.Contains(currentMap))
-                                {
-                                    maps.AddRange(maps_up_straight);
-                                    maps.AddRange(maps_straight);
-                                    choosed = generateRandomStringFromList(maps);
-                                    _levels.Add(new Level(Content, choosed, _levels.Count * moduleSeparator, enemyCount));
-                                    maps.Clear();
-                                }*/
 
                 currentMap = choosedMap;
 
@@ -289,7 +273,6 @@ namespace TheGame
             private string[] treeModels = { "Objects/tree1", "Objects/tree2", "Objects/tree3" };
             private string[] enemyTypes = { "Objects/apple", "Objects/mint", "Objects/nettle", "Objects/melissa" };
             private string[] otherModels = { "Objects/rock2", "Objects/rock18" };
-            //private string[] grassTextures = {"trawa1", "trawa2", "trawa3"};
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
             private int tileSize = 6;
@@ -303,6 +286,8 @@ namespace TheGame
             private float separatorX, separatorZ;
             private int enemyCount;
 
+
+
             public Level(string fileName, float separatorX, int enemyCount, float separatorZ)
             {
                 _sceneObjects = new List<SceneObject>();
@@ -313,6 +298,7 @@ namespace TheGame
                 this.separatorX = separatorX;
                 this.separatorZ = separatorZ;
                 this.enemyCount = enemyCount;
+                
             }
 
             public void LoadContent()
@@ -521,7 +507,7 @@ namespace TheGame
                         string objectType = GenerateRandomString(otherModels);
 
                         Random rand = new Random();
-                        float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
+                        float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu losowo
                         float size = (float)rand.Next(80, 100) / 100;
                         switch (objectType)
                         {
