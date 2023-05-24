@@ -336,13 +336,11 @@ namespace TheGame
 
             public List<SceneObject> returnSceneObjects() { return _sceneObjects; }
 
-
+            //public List<Vector3> lista = new List<Vector3>();
             private void LoadSceneObjects()
             {
                 LoadScene(fileName, enemyCount);
-                Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -1f, 0.5f * moduleHeight * tileSize + separatorZ);
-                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/floor"));       //trawa pod wszystko
-
+                Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -2f, 0.5f * moduleHeight * tileSize + separatorZ);
                 for (int i = 0; i < moduleHeight; i++)
                 {
                     for (int j = 0; j < moduleWidth; j++)
@@ -360,7 +358,6 @@ namespace TheGame
                         }
                         if (treeModels.Contains(model))
                         {
-                            _sceneObjects.Add(new SceneObject(wektor, "Objects/test", "Textures/trawa1"));       //dodanie trawy pod drzewka
                             SceneObject tree = new SceneObject(wektor, model, texture);
                             Random rand = new Random();
                             float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
@@ -369,13 +366,10 @@ namespace TheGame
                             tree.SetRotation(new Vector3(0, rflot, 0));
                             _sceneObjects.Add(tree);
                         }
-                        else
-                        {
-                            _sceneObjects.Add(new SceneObject(wektor, model, texture));
-                        }
 
                     }
                 }
+                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/floor"));
                 Random random = new Random();
                 int objectsCount = random.Next(2, 5);
                 GenerateOtherObjects(objectsCount);
@@ -406,16 +400,16 @@ namespace TheGame
                         case 48: //0
                             string treeModel = GenerateRandomString(treeModels);
 
-                            _tiles.Add(new Tile(treeModel, "Textures/tree1_color", -2.0f));
+                            _tiles.Add(new Tile(treeModel, "Textures/tree1_color", -3.0f));
                             break;
                         case 97: //a
-                            _tiles.Add(new Tile(ground, "Textures/trawa1", -2.0f));
+                            _tiles.Add(new Tile(ground, "Textures/trawa1", -3.0f));
                             break;
                         case 98:
-                            _tiles.Add(new Tile(ground, "Textures/trawa2", -2.0f));
+                            _tiles.Add(new Tile(ground, "Textures/trawa2", -3.0f));
                             break;
                         case 99:
-                            _tiles.Add(new Tile(ground, "Textures/trawa3", -2.0f));
+                            _tiles.Add(new Tile(ground, "Textures/trawa3", -3.0f));
                             break;
                     }
                 }
