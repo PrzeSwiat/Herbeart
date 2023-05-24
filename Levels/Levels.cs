@@ -80,6 +80,7 @@ namespace TheGame
             _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 50));
             _levels[2].GenerateEnemy(nettleEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 60));
 
+            currentMap = "Maps/map3.txt";
 
         }
 
