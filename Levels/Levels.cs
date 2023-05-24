@@ -331,7 +331,7 @@ namespace TheGame
             private void LoadSceneObjects()
             {
                 LoadScene(fileName, enemyCount);
-                Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -2f, 0.5f * moduleHeight * tileSize + separatorZ);
+                Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -1f, 0.5f * moduleHeight * tileSize + separatorZ);
                 for (int i = 0; i < moduleHeight; i++)
                 {
                     for (int j = 0; j < moduleWidth; j++)
