@@ -80,7 +80,6 @@ namespace TheGame
             _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 50));
             _levels[2].GenerateEnemy(nettleEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 60));
 
-            currentMap = "Maps/map3.txt";
 
         }
 
@@ -101,10 +100,10 @@ namespace TheGame
                 else
                     enemyCount = 4;
 
-                if (numberOfModules % 20 == 0)          //wesele!
+/*                if (numberOfModules % 20 == 0)          //wesele!
                 {
                     prepareModule("Maps/map2.txt", 0);
-                }
+                }*/
 
                 //Przypadek prostych map - wylot z lewej i prawej
                 if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
@@ -183,6 +182,7 @@ namespace TheGame
                 }
 
                 currentMap = choosedMap;
+
 
             }
         }
@@ -391,17 +391,17 @@ namespace TheGame
                         case 48: //0
                             string treeModel = GenerateRandomString(treeModels);
 
-                            _tiles.Add(new Tile(treeModel, "Textures/tree1_color", -3.0f));
+                            _tiles.Add(new Tile(treeModel, "Textures/tree1_color", -2.0f));
                             break;
                         case 97: //a
-                            _tiles.Add(new Tile(ground, "Textures/trawa1", -3.0f));
+                            _tiles.Add(new Tile(ground, "Textures/trawa1", -2.0f));
                             break;
-                        case 98:
+/*                        case 98:
                             _tiles.Add(new Tile(ground, "Textures/trawa2", -3.0f));
                             break;
                         case 99:
                             _tiles.Add(new Tile(ground, "Textures/trawa3", -3.0f));
-                            break;
+                            break;*/
                     }
                 }
             }
