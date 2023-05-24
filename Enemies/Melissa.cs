@@ -17,7 +17,7 @@ namespace TheGame
 
         public Melissa(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            AssignParameters(200, 10, 2);
+            AssignParameters(200, 10, 2, 1.0f);
             this.leaf = new Leafs.MelissaLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
         }
 
@@ -25,7 +25,7 @@ namespace TheGame
         {
             actualTime = DateTime.Now;
             TimeSpan time = actualTime - lastAttackTime;
-            if (time.TotalSeconds > 1)
+            if (time.TotalSeconds > this.ActualAttackSpeed)
             {
                 if (attackCounter == attacksToStun)
                 {

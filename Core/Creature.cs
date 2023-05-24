@@ -27,14 +27,11 @@ namespace TheGame
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             leaf = new Leaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
-            attackSpeed = 0.75f;
-            actualAttackSpeed = attackSpeed;
 
             boundingSphere = BoundingSphere.CreateFromBoundingBox(this.boundingBox);
-
         }
 
-        public void AssignParameters(int health, int strenght, float speed)
+        public void AssignParameters(int health, int strenght, float speed, float attackSpeed)
         {
             this.maxHealth = health;
             this.health = this.maxHealth;
@@ -42,6 +39,8 @@ namespace TheGame
             this.strenght = this.maxStrenght;
             this.maxSpeed = speed;
             this.actualSpeed = this.maxSpeed;
+            this.attackSpeed = attackSpeed;
+            this.actualAttackSpeed = this.attackSpeed;
         }
 
         public virtual void Hit(int damage)

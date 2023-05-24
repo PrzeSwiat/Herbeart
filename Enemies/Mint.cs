@@ -15,7 +15,7 @@ namespace TheGame
 
         public Mint(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            AssignParameters(75, 20, 2);
+            AssignParameters(75, 20, 2, 0.5f);
             this.leaf = new Leafs.MintLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
         }
 

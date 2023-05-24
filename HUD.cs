@@ -108,9 +108,6 @@ namespace TheGame
                 spriteBatch.Draw(red, rect, Color.Red);
 
             }
-            Debug.Write(enemies[0].GetPosition() + "\n");
-
-
         }
 
         public void DrawInventory(SpriteBatch spriteBatch)

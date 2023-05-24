@@ -83,10 +83,10 @@ namespace TheGame
             Mint mint = new Mint(new Vector3(20, 0, 20), "player", "StarSparrow_Green");
             Melissa apple2 = new Melissa(new Vector3(23, 0, 23), "player", "StarSparrow_Green");
             Nettle apple3 = new Nettle(new Vector3(22, 0, 21), "player", "StarSparrow_Green");
-            // enemies.AddEnemy(apple);
-            //enemies.AddEnemy(mint);
-            // enemies.AddEnemy(apple2);
-            // enemies.AddEnemy(apple3);*/
+            enemies.AddEnemy(apple);
+            enemies.AddEnemy(mint);
+            enemies.AddEnemy(apple2);
+            enemies.AddEnemy(apple3);*/
 
             base.Initialize();
         }
