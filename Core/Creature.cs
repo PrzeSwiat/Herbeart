@@ -27,7 +27,7 @@ namespace TheGame
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             leaf = new Leaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
-            attackSpeed = 1.0f;
+            attackSpeed = 0.75f;
             actualAttackSpeed = attackSpeed;
 
             boundingSphere = BoundingSphere.CreateFromBoundingBox(this.boundingBox);
