@@ -69,7 +69,7 @@ namespace TheGame
             //Moduł 1 - z salą weselną
             prepareModule("Maps/map1.txt", 0);
 
-            //Moduł 2
+          /*  //Moduł 2
             prepareModule("Maps/map2.txt", 0);
             _levels[1].GenerateEnemy("Objects/mint", new Vector3(moduleSeparatorX + 30, 0, 50));
             _levels[1].GenerateEnemy("Objects/mint", new Vector3(moduleSeparatorX + 30, 0, 60));
@@ -78,7 +78,7 @@ namespace TheGame
             prepareModule("Maps/map3.txt", 0);
             _levels[2].GenerateEnemy("Objects/mint", new Vector3(2 * moduleSeparatorX + 30, 0, 50));
             _levels[2].GenerateEnemy("Objects/nettle", new Vector3(2 * moduleSeparatorX + 30, 0, 60));
-
+          */
             currentMap = "Maps/map3.txt";
 
         }

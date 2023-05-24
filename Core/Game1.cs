@@ -30,7 +30,7 @@ namespace TheGame
         Enemies enemies;
         LeafList Leafs;
         SoundActorPlayer soundActorPlayer;
-
+        Viewport viewport;
 
         public Game1()
         {
@@ -44,6 +44,7 @@ namespace TheGame
             Globals._graphics.PreferredBackBufferHeight = WindowHeight;
             Globals._graphics.ApplyChanges();
             Globals.Pause = true;
+            
         }
         
 
@@ -77,7 +78,7 @@ namespace TheGame
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
             audioMenager = new AudioMenager(Content);
             soundActorPlayer = new SoundActorPlayer(Content, player, enemies.EnemiesList);
-
+            viewport = GraphicsDevice.Viewport;
             /*AppleTree apple = new AppleTree(new Vector3(25, 0, 25), "player", "StarSparrow_Green");
             Mint mint = new Mint(new Vector3(20, 0, 20), "player", "StarSparrow_Green");
             Melissa apple2 = new Melissa(new Vector3(23, 0, 23), "player", "StarSparrow_Green");
@@ -113,8 +114,8 @@ namespace TheGame
         {
             hud.MainMenuCheck();
             audioMenager.MainPlay();
-            if (!Globals.Pause)
-            {
+           // if (!Globals.Pause)
+            //{
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
                 var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -133,21 +134,21 @@ namespace TheGame
                 hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
                 animacyjnaPacynka.animation.Update(gameTime.ElapsedGameTime.TotalSeconds);
                 interactionEventHandler.Update(enemies.EnemiesList);
-
+                viewport = GraphicsDevice.Viewport;
                 SaveControl();
                 base.Update(gameTime);
-            }
-            else
-            {
-                Globals.time = 0;
-            }
+        ///    }
+           // else
+           // {
+             //   Globals.time = 0;
+           // }
             
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            if (!Globals.Pause)
-            {
+            //if (!Globals.Pause)
+           // {
                 GraphicsDevice.Clear(Color.Black);
                 base.Draw(gameTime);
                 hud.DrawBackground(_spriteBatch);
@@ -156,13 +157,14 @@ namespace TheGame
                 enemies.Draw(player.GetPosition());
                 player.DrawPlayer(player.GetPosition());
                 Leafs.Draw(player.GetPosition());
-                hud.DrawFrontground(_spriteBatch, player.Health);
+                hud.DrawFrontground(_spriteBatch, player.Health,enemies.EnemiesList,viewport);
                 animacyjnaPacynka.AnimationDraw();
-            }
-            else
-            {
-                hud.DrawMainMenu(_spriteBatch);
-            }
+           
+          //  }
+          //  else
+          //  {
+               // hud.DrawMainMenu(_spriteBatch);
+          //  }
             //DrawBoundingBoxes();
         }
 
