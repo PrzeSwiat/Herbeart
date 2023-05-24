@@ -340,6 +340,8 @@ namespace TheGame
             private void LoadSceneObjects()
             {
                 LoadScene(fileName, enemyCount);
+                Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -1f, 0.5f * moduleHeight * tileSize + separatorZ);
+                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/floor"));       //trawa pod wszystko
 
                 for (int i = 0; i < moduleHeight; i++)
                 {
@@ -358,7 +360,7 @@ namespace TheGame
                         }
                         if (treeModels.Contains(model))
                         {
-                            _sceneObjects.Add(new SceneObject(wektor, ground, "Textures/trawa1"));       //dodanie trawy pod drzewka
+                            _sceneObjects.Add(new SceneObject(wektor, "Objects/test", "Textures/trawa1"));       //dodanie trawy pod drzewka
                             SceneObject tree = new SceneObject(wektor, model, texture);
                             Random rand = new Random();
                             float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
