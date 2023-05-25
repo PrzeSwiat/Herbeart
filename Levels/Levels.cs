@@ -87,7 +87,7 @@ namespace TheGame
         public void prepareMap()
         {
             int enemyCount;
-
+            int partyNumber = 0;
             prepareFirstLevels();
 
 
@@ -101,10 +101,11 @@ namespace TheGame
                 else
                     enemyCount = 4;
 
-/*                if (numberOfModules % 20 == 0)          //wesele!
+/*                if (numberOfModules + partyNumber >= 10 && maps_straight.Contains(currentMap))          //wesele!
                 {
-                    prepareModule("Maps/map2.txt", 0);
-                    currentMap = "Maps/map2.txt";
+                    prepareModule("Maps/map6.txt", 0);
+                    currentMap = "Maps/map6.txt";
+                    partyNumber += 10;
                 }*/
 
                 //Przypadek prostych map - wylot z lewej i prawej
@@ -333,7 +334,7 @@ namespace TheGame
             private void LoadSceneObjects()
             {
                 LoadScene(fileName, enemyCount);
-                Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -1f, 0.5f * moduleHeight * tileSize + separatorZ);
+                Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -0.7f, 0.5f * moduleHeight * tileSize + separatorZ);
                 for (int i = 0; i < moduleHeight; i++)
                 {
                     for (int j = 0; j < moduleWidth; j++)
