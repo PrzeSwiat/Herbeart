@@ -289,7 +289,7 @@ namespace TheGame
             private DateTime lastIntervalTime;
             public event EventHandler OnDestroy;
 
-            public MintLeaf(Vector3 position, float slow, float maxTime) : base(position, "Objects/test", "Textures/orange")
+            public MintLeaf(Vector3 position, float slow, float maxTime) : base(position, "Objects/test", "Textures/slow")
             {
                 this.SetPositionY(-2.0f);
                 this.BSphere = new BoundingSphere(this.GetPosition(), 6);
