@@ -81,14 +81,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
+    <PackageReference Include="Lovebirb.MonoGame.SkinnedMeshImporter" Version="1.0.4" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Animations\nasze.fbx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Content\Animations\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

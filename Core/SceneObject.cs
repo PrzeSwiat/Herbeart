@@ -20,7 +20,6 @@ namespace TheGame
         public string _modelFileName;
         public string _textureFileName;
         public Color color = Color.White;
-        public Animations animation;
         SkinnedEffect skinnedEffect;
         public BoundingBox boundingBox;
         private DateTime lastEventTime, actualTime;
@@ -47,21 +46,7 @@ namespace TheGame
                 }
             }
         }
-        public void LoadAnimation(GraphicsDevice device)
-        {
-            skinnedEffect = new SkinnedEffect(device);
-            skinnedEffect.EnableDefaultLighting(); // włącz domyślne oświetlenie
-            skinnedEffect.WeightsPerVertex = 4; // ustaw ilość wag na wierzchołek
-
-            animation = new Animations(_modelFileName, model);
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    part.Effect = skinnedEffect;
-                }
-            }
-        }
+       
 
         public virtual void LoadContent()
         {
@@ -107,21 +92,7 @@ namespace TheGame
                         * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
                          , Globals.viewMatrix, Globals.projectionMatrix, GetTexture2D());
         }
-        public void AnimationDraw()
-        {
-            Globals.effectHandler.AnimationDraw(animation,GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
-                       * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
-                       Matrix.CreateRotationZ(GetRotation().Z)
-                       * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
-                        , Globals.viewMatrix, Globals.projectionMatrix, GetTexture2D());
-        }
-
-
-
-   
-
-
-        
+       
 
         public void Move(Vector3 vec)
         {

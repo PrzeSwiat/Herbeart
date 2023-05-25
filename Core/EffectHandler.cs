@@ -1,4 +1,6 @@
 ﻿using Assimp.Unmanaged;
+using Liru3D.Animations;
+using Liru3D.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Color = Microsoft.Xna.Framework.Color;
@@ -37,6 +39,7 @@ namespace TheGame
         public EffectHandler(Effect effect)
         {
             _effect = effect;
+
             Vector3 pos1 = new Vector3(30, 1, 20);
             Vector3 pos2 = new Vector3(0, 1, 0);
 
@@ -147,26 +150,6 @@ namespace TheGame
                 mesh.Draw();
             }
         }
-                
-        
 
-
-        public void AnimationDraw(Animations animation,Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D)
-        {
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (SkinnedEffect effect in mesh.Effects)
-                {
-                    effect.View = view;
-                    effect.Projection = projection;
-                    effect.World = world;
-                    effect.SetBoneTransforms(animation.boneTransforms);
-                    effect.Texture = texture2D;
-                }
-                mesh.Draw();
-            }
-        }
-
-
-    }
+}
 }
