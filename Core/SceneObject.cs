@@ -145,6 +145,11 @@ namespace TheGame
             SetPosition(pos);
         }
 
+        public void SetPositionY(float y)
+        {
+            this.position.Y = y;
+        }
+
         public void SetPosition(float x, float y, float z)
         {
             position = new Vector3(x,y,z);

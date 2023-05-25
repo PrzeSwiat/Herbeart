@@ -289,10 +289,10 @@ namespace TheGame
             private DateTime lastIntervalTime;
             public event EventHandler OnDestroy;
 
-            public MintLeaf(Vector3 position, float slow, float maxTime) : base(position, "Objects/test", "Textures/orange")
+            public MintLeaf(Vector3 position, float slow, float maxTime) : base(position, "Objects/test", "Textures/slow")
             {
-                position.Y = 0;
-                this.BSphere = new BoundingSphere(position, 6);
+                this.SetPositionY(-2.0f);
+                this.BSphere = new BoundingSphere(this.GetPosition(), 6);
 
                 this.slowness = slow;
                 this.maxTime = maxTime;
@@ -346,8 +346,8 @@ namespace TheGame
 
             public NettleLeaf(Vector3 position, int damage, float maxTime) : base(position, "Objects/test", "Textures/bul")
             {
-                position.Y = 0;
-                this.BSphere = new BoundingSphere(position, 6);
+                SetPositionY(-2);
+                this.BSphere = new BoundingSphere(GetPosition(), 6);
 
                 this.damage = damage;
                 this.maxTime = maxTime;
