@@ -44,9 +44,10 @@ namespace TheGame
         HashSet<Rectangle> visited;
         #endregion
         #region Enemies Types
-        private string mint = "Objects/mint";
-        private string nettle = "Objects/nettle";
-        private string apple = "Objects/apple";
+        private string mintEnemy = "Objects/mint";
+        private string nettleEnemy = "Objects/nettle";
+        private string appleEnemy = "Objects/apple";
+        private string melissaEnemy = "Objects/melissa";
         #endregion
 
 
@@ -71,13 +72,13 @@ namespace TheGame
 
             //Moduł 2
             prepareModule("Maps/map2.txt", 0);
-            _levels[1].GenerateEnemy("Objects/mint", new Vector3(moduleSeparatorX + 30, 0, 50));
-            _levels[1].GenerateEnemy("Objects/mint", new Vector3(moduleSeparatorX + 30, 0, 60));
+            _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 50));
+            _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 60));
 
             //Moduł 3
             prepareModule("Maps/map3.txt", 0);
-            _levels[2].GenerateEnemy("Objects/mint", new Vector3(2 * moduleSeparatorX + 30, 0, 50));
-            _levels[2].GenerateEnemy("Objects/nettle", new Vector3(2 * moduleSeparatorX + 30, 0, 60));
+            _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 50));
+            _levels[2].GenerateEnemy(nettleEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 60));
 
             currentMap = "Maps/map3.txt";
 
@@ -95,10 +96,16 @@ namespace TheGame
                 maps = new List<string>();
 
                 //wybieranie ilości przeciwników w levelu
-                if (numberOfModules < 4)
+                if (numberOfModules < 6)
                     enemyCount = 2;
                 else
                     enemyCount = 4;
+
+/*                if (numberOfModules % 20 == 0)          //wesele!
+                {
+                    prepareModule("Maps/map2.txt", 0);
+                    currentMap = "Maps/map2.txt";
+                }*/
 
                 //Przypadek prostych map - wylot z lewej i prawej
                 if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
@@ -176,29 +183,8 @@ namespace TheGame
 
                 }
 
-
-
-                /*                //Wylot z dołu, lewej i prawej
-                                if(maps_down_straight.Contains(currentMap))                             //Work in progres -  nie ruszac
-                                {
-                                    maps.AddRange(maps_up_straight);
-                                    maps.AddRange(maps_straight);
-                                    choosed = generateRandomStringFromList(maps);
-                                    _levels.Add(new Level(Content, choosed, _levels.Count * moduleSeparator, enemyCount));
-                                    maps.Clear();
-                                }
-
-                                //Wylot z góry, lewej, prawej
-                                if (maps_up_straight.Contains(currentMap))
-                                {
-                                    maps.AddRange(maps_up_straight);
-                                    maps.AddRange(maps_straight);
-                                    choosed = generateRandomStringFromList(maps);
-                                    _levels.Add(new Level(Content, choosed, _levels.Count * moduleSeparator, enemyCount));
-                                    maps.Clear();
-                                }*/
-
                 currentMap = choosedMap;
+
 
             }
         }
@@ -288,8 +274,7 @@ namespace TheGame
         {
             private string[] treeModels = { "Objects/tree1", "Objects/tree2", "Objects/tree3" };
             private string[] enemyTypes = { "Objects/apple", "Objects/mint", "Objects/nettle", "Objects/melissa" };
-            private string[] otherModels = { "Objects/rock2", "Objects/rock18" };
-            //private string[] grassTextures = {"trawa1", "trawa2", "trawa3"};
+            private string[] otherModels = { "Objects/rock2", "Objects/rock18", "Objects/tree1" };
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
             private int tileSize = 6;
@@ -303,6 +288,8 @@ namespace TheGame
             private float separatorX, separatorZ;
             private int enemyCount;
 
+
+
             public Level(string fileName, float separatorX, int enemyCount, float separatorZ)
             {
                 _sceneObjects = new List<SceneObject>();
@@ -313,6 +300,7 @@ namespace TheGame
                 this.separatorX = separatorX;
                 this.separatorZ = separatorZ;
                 this.enemyCount = enemyCount;
+                
             }
 
             public void LoadContent()
@@ -341,11 +329,11 @@ namespace TheGame
 
             public List<SceneObject> returnSceneObjects() { return _sceneObjects; }
 
-
+            //public List<Vector3> lista = new List<Vector3>();
             private void LoadSceneObjects()
             {
                 LoadScene(fileName, enemyCount);
-
+                Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -1f, 0.5f * moduleHeight * tileSize + separatorZ);
                 for (int i = 0; i < moduleHeight; i++)
                 {
                     for (int j = 0; j < moduleWidth; j++)
@@ -363,7 +351,6 @@ namespace TheGame
                         }
                         if (treeModels.Contains(model))
                         {
-                            _sceneObjects.Add(new SceneObject(wektor, ground, "Textures/trawa1"));       //dodanie trawy pod drzewka
                             SceneObject tree = new SceneObject(wektor, model, texture);
                             Random rand = new Random();
                             float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
@@ -372,15 +359,13 @@ namespace TheGame
                             tree.SetRotation(new Vector3(0, rflot, 0));
                             _sceneObjects.Add(tree);
                         }
-                        else
-                        {
-                            _sceneObjects.Add(new SceneObject(wektor, model, texture));
-                        }
 
                     }
                 }
+                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/floor"));
+
                 Random random = new Random();
-                int objectsCount = random.Next(2, 5);
+                int objectsCount = random.Next(4, 7);
                 GenerateOtherObjects(objectsCount);
                 if (enemyCount != 0) 
                 { 
@@ -414,12 +399,12 @@ namespace TheGame
                         case 97: //a
                             _tiles.Add(new Tile(ground, "Textures/trawa1", -2.0f));
                             break;
-                        case 98:
-                            _tiles.Add(new Tile(ground, "Textures/trawa2", -2.0f));
+/*                        case 98:
+                            _tiles.Add(new Tile(ground, "Textures/trawa2", -3.0f));
                             break;
                         case 99:
-                            _tiles.Add(new Tile(ground, "Textures/trawa3", -2.0f));
-                            break;
+                            _tiles.Add(new Tile(ground, "Textures/trawa3", -3.0f));
+                            break;*/
                     }
                 }
             }
@@ -521,22 +506,28 @@ namespace TheGame
                         string objectType = GenerateRandomString(otherModels);
 
                         Random rand = new Random();
-                        float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
-                        float size = (float)rand.Next(80, 100) / 100;
+                        float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI; //zmiana obrotu losowo
                         switch (objectType)
                         {
                             case "Objects/rock2":
                                 SceneObject stone = new SceneObject(groundPosition, "Objects/rock2", "Textures/black");
-                                stone.SetScale(size);
+                                stone.SetScale((float)rand.Next(80, 100) / 100);
                                 stone.SetRotation(new Vector3(0, rflot, 0));
                                 _sceneObjects.Add(stone);
                                 break;
                             case "Objects/rock18":
                                 SceneObject stone1 = new SceneObject(groundPosition, "Objects/rock18", "Textures/black");
-                                stone1.SetScale(size);
+                                stone1.SetScale((float)rand.Next(80, 100) / 100);
                                 stone1.SetRotation(new Vector3(0, rflot, 0));
                                 _sceneObjects.Add(stone1);
                                 break;
+                            case "Objects/tree1":
+                                SceneObject tree = new SceneObject(groundPosition, "Objects/tree1", "Textures/tree1_color");           
+                                tree.SetScale((float)rand.Next(75, 150) / 100);
+                                tree.SetRotation(new Vector3(0, rflot, 0));
+                                _sceneObjects.Add(tree);
+                                break;
+
                         }
                     }
                 }

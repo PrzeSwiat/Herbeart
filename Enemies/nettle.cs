@@ -10,33 +10,28 @@ namespace TheGame
 {
     internal class Nettle : Enemy
     {
+        private DateTime lastAttackTime, actualTime;
+        public event EventHandler OnAttack;
+        private int attackCounter = 0;
         float armortime = 10;
         int lastHealth;
         public Nettle(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            AssignParameters(80, 12, 2);
+            AssignParameters(80, 12, 2, 0.7f);
             this.leaf = new Leafs.NettleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
             lastHealth = this.Health;
         }
 
-        public override void Update(float deltaTime, Player player)
+        protected override void Attack(Player player)
         {
-            base.Update(deltaTime, player);
-
-            if (armortime >= 0)
+            actualTime = DateTime.Now;
+            TimeSpan time = actualTime - lastAttackTime;
+            if (time.TotalSeconds > 1)
             {
-                if (Health < lastHealth)
-                {
-                    player.Hit(40);
-                    lastHealth = Health;
-                }
+                OnAttack?.Invoke(this, EventArgs.Empty);
+                lastAttackTime = actualTime;
+                player.Hit(this.Strength);
             }
-
-            if (armortime < -10)
-            {
-                armortime = 10;
-            }
-            armortime = armortime - deltaTime;
         }
     }
 }

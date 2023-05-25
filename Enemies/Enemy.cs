@@ -5,12 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading;
+using System.Timers;
 
 namespace TheGame
 {
     internal class Enemy : Creature
     {
         public event EventHandler OnAttack;
+        public bool isStun = false;
+        public float stunTime = 0, elapsedStunTime = 0;
 
         private DateTime lastAttackTime, actualTime;
         private bool collides = false;
@@ -28,7 +32,7 @@ namespace TheGame
         {
             actualTime = DateTime.Now;
             TimeSpan time = actualTime - lastAttackTime;
-            if (time.TotalSeconds > this.AttackSpeed)
+            if (time.TotalSeconds > this.ActualAttackSpeed)
             {
                 OnAttack?.Invoke(this, EventArgs.Empty);
                 lastAttackTime = actualTime;
@@ -44,16 +48,35 @@ namespace TheGame
         public virtual void Update(float deltaTime, Player player)
         {
             Update();
-            checkCollision(player);
-            RotateTowardsCurrentDirection();
-            if (collides)
+            if (isStun)
             {
-                Attack(player);
+                elapsedStunTime += deltaTime;
+                if (elapsedStunTime >= stunTime)
+                {
+                    isStun = false;
+                    elapsedStunTime = 0;
+                }
             }
             else
             {
-                MoveForwards(deltaTime, true);
+                checkCollision(player);
+                RotateTowardsCurrentDirection();
+                if (collides)
+                {
+                    Attack(player);
+                }
+                else
+                {
+                    MoveForwards(deltaTime, true);
+                }
             }
+            
+        }
+
+        public void Stun(int time)
+        {
+            isStun = true;
+            stunTime = time;
         }
 
         public void Slow (float slowMultiplier)

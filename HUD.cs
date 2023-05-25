@@ -68,13 +68,13 @@ namespace TheGame
             int numberOfHeightBG = WindowHeight / BackgroundHeight;
 
             spriteBatch.Begin();
-            
-            for(int i = 0; i <= numberOfWidthBG + 2; i++)
+
+            for (int i = 0; i <= numberOfWidthBG + 2; i++)
             {
                 skyRec.X = BackgroundX + i * BackgroundWidth;
                 for (int j = 0; j <= numberOfHeightBG + 1; j++)
-                {   
-                    
+                {
+
                     skyRec.Y = BackgroundY + j * BackgroundHeight;
                     spriteBatch.Draw(skyTex, skyRec, Color.Gray);
                 }
@@ -83,13 +83,13 @@ namespace TheGame
             spriteBatch.End();
         }
 
-        public void DrawFrontground(SpriteBatch spriteBatch, int hp)
+        public void DrawFrontground(SpriteBatch spriteBatch, int hp, List<Enemy> enemies, Viewport viewport)
         {
             spriteBatch.Begin();
 
             DrawInventory(spriteBatch);
             DrawHealthBar(spriteBatch, hp);
-
+            DrawEnemyHealthBar(spriteBatch, enemies, viewport);
             spriteBatch.End();
         }
 
@@ -97,6 +97,19 @@ namespace TheGame
         {
             Rectangle rect = new Rectangle(10, 10, health, 20);
             spriteBatch.Draw(red, rect, Color.Red);
+        }
+        private void DrawEnemyHealthBar(SpriteBatch spriteBatch, List<Enemy> enemies, Viewport viewport)
+        {
+            foreach (Enemy e in enemies)
+            {
+                Vector3 projectedPosition = viewport.Project(e.GetPosition(),
+                    Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
+                Rectangle rect = new Rectangle((int)projectedPosition.X - 40, (int)(projectedPosition.Y - 100), e.Health, 10);
+                spriteBatch.Draw(red, rect, Color.Red);
+
+            }
+
+
         }
 
         public void DrawInventory(SpriteBatch spriteBatch)
@@ -111,8 +124,8 @@ namespace TheGame
                 spriteBatch.DrawString(Font, leafs.ElementAt(i).Key, new Vector2(50 + i * 50, WindowHeight - 90), Color.Black);
                 spriteBatch.DrawString(Font, leafs.ElementAt(i).Value.ToString(), new Vector2(50 + i * 50, WindowHeight - 50), Color.Black);
             }
-   
-            
+
+
         }
 
         public void MainMenuCheck()
@@ -129,10 +142,10 @@ namespace TheGame
 
         public void DrawMainMenu(SpriteBatch spriteBatch)
         {
-            Rectangle rect = new Rectangle(-WindowWidth,-WindowHeight,2*WindowWidth,2*WindowHeight);
+            Rectangle rect = new Rectangle(-WindowWidth, -WindowHeight, 2 * WindowWidth, 2 * WindowHeight);
             spriteBatch.Begin();
-            spriteBatch.Draw(red,rect, Color.Black);
-            spriteBatch.DrawString(Menu,"Herbeart", new Vector2(WindowWidth/2 - WindowWidth/5,WindowHeight*1/10), Color.White);
+            spriteBatch.Draw(red, rect, Color.Black);
+            spriteBatch.DrawString(Menu, "Herbeart", new Vector2(WindowWidth / 2 - WindowWidth / 5, WindowHeight * 1 / 10), Color.White);
             spriteBatch.DrawString(Menu2, "Press 'Start' to start the game", new Vector2(WindowWidth / 15, WindowHeight * 4 / 10), Color.White);
             spriteBatch.End();
         }

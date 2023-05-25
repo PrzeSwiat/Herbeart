@@ -9,10 +9,26 @@ namespace TheGame
 {
     internal class Mint : Enemy
     {
+
+        private DateTime lastAttackTime, actualTime;
+        public event EventHandler OnAttack;
+
         public Mint(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            AssignParameters(75, 20, 2);
+            AssignParameters(75, 20, 2, 0.5f);
             this.leaf = new Leafs.MintLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
+        }
+
+        protected override void Attack(Player player)
+        {
+            actualTime = DateTime.Now;
+            TimeSpan time = actualTime - lastAttackTime;
+            if (time.TotalSeconds > 1)
+            {
+                OnAttack?.Invoke(this, EventArgs.Empty);
+                lastAttackTime = actualTime;
+                player.Hit(this.Strength);
+            }
         }
     }
 }

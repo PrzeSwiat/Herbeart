@@ -95,6 +95,10 @@ namespace TheGame
                     playerEffects.RegenarateHP(100);
                     playerEffects.BuffStrenght(20, 20);
                     break;
+                case "ABX":
+                    playerEffects.RegenarateHP(100);
+                    playerEffects.MakeImmortal(10);
+                    break;
 
                 default:
                     foreach (char c in recepture)

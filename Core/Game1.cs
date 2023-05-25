@@ -19,7 +19,7 @@ namespace TheGame
         Serializator serializator;
         AudioMenager audioMenager;
         //.................
-       
+
 
         private BasicEffect basicEffect;
         World world;
@@ -31,7 +31,7 @@ namespace TheGame
         LeafList Leafs;
         SoundActorPlayer soundActorPlayer;
         AnimationMenager animationMenager;
-
+        Viewport viewport;
 
         public Game1()
         {
@@ -45,26 +45,27 @@ namespace TheGame
             Globals._graphics.PreferredBackBufferHeight = WindowHeight;
             Globals._graphics.ApplyChanges();
             Globals.Pause = true;
+
         }
-        
+
 
         protected override void Initialize()
         {
-            
+
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
-            
+
             Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 50), (WindowWidth / 50), -(WindowHeight / 50), (WindowHeight / 50), 1f, 100f);      // orthographic view 
-            //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
+                                                                                                                                                                              //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
-                // PERSPECTIVE point of view
-                //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f),GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
-                // ................................................................................................................
+            // PERSPECTIVE point of view
+            //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f),GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
+            // ................................................................................................................
 
-                 // tells the world of our orientantion
-                                                                                      // (the same as:
-                                                                                      // Vector3(0,1,0) - up and down is along y axis)
-                Globals.worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
+            // tells the world of our orientantion
+            // (the same as:
+            // Vector3(0,1,0) - up and down is along y axis)
+            Globals.worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
             //.................
 
             
@@ -81,14 +82,15 @@ namespace TheGame
             audioMenager = new AudioMenager(Content);
             soundActorPlayer = new SoundActorPlayer(Content, player, enemies.EnemiesList);
             animationMenager = new AnimationMenager(Content, animacyjnaPacynka, enemies.EnemiesList);
+            viewport = GraphicsDevice.Viewport;
             /*AppleTree apple = new AppleTree(new Vector3(25, 0, 25), "player", "StarSparrow_Green");
             Mint mint = new Mint(new Vector3(20, 0, 20), "player", "StarSparrow_Green");
             Melissa apple2 = new Melissa(new Vector3(23, 0, 23), "player", "StarSparrow_Green");
             Nettle apple3 = new Nettle(new Vector3(22, 0, 21), "player", "StarSparrow_Green");
-            // enemies.AddEnemy(apple);
-            //enemies.AddEnemy(mint);
-            // enemies.AddEnemy(apple2);
-            // enemies.AddEnemy(apple3);*/
+            enemies.AddEnemy(apple);
+            enemies.AddEnemy(mint);
+            enemies.AddEnemy(apple2);
+            enemies.AddEnemy(apple3);*/
 
             base.Initialize();
         }
@@ -137,6 +139,7 @@ namespace TheGame
                 hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
                 
                 interactionEventHandler.Update(enemies.EnemiesList);
+                viewport = GraphicsDevice.Viewport;
                 animationMenager.Update(gameTime);
                 SaveControl();
                 base.Update(gameTime);
@@ -161,15 +164,15 @@ namespace TheGame
                 player.DrawPlayer(player.GetPosition());
                 Leafs.Draw(player.GetPosition());
                 animationMenager.DrawAnimation(GraphicsDevice);
-                hud.DrawFrontground(_spriteBatch, player.Health);   //hud jako OSTATNI koniecznie
-                
-              
-                
+                hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList, viewport);  //hud jako OSTATNI koniecznie
+
+
+
             //}
-           // else
-           // {
-               // hud.DrawMainMenu(_spriteBatch);
-           // }
+            // else
+            // {
+            // hud.DrawMainMenu(_spriteBatch);
+            // }
             //DrawBoundingBoxes();
         }
 
@@ -177,18 +180,18 @@ namespace TheGame
         public void DrawBoundingBoxes()
         {
             basicEffect.CurrentTechnique.Passes[0].Apply();
-            
-            foreach(SceneObject obj in world.GetWorldList())
+
+            foreach (SceneObject obj in world.GetWorldList())
             {
                 //obj.DrawBB();
             }
             foreach (Enemy enemy in enemies.EnemiesList)
             {
                 enemy.DrawBB();
-                if(enemy.GetType() == typeof(AppleTree))
+                if (enemy.GetType() == typeof(AppleTree))
                 {
                     AppleTree apple1 = (AppleTree)enemy;
-                    foreach(Apple apple in apple1.bullet)
+                    foreach (Apple apple in apple1.bullet)
                     {
                         //apple.DrawBB();
                     }
@@ -200,7 +203,7 @@ namespace TheGame
             DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }
 
-        
+
 
         public void DrawBS(Vector3 center, float radius)
         {
@@ -227,7 +230,7 @@ namespace TheGame
 
             var XTOY = new[]
             {
-                
+
                 new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
                 new VertexPositionColor(center+new Vector3(-radius,0,0), Color.White),
                 new VertexPositionColor(center+new Vector3(0,-radius,0), Color.White),
@@ -277,7 +280,7 @@ namespace TheGame
 
         void DestroyControl(object obj, EventArgs e)
         {
-            if(obj is Player)
+            if (obj is Player)
             {
                 Exit();
                 // GAME OVER HERE;

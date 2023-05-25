@@ -14,6 +14,7 @@ namespace TheGame
         private IntervalTimer regenarationTimer;
         private IntervalTimer damageTimer;
         private NormalTimer stunTimer, speedTimer, powerTimer;
+        private NormalTimer immortalTimer;
 
         int damage = 2;
         int HPregen = 0;
@@ -26,6 +27,7 @@ namespace TheGame
             stunTimer = new NormalTimer(0, undoStun);
             speedTimer = new NormalTimer(0, undoSpeed);
             powerTimer = new NormalTimer(0, undoDamage);
+            immortalTimer = new NormalTimer(0, undoImmortal);
         }
 
         public void Start()
@@ -80,6 +82,14 @@ namespace TheGame
             powerTimer.Start();
         }
 
+        public void MakeImmortal(int time)
+        {
+            player.immortal = true;
+            immortalTimer.setTimerMaxTime(time);
+            immortalTimer.Start();
+            damageTimer.Stop();
+        }
+
 
         // FUNKCJE DO TIMEROW
         private void undoSpeed()
@@ -95,6 +105,12 @@ namespace TheGame
         private void undoDamage()
         {
             player.setOriginalStrenght();
+        }
+
+        private void undoImmortal()
+        {
+            player.immortal = false;
+            damageTimer.Start();
         }
 
         private void EffectAddHealth()
@@ -129,6 +145,11 @@ namespace TheGame
             public void Start()
             {
                 timer.Start();
+            }
+
+            public void Stop()
+            {
+                timer.Stop();
             }
 
             public void setTimerMaxTime(int maxTime)
@@ -205,6 +226,7 @@ namespace TheGame
                 } else
                 {
                     timerCallBack();
+                    this.elapsedTime = 0;
                     timer.Stop();
                 }
 

@@ -19,7 +19,7 @@ namespace TheGame
         public List<Apple> bullet = new List<Apple>(); 
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            AssignParameters(100, 10, 2);
+            AssignParameters(100, 10, 2, 5.0f);
             this.leaf = new Leafs.AppleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
         }
 
@@ -38,73 +38,85 @@ namespace TheGame
         {
             Update();
             
-            Vector3 difference = this.GetPosition() - player.GetPosition();
-            float distance = difference.LengthSquared();
-            timecounter -= deltaTime;
-            timetoshoot -= deltaTime;
-
-            this.Direction = Vector2.Zero;
-            Vector3 playerPosition = player.GetPosition();
-            this.Direction = CalculateDirectionTowardsTarget(playerPosition);
-            RotateTowardsCurrentDirection();
-
-            if (timecounter > 0)
+            if (isStun)
             {
-                canCorrectPosition = false;
-            }
-            else if (timecounter <= 0)
+                elapsedStunTime += deltaTime;
+                if (elapsedStunTime >= stunTime)
+                {
+                    isStun = false;
+                    elapsedStunTime = 0;
+                }
+            } else
             {
-                canCorrectPosition = true;
-            }
+                Vector3 difference = this.GetPosition() - player.GetPosition();
+                float distance = difference.LengthSquared();
+                timecounter -= deltaTime;
+                timetoshoot -= deltaTime;
 
-            if (canCorrectPosition)
-            {
+                this.Direction = Vector2.Zero;
+                Vector3 playerPosition = player.GetPosition();
+                this.Direction = CalculateDirectionTowardsTarget(playerPosition);
+                RotateTowardsCurrentDirection();
 
-                if (PossibledistanceToPlayer * PossibledistanceToPlayer < distance )
+                if (timecounter > 0)
+                {
+                    canCorrectPosition = false;
+                }
+                else if (timecounter <= 0)
+                {
+                    canCorrectPosition = true;
+                }
+
+                if (canCorrectPosition)
                 {
 
-                    this.MoveForwards(deltaTime/10, true);
-                    difference = this.GetPosition() - player.GetPosition();
-                    distance = difference.LengthSquared();
+                    if (PossibledistanceToPlayer * PossibledistanceToPlayer < distance )
+                    {
 
-                    if (PossibledistanceToPlayer * PossibledistanceToPlayer >= distance) {
+                        this.MoveForwards(deltaTime/10, true);
+                        difference = this.GetPosition() - player.GetPosition();
+                        distance = difference.LengthSquared();
+
+                        if (PossibledistanceToPlayer * PossibledistanceToPlayer >= distance) {
+                                timecounter = 10f;
+                            }
+
+                    }
+                    else if(PossibledistanceToPlayer * PossibledistanceToPlayer >= distance ) {
+
+
+                        this.MoveForwards(deltaTime/10, false);
+                        difference = this.GetPosition() - player.GetPosition();
+                        distance = difference.LengthSquared();
+                        if (PossibledistanceToPlayer * PossibledistanceToPlayer <= distance)
+                        {
                             timecounter = 10f;
                         }
-
-                }
-                else if(PossibledistanceToPlayer * PossibledistanceToPlayer >= distance ) {
-
-
-                    this.MoveForwards(deltaTime/10, false);
-                    difference = this.GetPosition() - player.GetPosition();
-                    distance = difference.LengthSquared();
-                    if (PossibledistanceToPlayer * PossibledistanceToPlayer <= distance)
-                    {
-                        timecounter = 10f;
                     }
                 }
-            }
-            else
-            {
-                if (timetoshoot > 0)
+                else
                 {
-                    canShoot = false;
-                }
-                else if (timetoshoot <= 0)
-                {
-                    canShoot = true;
-                }
-                if (canShoot) { 
-                this.Throw(5, player);
-                    timetoshoot = 5;
-                }
+                    if (timetoshoot > 0)
+                    {
+                        canShoot = false;
+                    }
+                    else if (timetoshoot <= 0)
+                    {
+                        canShoot = true;
+                    }
+                    if (canShoot) { 
+                        this.Throw(5, player);
+                        timetoshoot = this.ActualAttackSpeed;
+                    }
 
+                }
+                foreach (Apple apple in bullet.ToList())
+                {
+                    apple.Update(deltaTime,  player);
+                    apple.OnDestroy += RemoveBullet;
+                }
             }
-            foreach (Apple apple in bullet.ToList())
-            {
-                apple.Update(deltaTime,  player);
-                apple.OnDestroy += RemoveBullet;
-            }
+            
 
             
 
@@ -146,7 +158,6 @@ namespace TheGame
                 player.Hit(5);
 
                 OnDestroy?.Invoke(this, EventArgs.Empty);
-
             }
 
             // Check if the bullet has hit the ground

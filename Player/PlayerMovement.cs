@@ -255,6 +255,7 @@ namespace TheGame
                             } 
                             else if (!isCraftingTea && isThrowing)
                             {
+                                player.ThrowMelise();
                                 padButtonXClicked = true;
                             }
                             else

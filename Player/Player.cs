@@ -39,6 +39,8 @@ namespace TheGame
         private List<MintLeaf> mints = new List<MintLeaf>();
 
         private bool canMove = true;
+        private bool stunEnemies = false;
+        public bool immortal = false;
 
         public event EventHandler onMove;
         public event EventHandler onRandomNoise;
@@ -48,8 +50,9 @@ namespace TheGame
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
             SetScale(1.5f);
-            AssignParameters(200, 20, 20);
+            this.setRadius(3);
 
+            AssignParameters(200, 20, 20, 0.5f);
             playerEffects = new PlayerEffectHandler(this);
             Inventory = new Inventory();
             Crafting = new Crafting(Inventory, playerEffects);
@@ -57,7 +60,7 @@ namespace TheGame
             
             // Uruchomienie timera
             playerEffects.Start();
-            this.setRadius(3);
+            
         }
 
         public void Update(World world, float deltaTime, Enemies enemies) //Logic player here
@@ -83,6 +86,12 @@ namespace TheGame
                 onMove?.Invoke(this, EventArgs.Empty);
             }
 
+            if (stunEnemies)
+            {
+                StunEnemies(enemies);
+                stunEnemies = false;
+            }
+
             Random random = new Random();
             int rand = random.Next(0, 1000);
             if(rand == 0)
@@ -90,6 +99,13 @@ namespace TheGame
                 onRandomNoise?.Invoke(this, EventArgs.Empty);
             }
 
+        }
+        public override void Hit(int damage)
+        {
+            if (!immortal)
+            {
+                base.Hit(damage);
+            }
         }
 
         public override void LoadContent()
@@ -168,6 +184,25 @@ namespace TheGame
             }
         }
 
+        public void ThrowMelise()
+        {
+            if (Inventory.checkMeliseLeafNumber())
+            {
+                Inventory.removeMeliseLeaf();
+                stunEnemies = true;
+            }
+        }
+
+        private void StunEnemies(Enemies enemies)
+        {
+            foreach (Enemy enemy in enemies.EnemiesList) 
+            {
+                if (this.boundingSphere.Intersects(enemy.boundingBox))
+                {
+                    enemy.Stun(10);
+                }
+            }
+        }
 
         public void AddIngredientA()
         {
@@ -246,8 +281,7 @@ namespace TheGame
             mints.Remove((MintLeaf)sender);
         }
 
-
-        public class MintLeaf : SceneObject
+        private class MintLeaf : SceneObject
         {
             public BoundingSphere BSphere;
             private float slowness;
@@ -258,7 +292,7 @@ namespace TheGame
             public MintLeaf(Vector3 position, float slow, float maxTime) : base(position, "Objects/test", "Textures/orange")
             {
                 position.Y = 0;
-                this.BSphere = new BoundingSphere(position, 3);
+                this.BSphere = new BoundingSphere(position, 6);
 
                 this.slowness = slow;
                 this.maxTime = maxTime;
@@ -302,7 +336,7 @@ namespace TheGame
         }
 
 
-        public class NettleLeaf : SceneObject
+        private class NettleLeaf : SceneObject
         {
             public BoundingSphere BSphere;
             private int damage;
@@ -313,7 +347,7 @@ namespace TheGame
             public NettleLeaf(Vector3 position, int damage, float maxTime) : base(position, "Objects/test", "Textures/appleTexture")
             {
                 position.Y = 0;
-                this.BSphere = new BoundingSphere(position, 3);
+                this.BSphere = new BoundingSphere(position, 6);
 
                 this.damage = damage;
                 this.maxTime = maxTime;
@@ -354,7 +388,7 @@ namespace TheGame
 
         }
 
-        internal class Apple : SceneObject
+        private class Apple : SceneObject
         {
             private Vector3 velocity;
             private int dmg = 100;
