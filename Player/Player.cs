@@ -344,7 +344,7 @@ namespace TheGame
             private DateTime lastIntervalTime;
             public event EventHandler OnDestroy;
 
-            public NettleLeaf(Vector3 position, int damage, float maxTime) : base(position, "Objects/test", "Textures/appleTexture")
+            public NettleLeaf(Vector3 position, int damage, float maxTime) : base(position, "Objects/test", "Textures/bul")
             {
                 position.Y = 0;
                 this.BSphere = new BoundingSphere(position, 6);
