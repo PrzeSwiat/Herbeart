@@ -470,7 +470,7 @@ namespace TheGame
                 switch (enemyType)
                 {
                     case "Objects/apple":
-                        AppleTree apple = new AppleTree(groundPosition, "Objects/jablonka", "Textures/StarSparrow_Green");
+                        AppleTree apple = new AppleTree(groundPosition, "Objects/drzewo", "Textures/drzewotekstur");
                         apple.LoadContent();
                         enemies.Add(apple);
                         break;
