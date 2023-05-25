@@ -96,7 +96,7 @@ namespace TheGame
                 maps = new List<string>();
 
                 //wybieranie ilości przeciwników w levelu
-                if (numberOfModules < 6)
+                if (numberOfModules < 10)
                     enemyCount = 2;
                 else
                     enemyCount = 4;

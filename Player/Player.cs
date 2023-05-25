@@ -127,7 +127,7 @@ namespace TheGame
                 nettle.Draw(lightpos);
             }
 
-            foreach (MintLeaf mint in mints)
+            foreach (MintLeaf mint in mints.ToList())
             {
                 mint.Draw(lightpos);
             }

@@ -17,7 +17,7 @@ namespace TheGame
 
         public Melissa(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            AssignParameters(200, 10, 2, 1.0f);
+            AssignParameters(200, 6, 2, 1.0f);
             this.leaf = new Leafs.MelissaLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
         }
 

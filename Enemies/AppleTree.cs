@@ -19,7 +19,7 @@ namespace TheGame
         public List<Apple> bullet = new List<Apple>(); 
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            AssignParameters(100, 10, 2, 5.0f);
+            AssignParameters(100, 7, 2, 5.0f);
             this.leaf = new Leafs.AppleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
         }
 
