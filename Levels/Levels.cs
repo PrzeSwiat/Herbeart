@@ -363,7 +363,7 @@ namespace TheGame
 
                     }
                 }
-                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/floor"));
+                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/tekstura_wielkiego_tila"));
 
                 Random random = new Random();
                 int objectsCount = random.Next(4, 7);
@@ -471,22 +471,22 @@ namespace TheGame
                 switch (enemyType)
                 {
                     case "Objects/apple":
-                        AppleTree apple = new AppleTree(groundPosition, "Objects/jablonka", "Textures/StarSparrow_Green");
+                        AppleTree apple = new AppleTree(groundPosition, "Objects/jablon", "Textures/drzewotekstur");
                         apple.LoadContent();
                         enemies.Add(apple);
                         break;
                     case "Objects/melissa":
-                        Melissa melissa = new Melissa(groundPosition, "Objects/melisa", "Textures/StarSparrow_Green");
+                        Melissa melissa = new Melissa(groundPosition, "Objects/melisa", "Textures/melisa");
                         melissa.LoadContent();
                         enemies.Add(melissa);
                         break;
                     case "Objects/nettle":
-                        Nettle nettle = new Nettle(groundPosition, "Objects/pokrzywa", "Textures/StarSparrow_Green");
+                        Nettle nettle = new Nettle(groundPosition, "Objects/pokrzywa", "Textures/pokrzyw");
                         nettle.LoadContent();
                         enemies.Add(nettle);
                         break;
                     case "Objects/mint":
-                        Mint mint = new Mint(groundPosition, "Objects/mieta", "Textures/StarSparrow_Green");
+                        Mint mint = new Mint(groundPosition, "Objects/mieta", "Textures/mieta");
                         mint.LoadContent();
                         enemies.Add(mint);
                         break;

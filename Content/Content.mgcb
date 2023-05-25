@@ -73,7 +73,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Objects/ground.obj
 
-#begin Objects/jablonka.obj
+#begin Objects/jablon.obj
 /importer:FbxImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
@@ -90,7 +90,7 @@
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
-/build:Objects/jablonka.obj
+/build:Objects/jablon.obj
 
 #begin Objects/japco.obj
 /importer:FbxImporter
@@ -449,6 +449,30 @@
 /processorParam:TextureFormat=Color
 /build:Textures/black.png
 
+#begin Textures/bul.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/bul.png
+
+#begin Textures/drzewotekstur.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/drzewotekstur.png
+
 #begin Textures/floor.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -509,6 +533,30 @@
 /processorParam:TextureFormat=Color
 /build:Textures/itemFrame.png
 
+#begin Textures/melisa.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/melisa.png
+
+#begin Textures/mieta.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/mieta.png
+
 #begin Textures/MisTexture.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -544,6 +592,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/pobrany plik (1).jpg
+
+#begin Textures/pokrzyw.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/pokrzyw.png
 
 #begin Textures/Red.png
 /importer:TextureImporter
@@ -592,6 +652,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/StarSparrow_Orange.png
+
+#begin Textures/tekstura_wielkiego_tila.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/tekstura_wielkiego_tila.png
 
 #begin Textures/tekstura.png
 /importer:TextureImporter
