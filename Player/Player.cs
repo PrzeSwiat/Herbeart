@@ -115,7 +115,7 @@ namespace TheGame
 
         public override void DrawPlayer(Vector3 lightpos)
         {
-            base.DrawPlayer(lightpos);
+            
             foreach(Apple apple in apples)
             {
                 apple.DrawPlayer(lightpos);
@@ -131,7 +131,7 @@ namespace TheGame
             {
                 mint.Draw(lightpos);
             }
-
+            base.DrawPlayer(lightpos);
         }
 
         public void Attack()
@@ -291,7 +291,7 @@ namespace TheGame
 
             public MintLeaf(Vector3 position, float slow, float maxTime) : base(position, "Objects/test", "Textures/slow")
             {
-                this.SetPositionY(-2.0f);
+                this.SetPositionY(-2f);
                 this.BSphere = new BoundingSphere(this.GetPosition(), 6);
 
                 this.slowness = slow;

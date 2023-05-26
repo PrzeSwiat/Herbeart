@@ -363,7 +363,7 @@ namespace TheGame
 
                     }
                 }
-                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/tekstura_wielkiego_tila"));
+                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/floor"));
 
                 Random random = new Random();
                 int objectsCount = random.Next(4, 7);

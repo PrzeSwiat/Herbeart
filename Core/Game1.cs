@@ -10,8 +10,8 @@ namespace TheGame
     public class Game1 : Game
     {
         //DON'T TOUCH IT MORTALS
-        int WindowWidth = 1280;
-        int WindowHeight = 900;
+        int WindowWidth = 1920;
+        int WindowHeight = 1080;
         private SpriteBatch _spriteBatch;
         Camera camera;
         EffectHandler effectHandler;
@@ -159,9 +159,12 @@ namespace TheGame
                 base.Draw(gameTime);
                 hud.DrawBackground(_spriteBatch);
                 GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                
                 world.Draw(player.GetPosition());
-                enemies.Draw(player.GetPosition());
                 player.DrawPlayer(player.GetPosition());
+            
+                enemies.Draw(player.GetPosition());
+                
                 Leafs.Draw(player.GetPosition());
                 animationMenager.DrawAnimation(GraphicsDevice);
                 hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList, viewport);  //hud jako OSTATNI koniecznie
