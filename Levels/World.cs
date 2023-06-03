@@ -21,7 +21,7 @@ namespace TheGame
         public World()   
         {
             _worldArray = new List<SceneObject>();
-            level = new Levels(100);
+            level = new Levels();
             enemies = new List<Enemy>();
         }
 

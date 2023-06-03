@@ -33,8 +33,10 @@ namespace TheGame
         private List<string> maps = new List<string>();
         private string currentMap;
         private string choosedMap;
-        private int numberOfModules;
+
         #region Module parametrs and rectangles
+        private int lastModule;
+        private int numberOfModules;
         private int moduleSeparatorX = 120;
         private int moduleSeparatorZCount = 0;
         private int moduleHeightChange = 0;
@@ -52,17 +54,17 @@ namespace TheGame
 
 
 
-        public Levels(int numberOfModules)
+        public Levels()
         {
             _levels = new List<Level>();
             modulesList = new List<Rectangle>();
             visited = new HashSet<Rectangle>();
-            this.numberOfModules = numberOfModules;
         }
 
         public void LoadContent()
         {
-            prepareMap();
+            prepareFirstLevels();
+            //prepareMap();
         }
 
         public void prepareFirstLevels()
@@ -81,113 +83,100 @@ namespace TheGame
             _levels[2].GenerateEnemy(nettleEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 60));
 
             currentMap = "Maps/map3.txt";
+            numberOfModules = 3;
 
         }
 
         public void prepareMap()
         {
+            numberOfModules++;
+
             int enemyCount;
-            int partyNumber = 0;
-            prepareFirstLevels();
+            maps = new List<string>();
 
+            //wybieranie ilości przeciwników w levelu
+            if (numberOfModules < 10)
+                enemyCount = 2;
+            else
+                enemyCount = 4;
 
-            for (int i = 0; i < numberOfModules + 1; i++)
+            //Przypadek prostych map - wylot z lewej i prawej
+            if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
             {
-                maps = new List<string>();
+                maps.AddRange(maps_straight);   //dalej prosto
+                maps.AddRange(maps_left_up);    //idziemy do gory
+                maps.AddRange(maps_left_down);  //idziemy do dołu
 
-                //wybieranie ilości przeciwników w levelu
-                if (numberOfModules < 10)
-                    enemyCount = 2;
-                else
-                    enemyCount = 4;
+                prepareRandomModule(enemyCount);
+            }
 
-/*                if (numberOfModules + partyNumber >= 10 && maps_straight.Contains(currentMap))          //wesele!
-                {
-                    prepareModule("Maps/map6.txt", 0);
-                    currentMap = "Maps/map6.txt";
-                    partyNumber += 10;
-                }*/
+            //Zakręt do góry - wylot z lewej i góry
+            if (maps_left_up.Contains(currentMap))
+            {
+                maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
+                maps.AddRange(maps_down_up);
 
-                //Przypadek prostych map - wylot z lewej i prawej
-                if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
-                {
-                    maps.AddRange(maps_straight);   //dalej prosto
-                    maps.AddRange(maps_left_up);    //idziemy do gory
-                    maps.AddRange(maps_left_down);  //idziemy do dołu
+                moduleSeparatorZCount--;
+                moduleHeightChange++;
 
-                    prepareRandomModule(enemyCount);
-                }
+                prepareRandomModule(enemyCount);
+            }
 
-                //Zakręt do góry - wylot z lewej i góry
-                if (maps_left_up.Contains(currentMap))
-                {
-                    maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
-                    maps.AddRange(maps_down_up);
+            //Zakręt od dołu w prawo - wylot z dołu i po prawo
+            if (maps_down_right.Contains(currentMap))
+            {
+                maps.AddRange(maps_straight);
+                maps.AddRange(maps_left_up);
 
-                    moduleSeparatorZCount--;
-                    moduleHeightChange++;
+                prepareRandomModule(enemyCount);
+            }
 
-                    prepareRandomModule(enemyCount);
-                }
+            //Zakręt w dół - wylot z lewej i z dołu
+            if (maps_left_down.Contains(currentMap))
+            {
+                maps.AddRange(maps_up_right);
+                maps.AddRange(maps_up_down);
 
-                //Zakręt od dołu w prawo - wylot z dołu i po prawo
-                if (maps_down_right.Contains(currentMap))
-                {
-                    maps.AddRange(maps_straight);
-                    maps.AddRange(maps_left_up);
+                moduleSeparatorZCount++;
+                moduleHeightChange++;
 
-                    prepareRandomModule(enemyCount);
-                }
+                prepareRandomModule(enemyCount);
+            }
 
-                //Zakręt w dół - wylot z lewej i z dołu
-                if (maps_left_down.Contains(currentMap))
-                {
-                    maps.AddRange(maps_up_right);
-                    maps.AddRange(maps_up_down);
+            //Wylot z góry i z prawej
+            if (maps_up_right.Contains(currentMap))
+            {
+                maps.AddRange(maps_straight);   //dalej prosto
+                maps.AddRange(maps_left_up);    //idziemy do gory
+                maps.AddRange(maps_left_down);  //idziemy do dołu
 
-                    moduleSeparatorZCount++;
-                    moduleHeightChange++;
+                prepareRandomModule(enemyCount);
+            }
+            //Prosta od góry do dołu              //work in progress
+            if (maps_up_down.Contains(currentMap))
+            {
+                maps.AddRange(maps_up_right);
 
-                    prepareRandomModule(enemyCount);
-                }
+                moduleSeparatorZCount++;
+                moduleHeightChange++;
 
-                //Wylot z góry i z prawej
-                if (maps_up_right.Contains(currentMap))
-                {
-                    maps.AddRange(maps_straight);   //dalej prosto
-                    maps.AddRange(maps_left_up);    //idziemy do gory
-                    maps.AddRange(maps_left_down);  //idziemy do dołu
-
-                    prepareRandomModule(enemyCount);
-                }
-                //Prosta od góry do dołu              //work in progress
-                if (maps_up_down.Contains(currentMap))
-                {
-                    maps.AddRange(maps_up_right);
-
-                    moduleSeparatorZCount++;
-                    moduleHeightChange++;
-
-                    prepareRandomModule(enemyCount);
-
-                }
-
-                //Prosta od dołu do góry
-                if (maps_down_up.Contains(currentMap))
-                {
-                    maps.AddRange(maps_down_right);
-
-                    moduleSeparatorZCount--;
-                    moduleHeightChange++;
-
-                    prepareRandomModule(enemyCount);
-
-                }
-
-                currentMap = choosedMap;
-
+                prepareRandomModule(enemyCount);
 
             }
+
+            //Prosta od dołu do góry
+            if (maps_down_up.Contains(currentMap))
+            {
+                maps.AddRange(maps_down_right);
+
+                moduleSeparatorZCount--;
+                moduleHeightChange++;
+
+                prepareRandomModule(enemyCount);
+
+            }
+
+            currentMap = choosedMap;
         }
 
         public void prepareRandomModule(int enemyCount)
@@ -215,6 +204,13 @@ namespace TheGame
 
             int numberOfModule = returnModuleNumber(playerX, playerY);
 
+            if (numberOfModule == numberOfModules-2)
+            {
+                prepareMap();
+            }
+            Debug.Write(numberOfModule);
+            Debug.Write(", " + numberOfModules);    
+            Debug.Write("\n");
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
                 if (i >= 0 && i < _levels.Count - 1)
@@ -239,7 +235,7 @@ namespace TheGame
 
             if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count - 2)
             {
-                foreach (Enemy enemy in _levels[numberOfModule + 1].returnEnemies())
+                foreach (Enemy enemy in _levels[numberOfModule+1].returnEnemies())
                 {
                     enemiesList.Add(enemy);
                 }
@@ -249,6 +245,8 @@ namespace TheGame
 
             return enemiesList;
         }
+
+
 
         public int returnModuleNumber(float playerX, float playerY)
         {
@@ -281,7 +279,7 @@ namespace TheGame
             private int tileSize = 6;
             private int moduleWidth = 20;
             private int moduleHeight = 20;
-            private string ground = "Objects/test";
+            private string ground = "grass";
             private List<Enemy> enemies;
             private List<Vector3> groundPositions;
 
@@ -316,21 +314,18 @@ namespace TheGame
 
             public struct Tile
             {
-                public string model;
-                public string texture;
+                public string groundType;
                 public float height;
 
-                public Tile(String model, String texture, float height)
+                public Tile(String groundType, float height)
                 {
-                    this.model = model;
-                    this.texture = texture;
+                    this.groundType = groundType;
                     this.height = height;
                 }
             }
 
             public List<SceneObject> returnSceneObjects() { return _sceneObjects; }
 
-            //public List<Vector3> lista = new List<Vector3>();
             private void LoadSceneObjects()
             {
                 LoadScene(fileName, enemyCount);
@@ -341,18 +336,18 @@ namespace TheGame
                     {
                         int index = i * moduleWidth + j;
                         float height = this._tiles[index].height;
-                        string model = this._tiles[index].model;
-                        string texture = this._tiles[index].texture;
+                        string groundType = this._tiles[index].groundType;
                         Vector3 wektor = new Vector3(j * tileSize + separatorX, height, i * tileSize + separatorZ);
-                        if (model == ground)
+                        if (groundType == ground)
                         {
                             Vector3 enemyWektor = wektor;
                             enemyWektor.Y = 0;
                             groundPositions.Add(enemyWektor);
                         }
-                        if (treeModels.Contains(model))
+                        if (groundType == "forest")
                         {
-                            SceneObject tree = new SceneObject(wektor, model, texture);
+                            string treeModel = GenerateRandomString(treeModels);
+                            SceneObject tree = new SceneObject(wektor, treeModel, "Textures/tree1_color");
                             Random rand = new Random();
                             float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
                             float size = (float)rand.Next(200, 300) / 100;                                //zmiana wielkosci drzewa losowo
@@ -393,19 +388,14 @@ namespace TheGame
                     switch (tileList[i])
                     {
                         case 48: //0
-                            string treeModel = GenerateRandomString(treeModels);
-
-                            _tiles.Add(new Tile(treeModel, "Textures/tree1_color", -2.0f));
+                            _tiles.Add(new Tile("forest", -2.0f));
                             break;
                         case 97: //a
-                            _tiles.Add(new Tile(ground, "Textures/trawa1", -2.0f));
+                            _tiles.Add(new Tile("grass", -2.0f));
                             break;
-/*                        case 98:
-                            _tiles.Add(new Tile(ground, "Textures/trawa2", -3.0f));
+                        case 98: //b
+                            _tiles.Add(new Tile("spawn", -3.0f));
                             break;
-                        case 99:
-                            _tiles.Add(new Tile(ground, "Textures/trawa3", -3.0f));
-                            break;*/
                     }
                 }
             }
