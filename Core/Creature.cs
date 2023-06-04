@@ -51,6 +51,7 @@ namespace TheGame
                 leaf.AddToWorld();
                 leaf.SetPosition(this.GetPosition());
                 OnDestroy?.Invoke(this, EventArgs.Empty);
+                Globals.Score += 20;
             }
             else
             {
