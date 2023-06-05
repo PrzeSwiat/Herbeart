@@ -36,10 +36,10 @@ namespace TheGame
 
         #region Module parametrs and rectangles
         private int numberOfModules;
-        private int moduleSeparatorX = 120;
+        private int moduleSeparatorX;
         private int moduleSeparatorZCount = 0;
         private int moduleHeightChange = 0;
-        private int moduleSeparatorZ = 120;
+        private int moduleSeparatorZ;
         List<Rectangle> modulesList;
         Rectangle module;
         HashSet<Rectangle> visited;
@@ -58,12 +58,13 @@ namespace TheGame
             _levels = new List<Level>();
             modulesList = new List<Rectangle>();
             visited = new HashSet<Rectangle>();
+            moduleSeparatorX = 6 * 26;
+            moduleSeparatorZ = 6 * 26;
         }
 
         public void LoadContent()
         {
             prepareFirstLevels();
-            //prepareMap();
         }
 
         public void prepareFirstLevels()
@@ -272,9 +273,9 @@ namespace TheGame
             private string[] otherModels = { "Objects/rock2", "Objects/rock18", "Objects/tree1" };
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
-            private int tileSize = 6;
-            private int moduleWidth = 20;
-            private int moduleHeight = 20;
+            public int tileSize = 6;
+            public int moduleWidth = 26;
+            public int moduleHeight = 26;
             private List<Enemy> enemies;
             private List<Vector3> groundPositions;
 
@@ -358,7 +359,7 @@ namespace TheGame
                             SceneObject tree = new SceneObject(wektor, treeModel, texture);
                             Random rand = new Random();
                             float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
-                            float size = (float)rand.Next(200, 300) / 100;                                //zmiana wielkosci drzewa losowo
+                            float size = (float)rand.Next(150, 250) / 100;                                //zmiana wielkosci drzewa losowo
                             tree.SetScale(size);
                             tree.SetRotation(new Vector3(0, rflot, 0));
                             _sceneObjects.Add(tree);
