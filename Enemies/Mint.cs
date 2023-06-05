@@ -16,7 +16,15 @@ namespace TheGame
         public Mint(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(75, 12, 2, 0.5f);
+            this.shadow.SetScale(0.7f);
             this.leaf = new Leafs.MintLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
+        }
+        public override void Update(float deltaTime, Player player)
+        {
+            base.Update(deltaTime, player);
+            this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.2f,0,-1));
+            this.shadow.SetPositionY(-0.5f);
+
         }
 
         protected override void Attack(Player player)

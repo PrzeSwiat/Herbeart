@@ -18,7 +18,15 @@ namespace TheGame
         public Melissa(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(200, 6, 2, 1.0f);
+            this.shadow.SetScale(1.35f);
             this.leaf = new Leafs.MelissaLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
+        }
+
+        public override void Update(float deltaTime, Player player)
+        {
+            base.Update(deltaTime, player);
+            this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(2.5f, 0, -2.5f));
+            
         }
 
         protected override void Attack(Player player)

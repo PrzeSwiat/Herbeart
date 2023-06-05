@@ -21,6 +21,7 @@ namespace TheGame
         {
             AssignParameters(100, 7, 2, 5.0f);
             this.leaf = new Leafs.AppleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
+            this.shadow.SetScale(1.05f);
         }
 
         public void RemoveBullet(object sender,EventArgs e)
@@ -37,7 +38,7 @@ namespace TheGame
         public override void Update(float deltaTime, Player player)
         {
             Update();
-            
+            this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.8f, 0, -1.9f));
             if (isStun)
             {
                 elapsedStunTime += deltaTime;

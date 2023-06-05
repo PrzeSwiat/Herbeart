@@ -15,12 +15,13 @@ namespace TheGame
         public event EventHandler OnAttack;
         public bool isStun = false;
         public float stunTime = 0, elapsedStunTime = 0;
-
+        public Shadow shadow;
         private DateTime lastAttackTime, actualTime;
         private bool collides = false;
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
+            shadow = new Shadow(worldPosition);
             Direction = new Vector2(0, 0);
             lastAttackTime = DateTime.Now;
             actualTime = lastAttackTime;
@@ -37,6 +38,18 @@ namespace TheGame
                 OnAttack?.Invoke(this, EventArgs.Empty);
                 lastAttackTime = actualTime;
             }
+        }
+        public override void LoadContent()
+        {
+            shadow.LoadContent();
+            base.LoadContent();
+            
+        }
+        public override void DrawPlayer(Vector3 lightpos)
+        {
+            base.DrawPlayer(lightpos);
+            shadow.DrawPlayer(lightpos);
+
         }
 
         protected void checkCollision(Player player)

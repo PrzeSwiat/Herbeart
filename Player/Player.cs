@@ -37,7 +37,7 @@ namespace TheGame
         private List<Apple> apples = new List<Apple>();
         private List<NettleLeaf> nettles = new List<NettleLeaf>();
         private List<MintLeaf> mints = new List<MintLeaf>();
-
+        public Shadow shadow;
         private bool canMove = true;
         private bool stunEnemies = false;
         public bool immortal = false;
@@ -57,7 +57,7 @@ namespace TheGame
             Inventory = new Inventory();
             Crafting = new Crafting(Inventory, playerEffects);
             playerMovement = new PlayerMovement(this);
-            
+            shadow = new Shadow(this.GetPosition());
             // Uruchomienie timera
             playerEffects.Start();
             
@@ -98,6 +98,7 @@ namespace TheGame
             {
                 onRandomNoise?.Invoke(this, EventArgs.Empty);
             }
+            shadow.UpdatingPlayer(this.GetPosition());
 
         }
         public override void Hit(int damage)
@@ -110,17 +111,15 @@ namespace TheGame
 
         public override void LoadContent()
         {
+            shadow.LoadContent();
             base.LoadContent();
+            
         }
 
         public override void DrawPlayer(Vector3 lightpos)
         {
-            
-            foreach(Apple apple in apples)
-            {
-                apple.DrawPlayer(lightpos);
-                //apple.DrawBB(); why not working ???
-            }
+            shadow.DrawPlayer(lightpos);
+           
 
             foreach (NettleLeaf nettle in nettles)
             {
@@ -131,7 +130,14 @@ namespace TheGame
             {
                 mint.Draw(lightpos);
             }
+            
             base.DrawPlayer(lightpos);
+            foreach (Apple apple in apples)
+            {
+                apple.DrawPlayer(lightpos);
+                //apple.DrawBB(); why not working ???
+            }
+
         }
 
         public void Attack()

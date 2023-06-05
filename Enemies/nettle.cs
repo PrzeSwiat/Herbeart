@@ -18,10 +18,15 @@ namespace TheGame
         public Nettle(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(80, 8, 2, 0.7f);
+            this.shadow.SetScale(0.95f);
             this.leaf = new Leafs.NettleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
             lastHealth = this.Health;
         }
-
+        public override void Update(float deltaTime, Player player)
+        {
+            base.Update(deltaTime, player);
+            this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.8f,0,-1.9f));
+        }
         protected override void Attack(Player player)
         {
             actualTime = DateTime.Now;
