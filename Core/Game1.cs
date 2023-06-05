@@ -55,7 +55,7 @@ namespace TheGame
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
 
-            Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 50), (WindowWidth / 50), -(WindowHeight / 50), (WindowHeight / 50), 1f, 100f);      // orthographic view 
+            Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 50), (WindowWidth / 50), -(WindowHeight / 50), (WindowHeight / 50), -10f, 100f);      // orthographic view 
                                                                                                                                                                               //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
             // PERSPECTIVE point of view
@@ -108,7 +108,6 @@ namespace TheGame
             enemies.LoadModels();
             Leafs.LoadModels();
             animacyjnaPacynka.LoadContent();
-
             audioMenager.LoadContent();
             soundActorPlayer.LoadContent();
             animationMenager.LoadContent();

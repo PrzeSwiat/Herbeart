@@ -79,7 +79,7 @@ float4 CelPixelShader(VertexToPixel input) : COLOR0
  
 
     float4 color = tex2D(textureSampler, input.TextureCoordinate) * DiffuseColor * DiffuseIntensity;
-    color.a = 1;
+    clip(color.a < 0.75f ? -1 : 1);
  
 
     if (intensity > 0.95)

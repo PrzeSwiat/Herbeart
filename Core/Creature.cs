@@ -17,7 +17,6 @@ namespace TheGame
         private float attackSpeed, actualAttackSpeed;
         public Leaf leaf;
         public Vector2 direction;
-
         public BoundingSphere boundingSphere;
         private float sphereRadius = 0;
         private float distanceFromCenter = 0;
@@ -27,7 +26,6 @@ namespace TheGame
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             leaf = new Leaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
-
             boundingSphere = BoundingSphere.CreateFromBoundingBox(this.boundingBox);
         }
 
@@ -74,7 +72,6 @@ namespace TheGame
         public override void LoadContent()
         {
             base.LoadContent();
-
             boundingSphere.Radius = this.sphereRadius;
             if (distanceFromCenter != 0)
             {
