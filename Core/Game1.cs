@@ -72,7 +72,7 @@ namespace TheGame
 
             Globals.effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
             Globals.effectHandler1 = new EffectHandler(Content.Load<Effect>("MainShader"));
-           
+            Globals.Score = 0;
             hud = new HUD("Textures/forest2", WindowWidth, WindowHeight);
             world = new World();
             player = new Player(new Vector3(30,0,50), "Objects/mis", "Textures/MisTexture");

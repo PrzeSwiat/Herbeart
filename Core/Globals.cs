@@ -25,5 +25,6 @@ namespace TheGame
 
         public static bool Pause;
         public static float time;
+        public static int Score;
     }
 }

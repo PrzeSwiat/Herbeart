@@ -16,6 +16,7 @@ namespace TheGame
     internal class HUD
     {
         private string _texFilename;
+        private SpriteFont ScoreFont;
         private SpriteFont Font;
         private SpriteFont Menu;
         private SpriteFont Menu2;
@@ -52,6 +53,7 @@ namespace TheGame
             Font = Globals.content.Load<SpriteFont>("Fonts");
             Menu = Globals.content.Load<SpriteFont>("Menu");
             Menu2 = Globals.content.Load<SpriteFont>("Menu2");
+            ScoreFont = Globals.content.Load<SpriteFont>("ScoreFont");
         }
 
         public void Update(Vector3 camPos, Dictionary<string, int> leafs)
@@ -90,6 +92,7 @@ namespace TheGame
             DrawInventory(spriteBatch);
             DrawHealthBar(spriteBatch, hp);
             DrawEnemyHealthBar(spriteBatch, enemies, viewport);
+            DrawScore(spriteBatch);
             spriteBatch.End();
         }
 
@@ -108,9 +111,27 @@ namespace TheGame
                 spriteBatch.Draw(red, rect, Color.Red);
 
             }
+            /*
+            foreach (Enemy e in enemies)
+            {
+                Vector3 projectedPosition = viewport.Project(e.GetPosition(),
+                    Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
 
+                int fakeHealth = e.Health / 2;
+                for (int i = 0; i < fakeHealth; i++)
+                {
+                    Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + (i * 20)), (int)(projectedPosition.Y - 100), 20, 20);
+                    spriteBatch.Draw(enemyhealth, rect, Color.White);
+                }
+                if (e.Health % 2 == 1)
+                {
 
-        }
+                    Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + ((fakeHealth) * 20)), (int)(projectedPosition.Y - 100), 20, 20);
+                    spriteBatch.Draw(halfenemyhealth, rect, Color.Gray);
+                }
+            */
+
+            }
 
         public void DrawInventory(SpriteBatch spriteBatch)
         {
@@ -150,6 +171,10 @@ namespace TheGame
             spriteBatch.End();
         }
 
+        public void DrawScore(SpriteBatch spriteBatch)
+        {
 
+            spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 30 * Globals.Score.ToString().Length, 5), Color.White);
+        }
     }
 }
