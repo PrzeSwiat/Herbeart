@@ -75,7 +75,7 @@ namespace TheGame
             Globals.Score = 0;
             hud = new HUD("Textures/forest2", WindowWidth, WindowHeight);
             world = new World();
-            player = new Player(new Vector3(30,0,30), "Objects/mis", "Textures/MisTexture");
+            player = new Player(new Vector3(30,0,50), "Objects/mis", "Textures/MisTexture");
             animacyjnaPacynka = new Player(new Vector3(0, 15, 30), "Objects/mis", "Textures/tekstura");
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);

@@ -35,7 +35,6 @@ namespace TheGame
         private string choosedMap;
 
         #region Module parametrs and rectangles
-        private int lastModule;
         private int numberOfModules;
         private int moduleSeparatorX = 120;
         private int moduleSeparatorZCount = 0;
@@ -208,9 +207,6 @@ namespace TheGame
             {
                 prepareMap();
             }
-            Debug.Write(numberOfModule);
-            Debug.Write(", " + numberOfModules);    
-            Debug.Write("\n");
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
                 if (i >= 0 && i < _levels.Count - 1)
@@ -271,7 +267,7 @@ namespace TheGame
 
         class Level
         {
-            private string[] treeModels = { "Objects/tree1", "Objects/tree2", "Objects/tree3" };
+            private string[] treeModels = { "Objects/drzewo1", "Objects/drzewo2", "Objects/drzewo3" };
             private string[] enemyTypes = { "Objects/apple", "Objects/mint", "Objects/nettle", "Objects/melissa" };
             private string[] otherModels = { "Objects/rock2", "Objects/rock18", "Objects/tree1" };
             private List<Tile> _tiles;
@@ -279,7 +275,6 @@ namespace TheGame
             private int tileSize = 6;
             private int moduleWidth = 20;
             private int moduleHeight = 20;
-            private string ground = "grass";
             private List<Enemy> enemies;
             private List<Vector3> groundPositions;
 
@@ -338,7 +333,7 @@ namespace TheGame
                         float height = this._tiles[index].height;
                         string groundType = this._tiles[index].groundType;
                         Vector3 wektor = new Vector3(j * tileSize + separatorX, height, i * tileSize + separatorZ);
-                        if (groundType == ground)
+                        if (groundType == "grass")
                         {
                             Vector3 enemyWektor = wektor;
                             enemyWektor.Y = 0;
@@ -347,7 +342,20 @@ namespace TheGame
                         if (groundType == "forest")
                         {
                             string treeModel = GenerateRandomString(treeModels);
-                            SceneObject tree = new SceneObject(wektor, treeModel, "Textures/tree1_color");
+                            string texture = "null";
+                            switch (treeModel)
+                            {
+                                case "Objects/drzewo1":
+                                    texture = "Textures/drzewo1";
+                                    break;
+                                case "Objects/drzewo2":
+                                    texture = "Textures/drzewo2";
+                                    break;
+                                case "Objects/drzewo3":
+                                    texture = "Textures/drzewo3";
+                                    break;
+                            }
+                            SceneObject tree = new SceneObject(wektor, treeModel, texture);
                             Random rand = new Random();
                             float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
                             float size = (float)rand.Next(200, 300) / 100;                                //zmiana wielkosci drzewa losowo
@@ -358,7 +366,7 @@ namespace TheGame
 
                     }
                 }
-                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/floor"));
+                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/tekstura_wielkiego_tila"));
 
                 Random random = new Random();
                 int objectsCount = random.Next(4, 7);
