@@ -161,11 +161,12 @@ namespace TheGame
                 
                 world.Draw(player.GetPosition());
                 player.DrawPlayer(player.GetPosition());
-            
+                
                 enemies.Draw(player.GetPosition());
                 
                 Leafs.Draw(player.GetPosition());
                 animationMenager.DrawAnimation(GraphicsDevice);
+                player.DrawEffectsShadow(player.GetPosition());
                 hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList, viewport);  //hud jako OSTATNI koniecznie
 
 

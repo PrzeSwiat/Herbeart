@@ -118,26 +118,33 @@ namespace TheGame
 
         public override void DrawPlayer(Vector3 lightpos)
         {
-            shadow.DrawPlayer(lightpos);
+            
            
 
             foreach (NettleLeaf nettle in nettles)
             {
-                nettle.Draw(lightpos);
+                
+                nettle.DrawPlayer(lightpos);
             }
 
             foreach (MintLeaf mint in mints.ToList())
             {
-                mint.Draw(lightpos);
+                mint.DrawPlayer(lightpos);
             }
             
             base.DrawPlayer(lightpos);
+
             foreach (Apple apple in apples)
             {
                 apple.DrawPlayer(lightpos);
                 //apple.DrawBB(); why not working ???
             }
 
+        }
+        public void DrawEffectsShadow(Vector3 lightpos)
+        {
+            shadow.SetPositionY(-0.99f);
+            shadow.DrawPlayer(lightpos);
         }
 
         public void Attack()
@@ -352,7 +359,7 @@ namespace TheGame
 
             public NettleLeaf(Vector3 position, int damage, float maxTime) : base(position, "Objects/test", "Textures/bul")
             {
-                SetPositionY(-2);
+                SetPositionY(-1.99f);
                 this.BSphere = new BoundingSphere(GetPosition(), 6);
 
                 this.damage = damage;
