@@ -211,7 +211,7 @@ namespace TheGame
             }
             foreach (Enemy enemy in enemies.EnemiesList)
             {
-                enemy.DrawBB();
+                //enemy.DrawBB();
                 if (enemy.GetType() == typeof(AppleTree))
                 {
                     AppleTree apple1 = (AppleTree)enemy;

@@ -19,6 +19,12 @@ namespace TheGame
 
         MouseState lastMouseState, currentMouseState;
 
+        private float dashTime = 0.2f, elapsedDashTime = 0;
+        private float dashSpeed = 50f;
+        private Vector2 dashDirection;
+        bool isDashing = false;
+
+
         public PlayerMovement(Player player) 
         { 
             this.player = player;
@@ -74,12 +80,12 @@ namespace TheGame
                     }
 
                     ///Right THUMBSTICK
-                    if (RightjoystickX != 0 || RightjoystickY != 0)
+                    /*if (RightjoystickX != 0 || RightjoystickY != 0)
                     {
                         w2 = new Vector2(RightjoystickX, RightjoystickY);
                         rotation = angle(w1, w2);
                        
-                    }
+                    }*/
                 }
             }
             else
@@ -135,16 +141,36 @@ namespace TheGame
 
                 
             }
-            float Sphereang = rotation - player.GetRotation().Y;
-            rotateSphere(Sphereang);
-            if (player.getcanMove())
-            {
-                Vector3 wec = new Vector3(player.Direction.X, 0, player.Direction.Y);
-                UpdateBB(0, world.GetWorldList(), new Vector3(player.Direction.X * deltaTime * player.ActualSpeed, 0, player.Direction.Y * deltaTime * player.ActualSpeed), wec);
 
+            if (isDashing)
+            {
+                elapsedDashTime += deltaTime;
+
+                if (elapsedDashTime < dashTime)
+                {
+                    Vector3 wec = new Vector3(dashDirection.X, 0, dashDirection.Y);
+                    UpdateBB(0, world.GetWorldList(), new Vector3(dashDirection.X * deltaTime * dashSpeed, 0, dashDirection.Y * deltaTime * dashSpeed), wec);
+                }
+                else 
+                {
+                    isDashing = false;
+                    elapsedDashTime = 0;
+                }
+            } else // MOVING
+            {
+                float Sphereang = rotation - player.GetRotation().Y;
+                rotateSphere(Sphereang);
+                if (player.getcanMove())
+                {
+                    Vector3 wec = new Vector3(player.Direction.X, 0, player.Direction.Y);
+                    UpdateBB(0, world.GetWorldList(), new Vector3(player.Direction.X * deltaTime * player.ActualSpeed, 0, player.Direction.Y * deltaTime * player.ActualSpeed), wec);
+
+                }
+
+                player.SetRotation(0, rotation, 0);
             }
 
-            player.SetRotation(0, rotation, 0);
+            
         }
 
 
@@ -202,7 +228,7 @@ namespace TheGame
                             else 
                             {
                                 padButtonBClicked = true;
-                                // tutaj ewentualny dash/przewrot
+                                Dash();
                             }
                         }
                             
@@ -298,34 +324,10 @@ namespace TheGame
             }
         }
 
-        float CalculatePenetrationDepthX(List<SceneObject> worldList)
+        private void Dash()
         {
-            float penetrationDepth = 0;
-            foreach (SceneObject obj in worldList)
-            {
-                if (player.boundingBox.Intersects(obj.boundingBox))
-                {
-                    penetrationDepth = Math.Min(player.boundingBox.Max.X - obj.boundingBox.Min.X, obj.boundingBox.Max.X - player.boundingBox.Min.X);
-                  
-                }
-            }
-            
-            return penetrationDepth;
-        }
-
-        float CalculatePenetrationDepthZ(List<SceneObject> worldList)
-        {
-            float penetrationDepth = 0;
-
-            foreach (SceneObject obj in worldList)
-            {
-                if (player.boundingBox.Intersects(obj.boundingBox))
-                {
-                    penetrationDepth = Math.Min(player.boundingBox.Max.Z - obj.boundingBox.Min.Z, obj.boundingBox.Max.Z - player.boundingBox.Min.Z);
-                }
-            }
-
-            return penetrationDepth;
+            isDashing = true;
+            dashDirection = player.getLookingDirection();
         }
 
         public void UpdateBB(float ang, List<SceneObject> worldList, Vector3 moveVec, Vector3 normal)
@@ -335,6 +337,7 @@ namespace TheGame
             boksik.Min -= helpVec;
             boksik.Max -= helpVec;
 
+            // check kolizji na X
             if (!collide(boksik, worldList))
             {
                 player.SetBoundingBox(boksik);

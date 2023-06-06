@@ -14,10 +14,13 @@ namespace TheGame
     {
         public event EventHandler OnAttack;
         public bool isStun = false;
+        private bool isSlow = false;
         public float stunTime = 0, elapsedStunTime = 0;
+        public float slowTime = 1, elapsedSlowTime = 0;
         public Shadow shadow;
         private DateTime lastAttackTime, actualTime;
         private bool collides = false;
+
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -72,6 +75,15 @@ namespace TheGame
             }
             else
             {
+                if (isSlow)
+                {
+                    elapsedSlowTime += deltaTime;
+                    if (elapsedSlowTime >= slowTime)
+                    {
+                        SetNormalSpeed();
+                    }
+                }
+
                 checkCollision(player);
                 RotateTowardsCurrentDirection();
                 if (collides)
@@ -94,14 +106,17 @@ namespace TheGame
 
         public void Slow (float slowMultiplier)
         {
+            isSlow = true;
             this.ActualAttackSpeed = this.AttackSpeed * slowMultiplier;
             this.ActualSpeed = this.MaxSpeed * slowMultiplier;
         }
 
-        public void SetNormalSpeed()
+        private void SetNormalSpeed()
         {
             this.ActualAttackSpeed = this.AttackSpeed;
             this.ActualSpeed = this.MaxSpeed;
+            isSlow = false;
+            elapsedSlowTime = 0;
         }
 
 
