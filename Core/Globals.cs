@@ -22,9 +22,14 @@ namespace TheGame
         public static Matrix projectionMatrix;
         public static Matrix viewMatrix;
         public static Matrix worldMatrix;
-
+        
+        public static bool Start;
+        public static bool Death;
+        public static bool Tutorial;
         public static bool Pause;
         public static float time;
         public static int Score;
+        public static GamePadState prevState;
+        public static KeyboardState prevKeyBoardState;
     }
 }

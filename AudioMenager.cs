@@ -24,7 +24,7 @@ namespace TheGame
         TimeSpan durationMainMenuSong;
         public event EventHandler onPlay;
         public event EventHandler onMenuPlay;
-        bool perv = false;
+        bool prev = false;
 
         public AudioMenager(ContentManager content)
         {
@@ -46,18 +46,18 @@ namespace TheGame
 
         public void MainPlay()
         {
-            timeMainSong = MediaPlayer.PlayPosition;
+            timeMainSong = MediaPlayer.PlayPosition; 
 
-            if (Globals.Pause && !perv)
+            if (Globals.Start && !prev) // muzyka z menu
             {
                onMenuPlay?.Invoke(this, EventArgs.Empty);
             }
-            if ((timeMainSong.TotalSeconds>=(durationMainSong.TotalSeconds - 0.1f) || Math.Round(Globals.time,1) == 0) && !Globals.Pause)
+            if ((timeMainSong.TotalSeconds>=(durationMainSong.TotalSeconds - 0.1f) || Math.Round(Globals.time,1) == 0) && !Globals.Pause && !Globals.Start) //cierki jak gramy
             {
                 onPlay?.Invoke(this, EventArgs.Empty);
             }
 
-            perv = Globals.Pause;
+            prev = Globals.Start;
         }
 
         private void PlayAgain(object obj, EventArgs e)
@@ -177,7 +177,7 @@ namespace TheGame
             int rand = random.Next(0, randomNoises.Count-1);
             if (death.State != SoundState.Playing)
             {
-                randomNoises[rand].Play();
+                //randomNoises[rand].Play();
             }
         }
 

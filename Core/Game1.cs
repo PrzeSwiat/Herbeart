@@ -44,7 +44,8 @@ namespace TheGame
             Globals._graphics.PreferredBackBufferWidth = WindowWidth;
             Globals._graphics.PreferredBackBufferHeight = WindowHeight;
             Globals._graphics.ApplyChanges();
-            Globals.Pause = true;
+            Globals.Pause = false;
+            Globals.Start = true;
 
         }
 
@@ -103,72 +104,100 @@ namespace TheGame
             audioMenager.LoadContent();
             soundActorPlayer.LoadContent();
             animationMenager.LoadContent();
+            player.OnDestroy += DestroyControl;
 
         }
 
         protected override void Update(GameTime gameTime)
         {
-            hud.MainMenuCheck();
-            audioMenager.MainPlay();
-            //if (!Globals.Pause)
-            //{
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                    Exit();
-                var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Globals.time += delta;
-                camera.CamPosition = player.GetPosition() + camera.CamPositionState;
-                camera.nextpos = player.GetPosition();
-                Globals.viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
-                basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
-                player.Update(world, delta, enemies);
-                enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
-                enemies.Move(delta, player);    // i po co 3 funkcje a nie 1
-                enemies.RefreshOnDestroy();
-                Leafs.RefreshInventory(this.player);
-                Leafs.UpdateScene(enemies.EnemiesList);
-                camera.Update1(player.GetPosition());
-                hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
-                
-                interactionEventHandler.Update(enemies.EnemiesList);
-                viewport = GraphicsDevice.Viewport;
-                animationMenager.Update(gameTime);
-                SaveControl();
-                base.Update(gameTime);
-           // }
-            //else
-            //
-               //Globals.time = 0;
-            //
+            if(Globals.Start)
+            {
+                MainMenuCheck();
+                audioMenager.MainPlay();
+            }
+            else
+            {
+                PauseCheck();
+                audioMenager.MainPlay();
+                if (!Globals.Pause)
+                {
+                    if (Globals.Death)
+                    {
+
+                    }
+                    else
+                    {
+                        var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        Globals.time += delta;
+                        camera.CamPosition = player.GetPosition() + camera.CamPositionState;
+                        camera.nextpos = player.GetPosition();
+                        Globals.viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
+                        basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
+                        player.Update(world, delta, enemies);
+                        enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
+                        enemies.Move(delta, player);    // i po co 3 funkcje a nie 1
+                        enemies.RefreshOnDestroy();
+                        Leafs.RefreshInventory(this.player);
+                        Leafs.UpdateScene(enemies.EnemiesList);
+                        camera.Update1(player.GetPosition());
+
+
+                        interactionEventHandler.Update(enemies.EnemiesList);
+                        viewport = GraphicsDevice.Viewport;
+                        animationMenager.Update(gameTime);
+                        SaveControl();
+                        base.Update(gameTime);
+                    }
+                }
+                else
+
+                    Globals.time = 0;
+            }
+            
+            
             
         }
 
         protected override void Draw(GameTime gameTime)
         {
-           // if (!Globals.Pause)
-            //{
-                GraphicsDevice.Clear(Color.Black);
-                base.Draw(gameTime);
-                hud.DrawBackground(_spriteBatch);
-                GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-                
-                world.Draw(player.GetPosition());
-                player.DrawPlayer(player.GetPosition());
-                
-                enemies.Draw(player.GetPosition());
-                
-                Leafs.Draw(player.GetPosition());
-                animationMenager.DrawAnimation(GraphicsDevice);
-                player.DrawEffectsShadow(player.GetPosition());
-                hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList, viewport);  //hud jako OSTATNI koniecznie
+            if(Globals.Start)
+            {
+                hud.DrawMainMenu(_spriteBatch);
+            }
+            else
+            {
+                if (!Globals.Pause)
+                {
+                    if(Globals.Death)
+                    {
 
+                    }
+                    else
+                    {
+                        GraphicsDevice.Clear(Color.Black);
+                        base.Draw(gameTime);
+                        GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
+                        world.Draw(player.GetPosition());
+                        player.DrawPlayer(player.GetPosition());
 
-            //}
-            // else
-            // {
-            // hud.DrawMainMenu(_spriteBatch);
-            // }
-            //DrawBoundingBoxes();
+                        enemies.Draw(player.GetPosition());
+
+                        Leafs.Draw(player.GetPosition());
+                        animationMenager.DrawAnimation(GraphicsDevice);
+                        player.DrawEffectsShadow(player.GetPosition());
+                        hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
+                        hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList, viewport);  //hud jako OSTATNI koniecznie
+                    }
+
+                }
+                else
+                {
+                    hud.DrawPause(_spriteBatch);
+                }
+                //DrawBoundingBoxes();
+            }
+
         }
 
         #region DrawingBB
@@ -253,6 +282,64 @@ namespace TheGame
         #endregion
 
         #region Controls
+
+        void PauseCheck()
+        {
+
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            KeyboardState state = Keyboard.GetState();
+            if ((gamePadState.Buttons.Start == ButtonState.Pressed && Globals.prevState.Buttons.Start == ButtonState.Released) || (state.IsKeyDown(Keys.Escape) && Globals.prevKeyBoardState.IsKeyUp(Keys.Escape)))
+            {
+                Globals.Pause = !Globals.Pause;
+            }
+            Globals.prevState = gamePadState;
+            Globals.prevKeyBoardState = state;
+        }
+
+        void DeathMenuCheck()
+        {
+
+        }
+
+        void MainMenuCheck()
+        {
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            KeyboardState state = Keyboard.GetState();
+            if ((gamePadState.ThumbSticks.Left.Y >= 0.5f && !(Globals.prevState.ThumbSticks.Left.Y >= 0.5f)) || (state.IsKeyDown(Keys.W) && !Globals.prevKeyBoardState.IsKeyDown(Keys.W)))
+            {
+                hud.MenuOption -= 1;
+            }
+            if ((gamePadState.ThumbSticks.Left.Y <= -0.5f && !(Globals.prevState.ThumbSticks.Left.Y <= -0.5f)) || (state.IsKeyDown(Keys.S) && !Globals.prevKeyBoardState.IsKeyDown(Keys.S)))
+            {
+                hud.MenuOption += 1;
+            }
+            if(hud.MenuOption < 1)
+            {
+                hud.MenuOption = 1;
+            }
+            if(hud.MenuOption > 3)
+            {
+                hud.MenuOption = 3;
+            }
+            Globals.prevState = gamePadState;
+            Globals.prevKeyBoardState = state;
+
+            if((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1)
+            {
+                Globals.Start = false;
+            }
+            if((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3)
+            {
+                Exit();
+            }
+            if((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
+            {
+                // notimplemented
+            }
+
+        }
+
+
         void SaveControl()
         {
             KeyboardState state = Keyboard.GetState();
@@ -277,7 +364,8 @@ namespace TheGame
         {
             if (obj is Player)
             {
-                Exit();
+                //Exit();
+                //Globals.Death = true;
                 // GAME OVER HERE;
             }
 
