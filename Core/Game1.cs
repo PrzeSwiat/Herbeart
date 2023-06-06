@@ -10,8 +10,8 @@ namespace TheGame
     public class Game1 : Game
     {
         //DON'T TOUCH IT MORTALS
-        int WindowWidth = 1920;
-        int WindowHeight = 1080;
+        int WindowWidth = 1900;
+        int WindowHeight = 1000;
         private SpriteBatch _spriteBatch;
         Camera camera;
         EffectHandler effectHandler;

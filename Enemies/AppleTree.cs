@@ -39,6 +39,11 @@ namespace TheGame
         {
             Update();
             this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.8f, 0, -1.9f));
+            foreach (Apple apple in bullet.ToList())
+            {
+                apple.Update(deltaTime, player);
+                apple.OnDestroy += RemoveBullet;
+            }
             if (isStun)
             {
                 elapsedStunTime += deltaTime;
@@ -111,11 +116,7 @@ namespace TheGame
                     }
 
                 }
-                foreach (Apple apple in bullet.ToList())
-                {
-                    apple.Update(deltaTime,  player);
-                    apple.OnDestroy += RemoveBullet;
-                }
+                
             }
             
 
