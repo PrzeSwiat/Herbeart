@@ -31,5 +31,7 @@ namespace TheGame
         public static int Score;
         public static GamePadState prevState;
         public static KeyboardState prevKeyBoardState;
+        public static GamePadState prevDeathState;
+        public static KeyboardState prevKeyBoardDeathState;
     }
 }

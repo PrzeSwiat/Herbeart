@@ -161,6 +161,41 @@ namespace TheGame
             spriteBatch.End();
         }
 
+        public void DrawDeathMenu(SpriteBatch spriteBatch)
+        {
+            Color one = Color.Gray;
+            Color two = Color.Gray;
+            Color three = Color.Gray;
+            Color four = Color.Gray;
+
+            if (MenuOption == 1)
+            {
+                one = Color.White;
+            }
+            if (MenuOption == 2)
+            {
+                two = Color.White;
+            }
+            if (MenuOption == 3)
+            {
+                three = Color.White;
+            }
+            if(MenuOption == 4)
+            {
+                four = Color.White;
+            }
+
+            Rectangle rect = new Rectangle(-WindowWidth, -WindowHeight, 2 * WindowWidth, 2 * WindowHeight);
+            spriteBatch.Begin();
+            spriteBatch.Draw(red, rect, Color.Black);
+            spriteBatch.DrawString(Menu, "You fell asleep", new Vector2(WindowWidth / 3.5f, WindowHeight * 1 / 20), Color.OrangeRed);
+            spriteBatch.DrawString(Menu2, "Leader board", new Vector2(WindowWidth / 10, WindowHeight * 6 / 20), one);
+            spriteBatch.DrawString(Menu2, "Try again", new Vector2(WindowWidth / 10, WindowHeight * 9 / 20), two);
+            spriteBatch.DrawString(Menu2, "Main menu", new Vector2(WindowWidth / 10, WindowHeight * 12 / 20), three);
+            spriteBatch.DrawString(Menu2, "Exit", new Vector2(WindowWidth / 10, WindowHeight * 16 / 20), four);
+            spriteBatch.End();
+        }
+
         public void DrawMainMenu(SpriteBatch spriteBatch)
         {
             Color one = Color.Gray;

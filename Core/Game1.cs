@@ -37,10 +37,8 @@ namespace TheGame
         {
             Globals._graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            Leafs = new LeafList();
-            enemies = new Enemies();
             IsMouseVisible = true;
+
             Globals._graphics.PreferredBackBufferWidth = WindowWidth;
             Globals._graphics.PreferredBackBufferHeight = WindowHeight;
             Globals._graphics.ApplyChanges();
@@ -52,10 +50,10 @@ namespace TheGame
 
         protected override void Initialize()
         {
-
             //DON'T TOUCH IT MORTALS
             camera = new Camera();
-
+            Leafs = new LeafList();
+            enemies = new Enemies();
             Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 50), (WindowWidth / 50), -(WindowHeight / 50), (WindowHeight / 50), -10f, 100f);      // orthographic view 
                                                                                                                                                                               //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
@@ -123,7 +121,7 @@ namespace TheGame
                 {
                     if (Globals.Death)
                     {
-
+                        DeathMenuCheck();
                     }
                     else
                     {
@@ -153,13 +151,13 @@ namespace TheGame
 
                     Globals.time = 0;
             }
-            
-            
-            
+
+
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            Globals.prevState = GamePad.GetState(PlayerIndex.One);
             if(Globals.Start)
             {
                 hud.DrawMainMenu(_spriteBatch);
@@ -170,7 +168,7 @@ namespace TheGame
                 {
                     if(Globals.Death)
                     {
-
+                        hud.DrawDeathMenu(_spriteBatch);
                     }
                     else
                     {
@@ -285,7 +283,6 @@ namespace TheGame
 
         void PauseCheck()
         {
-
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             KeyboardState state = Keyboard.GetState();
             if ((gamePadState.Buttons.Start == ButtonState.Pressed && Globals.prevState.Buttons.Start == ButtonState.Released) || (state.IsKeyDown(Keys.Escape) && Globals.prevKeyBoardState.IsKeyUp(Keys.Escape)))
@@ -298,7 +295,48 @@ namespace TheGame
 
         void DeathMenuCheck()
         {
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            KeyboardState state = Keyboard.GetState();
+            if ((gamePadState.ThumbSticks.Left.Y >= 0.5f && !(Globals.prevDeathState.ThumbSticks.Left.Y >= 0.5f)) || (state.IsKeyDown(Keys.W) && !Globals.prevKeyBoardDeathState.IsKeyDown(Keys.W)))
+            {
+                hud.MenuOption -= 1;
+            }
+            if ((gamePadState.ThumbSticks.Left.Y <= -0.5f && !(Globals.prevDeathState.ThumbSticks.Left.Y <= -0.5f)) || (state.IsKeyDown(Keys.S) && !Globals.prevKeyBoardDeathState.IsKeyDown(Keys.S)))
+            {
+                hud.MenuOption += 1;
+            }
+            if (hud.MenuOption < 1)
+            {
+                hud.MenuOption = 1;
+            }
+            if (hud.MenuOption > 4)
+            {
+                hud.MenuOption = 4;
+            }
 
+            Globals.prevDeathState = gamePadState;
+            Globals.prevKeyBoardDeathState = state;
+
+
+            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1)
+            {
+                
+            }
+            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
+            {
+                Globals.Death = false;
+                LoadContent();
+                Initialize();
+               
+            }
+            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3)
+            {
+                Globals.Start = true;
+            }
+            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 4)
+            {
+                Exit();
+            }
         }
 
         void MainMenuCheck()
@@ -365,7 +403,7 @@ namespace TheGame
             if (obj is Player)
             {
                 //Exit();
-                //Globals.Death = true;
+                Globals.Death = true;
                 // GAME OVER HERE;
             }
 
