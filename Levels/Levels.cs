@@ -305,7 +305,7 @@ namespace TheGame
 
             public void LoadContent()
             {
-                LoadSceneObjects();
+                LoadScene();
             }
 
             public List<Enemy> returnEnemies()
@@ -317,72 +317,17 @@ namespace TheGame
             {
                 public string groundType;
                 public float height;
+                public Vector3 position;
 
-                public Tile(String groundType, float height)
+                public Tile(String groundType, float height, Vector3 position)
                 {
                     this.groundType = groundType;
                     this.height = height;
+                    this.position = position;
                 }
             }
 
             public List<SceneObject> returnSceneObjects() { return _sceneObjects; }
-
-            private void LoadSceneObjects()
-            {
-                LoadScene(fileName, enemyCount);
-                Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -0.7f, 0.5f * moduleHeight * tileSize + separatorZ);
-                for (int i = 0; i < moduleHeight; i++)
-                {
-                    for (int j = 0; j < moduleWidth; j++)
-                    {
-                        int index = i * moduleWidth + j;
-                        float height = this._tiles[index].height;
-                        string groundType = this._tiles[index].groundType;
-                        Vector3 wektor = new Vector3(j * tileSize + separatorX, height, i * tileSize + separatorZ);
-                        if (groundType == "grass")
-                        {
-                            Vector3 enemyWektor = wektor;
-                            enemyWektor.Y = 0;
-                            groundPositions.Add(enemyWektor);
-                        }
-                        if (groundType == "forest")
-                        {
-                            string treeModel = GenerateRandomString(treeModels);
-                            string texture = "null";
-                            switch (treeModel)
-                            {
-                                case "Objects/drzewo1":
-                                    texture = "Textures/drzewo1";
-                                    break;
-                                case "Objects/drzewo2":
-                                    texture = "Textures/drzewo2";
-                                    break;
-                                case "Objects/drzewo3":
-                                    texture = "Textures/drzewo3";
-                                    break;
-                            }
-                            SceneObject tree = new SceneObject(wektor, treeModel, texture);
-                            Random rand = new Random();
-                            float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
-                            float size = (float)rand.Next(100, 220) / 100;                                //zmiana wielkosci drzewa losowo
-                            tree.SetScale(size);
-                            tree.SetRotation(new Vector3(0, rflot, 0));
-                            _sceneObjects.Add(tree);
-                        }
-
-                    }
-                }
-                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground1", "Textures/tekstura_wielkiego_tila"));
-
-                Random random = new Random();
-                int objectsCount = random.Next(8, 14);
-                GenerateGrassAndStones(objectsCount, 4);
-                if (enemyCount != 0) 
-                { 
-                    GenerateRandomEnemies(enemyCount); 
-                }
-                ObjectInitializer();
-            }
 
             public void ObjectInitializer()
             {
@@ -392,26 +337,88 @@ namespace TheGame
                 }
             }
 
-            public void LoadScene(string fileName, int enemyCount)
+            public void GenerateForest(Vector3 wektor)
             {
+                string treeModel = GenerateRandomString(treeModels);
+                string texture = "null";
+                switch (treeModel)
+                {
+                    case "Objects/drzewo1":
+                        texture = "Textures/drzewo1";
+                        break;
+                    case "Objects/drzewo2":
+                        texture = "Textures/drzewo2";
+                        break;
+                    case "Objects/drzewo3":
+                        texture = "Textures/drzewo3";
+                        break;
+                }
+                SceneObject tree = new SceneObject(wektor, treeModel, texture);
+                Random rand = new Random();
+                float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
+                float size = (float)rand.Next(100, 220) / 100;                                //zmiana wielkosci drzewa losowo
+                tree.SetScale(size);
+                tree.SetRotation(new Vector3(0, rflot, 0));
+                _sceneObjects.Add(tree);
+            }
+
+            public void LoadScene()
+            {
+                string groundType;
+                float height;
+
+                int x = 0;  //do poprawnego wyswietlania tile'ow
+                int z = 0;
+
                 List<int> tileList = ReadFile(fileName);
                 _tiles = new List<Tile>();
+                Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -0.7f, 0.5f * moduleHeight * tileSize + separatorZ);
 
                 for (int i = 0; i < tileList.Count; i++)
                 {
+                    if (x == moduleWidth)
+                    {
+                        z++;
+                        x = 0;
+                    }
                     switch (tileList[i])
                     {
                         case 48: //0
-                            _tiles.Add(new Tile("forest", 0.0f));
+                            groundType = "forest";
+                            height = 0.0f;
+                            Vector3 wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                            _tiles.Add(new Tile(groundType, height, wektor));
+                            GenerateForest(wektor);
+                            x++;
                             break;
                         case 97: //a
-                            _tiles.Add(new Tile("grass", -2.0f));
+                            groundType = "grass";
+                            height = -2.0f;
+                            Vector3 wektor1 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                            _tiles.Add(new Tile(groundType, height, wektor1));
+                            wektor1.Y = 0;
+                            groundPositions.Add(wektor1);
+                            x++;
                             break;
                         case 98: //b
-                            _tiles.Add(new Tile("spawn", -2.0f));
+                            groundType = "spawn";
+                            height = -2.0f;
+                            Vector3 wektor2 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                            _tiles.Add(new Tile(groundType, height, wektor2));
+                            x++;
                             break;
                     }
+                    
                 }
+                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground1", "Textures/tekstura_wielkiego_tila"));
+                Random random = new Random();
+                int objectsCount = random.Next(8, 14);
+                GenerateGrassAndStones(objectsCount, 4);
+                if (enemyCount != 0)
+                {
+                    GenerateRandomEnemies(enemyCount);
+                }
+                ObjectInitializer();
             }
 
             public List<int> ReadFile(string fileName)
@@ -431,6 +438,7 @@ namespace TheGame
                         }
                     }
                     s.Close();
+                    
                     return tileList;
 
                 }
@@ -446,13 +454,12 @@ namespace TheGame
                 return generatedRandom;
             }
 
-            public static int GenerateRandomInt(int[] list)
+            public static int GenerateRandomInt(int range)
             {
                 Random random = new Random();
-                int index = random.Next(list.Length);
+                int index = random.Next(range);
                 return index;
             }
-
 
             public void GenerateRandomEnemies(int enemyCount)
             {
@@ -461,11 +468,11 @@ namespace TheGame
                     for (int i = 0; i < this.enemyCount; i++)
                     {
                         string enemyType = GenerateRandomString(enemyTypes);
-                        int[] groundList = new int[groundPositions.Count];
-                        int index = GenerateRandomInt(groundList);
+                        int range = groundPositions.Count;
+                        int index = GenerateRandomInt(range);
                         Vector3 groundPosition = groundPositions[index];
-                        groundPositions.RemoveAt(index);
                         GenerateEnemy(enemyType, groundPosition);
+                        groundPositions.RemoveAt(index);
                     }
                 }
             }
@@ -601,8 +608,8 @@ namespace TheGame
                 {
                     for (int i = 0; i < grassCount; i++)
                     {
-                        int[] groundList = new int[groundPositions.Count];
-                        int index = GenerateRandomInt(groundList);
+                        int range = groundPositions.Count;
+                        int index = GenerateRandomInt(range);
                         Vector3 groundPosition = groundPositions[index];
                         groundPositions.RemoveAt(index);
 
@@ -615,8 +622,8 @@ namespace TheGame
                 {
                     for (int i = 0; i < otherCount; i++)
                     {
-                        int[] groundList = new int[groundPositions.Count];
-                        int index = GenerateRandomInt(groundList);
+                        int range = groundPositions.Count;
+                        int index = GenerateRandomInt(range);
                         Vector3 groundPosition = groundPositions[index];
                         groundPositions.RemoveAt(index);
 
