@@ -143,11 +143,11 @@ namespace TheGame
             int invLenght = WindowHeight / 3;
             Rectangle rect = new Rectangle(0, WindowHeight - invLenght, invLenght, invLenght);
 
-            spriteBatch.Draw(defaultItemFrame, rect, Color.Gray);
-            spriteBatch.DrawString(ItemFont, leafs.ElementAt(0).Value.ToString(), new Vector2(invLenght / 2 + 13, WindowHeight - 40), Color.Black);    // mint
-            spriteBatch.DrawString(ItemFont, leafs.ElementAt(1).Value.ToString(), new Vector2(3 * invLenght / 4, WindowHeight - invLenght / 2), Color.Black);    // melise
-            spriteBatch.DrawString(ItemFont, leafs.ElementAt(2).Value.ToString(), new Vector2(17, WindowHeight - invLenght / 2), Color.Black);    // nettle
-            spriteBatch.DrawString(ItemFont, leafs.ElementAt(3).Value.ToString(), new Vector2(invLenght / 2 + 13, WindowHeight - invLenght + 20), Color.Black);    // apple
+            spriteBatch.Draw(defaultItemFrame, rect, Color.White);
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(0).Value.ToString(), new Vector2(invLenght / 2 + 13, WindowHeight - 40), Color.White);    // mint
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(1).Value.ToString(), new Vector2(3 * invLenght / 4, WindowHeight - invLenght / 2), Color.White);    // melise
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(2).Value.ToString(), new Vector2(17, WindowHeight - invLenght / 2), Color.White);    // nettle
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(3).Value.ToString(), new Vector2(invLenght / 2 + 13, WindowHeight - invLenght + 20), Color.White);    // apple
         }
 
        
