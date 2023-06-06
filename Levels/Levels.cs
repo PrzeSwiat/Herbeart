@@ -36,10 +36,10 @@ namespace TheGame
 
         #region Module parametrs and rectangles
         private int numberOfModules;
-        private int moduleSeparatorX;
+        private int moduleSeparatorX = 6 * 26;
         private int moduleSeparatorZCount = 0;
         private int moduleHeightChange = 0;
-        private int moduleSeparatorZ;
+        private int moduleSeparatorZ = 6 * 26;
         List<Rectangle> modulesList;
         Rectangle module;
         HashSet<Rectangle> visited;
@@ -58,8 +58,6 @@ namespace TheGame
             _levels = new List<Level>();
             modulesList = new List<Rectangle>();
             visited = new HashSet<Rectangle>();
-            moduleSeparatorX = 6 * 26;
-            moduleSeparatorZ = 6 * 26;
         }
 
         public void LoadContent()
@@ -270,7 +268,14 @@ namespace TheGame
         {
             private string[] treeModels = { "Objects/drzewo1", "Objects/drzewo2", "Objects/drzewo3" };
             private string[] enemyTypes = { "Objects/apple", "Objects/mint", "Objects/nettle", "Objects/melissa" };
-            private string[] otherModels = { "Objects/rock2", "Objects/rock18", "Objects/tree1" };
+            private string[] grassModels = { "Objects/big_grass", "Objects/grass1", "Objects/grass2", "Objects/grass3", "Objects/three_grass" };
+            private string[] otherSmallModels = { "Objects/big_stone", "Objects/small_stone", "Objects/two_stones", "Objects/bush", "Objects/small_bush", "Objects/flower" };
+
+            private string[] bushTextures = { "Textures/bush1", "Textures/bush2" };
+            private string[] flowerTextures = { "Textures/flower1", "Textures/flower2" };
+            private string[] bigGrassTextures = { "Textures/big_grass1", "Textures/big_grass2" };
+            private string[] grassTextures = { "Textures/grass1", "Textures/grass2", "Textures/grass3", "Textures/grass4", "Textures/grass5", "Textures/grass6", "Textures/grass7" };
+            
             private List<Tile> _tiles;
             private List<SceneObject> _sceneObjects;
             public int tileSize = 6;
@@ -359,7 +364,7 @@ namespace TheGame
                             SceneObject tree = new SceneObject(wektor, treeModel, texture);
                             Random rand = new Random();
                             float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
-                            float size = (float)rand.Next(150, 250) / 100;                                //zmiana wielkosci drzewa losowo
+                            float size = (float)rand.Next(100, 220) / 100;                                //zmiana wielkosci drzewa losowo
                             tree.SetScale(size);
                             tree.SetRotation(new Vector3(0, rflot, 0));
                             _sceneObjects.Add(tree);
@@ -367,11 +372,11 @@ namespace TheGame
 
                     }
                 }
-                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground", "Textures/tekstura_wielkiego_tila"));
+                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground1", "Textures/tekstura_wielkiego_tila"));
 
                 Random random = new Random();
-                int objectsCount = random.Next(4, 7);
-                GenerateOtherObjects(objectsCount);
+                int objectsCount = random.Next(8, 14);
+                GenerateGrassAndStones(objectsCount, 4);
                 if (enemyCount != 0) 
                 { 
                     GenerateRandomEnemies(enemyCount); 
@@ -397,13 +402,13 @@ namespace TheGame
                     switch (tileList[i])
                     {
                         case 48: //0
-                            _tiles.Add(new Tile("forest", -2.0f));
+                            _tiles.Add(new Tile("forest", 0.0f));
                             break;
                         case 97: //a
                             _tiles.Add(new Tile("grass", -2.0f));
                             break;
                         case 98: //b
-                            _tiles.Add(new Tile("spawn", -3.0f));
+                            _tiles.Add(new Tile("spawn", -2.0f));
                             break;
                     }
                 }
@@ -492,43 +497,131 @@ namespace TheGame
                 }
             }
 
-            public void GenerateOtherObjects(int count)
+            public void GenerateGrass(string objectType, Vector3 groundPosition)
             {
-                if (count != 0)
+                Random rand = new Random();
+                float scale = (float)rand.Next(200, 250) / 100;
+                float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI; //zmiana obrotu losowo
+                string texture;
+                switch (objectType)
                 {
-                    for (int i = 0; i < count; i++)
+                    case "Objects/big_grass":
+                        texture = GenerateRandomString(bigGrassTextures);
+                        SceneObject big_grass = new SceneObject(groundPosition, "Objects/big_grass", texture);
+                        big_grass.SetScale(scale/2);
+                        big_grass.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(big_grass);
+                        break;
+                    case "Objects/grass1":
+                        texture = GenerateRandomString(grassTextures);
+                        SceneObject grass1 = new SceneObject(groundPosition, "Objects/grass1", texture);
+                        grass1.SetScale(scale);
+                        grass1.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(grass1);
+                        break;
+                    case "Objects/grass2":
+                        texture = GenerateRandomString(grassTextures);
+                        SceneObject grass2 = new SceneObject(groundPosition, "Objects/grass2", texture);
+                        grass2.SetScale(scale);
+                        grass2.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(grass2);
+                        break;
+                    case "Objects/grass3":
+                        texture = GenerateRandomString(grassTextures);
+                        SceneObject grass3 = new SceneObject(groundPosition, "Objects/grass3", texture);
+                        grass3.SetScale(scale);
+                        grass3.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(grass3);
+                        break;
+                    case "Objects/three_grass":
+                        SceneObject grass4 = new SceneObject(groundPosition, "Objects/three_grass", "Textures/three_grass");
+                        grass4.SetScale(scale);
+                        grass4.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(grass4);
+                        break;
+                }
+            }
+
+            public void GenerateOtherObjects(string objectType, Vector3 groundPosition)
+            {
+                Random rand = new Random();
+                float scale = (float)rand.Next(200, 250) / 100;
+                float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI; //zmiana obrotu losowo
+                string texture;
+                switch (objectType)
+                {
+                    case "Objects/big_stone":
+                        texture = "Textures/stone";
+                        SceneObject big_stone = new SceneObject(groundPosition, "Objects/big_stone", texture);
+                        big_stone.SetScale(scale/2);
+                        big_stone.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(big_stone);
+                        break;
+                    case "Objects/small_stone":
+                        texture = "Textures/stone";
+                        SceneObject small_stone = new SceneObject(groundPosition, "Objects/small_stone", texture);
+                        small_stone.SetScale(scale);
+                        small_stone.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(small_stone);
+                        break;
+                    case "Objects/two_stones":
+                        texture = "Textures/stone";
+                        SceneObject two_stones = new SceneObject(groundPosition, "Objects/two_stones", texture);
+                        two_stones.SetScale(scale);
+                        two_stones.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(two_stones);
+                        break;
+                    case "Objects/bush":
+                        texture = GenerateRandomString(bushTextures);
+                        SceneObject bush = new SceneObject(groundPosition, "Objects/bush", texture);
+                        bush.SetScale(scale/2);
+                        bush.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(bush);
+                        break;
+                    case "Objects/small_bush":
+                        texture = GenerateRandomString(bushTextures);
+                        SceneObject small_bush = new SceneObject(groundPosition, "Objects/small_bush", texture);
+                        small_bush.SetScale(scale);
+                        small_bush.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(small_bush);
+                        break;
+                    case "Objects/flower":
+                        texture = GenerateRandomString(flowerTextures);
+                        SceneObject flower = new SceneObject(groundPosition, "Objects/flower", texture);
+                        flower.SetScale(scale);
+                        flower.SetRotation(new Vector3(0, rflot, 0));
+                        _sceneObjects.Add(flower);
+                        break;
+                }
+            }
+            public void GenerateGrassAndStones(int grassCount, int otherCount)
+            {
+                
+                if (grassCount != 0)
+                {
+                    for (int i = 0; i < grassCount; i++)
                     {
                         int[] groundList = new int[groundPositions.Count];
                         int index = GenerateRandomInt(groundList);
                         Vector3 groundPosition = groundPositions[index];
                         groundPositions.RemoveAt(index);
 
-                        string objectType = GenerateRandomString(otherModels);
+                        string objectType = GenerateRandomString(grassModels);
+                        GenerateGrass(objectType, groundPosition);
+                    }
+                }
 
-                        Random rand = new Random();
-                        float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI; //zmiana obrotu losowo
-                        switch (objectType)
-                        {
-                            case "Objects/rock2":
-                                SceneObject stone = new SceneObject(groundPosition, "Objects/rock2", "Textures/black");
-                                stone.SetScale((float)rand.Next(80, 100) / 100);
-                                stone.SetRotation(new Vector3(0, rflot, 0));
-                                _sceneObjects.Add(stone);
-                                break;
-                            case "Objects/rock18":
-                                SceneObject stone1 = new SceneObject(groundPosition, "Objects/rock18", "Textures/black");
-                                stone1.SetScale((float)rand.Next(80, 100) / 100);
-                                stone1.SetRotation(new Vector3(0, rflot, 0));
-                                _sceneObjects.Add(stone1);
-                                break;
-                            case "Objects/tree1":
-                                SceneObject tree = new SceneObject(groundPosition, "Objects/tree1", "Textures/tree1_color");           
-                                tree.SetScale((float)rand.Next(75, 150) / 100);
-                                tree.SetRotation(new Vector3(0, rflot, 0));
-                                _sceneObjects.Add(tree);
-                                break;
+                if (otherCount != 0)
+                {
+                    for (int i = 0; i < otherCount; i++)
+                    {
+                        int[] groundList = new int[groundPositions.Count];
+                        int index = GenerateRandomInt(groundList);
+                        Vector3 groundPosition = groundPositions[index];
+                        groundPositions.RemoveAt(index);
 
-                        }
+                        string objectType = GenerateRandomString(otherSmallModels);
+                        GenerateOtherObjects(objectType, groundPosition);
                     }
                 }
             }

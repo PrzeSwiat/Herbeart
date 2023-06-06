@@ -75,7 +75,7 @@ namespace TheGame
             Globals.Score = 0;
             hud = new HUD("Textures/forest2", WindowWidth, WindowHeight);
             world = new World();
-            player = new Player(new Vector3(30,0,50), "Objects/mis", "Textures/MisTexture");
+            player = new Player(new Vector3(50,0,60), "Objects/mis", "Textures/MisTexture");
             animacyjnaPacynka = new Player(new Vector3(0, 15, 30), "Objects/mis", "Textures/tekstura");
             serializator = new Serializator("zapis.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
@@ -83,14 +83,6 @@ namespace TheGame
             soundActorPlayer = new SoundActorPlayer(Content, player, enemies.EnemiesList);
             animationMenager = new AnimationMenager(Content, animacyjnaPacynka, enemies.EnemiesList);
             viewport = GraphicsDevice.Viewport;
-            /*AppleTree apple = new AppleTree(new Vector3(25, 0, 25), "player", "StarSparrow_Green");
-            Mint mint = new Mint(new Vector3(20, 0, 20), "player", "StarSparrow_Green");
-            Melissa apple2 = new Melissa(new Vector3(23, 0, 23), "player", "StarSparrow_Green");
-            Nettle apple3 = new Nettle(new Vector3(22, 0, 21), "player", "StarSparrow_Green");
-            enemies.AddEnemy(apple);
-            enemies.AddEnemy(mint);
-            enemies.AddEnemy(apple2);
-            enemies.AddEnemy(apple3);*/
 
             base.Initialize();
         }
