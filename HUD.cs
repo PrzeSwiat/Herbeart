@@ -20,7 +20,7 @@ namespace TheGame
         private SpriteFont ItemFont;
         private SpriteFont Menu;
         private SpriteFont Menu2;
-        private Texture2D skyTex, red, itemFrame;
+        private Texture2D skyTex, red, healthBar, defaultItemFrame;
         private Rectangle skyRec;
         private int BackgroundWidth, BackgroundHeight, WindowWidth, WindowHeight;
         private int BackgroundX, BackgroundY;
@@ -50,7 +50,8 @@ namespace TheGame
             LoadedModels models = LoadedModels.Instance;
             skyTex = models.getTexture(_texFilename);
             red = models.getTexture("Textures/Red");
-            itemFrame = models.getTexture("Textures/itemFrame");
+            healthBar = models.getTexture("HUD/pasekzycia");
+            defaultItemFrame = models.getTexture("HUD/default");
             ItemFont = Globals.content.Load<SpriteFont>("ItemFont");
             ScoreFont = Globals.content.Load<SpriteFont>("ScoreFont");
             Menu = Globals.content.Load<SpriteFont>("Menu");
@@ -96,10 +97,14 @@ namespace TheGame
             spriteBatch.End();
         }
 
-        private void DrawHealthBar(SpriteBatch spriteBatch, int health)
+        private void DrawHealthBar(SpriteBatch spriteBatch, int hp)
         {
-            Rectangle rect = new Rectangle(10, 10, health, 20);
-            spriteBatch.Draw(red, rect, Color.Red);
+            
+            Rectangle health = new Rectangle(WindowWidth / 2 - 200, 15, hp * 2, 30);
+            Rectangle healthBar = new Rectangle(WindowWidth / 2 - 215, 10, 430, 40);
+            
+            spriteBatch.Draw(red, health, Color.Red);
+            spriteBatch.Draw(this.healthBar, healthBar, Color.Black); 
         }
         private void DrawEnemyHealthBar(SpriteBatch spriteBatch, List<Enemy> enemies, Viewport viewport)
         {
@@ -135,18 +140,14 @@ namespace TheGame
 
         public void DrawInventory(SpriteBatch spriteBatch)
         {
-            Rectangle rect = new Rectangle(0, WindowHeight - 100, 50, 50);
-            actualTime = DateTime.Now;
+            int invLenght = WindowHeight / 3;
+            Rectangle rect = new Rectangle(0, WindowHeight - invLenght, invLenght, invLenght);
 
-            for (int i = 0; i < 4; i++)
-            {
-                rect.X = 20 + i * 50;
-                spriteBatch.Draw(itemFrame, rect, Color.Gray);
-                spriteBatch.DrawString(ItemFont, leafs.ElementAt(i).Key, new Vector2(50 + i * 50, WindowHeight - 90), Color.Black);
-                spriteBatch.DrawString(ItemFont, leafs.ElementAt(i).Value.ToString(), new Vector2(50 + i * 50, WindowHeight - 50), Color.Black);
-            }
-
-
+            spriteBatch.Draw(defaultItemFrame, rect, Color.Gray);
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(0).Value.ToString(), new Vector2(invLenght / 2 + 13, WindowHeight - 40), Color.Black);    // mint
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(1).Value.ToString(), new Vector2(3 * invLenght / 4, WindowHeight - invLenght / 2), Color.Black);    // melise
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(2).Value.ToString(), new Vector2(17, WindowHeight - invLenght / 2), Color.Black);    // nettle
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(3).Value.ToString(), new Vector2(invLenght / 2 + 13, WindowHeight - invLenght + 20), Color.Black);    // apple
         }
 
        

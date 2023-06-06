@@ -196,6 +196,13 @@ namespace TheGame
                 //DrawBoundingBoxes();
             }
 
+
+            //}
+            // else
+            // {
+            // hud.DrawMainMenu(_spriteBatch);
+            // }
+            //DrawBoundingBoxes();
         }
 
         #region DrawingBB
