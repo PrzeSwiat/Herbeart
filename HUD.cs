@@ -104,7 +104,7 @@ namespace TheGame
             Rectangle healthBar = new Rectangle(WindowWidth / 2 - 215, 10, 430, 40);
             
             spriteBatch.Draw(red, health, Color.Red);
-            spriteBatch.Draw(this.healthBar, healthBar, Color.Black); 
+            spriteBatch.Draw(this.healthBar, healthBar, Color.White); 
         }
         private void DrawEnemyHealthBar(SpriteBatch spriteBatch, List<Enemy> enemies, Viewport viewport)
         {
