@@ -17,7 +17,7 @@ namespace TheGame
     {
         private string _texFilename;
         private SpriteFont ScoreFont;
-        private SpriteFont Font;
+        private SpriteFont ItemFont;
         private SpriteFont Menu;
         private SpriteFont Menu2;
         private Texture2D skyTex, red, itemFrame;
@@ -50,10 +50,10 @@ namespace TheGame
             skyTex = models.getTexture(_texFilename);
             red = models.getTexture("Textures/Red");
             itemFrame = models.getTexture("Textures/itemFrame");
-            Font = Globals.content.Load<SpriteFont>("Fonts");
+            ItemFont = Globals.content.Load<SpriteFont>("ItemFont");
+            ScoreFont = Globals.content.Load<SpriteFont>("ScoreFont");
             Menu = Globals.content.Load<SpriteFont>("Menu");
             Menu2 = Globals.content.Load<SpriteFont>("Menu2");
-            ScoreFont = Globals.content.Load<SpriteFont>("ScoreFont");
         }
 
         public void Update(Vector3 camPos, Dictionary<string, int> leafs)
@@ -142,8 +142,8 @@ namespace TheGame
             {
                 rect.X = 20 + i * 50;
                 spriteBatch.Draw(itemFrame, rect, Color.Gray);
-                spriteBatch.DrawString(Font, leafs.ElementAt(i).Key, new Vector2(50 + i * 50, WindowHeight - 90), Color.Black);
-                spriteBatch.DrawString(Font, leafs.ElementAt(i).Value.ToString(), new Vector2(50 + i * 50, WindowHeight - 50), Color.Black);
+                spriteBatch.DrawString(ItemFont, leafs.ElementAt(i).Key, new Vector2(50 + i * 50, WindowHeight - 90), Color.Black);
+                spriteBatch.DrawString(ItemFont, leafs.ElementAt(i).Value.ToString(), new Vector2(50 + i * 50, WindowHeight - 50), Color.Black);
             }
 
 
@@ -173,8 +173,9 @@ namespace TheGame
 
         public void DrawScore(SpriteBatch spriteBatch)
         {
-
-            spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 30 * Globals.Score.ToString().Length, 5), Color.White);
+            spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 40 * Globals.Score.ToString().Length, 5), Color.Black);
+            spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 39 * Globals.Score.ToString().Length, 4), Color.Gray);
+            spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 38 * Globals.Score.ToString().Length, 2), Color.White);
         }
     }
 }

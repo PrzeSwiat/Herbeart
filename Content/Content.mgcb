@@ -27,12 +27,12 @@
 /processorParam:DebugMode=Auto
 /build:File.fx
 
-#begin Fonts.spritefont
+#begin ItemFont.spritefont
 /importer:FontDescriptionImporter
-/processor:LocalizedFontProcessor
+/processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts.spritefont
+/build:ItemFont.spritefont
 
 #begin MainShader.fx
 /importer:EffectImporter

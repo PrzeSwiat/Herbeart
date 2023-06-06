@@ -331,10 +331,7 @@ namespace TheGame
                             if (this.BSphere.Intersects(enemy.boundingBox))
                             {
                                 enemy.Slow(this.slowness);
-                            } else
-                            {
-                                enemy.SetNormalSpeed();
-                            }
+                            } 
                         }
 
                     }
