@@ -49,7 +49,7 @@ namespace TheGame
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
-            SetScale(1.5f);
+            SetScale(1.2f);
             this.setRadius(3);
 
             AssignParameters(300, 1, 20, 0.5f);
