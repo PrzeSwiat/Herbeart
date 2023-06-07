@@ -19,7 +19,7 @@ namespace TheGame
         public List<Apple> bullet = new List<Apple>(); 
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            AssignParameters(100, 7, 2, 5.0f);
+            AssignParameters(4, 12, 2, 5.0f);
             this.leaf = new Leafs.AppleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
             this.shadow.SetScale(1.05f);
         }
@@ -111,7 +111,7 @@ namespace TheGame
                         canShoot = true;
                     }
                     if (canShoot) { 
-                        this.Throw(5, player);
+                        this.Throw(12, player);
                         timetoshoot = this.ActualAttackSpeed;
                     }
 
