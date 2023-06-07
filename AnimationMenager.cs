@@ -99,8 +99,8 @@ namespace TheGame
 
                 effect1.Parameters["Bones"].SetValue(boneTransforms);
                 effect1.Parameters["World"].SetValue(Globals.worldMatrix * Matrix.CreateScale(creature.GetScale()) * Matrix.CreateScale(0.009f)
-                        * Matrix.CreateRotationX(creature.GetRotation().X) * Matrix.CreateRotationX(-0.38f) * Matrix.CreateRotationY(creature.GetRotation().Y) *
-                        Matrix.CreateRotationZ(creature.GetRotation().Z)
+                        * Matrix.CreateRotationX(creature.GetRotation().X)  * Matrix.CreateRotationY(creature.GetRotation().Y) *
+                        Matrix.CreateRotationZ(creature.GetRotation().Z) * Matrix.CreateRotationX(-0.38f)
                         * Matrix.CreateTranslation(creature.GetPosition().X, creature.GetPosition().Y, creature.GetPosition().Z));
                 effect1.Parameters["View"].SetValue(Globals.viewMatrix);
                 effect1.Parameters["Projection"].SetValue(Globals.projectionMatrix);
