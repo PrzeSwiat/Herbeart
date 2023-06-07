@@ -33,7 +33,7 @@ namespace TheGame
         }
         public void Draw()
         {
-            this.DrawPlayer(Vector3.Zero);
+            this.Draw(Vector3.Zero);
         }
     }
 }

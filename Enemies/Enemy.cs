@@ -51,7 +51,7 @@ namespace TheGame
         public override void DrawPlayer(Vector3 lightpos)
         {
             base.DrawPlayer(lightpos);
-            shadow.DrawPlayer(lightpos);
+            shadow.Draw(lightpos);
 
         }
 

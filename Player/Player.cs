@@ -144,7 +144,7 @@ namespace TheGame
         public void DrawEffectsShadow(Vector3 lightpos)
         {
             shadow.SetPositionY(-0.99f);
-            shadow.DrawPlayer(lightpos);
+            shadow.Draw(lightpos);
         }
 
         public void Attack()

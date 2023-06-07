@@ -77,7 +77,7 @@ namespace TheGame
 
         public virtual void Draw(Vector3 lightpos)
         {
-            Globals.effectHandler1.MainDraw(GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
+            Globals.effectHandler.WroldDraw(GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
                         * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
                         Matrix.CreateRotationZ(GetRotation().Z)
                         * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
@@ -86,9 +86,9 @@ namespace TheGame
 
         public virtual void DrawPlayer(Vector3 lightpos)
         {
-            Globals.effectHandler.BasicDraw(GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
+            Globals.effectHandler.PlayerDraw(GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
                         * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
-                        Matrix.CreateRotationZ(GetRotation().Z)
+                        Matrix.CreateRotationZ(GetRotation().Z) * Matrix.CreateRotationX(-0.35f)
                         * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
                          , Globals.viewMatrix, Globals.projectionMatrix, GetTexture2D());
         }

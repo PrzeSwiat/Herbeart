@@ -54,7 +54,7 @@ namespace TheGame
             camera = new Camera();
             Leafs = new LeafList();
             enemies = new Enemies();
-            Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 50), (WindowWidth / 50), -(WindowHeight / 50), (WindowHeight / 50), -10f, 100f);      // orthographic view 
+            Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 65), (WindowWidth / 65), -(WindowHeight / 50), (WindowHeight / 50), -10f, 100f);      // orthographic view 
                                                                                                                                                                               //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
             // PERSPECTIVE point of view

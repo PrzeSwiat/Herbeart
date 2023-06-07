@@ -96,7 +96,7 @@ namespace TheGame
 
 
 
-        public void BasicDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D)
+        public void PlayerDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D)
         {
             // point light (fire light?)
             foreach (ModelMesh mesh in model.Meshes)
@@ -110,7 +110,7 @@ namespace TheGame
                     Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
                     _effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
                     _effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(0f, 0f, 0f));
-                    _effect.Parameters["DiffuseColor"].SetValue(new Vector4(12f, 12F, 12f, 1));
+                    _effect.Parameters["DiffuseColor"].SetValue(new Vector4(10f, 10F, 10f, 1));
                     _effect.Parameters["DiffuseIntensity"].SetValue(1f);
                     _effect.Parameters["LineColor"].SetValue(new Vector4(0, 0, 0, 1));
                     _effect.Parameters["LineThickness"].SetValue(0.045f);
@@ -123,7 +123,7 @@ namespace TheGame
             
         }
 
-        public void MainDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D,Vector3 Lightpos)
+        public void WroldDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D,Vector3 Lightpos)
         {
             // point light (fire light?)
             foreach (ModelMesh mesh in model.Meshes)
@@ -136,15 +136,12 @@ namespace TheGame
                     _effect.Parameters["Projection"].SetValue(projection);
                     Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
                     _effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
-                    _effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(0, 5f, 0f));
-                    _effect.Parameters["DiffuseColor"].SetValue(new Vector4(1, 1, 1, 1));
-                    _effect.Parameters["DiffuseIntensity"].SetValue(0.5f);
+                    _effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(0f, 0f, 0f));
+                    _effect.Parameters["DiffuseColor"].SetValue(new Vector4(10f, 10F, 10f, 1));
+                    _effect.Parameters["DiffuseIntensity"].SetValue(1f);
                     _effect.Parameters["LineColor"].SetValue(new Vector4(0, 0, 0, 1));
                     _effect.Parameters["LineThickness"].SetValue(0.045f);
-                   _effect.Parameters["AmbientColor"].SetValue(new Vector4(0.3f, 0.3f, 0.3f, 1f));
-                    _effect.Parameters["Attenuation"].SetValue(new Vector3(0.1f, 0.05f, 0f));
-                    _effect.Parameters["LightRange"].SetValue(80f);
-                    _effect.Parameters["LightPosition"].SetValue(Lightpos +new Vector3(0f, 10f, 4f));
+                    //_effect.Parameters["AmbientColor"].SetValue(new Vector4(0.3f, 0.3f, 0.3f, 1f));  
                     _effect.Parameters["Texture"].SetValue(texture2D);
                 }
                 mesh.Draw();
