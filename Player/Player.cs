@@ -52,7 +52,7 @@ namespace TheGame
             SetScale(1.5f);
             this.setRadius(3);
 
-            AssignParameters(200, 20, 20, 0.5f);
+            AssignParameters(300, 20, 20, 0.5f);
             playerEffects = new PlayerEffectHandler(this);
             Inventory = new Inventory();
             Crafting = new Crafting(Inventory, playerEffects);
@@ -157,6 +157,9 @@ namespace TheGame
                 lastAttackTime = actualTime;
             }
         }
+
+        public bool isCrafting() { return playerMovement.isCraftingTea; }
+        public bool isThrowing() { return playerMovement.isThrowing; }
 
         public void ThrowApple()
         {

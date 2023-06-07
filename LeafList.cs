@@ -7,16 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 using TheGame.Leafs;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace TheGame
 {
     internal class LeafList
     {
+        
         private List<Leaf> LeafsList;
-
+        public List<Animation2D> AnimationsList;
         public LeafList()
         {
             LeafsList = new List<Leaf>();
+            AnimationsList = new List<Animation2D>();
         }
 
         private void DestroyControl(object obj, EventArgs e)
@@ -24,14 +27,19 @@ namespace TheGame
             LeafsList.Remove((Leaf)obj);
 
         }
+        private void DestroyAnimation(object obj,EventArgs e)
+        {
+            AnimationsList.Remove((Animation2D)obj);
+        }
+        private void CreateAnimation(object obj,EventArgs e)
+        {
+            AnimationsList.Add((Animation2D)obj);
+        }
+
         private void CreateControl(object obj, EventArgs e)
         {
             Enemy enemy = (Enemy)obj;
-            
-            
-                LeafsList.Add(enemy.GetLeaf());
-
-                
+            LeafsList.Add(enemy.GetLeaf());
             foreach (Leaf leaf in LeafsList)
             {
                 leaf.LoadContent();
@@ -40,6 +48,7 @@ namespace TheGame
         }
         public void LoadModels()
         {
+            
             foreach (Leaf leaf in LeafsList.ToArray())
             {
 
@@ -64,8 +73,23 @@ namespace TheGame
 
             }
         }
-        public void UpdateScene(List<Enemy> enemies)
+        public void DrawHud(SpriteBatch spriteBatch)
         {
+            
+            foreach(Animation2D anim in AnimationsList)
+            {
+                anim.Draw(spriteBatch);
+            }
+            
+        }
+        public void UpdateScene(List<Enemy> enemies,GameTime gametime)
+        {
+            foreach (Animation2D anim in AnimationsList.ToList())
+            {
+                anim.Update(gametime);
+                anim.OnDestroy += DestroyAnimation;
+                
+            }
             foreach (Enemy enemy in enemies)
             {
                 if (enemy.canDestroy == true)
@@ -78,9 +102,10 @@ namespace TheGame
         }
         public void RefreshInventory(Player player)
         {
+           
             foreach (Leaf leaf in LeafsList.ToList())
             {
-                leaf.UpdateInventory(player);
+                leaf.UpdateInventory(player,AnimationsList);
 
                 leaf.OnDestroy += DestroyControl;
 

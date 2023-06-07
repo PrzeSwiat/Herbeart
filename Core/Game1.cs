@@ -31,7 +31,7 @@ namespace TheGame
         LeafList Leafs;
         SoundActorPlayer soundActorPlayer;
         AnimationMenager animationMenager;
-        Viewport viewport;
+       
 
         public Game1()
         {
@@ -72,7 +72,7 @@ namespace TheGame
             Globals.effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
             Globals.effectHandler1 = new EffectHandler(Content.Load<Effect>("MainShader"));
             Globals.Score = 0;
-            hud = new HUD("Textures/forest2", WindowWidth, WindowHeight);
+            hud = new HUD(WindowWidth, WindowHeight);
             world = new World();
             player = new Player(new Vector3(50,0,60), "Objects/mis", "Textures/MisTexture");
             animacyjnaPacynka = new Player(new Vector3(0, 15, 30), "Objects/mis", "Textures/tekstura");
@@ -81,7 +81,7 @@ namespace TheGame
             audioMenager = new AudioMenager(Content);
             soundActorPlayer = new SoundActorPlayer(Content, player, enemies.EnemiesList);
             animationMenager = new AnimationMenager(Content, player, enemies.EnemiesList);
-            viewport = GraphicsDevice.Viewport;
+            Globals.viewport = GraphicsDevice.Viewport;
 
             base.Initialize();
         }
@@ -136,12 +136,13 @@ namespace TheGame
                         enemies.Move(delta, player);    // i po co 3 funkcje a nie 1
                         enemies.RefreshOnDestroy();
                         Leafs.RefreshInventory(this.player);
-                        Leafs.UpdateScene(enemies.EnemiesList);
+                        Leafs.UpdateScene(enemies.EnemiesList,gameTime);
                         camera.Update1(player.GetPosition());
 
 
                         interactionEventHandler.Update(enemies.EnemiesList);
-                        viewport = GraphicsDevice.Viewport;
+                        Globals.viewport = GraphicsDevice.Viewport;
+                         
                         animationMenager.Update(gameTime);
                         SaveControl();
                         base.Update(gameTime);
@@ -184,8 +185,10 @@ namespace TheGame
                         Leafs.Draw(player.GetPosition());
                         animationMenager.DrawAnimations();
                         player.DrawEffectsShadow(player.GetPosition());
-                        hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
-                        hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList, viewport);  //hud jako OSTATNI koniecznie
+                        
+                        hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture());
+                        hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
+                        Leafs.DrawHud(_spriteBatch);//Koniecznie ostatnie nawet za Hudem
                     }
 
                 }

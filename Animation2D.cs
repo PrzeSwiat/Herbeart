@@ -16,29 +16,40 @@ namespace TheGame
         private Vector2 targetPosition;
         private float elapsedTime;
         private float animationDuration;
-        private float scale = 1f;
+        private Vector2 scale;
         private float ang = 0f;
-
-        public Animation2D(Texture2D texture, Vector2 initialPosition, Vector2 targetPosition, float animationDuration)
+        public event EventHandler OnDestroy;
+        public bool destroyAnimation = false;
+        public Animation2D(Texture2D texture, Vector3 initialPosition, Vector2 targetPosition, float animationDuration,Viewport viewport)
         {
+            Vector3 projectedPosition = viewport.Project(initialPosition,
+                    Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
             this.texture = texture;
-            this.position = initialPosition;
+            this.position = new Vector2(projectedPosition.X, projectedPosition.Y);
             this.targetPosition = targetPosition;
-
             this.animationDuration = animationDuration;
             this.elapsedTime = 0f;
+            this.scale = new Vector2(0.1f,0.1f);
         }
-
+        public void EndAnimation()
+        {
+            OnDestroy?.Invoke(this, EventArgs.Empty);
+            destroyAnimation = true;
+        }
         public Vector2 CalculatePosition(Vector2 startPosition, Vector2 targetPosition, float elapsedTime, float animationDuration)
         {
             if (elapsedTime >= animationDuration)
             {
+                EndAnimation();
+                destroyAnimation = true;
                 return targetPosition; // Jeśli czas przekracza czas trwania animacji, zwracamy pozycję końcową
             }
             else
             {
                 float t = elapsedTime / animationDuration;
                 Vector2 newPosition = Vector2.Lerp(startPosition, targetPosition, t);
+                scale = Vector2.Lerp(scale, new Vector2(0.4f, 0.4f), t);
+                ang += 0.1f;
                 return newPosition;
             }
         }
@@ -48,11 +59,14 @@ namespace TheGame
             elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             position = CalculatePosition(position, targetPosition, elapsedTime, animationDuration);
-            ang += 0.1f;
+            
         }
+        
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, null, Color.White, ang, Vector2.Zero, new Vector2(scale * 0.05f, scale * 0.05f), SpriteEffects.None, 0f);
+            spriteBatch.Begin();
+            spriteBatch.Draw(texture, position, null, Color.White, ang, Vector2.Zero, scale,SpriteEffects.None, 0f);
+            spriteBatch.End();
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Assimp.Configs;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -12,6 +13,7 @@ namespace TheGame
     internal class Crafting
     {
         private string recepture;
+        private string[] recepture2 = new string[3];
         private PlayerEffectHandler playerEffects;
         private Inventory inventory;
 
@@ -29,6 +31,7 @@ namespace TheGame
                 case 'A':
                     if (inventory.checkMintLeafNumber())
                     {
+                        recepture2[recepture.Length] = "mint";
                         recepture += button;
                         inventory.removeMintLeaf();
                     }
@@ -36,6 +39,7 @@ namespace TheGame
                 case 'B':
                     if (inventory.checkNettleLeafNumber())
                     {
+                        recepture2[recepture.Length] = "nettle";
                         recepture += button;
                         inventory.removeNettleLeaf();
                     }
@@ -43,6 +47,7 @@ namespace TheGame
                 case 'X':
                     if (inventory.checkMeliseLeafNumber())
                     {
+                        recepture2[recepture.Length] = "melise";
                         recepture += button;
                         inventory.removeMeliseLeaf();
                     }
@@ -50,6 +55,7 @@ namespace TheGame
                 case 'Y': 
                     if (inventory.checkAppleLeafNumber())
                     {
+                        recepture2[recepture.Length] = "apple";
                         recepture += button;
                         inventory.removeAppleLeaf();
                     }
@@ -64,7 +70,12 @@ namespace TheGame
             }
         }
 
-        public void restartRecepture() { recepture = string.Empty; }
+        public string[] returnRecepture()
+        {
+            return this.recepture2;
+        }
+
+        public void restartRecepture() { recepture = string.Empty; recepture2 = new string[3]; }
 
         public void cleanRecepture()
         {

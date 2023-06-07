@@ -15,32 +15,26 @@ namespace TheGame
 {
     internal class HUD
     {
-        private string _texFilename;
         private SpriteFont ScoreFont;
         private SpriteFont ItemFont;
         private SpriteFont Menu;
         private SpriteFont Menu2;
-        private Texture2D skyTex, red, healthBar, defaultItemFrame;
-        private Rectangle skyRec;
-        private int BackgroundWidth, BackgroundHeight, WindowWidth, WindowHeight;
-        private int BackgroundX, BackgroundY;
-        private Dictionary<string, int> leafs;
-        public int MenuOption = 1; 
-        //private string[] buttons;
+        private Texture2D healtColor, healthBar;
+        private Texture2D defaultItemFrame, offensiveItemFrame, teaItemFrame;
+        private Texture2D craftingTex, appleTex, meliseTex, mintTex, nettleTex;
+        private int WindowWidth, WindowHeight;
         
+        public int MenuOption = 1; 
 
-        private DateTime lastChangeTime, actualTime;
+        private Dictionary<string, int> leafs;
+        private bool isThrowing = false;
+        private bool isCrafting = false;
+        private string[] actualRecepture = new string[3];
 
-        public HUD(string texFilename, int windowWidth, int windowHeight)
+        public HUD(int windowWidth, int windowHeight)
         {
-            _texFilename = texFilename;
-            lastChangeTime = DateTime.Now;
-            actualTime = lastChangeTime;
-            BackgroundWidth = 200;
-            BackgroundHeight = 200;
             WindowWidth = windowWidth;
             WindowHeight = windowHeight;
-            skyRec = new Rectangle(0, 0, BackgroundWidth, BackgroundHeight);
 
             //buttons = new string[] { "A", "B", "X", "Y" };
         }
@@ -48,72 +42,60 @@ namespace TheGame
         public void LoadContent()
         {
             LoadedModels models = LoadedModels.Instance;
-            skyTex = models.getTexture(_texFilename);
-            red = models.getTexture("Textures/Red");
+
+            healtColor = models.getTexture("HUD/magenta");
             healthBar = models.getTexture("HUD/pasekzycia");
             defaultItemFrame = models.getTexture("HUD/default");
+            offensiveItemFrame = models.getTexture("HUD/atak");
+            teaItemFrame = models.getTexture("HUD/defens");
+
+            craftingTex = models.getTexture("HUD/robienieherbatki_preview");
+            appleTex = models.getTexture("HUD/ikona_japco_menu");
+            mintTex = models.getTexture("HUD/ikona_mieta_menu");
+            nettleTex = models.getTexture("HUD/ikona_pokrzywa_menu");
+            meliseTex = models.getTexture("HUD/ikona_melisa_menu");
+
+
             ItemFont = Globals.content.Load<SpriteFont>("ItemFont");
             ScoreFont = Globals.content.Load<SpriteFont>("ScoreFont");
             Menu = Globals.content.Load<SpriteFont>("Menu");
             Menu2 = Globals.content.Load<SpriteFont>("Menu2");
         }
 
-        public void Update(Vector3 camPos, Dictionary<string, int> leafs)
+        public void Update(Dictionary<string, int> leafs, bool crafting, bool throwing, string[] recepture)
         {
-            BackgroundX = (int)camPos.X % BackgroundWidth - BackgroundWidth;
-            BackgroundY = (int)camPos.Z % BackgroundHeight - BackgroundHeight;
-
             this.leafs = leafs;
+            this.isThrowing = throwing;
+            this.isCrafting = crafting;
+            actualRecepture = recepture;
         }
 
-        public void DrawBackground(SpriteBatch spriteBatch)
-        {
-            int numberOfWidthBG = WindowWidth / BackgroundWidth;
-            int numberOfHeightBG = WindowHeight / BackgroundHeight;
-
-            spriteBatch.Begin();
-
-            for (int i = 0; i <= numberOfWidthBG + 2; i++)
-            {
-                skyRec.X = BackgroundX + i * BackgroundWidth;
-                for (int j = 0; j <= numberOfHeightBG + 1; j++)
-                {
-
-                    skyRec.Y = BackgroundY + j * BackgroundHeight;
-                    spriteBatch.Draw(skyTex, skyRec, Color.Gray);
-                }
-            }
-
-            spriteBatch.End();
-        }
-
-        public void DrawFrontground(SpriteBatch spriteBatch, int hp, List<Enemy> enemies, Viewport viewport)
+        public void DrawFrontground(SpriteBatch spriteBatch, int hp, List<Enemy> enemies)
         {
             spriteBatch.Begin();
             DrawInventory(spriteBatch);
             DrawHealthBar(spriteBatch, hp);
-            DrawEnemyHealthBar(spriteBatch, enemies, viewport);
+            DrawEnemyHealthBar(spriteBatch, enemies);
             DrawScore(spriteBatch);
             spriteBatch.End();
         }
 
         private void DrawHealthBar(SpriteBatch spriteBatch, int hp)
         {
+            Rectangle health = new Rectangle(WindowWidth / 2 - 325/2 + 10, 17, hp, 30);
+            Rectangle healthBar = new Rectangle(WindowWidth / 2 - 325/2, 10, 320, 48);
             
-            Rectangle health = new Rectangle(WindowWidth / 2 - 200, 15, hp * 2, 30);
-            Rectangle healthBar = new Rectangle(WindowWidth / 2 - 215, 10, 430, 40);
-            
-            spriteBatch.Draw(red, health, Color.Red);
-            spriteBatch.Draw(this.healthBar, healthBar, Color.Black); 
+            spriteBatch.Draw(healtColor, health, Color.Magenta);
+            spriteBatch.Draw(this.healthBar, healthBar, Color.White); 
         }
-        private void DrawEnemyHealthBar(SpriteBatch spriteBatch, List<Enemy> enemies, Viewport viewport)
+        private void DrawEnemyHealthBar(SpriteBatch spriteBatch, List<Enemy> enemies)
         {
             foreach (Enemy e in enemies)
             {
-                Vector3 projectedPosition = viewport.Project(e.GetPosition(),
+                Vector3 projectedPosition = Globals.viewport.Project(e.GetPosition(),
                     Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
                 Rectangle rect = new Rectangle((int)projectedPosition.X - 40, (int)(projectedPosition.Y - 100), e.Health, 10);
-                spriteBatch.Draw(red, rect, Color.Red);
+                spriteBatch.Draw(healtColor, rect, Color.Red);
 
             }
             /*
@@ -141,13 +123,53 @@ namespace TheGame
         public void DrawInventory(SpriteBatch spriteBatch)
         {
             int invLenght = WindowHeight / 3;
-            Rectangle rect = new Rectangle(0, WindowHeight - invLenght, invLenght, invLenght);
+            Rectangle inv = new Rectangle(20, WindowHeight - invLenght - 20, invLenght, invLenght);
+            Rectangle rect_crafting = new Rectangle(WindowWidth / 2 - 70, WindowHeight / 2 - 170, 150, 50);
 
-            spriteBatch.Draw(defaultItemFrame, rect, Color.Gray);
-            spriteBatch.DrawString(ItemFont, leafs.ElementAt(0).Value.ToString(), new Vector2(invLenght / 2 + 13, WindowHeight - 40), Color.Black);    // mint
-            spriteBatch.DrawString(ItemFont, leafs.ElementAt(1).Value.ToString(), new Vector2(3 * invLenght / 4, WindowHeight - invLenght / 2), Color.Black);    // melise
-            spriteBatch.DrawString(ItemFont, leafs.ElementAt(2).Value.ToString(), new Vector2(17, WindowHeight - invLenght / 2), Color.Black);    // nettle
-            spriteBatch.DrawString(ItemFont, leafs.ElementAt(3).Value.ToString(), new Vector2(invLenght / 2 + 13, WindowHeight - invLenght + 20), Color.Black);    // apple
+
+            if (isCrafting) 
+            { 
+                spriteBatch.Draw(teaItemFrame, inv, Color.White);
+                spriteBatch.Draw(craftingTex, rect_crafting, Color.White);
+                Debug.Write(actualRecepture[0] + " " + actualRecepture[1] +  "\n");
+
+                int leafPosition = WindowWidth / 2 - 66;
+                for (int i = 0; i < 3; i++)
+                {
+                    if (actualRecepture[i] != "")
+                    {
+                        Rectangle rect = new Rectangle(leafPosition + i * 50, WindowHeight / 2 - 163, 37, 37);
+                        switch (actualRecepture[i])
+                        {
+                            case "mint":
+                                spriteBatch.Draw(mintTex, rect, Color.White);
+                                break;
+                            case "melise":
+                                spriteBatch.Draw(meliseTex, rect, Color.White);
+                                break;
+                            case "apple":
+                                spriteBatch.Draw(appleTex, rect, Color.White);
+                                break;
+                            case "nettle":
+                                spriteBatch.Draw(nettleTex, rect, Color.White);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            } 
+            else if (isThrowing) 
+            { 
+                spriteBatch.Draw(offensiveItemFrame, inv, Color.White); 
+            } else
+            {
+                spriteBatch.Draw(defaultItemFrame, inv, Color.White);
+            }
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(0).Value.ToString(), new Vector2(invLenght / 2 + 32, WindowHeight - 55), Color.White);    // mint
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(1).Value.ToString(), new Vector2(invLenght - 12, WindowHeight - invLenght / 2 - 12), Color.White);    // nettle
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(2).Value.ToString(), new Vector2(35, WindowHeight - invLenght / 2 - 12), Color.White);    // melise
+            spriteBatch.DrawString(ItemFont, leafs.ElementAt(3).Value.ToString(), new Vector2(invLenght / 2 + 32, WindowHeight - invLenght + 44), Color.White);    // apple
         }
 
        
@@ -156,7 +178,7 @@ namespace TheGame
         {
             Rectangle rect = new Rectangle(-WindowWidth, -WindowHeight, 2 * WindowWidth, 2 * WindowHeight);
             spriteBatch.Begin();
-            spriteBatch.Draw(red, rect, Color.Black);
+            spriteBatch.Draw(healtColor, rect, Color.Black);
             spriteBatch.DrawString(Menu, "Game Paused", new Vector2(WindowWidth / 4 , WindowHeight * 1 / 10), Color.White);
             spriteBatch.DrawString(Menu2, "Press 'Start/ESC' to reasume", new Vector2(WindowWidth / 5, WindowHeight * 4 / 10), Color.White);
             spriteBatch.End();
@@ -188,7 +210,7 @@ namespace TheGame
 
             Rectangle rect = new Rectangle(-WindowWidth, -WindowHeight, 2 * WindowWidth, 2 * WindowHeight);
             spriteBatch.Begin();
-            spriteBatch.Draw(red, rect, Color.Black);
+            spriteBatch.Draw(healtColor, rect, Color.Black);
             spriteBatch.DrawString(Menu, "You fell asleep", new Vector2(WindowWidth / 3.5f, WindowHeight * 1 / 20), Color.OrangeRed);
             spriteBatch.DrawString(Menu2, "Leader board", new Vector2(WindowWidth / 10, WindowHeight * 6 / 20), one);
             spriteBatch.DrawString(Menu2, "Try again", new Vector2(WindowWidth / 10, WindowHeight * 9 / 20), two);
@@ -218,7 +240,7 @@ namespace TheGame
 
             Rectangle rect = new Rectangle(-WindowWidth, -WindowHeight, 2 * WindowWidth, 2 * WindowHeight);
             spriteBatch.Begin();
-            spriteBatch.Draw(red, rect, Color.Black);
+            spriteBatch.Draw(healtColor, rect, Color.Black);
             spriteBatch.DrawString(Menu, "Herbeart", new Vector2(WindowWidth / 3, WindowHeight * 1 / 20), Color.Gray);
             spriteBatch.DrawString(Menu2, "Start new game", new Vector2(WindowWidth / 10, WindowHeight * 7 / 20), one);
             spriteBatch.DrawString(Menu2, "Not implemented option", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);

@@ -23,10 +23,11 @@ namespace TheGame.Leafs
                 ispossible = false;
         }
 
-        public override bool UpdateInventory(Player player)
+        public override bool UpdateInventory(Player player,List<Animation2D> AnimationsList)
         {
             if (this.chceckCollison(player))
             {
+                AnimationsList.Add(new Animation2D(Mint_Icon, this.GetPosition(), new Vector2(150, 900),1, Globals.viewport));
                 this.AddToInventory(player);
                 return true;
             }
