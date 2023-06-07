@@ -124,12 +124,12 @@ namespace TheGame
             foreach (NettleLeaf nettle in nettles)
             {
                 
-                nettle.DrawPlayer(lightpos);
+                nettle.Draw(lightpos);
             }
 
             foreach (MintLeaf mint in mints.ToList())
             {
-                mint.DrawPlayer(lightpos);
+                mint.Draw(lightpos);
             }
             
             //base.DrawPlayer(lightpos);

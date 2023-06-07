@@ -120,22 +120,37 @@ namespace TheGame
                     }
                     else if(e.GetType() == typeof(Nettle))
                     {
-                        rect = new Rectangle((int)projectedPosition.X + (-50 + (i * 32)), (int)(projectedPosition.Y - 150), 30, 30);
+                        rect = new Rectangle((int)projectedPosition.X + (-50 + (i * 30)), (int)(projectedPosition.Y - 155), 30, 30);
                     }
                     else if (e.GetType() == typeof(Melissa))
                     {
-                        rect = new Rectangle((int)projectedPosition.X + (-60 + (i * 32)), (int)(projectedPosition.Y - 240), 30, 30);
+                        rect = new Rectangle((int)projectedPosition.X + (-60 + (i * 30)), (int)(projectedPosition.Y - 240), 30, 30);
                     }
                     else if (e.GetType() == typeof(AppleTree))
                     {
-                        rect = new Rectangle((int)projectedPosition.X + (-30 + (i * 32)), (int)(projectedPosition.Y - 240), 30, 30);
+                        rect = new Rectangle((int)projectedPosition.X + (-30 + (i * 30)), (int)(projectedPosition.Y - 240), 30, 30);
                     }
                     spriteBatch.Draw(EnemyHealth, rect, Color.White);
                 }
                 if (e.Health % 2 == 1)
                 {
-
-                   // Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + ((fakeHealth) * 20)), (int)(projectedPosition.Y - 100), 30, 30);
+                    if (e.GetType() == typeof(Mint))
+                    {
+                        rect = new Rectangle((int)projectedPosition.X + (-20 + (fakeHealth * 30)), (int)(projectedPosition.Y - 180), 30, 30);
+                    }
+                    else if (e.GetType() == typeof(Nettle))
+                    {
+                        rect = new Rectangle((int)projectedPosition.X + (-50 + (fakeHealth * 30)), (int)(projectedPosition.Y - 155), 30, 30);
+                    }
+                    else if (e.GetType() == typeof(Melissa))
+                    {
+                        rect = new Rectangle((int)projectedPosition.X + (-60 + (fakeHealth * 30)), (int)(projectedPosition.Y - 240), 30, 30);
+                    }
+                    else if (e.GetType() == typeof(AppleTree))
+                    {
+                        rect = new Rectangle((int)projectedPosition.X + (-30 + (fakeHealth * 30)), (int)(projectedPosition.Y - 240), 30, 30);
+                    }
+                    // Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + ((fakeHealth) * 20)), (int)(projectedPosition.Y - 100), 30, 30);
                     spriteBatch.Draw(HalfEnemyHealth, rect, Color.White);
                 }
             
