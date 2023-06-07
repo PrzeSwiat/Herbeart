@@ -31,7 +31,7 @@ namespace TheGame
         LeafList Leafs;
         SoundActorPlayer soundActorPlayer;
         AnimationMenager animationMenager;
-        Viewport viewport;
+       
 
         public Game1()
         {
@@ -81,7 +81,9 @@ namespace TheGame
             audioMenager = new AudioMenager(Content);
             soundActorPlayer = new SoundActorPlayer(Content, player, enemies.EnemiesList);
             animationMenager = new AnimationMenager(Content, animacyjnaPacynka, enemies.EnemiesList);
-            viewport = GraphicsDevice.Viewport;
+            Globals.viewport = GraphicsDevice.Viewport;
+             
+            
 
             base.Initialize();
         }
@@ -136,12 +138,13 @@ namespace TheGame
                         enemies.Move(delta, player);    // i po co 3 funkcje a nie 1
                         enemies.RefreshOnDestroy();
                         Leafs.RefreshInventory(this.player);
-                        Leafs.UpdateScene(enemies.EnemiesList);
+                        Leafs.UpdateScene(enemies.EnemiesList,gameTime);
                         camera.Update1(player.GetPosition());
 
 
                         interactionEventHandler.Update(enemies.EnemiesList);
-                        viewport = GraphicsDevice.Viewport;
+                        Globals.viewport = GraphicsDevice.Viewport;
+                         
                         animationMenager.Update(gameTime);
                         SaveControl();
                         base.Update(gameTime);
@@ -184,8 +187,10 @@ namespace TheGame
                         Leafs.Draw(player.GetPosition());
                         animationMenager.DrawAnimation(GraphicsDevice);
                         player.DrawEffectsShadow(player.GetPosition());
+                        
                         hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
-                        hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList, viewport);  //hud jako OSTATNI koniecznie
+                        hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
+                        Leafs.DrawHud(_spriteBatch);//Koniecznie ostatnie nawet za Hudem
                     }
 
                 }

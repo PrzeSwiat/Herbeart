@@ -87,12 +87,12 @@ namespace TheGame
             spriteBatch.End();
         }
 
-        public void DrawFrontground(SpriteBatch spriteBatch, int hp, List<Enemy> enemies, Viewport viewport)
+        public void DrawFrontground(SpriteBatch spriteBatch, int hp, List<Enemy> enemies)
         {
             spriteBatch.Begin();
             DrawInventory(spriteBatch);
             DrawHealthBar(spriteBatch, hp);
-            DrawEnemyHealthBar(spriteBatch, enemies, viewport);
+            DrawEnemyHealthBar(spriteBatch, enemies);
             DrawScore(spriteBatch);
             spriteBatch.End();
         }
@@ -106,11 +106,11 @@ namespace TheGame
             spriteBatch.Draw(red, health, Color.Red);
             spriteBatch.Draw(this.healthBar, healthBar, Color.White); 
         }
-        private void DrawEnemyHealthBar(SpriteBatch spriteBatch, List<Enemy> enemies, Viewport viewport)
+        private void DrawEnemyHealthBar(SpriteBatch spriteBatch, List<Enemy> enemies)
         {
             foreach (Enemy e in enemies)
             {
-                Vector3 projectedPosition = viewport.Project(e.GetPosition(),
+                Vector3 projectedPosition = Globals.viewport.Project(e.GetPosition(),
                     Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
                 Rectangle rect = new Rectangle((int)projectedPosition.X - 40, (int)(projectedPosition.Y - 100), e.Health, 10);
                 spriteBatch.Draw(red, rect, Color.Red);
