@@ -21,6 +21,19 @@
 /processorParam:SkipUVs=False
 /build:Animations/abominejszyn.fbx
 
+#begin Animations/mis_bieg.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mis_bieg.fbx
+
+#begin AnimationToon.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:AnimationToon.fx
+
 #begin File.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -1088,6 +1101,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/mieta.png
+
+#begin Textures/mis_texture.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/mis_texture.png
 
 #begin Textures/MisTexture.png
 /importer:TextureImporter

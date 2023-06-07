@@ -8,10 +8,13 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using PrimitiveType = Microsoft.Xna.Framework.Graphics.PrimitiveType;
 
 namespace TheGame
 {
@@ -21,8 +24,10 @@ namespace TheGame
         Player player;
         List<Enemy> enemies;
         private List<AnimationPlayer> allAnimations;
-        private SkinnedModel debil;
-        private AnimationPlayer Adebil;
+        private SkinnedModel Steps;
+        private AnimationPlayer ASteps;
+        private Texture2D texture;
+        private Effect effect1;
 
         private SkinnedModel playerModel;
         private AnimationPlayer playerAnimations;
@@ -33,7 +38,6 @@ namespace TheGame
             player = _player;
             enemies = _enemies;
             allAnimations = new List<AnimationPlayer>();
-
         }
 
         public void LoadContent()
@@ -42,18 +46,19 @@ namespace TheGame
             player.onMove += PlayerSteps;
 
             //debil
-            debil = Content.Load<SkinnedModel>("Animations/abominejszyn");
-            Adebil = new AnimationPlayer(debil);
-            Adebil.Animation = debil.Animations[0];
-            Adebil.PlaybackSpeed = 1f;
-            Adebil.IsLooping = true;
-            Adebil.IsPlaying = true;
-            Adebil.CurrentTime = 1.0f;
-            Adebil.CurrentTick = debil.Animations[0].DurationInSeconds;
+            Steps = Content.Load<SkinnedModel>("Animations/mis_bieg");
+            texture = Content.Load<Texture2D>("Textures/mis_texture");
+            effect1 = Content.Load<Effect>("AnimationToon");
+            ASteps = new AnimationPlayer(Steps);
+            ASteps.Animation = Steps.Animations[0];
+            ASteps.PlaybackSpeed = 1f;
+            ASteps.IsLooping = true;
+            ASteps.CurrentTime = 1.0f;
+            ASteps.CurrentTick = Steps.Animations[0].DurationInTicks;
 
 
             // ADD ALL ANIMATION HERE
-            allAnimations.Add(Adebil);
+            allAnimations.Add(ASteps);
 
         }
 
@@ -63,37 +68,60 @@ namespace TheGame
             {
                 animationPlayer.Update(gameTime);
             }
+            
         }
 
 
         private void PlayerSteps(object obj, EventArgs e)
         {
-            
+            ASteps.IsPlaying = true;
         }
 
-        public void DrawAnimation(GraphicsDevice graphicsDevice)
+        public void DrawAnimations()
         {
-            Effect _effect;
-            SkinnedEffect effect = new SkinnedEffect(graphicsDevice);
-
-            effect.EnableDefaultLighting();
-            effect.Texture = player.GetTexture2D();
-            effect.View = Globals.viewMatrix;
-            effect.Projection = Globals.projectionMatrix;
-            effect.World = Globals.worldMatrix * Matrix.CreateScale(player.GetScale()) * Matrix.CreateScale(0.01f)
-                        * Matrix.CreateRotationX(player.GetRotation().X) * Matrix.CreateRotationY(player.GetRotation().Y) *
-                        Matrix.CreateRotationZ(player.GetRotation().Z)
-                        * Matrix.CreateTranslation(player.GetPosition().X, player.GetPosition().Y, player.GetPosition().Z);
-
-
-            foreach (SkinnedMesh mesh in debil.Meshes)
+            if(ASteps.IsPlaying)
             {
-                Adebil.SetEffectBones(effect);
+                DrawAnimation(player, ASteps, Steps);
+            }
 
-                effect.CurrentTechnique.Passes[0].Apply();
 
-                _effect = effect.Clone();
-                mesh.Draw();
+            ASteps.IsPlaying=false;
+        }
+
+
+        public void DrawAnimation(Creature creature, AnimationPlayer animation, SkinnedModel model)
+        {
+            Matrix[] boneTransforms = (Matrix[])animation.BoneSpaceTransforms;
+
+            foreach (SkinnedMesh mesh in model.Meshes)
+            {
+                effect1.CurrentTechnique = effect1.Techniques["Toon"];
+
+                effect1.Parameters["Bones"].SetValue(boneTransforms);
+                effect1.Parameters["World"].SetValue(Globals.worldMatrix * Matrix.CreateScale(creature.GetScale()) * Matrix.CreateScale(0.009f)
+                        * Matrix.CreateRotationX(creature.GetRotation().X) * Matrix.CreateRotationX(-0.38f) * Matrix.CreateRotationY(creature.GetRotation().Y) *
+                        Matrix.CreateRotationZ(creature.GetRotation().Z)
+                        * Matrix.CreateTranslation(creature.GetPosition().X, creature.GetPosition().Y, creature.GetPosition().Z));
+                effect1.Parameters["View"].SetValue(Globals.viewMatrix);
+                effect1.Parameters["Projection"].SetValue(Globals.projectionMatrix);
+                effect1.Parameters["WorldInverseTranspose"].SetValue(Matrix.Transpose(Matrix.Invert(Globals.worldMatrix)));
+                effect1.Parameters["DiffuseLightDirection"].SetValue(new Vector3(0, 1, 1));
+                effect1.Parameters["DiffuseColor"].SetValue(Color.White.ToVector4());
+                effect1.Parameters["DiffuseIntensity"].SetValue(1);
+                effect1.Parameters["LineColor"].SetValue(Color.Black.ToVector4());
+                effect1.Parameters["LineThickness"].SetValue(new Vector4(1f));
+                effect1.Parameters["Texture"].SetValue(texture);
+
+                foreach (var pass in effect1.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                    effect1.GraphicsDevice.SetVertexBuffer(mesh.VertexBuffer);
+                    effect1.GraphicsDevice.Indices = mesh.IndexBuffer;
+                    effect1.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, mesh.VertexBuffer.VertexCount);
+
+                }
+
+
             }
         }
     }

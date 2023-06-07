@@ -132,7 +132,7 @@ namespace TheGame
                 mint.DrawPlayer(lightpos);
             }
             
-            base.DrawPlayer(lightpos);
+            //base.DrawPlayer(lightpos);
 
             foreach (Apple apple in apples)
             {

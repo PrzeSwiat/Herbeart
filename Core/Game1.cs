@@ -80,7 +80,7 @@ namespace TheGame
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
             audioMenager = new AudioMenager(Content);
             soundActorPlayer = new SoundActorPlayer(Content, player, enemies.EnemiesList);
-            animationMenager = new AnimationMenager(Content, animacyjnaPacynka, enemies.EnemiesList);
+            animationMenager = new AnimationMenager(Content, player, enemies.EnemiesList);
             viewport = GraphicsDevice.Viewport;
 
             base.Initialize();
@@ -182,7 +182,7 @@ namespace TheGame
                         enemies.Draw(player.GetPosition());
 
                         Leafs.Draw(player.GetPosition());
-                        animationMenager.DrawAnimation(GraphicsDevice);
+                        animationMenager.DrawAnimations();
                         player.DrawEffectsShadow(player.GetPosition());
                         hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
                         hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList, viewport);  //hud jako OSTATNI koniecznie
