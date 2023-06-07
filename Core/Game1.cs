@@ -72,7 +72,7 @@ namespace TheGame
             Globals.effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
             Globals.effectHandler1 = new EffectHandler(Content.Load<Effect>("MainShader"));
             Globals.Score = 0;
-            hud = new HUD("Textures/forest2", WindowWidth, WindowHeight);
+            hud = new HUD(WindowWidth, WindowHeight);
             world = new World();
             player = new Player(new Vector3(50,0,60), "Objects/mis", "Textures/MisTexture");
             animacyjnaPacynka = new Player(new Vector3(0, 15, 30), "Objects/mis", "Textures/tekstura");
@@ -188,7 +188,7 @@ namespace TheGame
                         animationMenager.DrawAnimation(GraphicsDevice);
                         player.DrawEffectsShadow(player.GetPosition());
                         
-                        hud.Update(camera.CamPosition, player.Inventory.returnLeafs());
+                        hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture());
                         hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
                         Leafs.DrawHud(_spriteBatch);//Koniecznie ostatnie nawet za Hudem
                     }

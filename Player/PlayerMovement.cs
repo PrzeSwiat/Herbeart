@@ -9,8 +9,8 @@ namespace TheGame
     internal class PlayerMovement
     {
         private Player player;
-        private Boolean isCraftingTea;
-        private Boolean isThrowing;
+        public Boolean isCraftingTea;
+        public Boolean isThrowing;
         private Boolean padButtonAClicked;
         private Boolean padButtonBClicked;
         private Boolean padButtonXClicked;
