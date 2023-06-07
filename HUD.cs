@@ -49,8 +49,8 @@ namespace TheGame
             defaultItemFrame = models.getTexture("HUD/default");
             offensiveItemFrame = models.getTexture("HUD/atak");
             teaItemFrame = models.getTexture("HUD/defens");
-            EnemyHealth = Globals.content.Load<Texture2D>("Textures/EnemyHealth");
-            HalfEnemyHealth= Globals.content.Load<Texture2D>("Textures/HalfEnemyHealth");
+            EnemyHealth = models.getTexture("Textures/EnemyHealth");
+            HalfEnemyHealth= models.getTexture("Textures/HalfEnemyHealth");
 
             craftingTex = models.getTexture("HUD/robienieherbatki_preview");
             appleTex = models.getTexture("HUD/ikona_japco_menu");
@@ -110,15 +110,32 @@ namespace TheGame
                     Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
 
                 int fakeHealth = e.Health / 2;
+                Rectangle rect = new Rectangle(0,0,1,1);
                 for (int i = 0; i < fakeHealth; i++)
                 {
-                    Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + (i * 20)), (int)(projectedPosition.Y - 100), 20, 20);
+                    
+                    if (e.GetType() == typeof(Mint))
+                    {
+                         rect = new Rectangle((int)projectedPosition.X + (-20 + (i * 30)), (int)(projectedPosition.Y - 180), 30, 30);
+                    }
+                    else if(e.GetType() == typeof(Nettle))
+                    {
+                        rect = new Rectangle((int)projectedPosition.X + (-50 + (i * 32)), (int)(projectedPosition.Y - 150), 30, 30);
+                    }
+                    else if (e.GetType() == typeof(Melissa))
+                    {
+                        rect = new Rectangle((int)projectedPosition.X + (-60 + (i * 32)), (int)(projectedPosition.Y - 240), 30, 30);
+                    }
+                    else if (e.GetType() == typeof(AppleTree))
+                    {
+                        rect = new Rectangle((int)projectedPosition.X + (-30 + (i * 32)), (int)(projectedPosition.Y - 240), 30, 30);
+                    }
                     spriteBatch.Draw(EnemyHealth, rect, Color.White);
                 }
                 if (e.Health % 2 == 1)
                 {
 
-                    Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + ((fakeHealth) * 20)), (int)(projectedPosition.Y - 100), 20, 20);
+                   // Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + ((fakeHealth) * 20)), (int)(projectedPosition.Y - 100), 30, 30);
                     spriteBatch.Draw(HalfEnemyHealth, rect, Color.White);
                 }
             
