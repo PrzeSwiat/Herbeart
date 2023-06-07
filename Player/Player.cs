@@ -52,7 +52,7 @@ namespace TheGame
             SetScale(1.5f);
             this.setRadius(3);
 
-            AssignParameters(300, 20, 20, 0.5f);
+            AssignParameters(300, 1, 20, 0.5f);
             playerEffects = new PlayerEffectHandler(this);
             Inventory = new Inventory();
             Crafting = new Crafting(Inventory, playerEffects);
@@ -178,7 +178,7 @@ namespace TheGame
             if (Inventory.checkNettleLeafNumber()) 
             {
                 Inventory.removeNettleLeaf();
-                NettleLeaf nettle = new NettleLeaf(GetPosition(), 50, 10);
+                NettleLeaf nettle = new NettleLeaf(GetPosition(), 1, 10);
                 nettle.OnDestroy += RemoveNettle;
                 nettle.LoadContent();
                 nettle.SetScale(2);

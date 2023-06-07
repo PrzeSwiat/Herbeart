@@ -22,6 +22,7 @@ namespace TheGame
         private Texture2D healtColor, healthBar;
         private Texture2D defaultItemFrame, offensiveItemFrame, teaItemFrame;
         private Texture2D craftingTex, appleTex, meliseTex, mintTex, nettleTex;
+        private Texture2D EnemyHealth, HalfEnemyHealth;
         private int WindowWidth, WindowHeight;
         
         public int MenuOption = 1; 
@@ -48,6 +49,8 @@ namespace TheGame
             defaultItemFrame = models.getTexture("HUD/default");
             offensiveItemFrame = models.getTexture("HUD/atak");
             teaItemFrame = models.getTexture("HUD/defens");
+            EnemyHealth = Globals.content.Load<Texture2D>("Textures/EnemyHealth");
+            HalfEnemyHealth= Globals.content.Load<Texture2D>("Textures/HalfEnemyHealth");
 
             craftingTex = models.getTexture("HUD/robienieherbatki_preview");
             appleTex = models.getTexture("HUD/ikona_japco_menu");
@@ -90,6 +93,7 @@ namespace TheGame
         }
         private void DrawEnemyHealthBar(SpriteBatch spriteBatch, List<Enemy> enemies)
         {
+            /*
             foreach (Enemy e in enemies)
             {
                 Vector3 projectedPosition = Globals.viewport.Project(e.GetPosition(),
@@ -98,26 +102,27 @@ namespace TheGame
                 spriteBatch.Draw(healtColor, rect, Color.Red);
 
             }
-            /*
+            */
+            
             foreach (Enemy e in enemies)
             {
-                Vector3 projectedPosition = viewport.Project(e.GetPosition(),
+                Vector3 projectedPosition =Globals.viewport.Project(e.GetPosition(),
                     Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
 
                 int fakeHealth = e.Health / 2;
                 for (int i = 0; i < fakeHealth; i++)
                 {
                     Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + (i * 20)), (int)(projectedPosition.Y - 100), 20, 20);
-                    spriteBatch.Draw(enemyhealth, rect, Color.White);
+                    spriteBatch.Draw(EnemyHealth, rect, Color.White);
                 }
                 if (e.Health % 2 == 1)
                 {
 
                     Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + ((fakeHealth) * 20)), (int)(projectedPosition.Y - 100), 20, 20);
-                    spriteBatch.Draw(halfenemyhealth, rect, Color.Gray);
+                    spriteBatch.Draw(HalfEnemyHealth, rect, Color.White);
                 }
-            */
-
+            
+                }
             }
 
         public void DrawInventory(SpriteBatch spriteBatch)

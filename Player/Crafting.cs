@@ -104,7 +104,7 @@ namespace TheGame
                     break;
                 case "XBY":
                     playerEffects.RegenarateHP(100);
-                    playerEffects.BuffStrenght(20, 20);
+                    playerEffects.BuffStrenght(3, 10);
                     break;
                 case "ABX":
                     playerEffects.RegenarateHP(100);
