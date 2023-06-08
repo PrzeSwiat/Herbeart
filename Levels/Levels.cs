@@ -36,10 +36,10 @@ namespace TheGame
 
         #region Module parametrs and rectangles
         private int numberOfModules;
-        private int moduleSeparatorX = 6 * 26;
+        private int moduleSeparatorX = 156;
         private int moduleSeparatorZCount = 0;
         private int moduleHeightChange = 0;
-        private int moduleSeparatorZ = 6 * 26;
+        private int moduleSeparatorZ = 156;
         List<Rectangle> modulesList;
         Rectangle module;
         HashSet<Rectangle> visited;
@@ -241,8 +241,6 @@ namespace TheGame
             return enemiesList;
         }
 
-
-
         public int returnModuleNumber(float playerX, float playerY)
         {
             int numberOfModule = 0;
@@ -266,23 +264,27 @@ namespace TheGame
 
         class Level
         {
+
+            #region Models
             private string[] treeModels = { "Objects/drzewo1", "Objects/drzewo2", "Objects/drzewo3" };
             private string[] enemyTypes = { "Objects/apple", "Objects/mint", "Objects/nettle", "Objects/melissa" };
             private string[] grassModels = { "Objects/big_grass", "Objects/grass1", "Objects/grass2", "Objects/grass3", "Objects/three_grass" };
-            private string[] otherSmallModels = { "Objects/big_stone", "Objects/small_stone", "Objects/two_stones", "Objects/bush", "Objects/small_bush", "Objects/flower" };
-
+            private string[] otherSmallModels = { "Objects/big_stone", "Objects/small_stone", "Objects/two_stones", "Objects/bush", "Objects/small_bush", "Objects/flower", "Objects/flower", "Objects/flower" };
+            #endregion
+            #region Textures
             private string[] bushTextures = { "Textures/bush1", "Textures/bush2" };
             private string[] flowerTextures = { "Textures/flower1", "Textures/flower2" };
             private string[] bigGrassTextures = { "Textures/big_grass1", "Textures/big_grass2" };
-            private string[] grassTextures = { "Textures/grass1", "Textures/grass2", "Textures/grass3", "Textures/grass4", "Textures/grass5", "Textures/grass6", "Textures/grass7" };
-            
-            private List<Tile> _tiles;
+            private string[] grassTextures = { "Textures/grass1", "Textures/grass2", "Textures/grass3", "Textures/grass4", "Textures/grass5", "Textures/grass6"};
+            #endregion
+            private List<Tile> groundTiles;
+            private List<Tile> forestTiles;
+            private List<Tile> spawnTiles;
             private List<SceneObject> _sceneObjects;
-            public int tileSize = 6;
-            public int moduleWidth = 26;
-            public int moduleHeight = 26;
+            private int tileSize = 6;
+            private int moduleWidth = 26;
+            private int moduleHeight = 26;
             private List<Enemy> enemies;
-            private List<Vector3> groundPositions;
 
             private string fileName;
             private float separatorX, separatorZ;
@@ -294,7 +296,9 @@ namespace TheGame
             {
                 _sceneObjects = new List<SceneObject>();
                 enemies = new List<Enemy>();
-                groundPositions = new List<Vector3>();
+                groundTiles = new List<Tile>();
+                forestTiles = new List<Tile>();
+                spawnTiles = new List<Tile>();
 
                 this.fileName = fileName; 
                 this.separatorX = separatorX;
@@ -318,14 +322,17 @@ namespace TheGame
                 public string groundType;
                 public float height;
                 public Vector3 position;
+                public double probability; 
 
-                public Tile(String groundType, float height, Vector3 position)
+                public Tile(String groundType, float height, Vector3 position, double probability)
                 {
                     this.groundType = groundType;
                     this.height = height;
                     this.position = position;
+                    this.probability = probability;
                 }
             }
+
 
             public List<SceneObject> returnSceneObjects() { return _sceneObjects; }
 
@@ -371,7 +378,6 @@ namespace TheGame
                 int z = 0;
 
                 List<int> tileList = ReadFile(fileName);
-                _tiles = new List<Tile>();
                 Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -0.7f, 0.5f * moduleHeight * tileSize + separatorZ);
 
                 for (int i = 0; i < tileList.Count; i++)
@@ -387,24 +393,24 @@ namespace TheGame
                             groundType = "forest";
                             height = 0.0f;
                             Vector3 wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
-                            _tiles.Add(new Tile(groundType, height, wektor));
-                            GenerateForest(wektor);
+                            Tile tile = new Tile(groundType, height, wektor, 0);
+                            forestTiles.Add(tile);
+                            Vector3 newVector = ChangeTileVector(tile, -3, 3, true, false);
+                            GenerateForest(newVector);
                             x++;
                             break;
                         case 97: //a
                             groundType = "grass";
-                            height = -2.0f;
+                            height = 0.0f;
                             Vector3 wektor1 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
-                            _tiles.Add(new Tile(groundType, height, wektor1));
-                            wektor1.Y = 0;
-                            groundPositions.Add(wektor1);
+                            groundTiles.Add(new Tile(groundType, height, wektor1, 0));
                             x++;
                             break;
                         case 98: //b
                             groundType = "spawn";
                             height = -2.0f;
                             Vector3 wektor2 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
-                            _tiles.Add(new Tile(groundType, height, wektor2));
+                            spawnTiles.Add(new Tile(groundType, height, wektor2, 0));
                             x++;
                             break;
                     }
@@ -412,13 +418,24 @@ namespace TheGame
                 }
                 _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground1", "Textures/tekstura_wielkiego_tila"));
                 Random random = new Random();
-                int objectsCount = random.Next(8, 14);
+                int objectsCount = random.Next(25, 30);
                 GenerateGrassAndStones(objectsCount, 4);
                 if (enemyCount != 0)
                 {
                     GenerateRandomEnemies(enemyCount);
                 }
                 ObjectInitializer();
+            }
+
+            public void SetInitialProbabilities(List<Tile> tileList)
+            {
+                double initialProbability = 1.0 / tileList.Count;
+                for (int i = 0; i < tileList.Count; i++)
+                {
+                    Tile tile = tileList[i];
+                    tile.probability = initialProbability;
+                    tileList[i] = tile;
+                }
             }
 
             public List<int> ReadFile(string fileName)
@@ -454,11 +471,31 @@ namespace TheGame
                 return generatedRandom;
             }
 
-            public static int GenerateRandomInt(int range)
+            public static Tile GenerateRandomTileWithProbability(List<Tile> tiles)
             {
                 Random random = new Random();
-                int index = random.Next(range);
-                return index;
+
+                double totalProbability = tiles.Sum(tile => tile.probability);
+
+                double randomNumber = random.NextDouble() * totalProbability;
+
+                // Znalezienie elementu, którego prawdopodobieństwo przekracza wylosowaną liczbę
+                double cumulativeProbability = 0;
+
+                for (int i = 0; i < tiles.Count; i++)
+                {
+                    Tile tile = tiles[i];
+                    cumulativeProbability += tile.probability;
+                    if (randomNumber < cumulativeProbability)
+                    {
+                        tile.probability = 0;
+                        tiles[i] = tile;
+                        return tiles[i];
+                    }
+                }
+
+                // Powinno zwrócić ostatni element, jeśli poprzednie nie spełniły warunku
+                return tiles[tiles.Count - 1];
             }
 
             public void GenerateRandomEnemies(int enemyCount)
@@ -468,13 +505,81 @@ namespace TheGame
                     for (int i = 0; i < this.enemyCount; i++)
                     {
                         string enemyType = GenerateRandomString(enemyTypes);
-                        int range = groundPositions.Count;
-                        int index = GenerateRandomInt(range);
-                        Vector3 groundPosition = groundPositions[index];
+                        Vector3 groundPosition = ChoosedTileVector();
                         GenerateEnemy(enemyType, groundPosition);
-                        groundPositions.RemoveAt(index);
                     }
                 }
+            }
+
+            public Vector3 ChangeTileVector(Tile tile, double min, double max, bool x, bool z)
+            {
+                Vector3 position = tile.position;
+                if (x)
+                {
+                    Random random = new Random();
+                    float randomNumber = (float)(random.NextDouble() * max + min);
+                    tile.position.X += randomNumber;
+                }
+                if (z)
+                {
+                    Random random1 = new Random();
+                    float randomNumber1 = (float)(random1.NextDouble() * max + min);
+                    tile.position.Z += randomNumber1;
+                }
+
+
+                return tile.position;
+            }
+
+            public Vector3 ChoosedTileVector()
+            {
+                Tile tile = GenerateRandomTileWithProbability(groundTiles);
+                UpdateProbability(groundTiles, tile);
+                Vector3 position = ChangeTileVector(tile, -6, 6, true, true);
+                return position;
+            }
+
+            public static void UpdateProbability(List<Tile> tiles, Tile selectedTile)
+            {
+                double changeFactor = 0.7;
+
+                for (int i = 0; i < tiles.Count; i++)
+                {
+                    Tile tile = tiles[i];
+
+                    if (Distance(tile.position, selectedTile.position))
+                    {
+                        tile.probability *= changeFactor;
+                    }
+                    else
+                    {
+                        tile.probability *= (1 + changeFactor);
+                    }
+
+                    tiles[i] = tile; // Zapisz zmieniony element z powrotem do listy
+                }
+
+                double totalProbability = tiles.Sum(tile => tile.probability);
+                // Znormalizowanie prawdopodobieństw, aby suma wynosiła 1
+                for (int i = 0; i < tiles.Count; i++)
+                {
+                    Tile tile = tiles[i];
+                    tile.probability /= totalProbability;
+                    tiles[i] = tile; // Zapisz zmieniony element z powrotem do listy
+                }
+            }
+
+            public static bool Distance(Vector3 vector1, Vector3 vector2)
+            {
+                float deltaX = Math.Abs(vector1.X - vector2.X);
+                float deltaZ = Math.Abs(vector1.Z - vector2.Z);
+
+                if (deltaX <= 6 && deltaZ <= 6)
+                {
+                    return true;
+                }
+                else
+                    return false;
             }
 
             public void GenerateEnemy(string enemyType, Vector3 groundPosition)
@@ -541,7 +646,8 @@ namespace TheGame
                         _sceneObjects.Add(grass3);
                         break;
                     case "Objects/three_grass":
-                        SceneObject grass4 = new SceneObject(groundPosition, "Objects/three_grass", "Textures/three_grass");
+                        texture = GenerateRandomString(grassTextures);
+                        SceneObject grass4 = new SceneObject(groundPosition, "Objects/three_grass", texture);
                         grass4.SetScale(scale);
                         grass4.SetRotation(new Vector3(0, rflot, 0));
                         _sceneObjects.Add(grass4);
@@ -596,22 +702,18 @@ namespace TheGame
                         texture = GenerateRandomString(flowerTextures);
                         SceneObject flower = new SceneObject(groundPosition, "Objects/flower", texture);
                         flower.SetScale(scale);
-                        flower.SetRotation(new Vector3(0, rflot, 0));
                         _sceneObjects.Add(flower);
                         break;
                 }
             }
             public void GenerateGrassAndStones(int grassCount, int otherCount)
             {
-                
+                SetInitialProbabilities(groundTiles);
                 if (grassCount != 0)
                 {
                     for (int i = 0; i < grassCount; i++)
                     {
-                        int range = groundPositions.Count;
-                        int index = GenerateRandomInt(range);
-                        Vector3 groundPosition = groundPositions[index];
-                        groundPositions.RemoveAt(index);
+                        Vector3 groundPosition = ChoosedTileVector();
 
                         string objectType = GenerateRandomString(grassModels);
                         GenerateGrass(objectType, groundPosition);
@@ -622,10 +724,8 @@ namespace TheGame
                 {
                     for (int i = 0; i < otherCount; i++)
                     {
-                        int range = groundPositions.Count;
-                        int index = GenerateRandomInt(range);
-                        Vector3 groundPosition = groundPositions[index];
-                        groundPositions.RemoveAt(index);
+
+                        Vector3 groundPosition = ChoosedTileVector();
 
                         string objectType = GenerateRandomString(otherSmallModels);
                         GenerateOtherObjects(objectType, groundPosition);
