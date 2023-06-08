@@ -25,7 +25,9 @@ namespace TheGame
         List<Enemy> enemies;
         private List<AnimationPlayer> allAnimations;
         private SkinnedModel Steps;
+        private SkinnedModel Idle;
         private AnimationPlayer ASteps;
+        private AnimationPlayer AIdle;
         private Texture2D texture;
         private Effect effect1;
 
@@ -45,46 +47,63 @@ namespace TheGame
 
             player.onMove += PlayerSteps;
 
-            //debil
             Steps = Content.Load<SkinnedModel>("Animations/mis_bieg");
+            Idle = Content.Load<SkinnedModel>("Animations/mis_Standing");
             texture = Content.Load<Texture2D>("Textures/mis_texture");
             effect1 = Content.Load<Effect>("AnimationToon");
+
+            //steps
             ASteps = new AnimationPlayer(Steps);
             ASteps.Animation = Steps.Animations[0];
-            ASteps.PlaybackSpeed = 1f;
+            ASteps.PlaybackSpeed = 0.8f;
             ASteps.IsLooping = true;
             ASteps.CurrentTime = 1.0f;
             ASteps.CurrentTick = Steps.Animations[0].DurationInTicks;
-
+            //idle
+            AIdle = new AnimationPlayer(Idle);
+            AIdle.Animation = Idle.Animations[0];
+            AIdle.PlaybackSpeed = 0.8f;
+            AIdle.IsLooping = true;
+            AIdle.IsPlaying = true;
+            AIdle.CurrentTime = 1.0f;
+            AIdle.CurrentTick = Idle.Animations[0].DurationInTicks;
 
             // ADD ALL ANIMATION HERE
             allAnimations.Add(ASteps);
+            allAnimations.Add(AIdle);
 
         }
 
         public void Update(GameTime gameTime)
         {
+
             foreach(AnimationPlayer animationPlayer in allAnimations)
             {
                 animationPlayer.Update(gameTime);
             }
-            
+
+
         }
 
 
         private void PlayerSteps(object obj, EventArgs e)
         {
+            AIdle.IsPlaying = false;
             ASteps.IsPlaying = true;
         }
 
         public void DrawAnimations()
         {
+            if(AIdle.IsPlaying)
+            {
+                DrawAnimation(player, AIdle, Idle);
+            }
             if(ASteps.IsPlaying)
             {
                 DrawAnimation(player, ASteps, Steps);
             }
 
-
+            AIdle.IsPlaying = true;
             ASteps.IsPlaying=false;
         }
 
