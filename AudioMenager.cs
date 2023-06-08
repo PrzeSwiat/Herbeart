@@ -36,8 +36,7 @@ namespace TheGame
         public void LoadContent()
         {
             mainSong = Content.Load<Song>("SoundFx/ForestMain");
-            mainMenuSong = Content.Load<Song>("SoundFx/wolves");
-
+            mainMenuSong = Content.Load<Song>("SoundFx/muzykaMenu");
             durationMainSong = mainSong.Duration;
             durationMainMenuSong = mainMenuSong.Duration;
             onPlay += PlayAgain;

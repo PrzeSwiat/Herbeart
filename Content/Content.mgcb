@@ -874,6 +874,12 @@
 /processorParam:Quality=Best
 /build:SoundFX/ForestMain.mp3
 
+#begin SoundFX/muzykaMenu.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:SoundFX/muzykaMenu.mp3
+
 #begin SoundFX/nastyRoar.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -891,12 +897,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:SoundFX/steps.mp3
-
-#begin SoundFX/wolves.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:SoundFX/wolves.mp3
 
 #begin Textures/appleTexture.png
 /importer:TextureImporter
