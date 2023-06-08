@@ -20,14 +20,12 @@ namespace TheGame
     {
         private List<Level> _levels;
         #region Maps
-        private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt" };
-        /*        private string[] maps_down_straight = { "Maps/map_Up_Straight_1.txt" };
-                private string[] maps_up_straight = { "Maps/map_Down_Straight_1.txt" };*/
+        private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt", "Maps/map5.txt" };
         private string[] maps_up_down = { "Maps/map_up_down_1.txt" };
         private string[] maps_down_up = { "Maps/map_down_up_1.txt" };
         private string[] maps_up_right = { "Maps/map_up_right.txt" };
-        private string[] maps_left_down = { "Maps/map_left_down.txt" };
-        private string[] maps_left_up = { "Maps/map_Up_1.txt" };
+        private string[] maps_left_down = { "Maps/map_left_down.txt", "Maps/map_left_down.txt" };
+        private string[] maps_left_up = { "Maps/map_Up_1.txt", "Maps/map_Up_1.txt" };
         private string[] maps_down_right = { "Maps/map_down_right_1.txt" };
         #endregion
         private List<string> maps = new List<string>();
@@ -280,6 +278,7 @@ namespace TheGame
             private List<Tile> groundTiles;
             private List<Tile> forestTiles;
             private List<Tile> spawnTiles;
+            private List<Tile> borderTiles;
             private List<SceneObject> _sceneObjects;
             private int tileSize = 6;
             private int moduleWidth = 26;
@@ -299,6 +298,7 @@ namespace TheGame
                 groundTiles = new List<Tile>();
                 forestTiles = new List<Tile>();
                 spawnTiles = new List<Tile>();
+                borderTiles = new List<Tile>();
 
                 this.fileName = fileName; 
                 this.separatorX = separatorX;
@@ -399,6 +399,18 @@ namespace TheGame
                             GenerateForest(newVector);
                             x++;
                             break;
+                        case 49: //1
+                            groundType = "forest_border";
+                            height = 0.0f;
+                            Vector3 wektor3 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                            Tile tile1 = new Tile(groundType, height, wektor3, 0);
+                            forestTiles.Add(tile1);
+                            borderTiles.Add(tile1);
+                            Vector3 newVector1 = ChangeTileVector(tile1, -3, 3, true, false);
+                            GenerateForest(newVector1);
+                            GenerateGreenObjectsNearTrees(tile1);
+                            x++;
+                            break;
                         case 97: //a
                             groundType = "grass";
                             height = 0.0f;
@@ -418,13 +430,20 @@ namespace TheGame
                 }
                 _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground1", "Textures/tekstura_wielkiego_tila"));
                 Random random = new Random();
-                int objectsCount = random.Next(25, 30);
-                GenerateGrassAndStones(objectsCount, 4);
+                int grassCount = random.Next(35, 40);
+                GenerateGrassAndStones(grassCount, 4);
                 if (enemyCount != 0)
                 {
                     GenerateRandomEnemies(enemyCount);
                 }
                 ObjectInitializer();
+            }
+
+            public void GenerateGreenObjectsNearTrees(Tile tile)
+            {
+                ChangeTileVector(tile, -8, 8, true, false);
+                GenerateGrass("grass1", tile.position);
+                //GenerateOtherObjects("Objects/bush", tile.position);
             }
 
             public void SetInitialProbabilities(List<Tile> tileList)
@@ -513,7 +532,6 @@ namespace TheGame
 
             public Vector3 ChangeTileVector(Tile tile, double min, double max, bool x, bool z)
             {
-                Vector3 position = tile.position;
                 if (x)
                 {
                     Random random = new Random();
@@ -547,10 +565,14 @@ namespace TheGame
                 {
                     Tile tile = tiles[i];
 
-                    if (Distance(tile.position, selectedTile.position))
+                    if (Distance(tile.position, selectedTile.position, 6))
                     {
                         tile.probability *= changeFactor;
                     }
+                    else if (Distance(tile.position, selectedTile.position, 12))
+                    {
+                        tile.probability *= 0.3;
+                    } 
                     else
                     {
                         tile.probability *= (1 + changeFactor);
@@ -569,12 +591,12 @@ namespace TheGame
                 }
             }
 
-            public static bool Distance(Vector3 vector1, Vector3 vector2)
+            public static bool Distance(Vector3 vector1, Vector3 vector2, float distance)
             {
                 float deltaX = Math.Abs(vector1.X - vector2.X);
                 float deltaZ = Math.Abs(vector1.Z - vector2.Z);
 
-                if (deltaX <= 6 && deltaZ <= 6)
+                if (deltaX <= distance && deltaZ <= distance)
                 {
                     return true;
                 }
@@ -688,14 +710,12 @@ namespace TheGame
                         texture = GenerateRandomString(bushTextures);
                         SceneObject bush = new SceneObject(groundPosition, "Objects/bush", texture);
                         bush.SetScale(scale/2);
-                        bush.SetRotation(new Vector3(0, rflot, 0));
                         _sceneObjects.Add(bush);
                         break;
                     case "Objects/small_bush":
                         texture = GenerateRandomString(bushTextures);
                         SceneObject small_bush = new SceneObject(groundPosition, "Objects/small_bush", texture);
                         small_bush.SetScale(scale);
-                        small_bush.SetRotation(new Vector3(0, rflot, 0));
                         _sceneObjects.Add(small_bush);
                         break;
                     case "Objects/flower":
