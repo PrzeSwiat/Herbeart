@@ -108,7 +108,11 @@ namespace TheGame
 
         protected override void Update(GameTime gameTime)
         {
-            if(Globals.Start)
+           // Debug.WriteLine("Start: "+Globals.Start);
+            //Debug.WriteLine("Pause: "+Globals.Pause);
+           // Debug.WriteLine("Death: " + Globals.Death);
+           // Debug.WriteLine("Tutorial: " + Globals.Tutorial);
+            if (Globals.Start)
             {
                 MainMenuCheck();
                 audioMenager.MainPlay();
@@ -291,18 +295,62 @@ namespace TheGame
 
         #region Controls
 
+        #region PAUSE_CHECK
         void PauseCheck()
         {
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             KeyboardState state = Keyboard.GetState();
             if ((gamePadState.Buttons.Start == ButtonState.Pressed && Globals.prevState.Buttons.Start == ButtonState.Released) || (state.IsKeyDown(Keys.Escape) && Globals.prevKeyBoardState.IsKeyUp(Keys.Escape)))
             {
-                Globals.Pause = !Globals.Pause;
+                Globals.Pause = true;
             }
             Globals.prevState = gamePadState;
             Globals.prevKeyBoardState = state;
-        }
 
+            if (Globals.Pause)
+            {
+                if ((gamePadState.ThumbSticks.Left.Y >= 0.5f && !(Globals.prevPauseState.ThumbSticks.Left.Y >= 0.5f)) || (state.IsKeyDown(Keys.W) && !Globals.prevKeyBoardPauseState.IsKeyDown(Keys.W)))
+                {
+                    hud.MenuOption -= 1;
+                }
+                if ((gamePadState.ThumbSticks.Left.Y <= -0.5f && !(Globals.prevPauseState.ThumbSticks.Left.Y <= -0.5f)) || (state.IsKeyDown(Keys.S) && !Globals.prevKeyBoardPauseState.IsKeyDown(Keys.S)))
+                {
+                    hud.MenuOption += 1;
+                }
+                if (hud.MenuOption < 1)
+                {
+                    hud.MenuOption = 1;
+                }
+                if (hud.MenuOption > 3)
+                {
+                    hud.MenuOption = 3;
+                }
+
+                Globals.prevPauseState = gamePadState;
+                Globals.prevKeyBoardPauseState = state;
+
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1) //reasume
+                {
+                    Globals.Pause = false;
+                }
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2) //mainmenu
+                {
+                    Globals.Death = false;
+                    LoadContent();
+                    Initialize();
+                    Globals.Start = true;
+                }
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3) //exit 
+                {
+                    Exit();
+                }
+                
+            }
+           
+        }
+        #endregion
+
+        #region DEATH_CHECK
         void DeathMenuCheck()
         {
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -328,65 +376,74 @@ namespace TheGame
             Globals.prevKeyBoardDeathState = state;
 
 
-            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1)
+            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1) //leader board
             {
                 
             }
-            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
+            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2) //try again 
             {
                 Globals.Death = false;
                 LoadContent();
                 Initialize();
                
             }
-            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3)
+            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3) // main menu
             {
+                Globals.Death = false;
+                LoadContent();
+                Initialize();
+                Globals.Pause = false;
                 Globals.Start = true;
             }
-            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 4)
+            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 4) // exit
             {
                 Exit();
             }
         }
+        #endregion
 
+        #region MENU_CHECK
         void MainMenuCheck()
         {
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             KeyboardState state = Keyboard.GetState();
-            if ((gamePadState.ThumbSticks.Left.Y >= 0.5f && !(Globals.prevState.ThumbSticks.Left.Y >= 0.5f)) || (state.IsKeyDown(Keys.W) && !Globals.prevKeyBoardState.IsKeyDown(Keys.W)))
+            if(Globals.Start)
             {
-                hud.MenuOption -= 1;
-            }
-            if ((gamePadState.ThumbSticks.Left.Y <= -0.5f && !(Globals.prevState.ThumbSticks.Left.Y <= -0.5f)) || (state.IsKeyDown(Keys.S) && !Globals.prevKeyBoardState.IsKeyDown(Keys.S)))
-            {
-                hud.MenuOption += 1;
-            }
-            if(hud.MenuOption < 1)
-            {
-                hud.MenuOption = 1;
-            }
-            if(hud.MenuOption > 3)
-            {
-                hud.MenuOption = 3;
-            }
-            Globals.prevState = gamePadState;
-            Globals.prevKeyBoardState = state;
+                if ((gamePadState.ThumbSticks.Left.Y >= 0.5f && !(Globals.prevState.ThumbSticks.Left.Y >= 0.5f)) || (state.IsKeyDown(Keys.W) && !Globals.prevKeyBoardState.IsKeyDown(Keys.W)))
+                {
+                    hud.MenuOption -= 1;
+                }
+                if ((gamePadState.ThumbSticks.Left.Y <= -0.5f && !(Globals.prevState.ThumbSticks.Left.Y <= -0.5f)) || (state.IsKeyDown(Keys.S) && !Globals.prevKeyBoardState.IsKeyDown(Keys.S)))
+                {
+                    hud.MenuOption += 1;
+                }
+                if (hud.MenuOption < 1)
+                {
+                    hud.MenuOption = 1;
+                }
+                if (hud.MenuOption > 3)
+                {
+                    hud.MenuOption = 3;
+                }
+                Globals.prevState = gamePadState;
+                Globals.prevKeyBoardState = state;
 
-            if((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1)
-            {
-                Globals.Start = false;
-            }
-            if((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3)
-            {
-                Exit();
-            }
-            if((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
-            {
-                // notimplemented
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1)
+                {
+                    Globals.Start = false;
+                }
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3)
+                {
+                    Exit();
+                }
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
+                {
+                    // notimplemented
+                }
             }
 
         }
-
+        #endregion
 
         void SaveControl()
         {

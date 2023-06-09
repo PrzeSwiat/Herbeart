@@ -214,10 +214,29 @@ namespace TheGame
         public void DrawPause(SpriteBatch spriteBatch)
         {
             Rectangle rect = new Rectangle(-WindowWidth, -WindowHeight, 2 * WindowWidth, 2 * WindowHeight);
+            Color one = Color.Gray;
+            Color two = Color.Gray;
+            Color three = Color.Gray;
+
+            if (MenuOption == 1)
+            {
+                one = Color.White;
+            }
+            if (MenuOption == 2)
+            {
+                two = Color.White;
+            }
+            if (MenuOption == 3)
+            {
+                three = Color.White;
+            }
+
             spriteBatch.Begin();
             spriteBatch.Draw(healtColor, rect, Color.Black);
             spriteBatch.DrawString(Menu, "Game Paused", new Vector2(WindowWidth / 4 , WindowHeight * 1 / 10), Color.White);
-            spriteBatch.DrawString(Menu2, "Press 'Start/ESC' to reasume", new Vector2(WindowWidth / 5, WindowHeight * 4 / 10), Color.White);
+            spriteBatch.DrawString(Menu2, "Reasume", new Vector2(WindowWidth / 10, WindowHeight * 9 / 20), one);
+            spriteBatch.DrawString(Menu2, "Main menu", new Vector2(WindowWidth / 10, WindowHeight * 12 / 20), two);
+            spriteBatch.DrawString(Menu2, "Exit", new Vector2(WindowWidth / 10, WindowHeight * 16 / 20), three);
             spriteBatch.End();
         }
 

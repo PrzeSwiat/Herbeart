@@ -33,5 +33,7 @@ namespace TheGame
         public static KeyboardState prevKeyBoardState;
         public static GamePadState prevDeathState;
         public static KeyboardState prevKeyBoardDeathState;
+        public static GamePadState prevPauseState;
+        public static KeyboardState prevKeyBoardPauseState;
     }
 }
