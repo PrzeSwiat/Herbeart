@@ -24,8 +24,8 @@ namespace TheGame
         private string[] maps_up_down = { "Maps/map_up_down_1.txt" };
         private string[] maps_down_up = { "Maps/map_down_up_1.txt" };
         private string[] maps_up_right = { "Maps/map_up_right.txt" };
-        private string[] maps_left_down = { "Maps/map_left_down.txt", "Maps/map_left_down.txt" };
-        private string[] maps_left_up = { "Maps/map_Up_1.txt", "Maps/map_Up_1.txt" };
+        private string[] maps_left_down = { "Maps/map_left_down_1.txt", "Maps/map_left_down_2.txt", "Maps/map_left_down_3.txt" };
+        private string[] maps_left_up = { "Maps/map_left_up_1.txt", "Maps/map_left_up_2.txt", "Maps/map_left_up_3.txt" };
         private string[] maps_down_right = { "Maps/map_down_right_1.txt" };
         #endregion
         private List<string> maps = new List<string>();
@@ -220,6 +220,29 @@ namespace TheGame
             return _sceneObjects;
         }
 
+        public List<SceneObject> returnNonCollideSceneObjects(float playerX, float playerY)
+        {
+            List<SceneObject> _sceneObjects = new List<SceneObject>();
+
+            int numberOfModule = returnModuleNumber(playerX, playerY);
+
+
+            for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
+            {
+                if (i >= 0 && i < _levels.Count - 1)
+                {
+                    foreach (SceneObject obj in _levels[i].returnNonCollideSceneObjects())
+                    {
+                        _sceneObjects.Add(obj);
+                    }
+                }
+
+            }
+
+
+            return _sceneObjects;
+        }
+
         public List<Enemy> returnEnemiesList(float playerX, float playerY)
         {
             List<Enemy> enemiesList = new List<Enemy>();
@@ -280,6 +303,7 @@ namespace TheGame
             private List<Tile> spawnTiles;
             private List<Tile> borderTiles;
             private List<SceneObject> _sceneObjects;
+            private List<SceneObject> nonColideObjects;
             private int tileSize = 6;
             private int moduleWidth = 26;
             private int moduleHeight = 26;
@@ -294,6 +318,7 @@ namespace TheGame
             public Level(string fileName, float separatorX, int enemyCount, float separatorZ)
             {
                 _sceneObjects = new List<SceneObject>();
+                nonColideObjects = new List<SceneObject>();
                 enemies = new List<Enemy>();
                 groundTiles = new List<Tile>();
                 forestTiles = new List<Tile>();
@@ -336,15 +361,22 @@ namespace TheGame
 
             public List<SceneObject> returnSceneObjects() { return _sceneObjects; }
 
+            public List<SceneObject> returnNonCollideSceneObjects() { return nonColideObjects; }
+
             public void ObjectInitializer()
             {
                 foreach (SceneObject obj in _sceneObjects)
                 {
                     obj.LoadContent();
                 }
+                foreach (SceneObject obj in nonColideObjects)
+                {
+                    obj.LoadContent();
+                }
             }
 
-            public void GenerateForest(Vector3 wektor)
+
+            public void GenerateForest(Vector3 wektor, float minSize, float maxSize)
             {
                 string treeModel = GenerateRandomString(treeModels);
                 string texture = "null";
@@ -379,7 +411,6 @@ namespace TheGame
 
                 List<int> tileList = ReadFile(fileName);
                 Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -0.7f, 0.5f * moduleHeight * tileSize + separatorZ);
-
                 for (int i = 0; i < tileList.Count; i++)
                 {
                     if (x == moduleWidth)
@@ -395,8 +426,8 @@ namespace TheGame
                             Vector3 wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
                             Tile tile = new Tile(groundType, height, wektor, 0);
                             forestTiles.Add(tile);
-                            Vector3 newVector = ChangeTileVector(tile, -3, 3, true, false);
-                            GenerateForest(newVector);
+                            Vector3 newVector = ChangeTileVector(tile, -2.5, 2.5, true, false, 0, 0);
+                            GenerateForest(newVector, 150, 220);
                             x++;
                             break;
                         case 49: //1
@@ -406,8 +437,8 @@ namespace TheGame
                             Tile tile1 = new Tile(groundType, height, wektor3, 0);
                             forestTiles.Add(tile1);
                             borderTiles.Add(tile1);
-                            Vector3 newVector1 = ChangeTileVector(tile1, -3, 3, true, false);
-                            GenerateForest(newVector1);
+                            Vector3 newVector1 = ChangeTileVector(tile1, -2, 2, true, true, -1.5, 1.5);
+                            GenerateForest(newVector1, 130, 150);
                             GenerateGreenObjectsNearTrees(tile1);
                             x++;
                             break;
@@ -441,8 +472,9 @@ namespace TheGame
 
             public void GenerateGreenObjectsNearTrees(Tile tile)
             {
-                ChangeTileVector(tile, -8, 8, true, false);
-                GenerateGrass("grass1", tile.position);
+                ChangeTileVectorAdvanced(tile, -6, -5, 5, 6, true, false);
+                string objectType = GenerateRandomString(grassModels);
+                GenerateGrass(objectType, tile.position);
                 //GenerateOtherObjects("Objects/bush", tile.position);
             }
 
@@ -530,7 +562,7 @@ namespace TheGame
                 }
             }
 
-            public Vector3 ChangeTileVector(Tile tile, double min, double max, bool x, bool z)
+            public Vector3 ChangeTileVector(Tile tile, double min, double max, bool x, bool z, double min1, double max1)
             {
                 if (x)
                 {
@@ -541,19 +573,43 @@ namespace TheGame
                 if (z)
                 {
                     Random random1 = new Random();
-                    float randomNumber1 = (float)(random1.NextDouble() * max + min);
+                    float randomNumber1 = (float)(random1.NextDouble() * max1 + min1);
                     tile.position.Z += randomNumber1;
                 }
-
-
                 return tile.position;
             }
 
+            public Vector3 ChangeTileVectorAdvanced(Tile tile, double lowest1, double highest1, double lowest2, double highest2, bool x, bool z)
+            {
+                Random random = new Random();
+
+                // Wylosuj liczbę typu double z zakresu od lowest1 do highest1 lub od lowest2 do highest2
+                float number;
+
+                if (random.Next(0, 2) == 0)
+                {
+                    number = (float)(random.NextDouble() * (Math.Abs(highest1 - (lowest1))) + (lowest1));
+                }
+                else
+                {
+                    number = (float)(random.NextDouble() * (Math.Abs(highest2 - lowest2)) + lowest2);
+                }
+
+                if (x)
+                {
+                    tile.position.X += number;
+                }
+                if (z)
+                {
+                    tile.position.Z += number;
+                }
+                return tile.position;
+            }
             public Vector3 ChoosedTileVector()
             {
                 Tile tile = GenerateRandomTileWithProbability(groundTiles);
                 UpdateProbability(groundTiles, tile);
-                Vector3 position = ChangeTileVector(tile, -6, 6, true, true);
+                Vector3 position = ChangeTileVector(tile, -6, 6, true, true, -5, 5);
                 return position;
             }
 
@@ -644,35 +700,35 @@ namespace TheGame
                         SceneObject big_grass = new SceneObject(groundPosition, "Objects/big_grass", texture);
                         big_grass.SetScale(scale/2);
                         big_grass.SetRotation(new Vector3(0, rflot, 0));
-                        _sceneObjects.Add(big_grass);
+                        nonColideObjects.Add(big_grass);
                         break;
                     case "Objects/grass1":
                         texture = GenerateRandomString(grassTextures);
                         SceneObject grass1 = new SceneObject(groundPosition, "Objects/grass1", texture);
                         grass1.SetScale(scale);
                         grass1.SetRotation(new Vector3(0, rflot, 0));
-                        _sceneObjects.Add(grass1);
+                        nonColideObjects.Add(grass1);
                         break;
                     case "Objects/grass2":
                         texture = GenerateRandomString(grassTextures);
                         SceneObject grass2 = new SceneObject(groundPosition, "Objects/grass2", texture);
                         grass2.SetScale(scale);
                         grass2.SetRotation(new Vector3(0, rflot, 0));
-                        _sceneObjects.Add(grass2);
+                        nonColideObjects.Add(grass2);
                         break;
                     case "Objects/grass3":
                         texture = GenerateRandomString(grassTextures);
                         SceneObject grass3 = new SceneObject(groundPosition, "Objects/grass3", texture);
                         grass3.SetScale(scale);
                         grass3.SetRotation(new Vector3(0, rflot, 0));
-                        _sceneObjects.Add(grass3);
+                        nonColideObjects.Add(grass3);
                         break;
                     case "Objects/three_grass":
                         texture = GenerateRandomString(grassTextures);
                         SceneObject grass4 = new SceneObject(groundPosition, "Objects/three_grass", texture);
                         grass4.SetScale(scale);
                         grass4.SetRotation(new Vector3(0, rflot, 0));
-                        _sceneObjects.Add(grass4);
+                        nonColideObjects.Add(grass4);
                         break;
                 }
             }
@@ -690,39 +746,39 @@ namespace TheGame
                         SceneObject big_stone = new SceneObject(groundPosition, "Objects/big_stone", texture);
                         big_stone.SetScale(scale/2);
                         big_stone.SetRotation(new Vector3(0, rflot, 0));
-                        _sceneObjects.Add(big_stone);
+                        nonColideObjects.Add(big_stone);
                         break;
                     case "Objects/small_stone":
                         texture = "Textures/stone";
                         SceneObject small_stone = new SceneObject(groundPosition, "Objects/small_stone", texture);
                         small_stone.SetScale(scale);
                         small_stone.SetRotation(new Vector3(0, rflot, 0));
-                        _sceneObjects.Add(small_stone);
+                        nonColideObjects.Add(small_stone);
                         break;
                     case "Objects/two_stones":
                         texture = "Textures/stone";
                         SceneObject two_stones = new SceneObject(groundPosition, "Objects/two_stones", texture);
                         two_stones.SetScale(scale);
                         two_stones.SetRotation(new Vector3(0, rflot, 0));
-                        _sceneObjects.Add(two_stones);
+                        nonColideObjects.Add(two_stones);
                         break;
                     case "Objects/bush":
                         texture = GenerateRandomString(bushTextures);
                         SceneObject bush = new SceneObject(groundPosition, "Objects/bush", texture);
                         bush.SetScale(scale/2);
-                        _sceneObjects.Add(bush);
+                        nonColideObjects.Add(bush);
                         break;
                     case "Objects/small_bush":
                         texture = GenerateRandomString(bushTextures);
                         SceneObject small_bush = new SceneObject(groundPosition, "Objects/small_bush", texture);
                         small_bush.SetScale(scale);
-                        _sceneObjects.Add(small_bush);
+                        nonColideObjects.Add(small_bush);
                         break;
                     case "Objects/flower":
                         texture = GenerateRandomString(flowerTextures);
                         SceneObject flower = new SceneObject(groundPosition, "Objects/flower", texture);
                         flower.SetScale(scale);
-                        _sceneObjects.Add(flower);
+                        nonColideObjects.Add(flower);
                         break;
                 }
             }

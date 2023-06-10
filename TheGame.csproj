@@ -19,6 +19,12 @@
     <None Remove="map5.txt" />
     <None Remove="map6.txt" />
     <None Remove="Maps\map_down_up_1.txt" />
+    <None Remove="Maps\map_left_down_1.txt" />
+    <None Remove="Maps\map_left_down_2.txt" />
+    <None Remove="Maps\map_left_down_3.txt" />
+    <None Remove="Maps\map_left_up_1.txt" />
+    <None Remove="Maps\map_left_up_2.txt" />
+    <None Remove="Maps\map_left_up_3.txt" />
     <None Remove="Maps\map_up_down_1.txt" />
     <None Remove="Maps\map_up_right.txt" />
     <None Remove="map_Down_1.txt" />
@@ -43,19 +49,28 @@
     <Content Include="Maps\map5.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Maps\map6.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Maps\map_down_up_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Maps\map_down_right_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Maps\map_left_down.txt">
+    <Content Include="Maps\map_left_down_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Maps\map_Up_1.txt">
+    <Content Include="Maps\map_left_down_2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_left_down_3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_left_up_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_left_up_2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_left_up_3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Maps\map_up_down_1.txt">

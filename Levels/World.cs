@@ -15,12 +15,14 @@ namespace TheGame
     internal class World
     {
         private List<SceneObject> _worldArray;
+        private List<SceneObject> nonCollideArray;
         private Levels level;
         private List<Enemy> enemies;
 
         public World()   
         {
             _worldArray = new List<SceneObject>();
+            nonCollideArray = new List<SceneObject>();
             level = new Levels();
             enemies = new List<Enemy>();
         }
@@ -33,11 +35,16 @@ namespace TheGame
         public void Draw(Vector3 player)
         {
             _worldArray = level.returnSceneObjects(player.X, player.Z);
+            nonCollideArray = level.returnNonCollideSceneObjects(player.X, player.Z);
             foreach (SceneObject sceneObject in _worldArray)
             {
                 sceneObject.Draw(player);
             }
-            
+            foreach (SceneObject sceneObject in nonCollideArray)
+            {
+                sceneObject.Draw(player);
+            }
+
         }
 
         public List<Enemy> returnEnemiesList(float playerX, float playerZ)
