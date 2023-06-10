@@ -20,12 +20,13 @@ namespace TheGame
         public Shadow shadow;
         private DateTime lastAttackTime, actualTime;
         private bool collides = false;
+        public float visionRange = 20f;
 
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             shadow = new Shadow(worldPosition);
-            Direction = new Vector2(0, 0);
+            Direction = new Vector2(1, 1);
             lastAttackTime = DateTime.Now;
             actualTime = lastAttackTime;
             SetScale(1.5f);

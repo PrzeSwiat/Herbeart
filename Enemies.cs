@@ -40,6 +40,7 @@ namespace TheGame
             Vector3 playerPosition = player.GetPosition();
             foreach (Enemy enemy in enemiesList)
             {
+                // avoid other enemies and chase player
                 Vector2 flockVel = FlockBehaviour(enemy, 20, 0.7f);
                 Vector2 avoidVel = AvoidanceBehaviour(enemy, 9, 0.5f);
                 Vector2 alignVel = AlignBehaviour(enemy, 20, 0.1f);
@@ -48,9 +49,14 @@ namespace TheGame
                 {
                     enemy.Direction = towardsPlayerVel;
                 }
-                else
+                else if (Vector3.Distance(enemy.GetPosition(), playerPosition) < enemy.visionRange)
                 {
                     enemy.Direction = flockVel + towardsPlayerVel + avoidVel;
+                    enemy.ActualSpeed = enemy.MaxSpeed;
+                }
+                else
+                {
+                    enemy.ActualSpeed = 0;
                 }
                 enemy.NormalizeDirection();
                 enemy.Update(deltaTime, player);
@@ -73,8 +79,14 @@ namespace TheGame
         private Vector2 AvoidanceBehaviour(Enemy enemy, float distance, float power)
         {
             List<Enemy> neighbors = enemiesList.Where(x => x.GetDistance(enemy) < distance).ToList();
-            if (neighbors.Count <= 1) return Vector2.Zero;
-            neighbors.Remove(enemy);
+            if (neighbors.Count <= 1)
+            {
+                return Vector2.Zero;
+            }
+            if (neighbors.Contains(enemy))
+            {
+                neighbors.Remove(enemy);
+            }
             (float sumClosenessX, float sumClosenessY) = (0, 0);
             foreach (var neighbor in neighbors)
             {
