@@ -58,11 +58,11 @@ namespace TheGame
             {
                 float t = elapsedTime / animationDuration;
                 Vector2 newPosition = Vector2.Lerp(startPosition, targetPosition, t);
-                if(!bSmaller)
-                scale = Vector2.Lerp(scale, new Vector2(0.4f, 0.4f), t);
+                if (!bSmaller)
+                { scale = Vector2.Lerp(scale, new Vector2(0.4f, 0.4f), t); ang += 0.1f; }
                 else
-                    scale = Vector2.Lerp(scale, new Vector2(0.1f, 0.1f), t);
-                ang += 0.1f;
+                    scale = Vector2.Lerp(scale, new Vector2(0.15f, 0.15f), t);
+                
                 return newPosition;
             }
         }
