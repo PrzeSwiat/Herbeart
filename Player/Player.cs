@@ -63,10 +63,11 @@ namespace TheGame
             
         }
 
-        public void Update(World world, float deltaTime, Enemies enemies) //Logic player here
+        public void Update(World world, float deltaTime, Enemies enemies,GameTime gametime) //Logic player here
         {
             Update();
             playerMovement.UpdatePlayerMovement(world, deltaTime);
+            Crafting.Update(gametime);
 
             foreach (Apple apple in apples.ToList())
             {
@@ -112,6 +113,7 @@ namespace TheGame
         public override void LoadContent()
         {
             shadow.LoadContent();
+            Crafting.LoadContent();
             base.LoadContent();
             
         }
@@ -145,6 +147,10 @@ namespace TheGame
         {
             shadow.SetPositionY(-0.99f);
             shadow.Draw(lightpos);
+        }
+        public void DrawAnimation(SpriteBatch spriteBatch)
+        {
+            Crafting.DrawAnimation(spriteBatch);
         }
 
         public void Attack()

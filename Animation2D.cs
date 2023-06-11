@@ -31,12 +31,22 @@ namespace TheGame
             this.elapsedTime = 0f;
             this.scale = new Vector2(0.1f,0.1f);
         }
+        public Animation2D(Texture2D texture, Vector2 initialPosition, Vector2 targetPosition, float animationDuration, Viewport viewport)
+        {
+            
+            this.texture = texture;
+            this.position=initialPosition;
+            this.targetPosition = targetPosition;
+            this.animationDuration = animationDuration;
+            this.elapsedTime = 0f;
+            this.scale = new Vector2(0.1f, 0.1f);
+        }
         public void EndAnimation()
         {
             OnDestroy?.Invoke(this, EventArgs.Empty);
             destroyAnimation = true;
         }
-        public Vector2 CalculatePosition(Vector2 startPosition, Vector2 targetPosition, float elapsedTime, float animationDuration)
+        public Vector2 CalculatePosition(Vector2 startPosition, Vector2 targetPosition, float elapsedTime, float animationDuration,bool bSmaller)
         {
             if (elapsedTime >= animationDuration)
             {
@@ -48,17 +58,19 @@ namespace TheGame
             {
                 float t = elapsedTime / animationDuration;
                 Vector2 newPosition = Vector2.Lerp(startPosition, targetPosition, t);
+                if(!bSmaller)
                 scale = Vector2.Lerp(scale, new Vector2(0.4f, 0.4f), t);
+                else
+                    scale = Vector2.Lerp(scale, new Vector2(0.1f, 0.1f), t);
                 ang += 0.1f;
                 return newPosition;
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime,bool bSmaller)
         {
             elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            position = CalculatePosition(position, targetPosition, elapsedTime, animationDuration);
+            position = CalculatePosition(position, targetPosition, elapsedTime, animationDuration,bSmaller);
             
         }
         

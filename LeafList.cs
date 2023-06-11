@@ -86,7 +86,7 @@ namespace TheGame
         {
             foreach (Animation2D anim in AnimationsList.ToList())
             {
-                anim.Update(gametime);
+                anim.Update(gametime,false);
                 anim.OnDestroy += DestroyAnimation;
                 
             }

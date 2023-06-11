@@ -135,7 +135,7 @@ namespace TheGame
                         camera.nextpos = player.GetPosition();
                         Globals.viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
                         basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
-                        player.Update(world, delta, enemies);
+                        player.Update(world, delta, enemies,gameTime);
                         enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
                         enemies.Move(delta, player);    // i po co 3 funkcje a nie 1
                         enemies.RefreshOnDestroy();
@@ -193,6 +193,7 @@ namespace TheGame
                         hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture());
                         hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
                         Leafs.DrawHud(_spriteBatch);//Koniecznie ostatnie nawet za Hudem
+                        player.DrawAnimation(_spriteBatch);
                     }
 
                 }
