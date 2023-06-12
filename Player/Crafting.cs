@@ -47,7 +47,7 @@ namespace TheGame
                         {
                             recepture2[recepture.Length] = "mint";
                             recepture += button;
-                            animationList.Add(new Animation2D(Mint_Icon, new Microsoft.Xna.Framework.Vector2(150, 900), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
+                            animationList.Add(new Animation2D(Mint_Icon, new Microsoft.Xna.Framework.Vector2(150, 900), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 290), 0.2f, Globals.viewport));
                             inventory.removeMintLeaf();
                         }
                         break;
@@ -56,7 +56,7 @@ namespace TheGame
                         {
                             recepture2[recepture.Length] = "nettle";
                             recepture += button;
-                            animationList.Add(new Animation2D(Nettle_Icon, new Vector2(250, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
+                            animationList.Add(new Animation2D(Nettle_Icon, new Vector2(250, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 290), 0.2f, Globals.viewport));
                             inventory.removeNettleLeaf();
                         }
                         break;
@@ -65,7 +65,7 @@ namespace TheGame
                         {
                             recepture2[recepture.Length] = "melise";
                             recepture += button;
-                            animationList.Add(new Animation2D(Melissa_Icon, new Vector2(80, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
+                            animationList.Add(new Animation2D(Melissa_Icon, new Vector2(80, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 290), 0.2f, Globals.viewport));
                             inventory.removeMeliseLeaf();
                         }
                         break;
@@ -74,7 +74,7 @@ namespace TheGame
                         {
                             recepture2[recepture.Length] = "apple";
                             recepture += button;
-                            animationList.Add(new Animation2D(Apple_Icon, new Vector2(150, 700), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
+                            animationList.Add(new Animation2D(Apple_Icon, new Vector2(150, 700), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 290), 0.2f, Globals.viewport));
                             inventory.removeAppleLeaf();
                         }
 
@@ -104,23 +104,23 @@ namespace TheGame
                 if (c == 'A')
                 {
                     inventory.addMintLeaf();
-                    animationList.Add(new Animation2D(Mint_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 350), new Microsoft.Xna.Framework.Vector2(150, 900), 1, Globals.viewport));
+                    animationList.Add(new Animation2D(Mint_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 290), new Microsoft.Xna.Framework.Vector2(150, 900), 0.2f, Globals.viewport));
 
                 }
                 else if (c == 'B')
                 {
                     inventory.addNettleLeaf();
-                    animationList.Add(new Animation2D(Nettle_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 350), new Vector2(250, 815), 1, Globals.viewport));
+                    animationList.Add(new Animation2D(Nettle_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 290), new Vector2(250, 815), 0.2f, Globals.viewport));
                 }
                 else if (c == 'Y')
                 {
                     inventory.addAppleLeaf();
-                    animationList.Add(new Animation2D(Apple_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 350), new Vector2(150, 700), 1, Globals.viewport));
+                    animationList.Add(new Animation2D(Apple_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 290), new Vector2(150, 700), 0.2f, Globals.viewport));
                 }
                 else if (c == 'X')
                 {
                     inventory.addMeliseLeaf();
-                    animationList.Add(new Animation2D(Melissa_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 350), new Vector2(80, 815), 1, Globals.viewport));
+                    animationList.Add(new Animation2D(Melissa_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 290), new Vector2(80, 815), 0.2f, Globals.viewport));
                 }
             }
             counter = 0;
@@ -160,23 +160,23 @@ namespace TheGame
                         if (c == 'A')
                         {
                             inventory.addMintLeaf();
-                            animationList.Add(new Animation2D(Mint_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 350), new Microsoft.Xna.Framework.Vector2(150, 900) , 1, Globals.viewport));
+                            animationList.Add(new Animation2D(Mint_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 290), new Microsoft.Xna.Framework.Vector2(150, 900) , 0.2f, Globals.viewport));
 
                         }
                         else if (c == 'B')
                         {
                             inventory.addNettleLeaf();
-                            animationList.Add(new Animation2D(Nettle_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 350), new Vector2(250, 815), 1, Globals.viewport));
+                            animationList.Add(new Animation2D(Nettle_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 290), new Vector2(250, 815), 0.2f, Globals.viewport));
                         }
                         else if (c == 'Y')
                         {
                             inventory.addAppleLeaf();
-                            animationList.Add(new Animation2D(Apple_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 350), new Vector2(150, 700), 1, Globals.viewport));
+                            animationList.Add(new Animation2D(Apple_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 290), new Vector2(150, 700), 0.2f, Globals.viewport));
                         }
                         else if (c == 'X')
                         {
                             inventory.addMeliseLeaf();
-                            animationList.Add(new Animation2D(Melissa_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 350), new Vector2(80, 815), 1, Globals.viewport));
+                            animationList.Add(new Animation2D(Melissa_Icon, new Microsoft.Xna.Framework.Vector2(850 + f * 45, 290), new Vector2(80, 815), 0.2f, Globals.viewport));
                         }
                     }
                     counter = 0;
