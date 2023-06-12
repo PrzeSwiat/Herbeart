@@ -76,6 +76,48 @@
 /processorParam:SkipUVs=False
 /build:Animations/mis_bieg.fbx
 
+#begin Animations/mis_Standing_.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mis_Standing_.fbx
+
+#begin Animations/mis_Standing_2.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mis_Standing_2.fbx
+
+#begin Animations/mis_Standing_3.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mis_Standing_3.fbx
+
+#begin Animations/mis_Standing_4.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mis_Standing_4.fbx
+
+#begin Animations/mis_Standing_5.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mis_Standing_5.fbx
+
+#begin Animations/mis_Standing_6.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mis_Standing_6.fbx
+
 #begin Animations/mis_Standing.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor

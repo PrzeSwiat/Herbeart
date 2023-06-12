@@ -28,14 +28,18 @@ namespace TheGame
         public static bool Death;
         public static bool Tutorial;
         public static bool Pause;
+        public static bool TutorialPause;
         public static float time;
         public static int Score;
         public static GamePadState prevState;
+        public static ButtonState CheckA;
         public static KeyboardState prevKeyBoardState;
         public static GamePadState prevDeathState;
         public static KeyboardState prevKeyBoardDeathState;
         public static GamePadState prevPauseState;
         public static KeyboardState prevKeyBoardPauseState;
+        public static GamePadState prevTutorialState;
+        public static KeyboardState prevKeyBoardTutorialState;
 
         public static int numberOfRecepture = 0;
         public static int maxReceptures = 4;

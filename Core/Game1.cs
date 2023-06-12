@@ -44,6 +44,7 @@ namespace TheGame
             Globals._graphics.ApplyChanges();
             Globals.Pause = false;
             Globals.Start = true;
+            Globals.Tutorial = false;
 
         }
 
@@ -110,7 +111,15 @@ namespace TheGame
         {
             if (Globals.Start)
             {
-                MainMenuCheck();
+                if(Globals.Tutorial)
+                {
+                    TurorialCheck();
+                }
+                else
+                {
+                    MainMenuCheck();
+                }
+
                 audioMenager.MainPlay();
             }
             else
@@ -153,7 +162,6 @@ namespace TheGame
                     Globals.time = 0;
             }
 
-
         }
 
         protected override void Draw(GameTime gameTime)
@@ -162,6 +170,10 @@ namespace TheGame
             if(Globals.Start)
             {
                 hud.DrawMainMenu();
+                if(Globals.Tutorial)
+                {
+                    hud.DrawTutorialMenu();
+                }
             }
             else
             {
@@ -333,6 +345,7 @@ namespace TheGame
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2) //mainmenu
                 {
                     Globals.Death = false;
+                    Globals.Tutorial = false;
                     LoadContent();
                     Initialize();
                     Globals.Start = true;
@@ -424,10 +437,9 @@ namespace TheGame
                 }
                 Globals.prevState = gamePadState;
                 Globals.prevKeyBoardState = state;
-
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1)
                 {
-                    Globals.Start = false;
+                    Globals.Tutorial = true;
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3)
                 {
@@ -437,10 +449,53 @@ namespace TheGame
                 {
                     // notimplemented
                 }
+
+                
             }
 
         }
         #endregion
+
+        void TurorialCheck()
+        {
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            KeyboardState state = Keyboard.GetState();
+
+            if (Globals.Tutorial)
+            {
+                if ((gamePadState.ThumbSticks.Left.Y >= 0.5f && !(Globals.prevTutorialState.ThumbSticks.Left.Y >= 0.5f)) || (state.IsKeyDown(Keys.W) && !Globals.prevKeyBoardTutorialState.IsKeyDown(Keys.W)))
+                {
+                    hud.MenuOption -= 1;
+                }
+                if ((gamePadState.ThumbSticks.Left.Y <= -0.5f && !(Globals.prevTutorialState.ThumbSticks.Left.Y <= -0.5f)) || (state.IsKeyDown(Keys.S) && !Globals.prevKeyBoardTutorialState.IsKeyDown(Keys.S)))
+                {
+                    hud.MenuOption += 1;
+                }
+                if (hud.MenuOption < 1)
+                {
+                    hud.MenuOption = 1;
+                }
+                if (hud.MenuOption > 2)
+                {
+                    hud.MenuOption = 2;
+                }
+                Globals.prevTutorialState = gamePadState;
+                Globals.prevKeyBoardTutorialState = state;
+
+
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevState.Buttons.A == ButtonState.Released|| state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1)
+                {
+                    Globals.Start = false;
+                }
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
+                {
+                  
+                }
+            }
+
+            
+
+        }
 
         void SaveControl()
         {

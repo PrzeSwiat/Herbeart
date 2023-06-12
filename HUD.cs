@@ -199,7 +199,7 @@ namespace TheGame
             Globals.spriteBatch.Begin();
             Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
             Globals.spriteBatch.DrawString(Menu, "Game Paused", new Vector2(WindowWidth / 4 , WindowHeight * 1 / 10), Color.White);
-            Globals.spriteBatch.DrawString(Menu2, "Reasume", new Vector2(WindowWidth / 10, WindowHeight * 9 / 20), one);
+            Globals.spriteBatch.DrawString(Menu2, "Resume", new Vector2(WindowWidth / 10, WindowHeight * 9 / 20), one);
             Globals.spriteBatch.DrawString(Menu2, "Main menu", new Vector2(WindowWidth / 10, WindowHeight * 12 / 20), two);
             Globals.spriteBatch.DrawString(Menu2, "Exit", new Vector2(WindowWidth / 10, WindowHeight * 16 / 20), three);
             Globals.spriteBatch.End();
@@ -266,6 +266,30 @@ namespace TheGame
             Globals.spriteBatch.DrawString(Menu2, "Start new game", new Vector2(WindowWidth / 10, WindowHeight * 7 / 20), one);
             Globals.spriteBatch.DrawString(Menu2, "Not implemented option", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);
             Globals.spriteBatch.DrawString(Menu2, "Exit", new Vector2(WindowWidth / 10, WindowHeight * 15 / 20), three);
+            Globals.spriteBatch.End();
+
+        }
+
+        public void DrawTutorialMenu()
+        {
+            Color one = Color.Gray;
+            Color two = Color.Gray;
+
+            if (MenuOption == 1)
+            {
+                one = Color.White;
+            }
+            if (MenuOption == 2)
+            {
+                two = Color.White;
+            }
+
+            Rectangle rect = new Rectangle(-WindowWidth, -WindowHeight, 2 * WindowWidth, 2 * WindowHeight);
+            Globals.spriteBatch.Begin();
+            Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
+            Globals.spriteBatch.DrawString(Menu2, "Do you want to play with tutorial?", new Vector2(WindowWidth / 5, WindowHeight * 2 / 20), Color.Gray);
+            Globals.spriteBatch.DrawString(Menu2, "No", new Vector2(WindowWidth / 10, WindowHeight * 7 / 20), one);
+            Globals.spriteBatch.DrawString(Menu2, "Yes", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);
             Globals.spriteBatch.End();
 
         }
