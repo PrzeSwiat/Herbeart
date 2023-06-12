@@ -16,6 +16,7 @@ namespace TheGame
     {
         public static ContentManager content;
         public static GraphicsDeviceManager _graphics;
+        public static SpriteBatch spriteBatch;
         public static Viewport viewport;
         public static EffectHandler effectHandler;
         public static EffectHandler effectHandler1;
@@ -35,5 +36,8 @@ namespace TheGame
         public static KeyboardState prevKeyBoardDeathState;
         public static GamePadState prevPauseState;
         public static KeyboardState prevKeyBoardPauseState;
+
+        public static int numberOfRecepture = 0;
+        public static int maxReceptures = 4;
     }
 }

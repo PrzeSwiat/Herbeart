@@ -74,11 +74,11 @@ namespace TheGame
             
         }
         
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            spriteBatch.Begin();
-            spriteBatch.Draw(texture, position, null, Color.White, ang, Vector2.Zero, scale,SpriteEffects.None, 0f);
-            spriteBatch.End();
+            Globals.spriteBatch.Begin();
+            Globals.spriteBatch.Draw(texture, position, null, Color.White, ang, Vector2.Zero, scale,SpriteEffects.None, 0f);
+            Globals.spriteBatch.End();
         }
 
     }

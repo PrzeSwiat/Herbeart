@@ -15,6 +15,9 @@ namespace TheGame
         private Boolean padButtonBClicked;
         private Boolean padButtonXClicked;
         private Boolean padButtonYClicked;
+        private Boolean leftShoulderClicked;
+        private Boolean rightShoulderClicked;
+
         public bool isMoving;
 
         MouseState lastMouseState, currentMouseState;
@@ -34,7 +37,9 @@ namespace TheGame
             padButtonBClicked = false;
             padButtonYClicked = false;
             padButtonXClicked = false;
-        }
+            leftShoulderClicked = false;
+            rightShoulderClicked = false;
+    }
 
         public void UpdatePlayerMovement(World world, float deltaTime)
         {
@@ -181,25 +186,22 @@ namespace TheGame
                 // Button A
                 if (capabilities.HasAButton)
                 {
-                    if (gamePadState.IsButtonDown(Buttons.A))
+                    if (gamePadState.IsButtonDown(Buttons.A) && !padButtonAClicked)
                     {
-                        if (!padButtonAClicked)
+                        if (isCraftingTea && !isThrowing)           // Tworzenie herbatek
                         {
-                            if (isCraftingTea && !isThrowing)           // Tworzenie herbatek
-                            {
-                                player.AddIngredientA();
-                                padButtonAClicked = true;
-                            } 
-                            else if (!isCraftingTea && isThrowing)    // Rzucane
-                            {
-                                player.ThrowMint();
-                                padButtonAClicked = true;
-                            } 
-                            else                                      // normalny atak gracza
-                            {
-                                player.Attack();
-                                padButtonAClicked = true;
-                            }
+                            player.AddIngredientA();
+                            padButtonAClicked = true;
+                        } 
+                        else if (!isCraftingTea && isThrowing)    // Rzucane
+                        {
+                            player.ThrowMint();
+                            padButtonAClicked = true;
+                        } 
+                        else                                      // normalny atak gracza
+                        {
+                            player.Attack();
+                            padButtonAClicked = true;
                         }
                     }
                     else if (gamePadState.IsButtonUp(Buttons.A))
@@ -211,28 +213,23 @@ namespace TheGame
                 // Button B
                 if (capabilities.HasBButton)
                 {
-                    if (gamePadState.IsButtonDown(Buttons.B))
+                    if (gamePadState.IsButtonDown(Buttons.B) && !padButtonBClicked)
                     {
-                        if (!padButtonBClicked)
+                        if (isCraftingTea && !isThrowing)
                         {
-                            if (isCraftingTea && !isThrowing)
-                            {
-                                player.AddIngredientB();
-                                padButtonBClicked = true;
-                            } 
-                            else if (!isCraftingTea && isThrowing)
-                            {
-                                player.ThrowNettle();
-                                padButtonBClicked = true;
-                            }
-                            else 
-                            {
-                                padButtonBClicked = true;
-                                Dash();
-                            }
+                            player.AddIngredientB();
+                            padButtonBClicked = true;
+                        } 
+                        else if (!isCraftingTea && isThrowing)
+                        {
+                            player.ThrowNettle();
+                            padButtonBClicked = true;
                         }
-                            
-
+                        else 
+                        {
+                            padButtonBClicked = true;
+                            Dash();
+                        }
                     }
                     else if (gamePadState.IsButtonUp(Buttons.B))
                     {
@@ -241,27 +238,22 @@ namespace TheGame
                 }
                 if (capabilities.HasYButton)
                 {
-                    if (gamePadState.IsButtonDown(Buttons.Y))
+                    if (gamePadState.IsButtonDown(Buttons.Y) && !padButtonYClicked)
                     {
-                        if (!padButtonYClicked)
+                        if (isCraftingTea && !isThrowing)
                         {
-                            if (isCraftingTea && !isThrowing)
-                            {
-                                player.AddIngredientY();
-                                padButtonYClicked = true;
-                            } else if (!isCraftingTea && isThrowing)
-                            {
-                                padButtonYClicked = true;
-                                player.ThrowApple();
-                            }
-                            else
-                            {
-                                padButtonYClicked = true;
-                                // tutaj ewentualny dash/przewrot
-                            }
+                            player.AddIngredientY();
+                            padButtonYClicked = true;
+                        } else if (!isCraftingTea && isThrowing)
+                        {
+                            padButtonYClicked = true;
+                            player.ThrowApple();
                         }
-                        
-
+                        else
+                        {
+                            padButtonYClicked = true;
+                            // tutaj ewentualny dash/przewrot
+                        }
                     }
                     else if (gamePadState.IsButtonUp(Buttons.Y))
                     {
@@ -270,28 +262,23 @@ namespace TheGame
                 }
                 if (capabilities.HasXButton)
                 {
-                    if (gamePadState.IsButtonDown(Buttons.X))
+                    if (gamePadState.IsButtonDown(Buttons.X) && !padButtonXClicked)
                     {
-                        if (!padButtonXClicked)
+                        if (isCraftingTea && !isThrowing)
                         {
-                            if (isCraftingTea && !isThrowing)
-                            {
-                                player.AddIngredientX();
-                                padButtonXClicked = true;
-                            } 
-                            else if (!isCraftingTea && isThrowing)
-                            {
-                                player.ThrowMelise();
-                                padButtonXClicked = true;
-                            }
-                            else
-                            {
-                                padButtonXClicked = true;
-                                // tutaj ewentualny dash/przewrot
-                            }
+                            player.AddIngredientX();
+                            padButtonXClicked = true;
+                        } 
+                        else if (!isCraftingTea && isThrowing)
+                        {
+                            player.ThrowMelise();
+                            padButtonXClicked = true;
                         }
-                        
-
+                        else
+                        {
+                            padButtonXClicked = true;
+                            // tutaj ewentualny dash/przewrot
+                        }
                     }
                     else if (gamePadState.IsButtonUp(Buttons.X))
                     {
@@ -299,14 +286,46 @@ namespace TheGame
                     }
                 }
 
+                // Przelaczanie receptur
+                if (gamePadState.IsButtonDown(Buttons.LeftShoulder) && !leftShoulderClicked)
+                {
+                    leftShoulderClicked = true;
+                    if (Globals.numberOfRecepture - 1 < 0)
+                    {
+                        Globals.numberOfRecepture = Globals.maxReceptures - 1;
+                    } else
+                    {
+                        Globals.numberOfRecepture -= 1;
+                    }
+                } else if (gamePadState.IsButtonUp(Buttons.LeftShoulder)) {
+                    leftShoulderClicked = false;
+                }
 
+                if (gamePadState.IsButtonDown(Buttons.RightShoulder) && !rightShoulderClicked)
+                {
+                    rightShoulderClicked = true;
+                    if (Globals.numberOfRecepture + 1 >= Globals.maxReceptures)
+                    {
+                        Globals.numberOfRecepture = 0;
+                    }
+                    else
+                    {
+                        Globals.numberOfRecepture += 1;
+                    }
+                }
+                else if (gamePadState.IsButtonUp(Buttons.RightShoulder))
+                {
+                    rightShoulderClicked = false;
+                }
+
+                // Trigery = Rzucanie i Tworzenie herb
                 if (gamePadState.IsButtonDown(Buttons.LeftTrigger))
                 {
                     isCraftingTea = true;
                 }
                 else if (gamePadState.IsButtonUp(Buttons.LeftTrigger))
                 {
-                    this.player.Crafting.cleanRecepture();
+                    this.player.Crafting.makeTea();
                     isCraftingTea = false;
                 }
 

@@ -38,51 +38,50 @@ namespace TheGame
 
         public void addIngredient(char button)
         {
-            switch (button)
+            if (howLong() != 3)
             {
-                case 'A':
-                    if (inventory.checkMintLeafNumber())
-                    {
-                        recepture2[recepture.Length] = "mint";
-                        recepture += button;
-                        animationList.Add(new Animation2D(Mint_Icon, new Microsoft.Xna.Framework.Vector2(150,900), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
-                        inventory.removeMintLeaf();
-                    }
-                    break;
-                case 'B':
-                    if (inventory.checkNettleLeafNumber())
-                    {
-                        recepture2[recepture.Length] = "nettle";
-                        recepture += button;
-                        animationList.Add(new Animation2D(Nettle_Icon, new Vector2(250, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
-                        inventory.removeNettleLeaf();
-                    }
-                    break;
-                case 'X':
-                    if (inventory.checkMeliseLeafNumber())
-                    {
-                        recepture2[recepture.Length] = "melise";
-                        recepture += button;
-                        animationList.Add(new Animation2D(Melissa_Icon, new Vector2(80, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
-                        inventory.removeMeliseLeaf();
-                    }
-                    break;
-                case 'Y': 
-                    if (inventory.checkAppleLeafNumber())
-                    {
-                        recepture2[recepture.Length] = "apple";
-                        recepture += button;
-                        animationList.Add(new Animation2D(Apple_Icon, new Vector2(150, 700), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
-                        inventory.removeAppleLeaf();
-                    }
-                    
-                    break;
-                default:
-                    break;
-            }
-            if (howLong() == 3)
-            {
-                makeTea();
+                switch (button)
+                {
+                    case 'A':
+                        if (inventory.checkMintLeafNumber())
+                        {
+                            recepture2[recepture.Length] = "mint";
+                            recepture += button;
+                            animationList.Add(new Animation2D(Mint_Icon, new Microsoft.Xna.Framework.Vector2(150, 900), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
+                            inventory.removeMintLeaf();
+                        }
+                        break;
+                    case 'B':
+                        if (inventory.checkNettleLeafNumber())
+                        {
+                            recepture2[recepture.Length] = "nettle";
+                            recepture += button;
+                            animationList.Add(new Animation2D(Nettle_Icon, new Vector2(250, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
+                            inventory.removeNettleLeaf();
+                        }
+                        break;
+                    case 'X':
+                        if (inventory.checkMeliseLeafNumber())
+                        {
+                            recepture2[recepture.Length] = "melise";
+                            recepture += button;
+                            animationList.Add(new Animation2D(Melissa_Icon, new Vector2(80, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
+                            inventory.removeMeliseLeaf();
+                        }
+                        break;
+                    case 'Y':
+                        if (inventory.checkAppleLeafNumber())
+                        {
+                            recepture2[recepture.Length] = "apple";
+                            recepture += button;
+                            animationList.Add(new Animation2D(Apple_Icon, new Vector2(150, 700), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 350), 1, Globals.viewport));
+                            inventory.removeAppleLeaf();
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -129,7 +128,7 @@ namespace TheGame
             restartRecepture();
         }
         
-        private void makeTea()
+        public void makeTea()
         {
             switch (recepture)
             {
@@ -205,11 +204,11 @@ namespace TheGame
                 anim.OnDestroy += DestroyAnimation;
             }
         }
-        public void DrawAnimation(SpriteBatch spriteBatch)
+        public void DrawAnimation()
         {
             foreach(Animation2D anim in animationList)
             {
-                anim.Draw(spriteBatch);
+                anim.Draw();
             }
         }
         private void DestroyAnimation(object obj, EventArgs e)

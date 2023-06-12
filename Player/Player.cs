@@ -148,9 +148,9 @@ namespace TheGame
             shadow.SetPositionY(-0.99f);
             shadow.Draw(lightpos);
         }
-        public void DrawAnimation(SpriteBatch spriteBatch)
+        public void DrawAnimation()
         {
-            Crafting.DrawAnimation(spriteBatch);
+            Crafting.DrawAnimation();
         }
 
         public void Attack()

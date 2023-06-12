@@ -73,12 +73,12 @@ namespace TheGame
 
             }
         }
-        public void DrawHud(SpriteBatch spriteBatch)
+        public void DrawHud()
         {
             
             foreach(Animation2D anim in AnimationsList)
             {
-                anim.Draw(spriteBatch);
+                anim.Draw();
             }
             
         }

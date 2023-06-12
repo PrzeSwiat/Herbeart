@@ -12,7 +12,7 @@ namespace TheGame
         //DON'T TOUCH IT MORTALS
         int WindowWidth = 1900;
         int WindowHeight = 1000;
-        private SpriteBatch _spriteBatch;
+
         Camera camera;
         EffectHandler effectHandler;
         EffectHandler effectPlayerHandler;
@@ -91,7 +91,7 @@ namespace TheGame
             Globals.content = this.Content;
 
             world.LoadContent();
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Globals.spriteBatch = new SpriteBatch(GraphicsDevice);
             hud.LoadContent();
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.Projection = Globals.projectionMatrix;
@@ -108,10 +108,6 @@ namespace TheGame
 
         protected override void Update(GameTime gameTime)
         {
-           // Debug.WriteLine("Start: "+Globals.Start);
-            //Debug.WriteLine("Pause: "+Globals.Pause);
-           // Debug.WriteLine("Death: " + Globals.Death);
-           // Debug.WriteLine("Tutorial: " + Globals.Tutorial);
             if (Globals.Start)
             {
                 MainMenuCheck();
@@ -165,7 +161,7 @@ namespace TheGame
             Globals.prevState = GamePad.GetState(PlayerIndex.One);
             if(Globals.Start)
             {
-                hud.DrawMainMenu(_spriteBatch);
+                hud.DrawMainMenu();
             }
             else
             {
@@ -173,7 +169,7 @@ namespace TheGame
                 {
                     if(Globals.Death)
                     {
-                        hud.DrawDeathMenu(_spriteBatch);
+                        hud.DrawDeathMenu();
                     }
                     else
                     {
@@ -191,15 +187,15 @@ namespace TheGame
                         player.DrawEffectsShadow(player.GetPosition());
                         
                         hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture());
-                        hud.DrawFrontground(_spriteBatch, player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
-                        Leafs.DrawHud(_spriteBatch);//Koniecznie ostatnie nawet za Hudem
-                        player.DrawAnimation(_spriteBatch);
+                        hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
+                        Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
+                        player.DrawAnimation();
                     }
 
                 }
                 else
                 {
-                    hud.DrawPause(_spriteBatch);
+                    hud.DrawPause();
                 }
                 //DrawBoundingBoxes();
             }
