@@ -67,14 +67,7 @@ namespace TheGame
                     player.Direction = new Vector2(LeftjoystickX, LeftjoystickY);
                     player.NormalizeDirection();
 
-                    if(LeftjoystickX != 0 || LeftjoystickY!= 0)
-                    {
-                        isMoving = true;
-                    }
-                    else
-                    {
-                        isMoving = false;
-                    }
+                    
 
                     // JUZ WCALE NIE UPOŚLEDZONY RUCH KAMERĄ LEFT FUKIN THUMBSTICK
                     if (thumbLeftX == 0 && thumbLeftY == 0)
@@ -83,7 +76,14 @@ namespace TheGame
                         rotation = player.GetRotation().Y;
                        
                     }
-
+                    if (player.Direction.X != 0 || player.Direction.Y != 0)
+                    {
+                        isMoving = true;
+                    }
+                    else
+                    {
+                        isMoving = false;
+                    }
                     ///Right THUMBSTICK
                     /*if (RightjoystickX != 0 || RightjoystickY != 0)
                     {
@@ -147,7 +147,7 @@ namespace TheGame
                 
             }
 
-            if (isDashing)
+            if (isDashing && player.getcanMove())
             {
                 elapsedDashTime += deltaTime;
 

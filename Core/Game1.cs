@@ -349,6 +349,7 @@ namespace TheGame
                     LoadContent();
                     Initialize();
                     Globals.Start = true;
+                    player.Start();
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3) //exit 
                 {
@@ -393,17 +394,22 @@ namespace TheGame
             if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2) //try again 
             {
                 Globals.Death = false;
+                Globals.Tutorial = false;
+
                 LoadContent();
                 Initialize();
-               
+                player.Start();
+
             }
             if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3) // main menu
             {
                 Globals.Death = false;
+                Globals.Tutorial = false;
                 LoadContent();
                 Initialize();
                 Globals.Pause = false;
                 Globals.Start = true;
+                player.Start();
             }
             if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 4) // exit
             {
@@ -456,6 +462,7 @@ namespace TheGame
         }
         #endregion
 
+        #region TUTORIAL_CHECK
         void TurorialCheck()
         {
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -485,6 +492,7 @@ namespace TheGame
 
                 if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevState.Buttons.A == ButtonState.Released|| state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1)
                 {
+                    player.Start();
                     Globals.Start = false;
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
@@ -493,9 +501,8 @@ namespace TheGame
                 }
             }
 
-            
-
         }
+        #endregion 
 
         void SaveControl()
         {

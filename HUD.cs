@@ -289,7 +289,7 @@ namespace TheGame
             Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
             Globals.spriteBatch.DrawString(Menu2, "Do you want to play with tutorial?", new Vector2(WindowWidth / 5, WindowHeight * 2 / 20), Color.Gray);
             Globals.spriteBatch.DrawString(Menu2, "No", new Vector2(WindowWidth / 10, WindowHeight * 7 / 20), one);
-            Globals.spriteBatch.DrawString(Menu2, "Yes", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);
+            Globals.spriteBatch.DrawString(Menu2, "In development", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);
             Globals.spriteBatch.End();
 
         }

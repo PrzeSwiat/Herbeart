@@ -59,8 +59,17 @@ namespace TheGame
             playerMovement = new PlayerMovement(this);
             shadow = new Shadow(this.GetPosition());
             // Uruchomienie timera
-            playerEffects.Start();
+            //playerEffects.Start();
             
+        }
+        public void Start()
+        {
+            playerEffects.Start();
+        }
+
+        public void Stop()
+        {
+            playerEffects.Stop();
         }
 
         public void Update(World world, float deltaTime, Enemies enemies,GameTime gametime) //Logic player here
@@ -107,6 +116,10 @@ namespace TheGame
             if (!immortal)
             {
                 base.Hit(damage);
+                if (this.Health <= 0)
+                {
+                    playerEffects.Stop();
+                }  
             }
         }
 

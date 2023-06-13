@@ -82,7 +82,6 @@ namespace TheGame
                 animationPlayer.Update(gameTime);
             }
 
-
         }
 
 

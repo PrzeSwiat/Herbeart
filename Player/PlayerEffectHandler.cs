@@ -35,6 +35,11 @@ namespace TheGame
             damageTimer.Start();
         }
 
+        public void Stop()
+        {
+            damageTimer.Stop();
+        }
+
         // FUNKCJE PLAYEROWE
 
         public void DamagePlayer(int dmg)
@@ -120,7 +125,7 @@ namespace TheGame
 
         private void EffectTakeHealth()
         {
-            player.SubstractHealth(damage);
+            player.Hit(damage);
         }
 
 
