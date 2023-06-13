@@ -29,6 +29,7 @@ namespace TheGame
         public static bool Tutorial;
         public static bool Pause;
         public static bool TutorialPause;
+        public static bool LeaderBoard;
         public static float time;
         public static int Score;
         public static GamePadState prevState;
@@ -40,6 +41,8 @@ namespace TheGame
         public static KeyboardState prevKeyBoardPauseState;
         public static GamePadState prevTutorialState;
         public static KeyboardState prevKeyBoardTutorialState;
+        public static GamePadState prevLeaderState;
+        public static KeyboardState prevKeyBoardLeaderState;
 
         public static int numberOfRecepture = 0;
         public static int maxReceptures = 4;

@@ -17,6 +17,7 @@ namespace TheGame
         EffectHandler effectHandler;
         EffectHandler effectPlayerHandler;
         Serializator serializator;
+        Serializator PlayerNames;
         AudioMenager audioMenager;
         //.................
 
@@ -78,6 +79,7 @@ namespace TheGame
             player = new Player(new Vector3(50,0,60), "Objects/mis", "Textures/MisTexture");
             animacyjnaPacynka = new Player(new Vector3(0, 15, 30), "Objects/mis", "Textures/tekstura");
             serializator = new Serializator("zapis.txt");
+            PlayerNames = new Serializator("PlayerNames.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
             audioMenager = new AudioMenager(Content);
             soundActorPlayer = new SoundActorPlayer(Content, player, enemies.EnemiesList);
@@ -85,6 +87,7 @@ namespace TheGame
             Globals.viewport = GraphicsDevice.Viewport;
 
             base.Initialize();
+
         }
 
         protected override void LoadContent()
@@ -111,6 +114,7 @@ namespace TheGame
         {
             if (Globals.Start)
             {
+                hud.name = "";
                 if(Globals.Tutorial)
                 {
                     TurorialCheck();
@@ -130,7 +134,14 @@ namespace TheGame
                 {
                     if (Globals.Death)
                     {
-                        DeathMenuCheck();
+                        if (Globals.LeaderBoard)
+                        {
+                            LeaderBoardCheck();
+                        }
+                        else
+                        {
+                            DeathMenuCheck();
+                        }
                     }
                     else
                     {
@@ -167,7 +178,10 @@ namespace TheGame
         protected override void Draw(GameTime gameTime)
         {
             Globals.prevState = GamePad.GetState(PlayerIndex.One);
-            if(Globals.Start)
+            Globals.prevDeathState = GamePad.GetState(PlayerIndex.One);
+            Globals.prevKeyBoardState = Keyboard.GetState();
+            Globals.prevKeyBoardDeathState = Keyboard.GetState();
+            if (Globals.Start)
             {
                 hud.DrawMainMenu();
                 if(Globals.Tutorial)
@@ -181,7 +195,14 @@ namespace TheGame
                 {
                     if(Globals.Death)
                     {
-                        hud.DrawDeathMenu();
+                        if(Globals.LeaderBoard)
+                        {
+                            hud.DrawLeaderBoard();
+                        }
+                        else
+                        {
+                            hud.DrawDeathMenu();
+                        }
                     }
                     else
                     {
@@ -312,6 +333,7 @@ namespace TheGame
             if ((gamePadState.Buttons.Start == ButtonState.Pressed && Globals.prevState.Buttons.Start == ButtonState.Released) || (state.IsKeyDown(Keys.Escape) && Globals.prevKeyBoardState.IsKeyUp(Keys.Escape)))
             {
                 Globals.Pause = true;
+                player.Stop();
             }
             Globals.prevState = gamePadState;
             Globals.prevKeyBoardState = state;
@@ -341,6 +363,7 @@ namespace TheGame
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1) //reasume
                 {
                     Globals.Pause = false;
+                    player.Start();
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2) //mainmenu
                 {
@@ -349,7 +372,6 @@ namespace TheGame
                     LoadContent();
                     Initialize();
                     Globals.Start = true;
-                    player.Start();
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3) //exit 
                 {
@@ -360,6 +382,33 @@ namespace TheGame
            
         }
         #endregion
+
+        void LeaderBoardCheck()
+        {
+            if (Globals.LeaderBoard)
+            {
+                GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+                KeyboardState state = Keyboard.GetState();
+
+                Globals.prevLeaderState = gamePadState;
+                Globals.prevKeyBoardLeaderState = state;
+
+
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevDeathState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter) && Globals.prevKeyBoardDeathState.IsKeyUp(Keys.Enter)))) //ACCEPT
+                {
+                    Window.TextInput -= hud.TextInputHandler;
+                    PlayerNames.SavePlayerName(hud.name);
+                    Globals.LeaderBoard = false;
+                    Globals.Death = false;
+                    Globals.Tutorial = false;
+                    LoadContent();
+                    Initialize();
+                    Globals.Pause = false;
+                    Globals.Start = true;
+                }
+            }
+        }
+
 
         #region DEATH_CHECK
         void DeathMenuCheck()
@@ -389,7 +438,9 @@ namespace TheGame
 
             if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1) //leader board
             {
-                
+                Window.TextInput += hud.TextInputHandler;
+                Globals.LeaderBoard = true;
+
             }
             if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2) //try again 
             {
@@ -409,7 +460,6 @@ namespace TheGame
                 Initialize();
                 Globals.Pause = false;
                 Globals.Start = true;
-                player.Start();
             }
             if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 4) // exit
             {
@@ -489,8 +539,7 @@ namespace TheGame
                 Globals.prevTutorialState = gamePadState;
                 Globals.prevKeyBoardTutorialState = state;
 
-
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevState.Buttons.A == ButtonState.Released|| state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevState.Buttons.A == ButtonState.Released|| (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardDeathState.IsKeyUp(Keys.Enter)) && hud.MenuOption == 1)
                 {
                     player.Start();
                     Globals.Start = false;

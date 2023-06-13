@@ -25,6 +25,7 @@ namespace TheGame
         private Texture2D EnemyHealth, HalfEnemyHealth;
         private Texture2D ReceptureBar;
         private int WindowWidth, WindowHeight;
+        public string name = "";
         
         public int MenuOption = 1;
 
@@ -233,7 +234,7 @@ namespace TheGame
             Globals.spriteBatch.Begin();
             Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
             Globals.spriteBatch.DrawString(Menu, "You fell asleep", new Vector2(WindowWidth / 3.5f, WindowHeight * 1 / 20), Color.OrangeRed);
-            Globals.spriteBatch.DrawString(Menu2, "Leader board", new Vector2(WindowWidth / 10, WindowHeight * 6 / 20), one);
+            Globals.spriteBatch.DrawString(Menu2, "Save your score !", new Vector2(WindowWidth / 10, WindowHeight * 6 / 20), one);
             Globals.spriteBatch.DrawString(Menu2, "Try again", new Vector2(WindowWidth / 10, WindowHeight * 9 / 20), two);
             Globals.spriteBatch.DrawString(Menu2, "Main menu", new Vector2(WindowWidth / 10, WindowHeight * 12 / 20), three);
             Globals.spriteBatch.DrawString(Menu2, "Exit", new Vector2(WindowWidth / 10, WindowHeight * 16 / 20), four);
@@ -292,6 +293,38 @@ namespace TheGame
             Globals.spriteBatch.DrawString(Menu2, "In development", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);
             Globals.spriteBatch.End();
 
+        }
+
+        public void DrawLeaderBoard()
+        {
+            Rectangle rect = new Rectangle(-WindowWidth, -WindowHeight, 2 * WindowWidth, 2 * WindowHeight);
+            Globals.spriteBatch.Begin();
+            Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
+            Globals.spriteBatch.DrawString(Menu2, "Type your 'name (company name)' ", new Vector2(WindowWidth / 5, WindowHeight * 2 / 20), Color.Gray);
+            Globals.spriteBatch.DrawString(Menu2, name, new Vector2(WindowWidth / 5, WindowHeight * 7 / 20), Color.White);
+            Globals.spriteBatch.DrawString(Menu2, "Press 'A / ENTER' to accept", new Vector2(WindowWidth / 5, WindowHeight * 16 / 20), Color.Gray);
+            Globals.spriteBatch.End();
+
+
+        }
+
+        public void TextInputHandler(object sender, TextInputEventArgs args)
+        {
+
+            var character = args.Character;
+            if ((char.IsLetter(character) || character == ' ' || character == '(' || character == ')') && name.Length < 28)
+            {
+                name += character;
+            }
+            if (character == '\b')
+            {
+                if (name.Length > 0)
+                {
+                    name = name.Substring(0, name.Length - 1);
+                }
+            }
+
+            //Debug.WriteLine(name);
         }
 
         public void DrawScore()

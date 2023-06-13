@@ -18,6 +18,11 @@ namespace TheGame
             this.fileName = fileName;
         }
 
+        public void SavePlayerName(string name)
+        {
+            File.AppendAllText(fileName,"Name: " + name + " Score: " + Globals.Score + '\n');
+        }
+
         public void SavePlayer(Player player)
         {
             string savePlayer = JsonConvert.SerializeObject(player);

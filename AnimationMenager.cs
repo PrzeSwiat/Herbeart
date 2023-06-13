@@ -47,8 +47,8 @@ namespace TheGame
 
             player.onMove += PlayerSteps;
 
-            Steps = Content.Load<SkinnedModel>("Animations/mis_bieg");
-            Idle = Content.Load<SkinnedModel>("Animations/mis_Standing");
+            Steps = Content.Load<SkinnedModel>("Animations/mis_bieg_2");
+            Idle = Content.Load<SkinnedModel>("Animations/mis_Standing_23");
             texture = Content.Load<Texture2D>("Textures/mis_texture");
             effect1 = Content.Load<Effect>("AnimationToon");
 

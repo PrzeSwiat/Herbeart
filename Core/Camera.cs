@@ -89,6 +89,7 @@ namespace TheGame
 
         public void Update1(Vector3 player)
         {
+
             camTracker = player;
         }
     }

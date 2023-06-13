@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:C:\Users\Wiktor\.nuget\packages\lovebirb.monogame.skinnedmeshimporter\1.0.4\lib\netstandard2.0\SkinnedMeshImporter.dll
+/reference:..\..\..\..\.nuget\packages\lovebirb.monogame.skinnedmeshimporter\1.0.4\lib\netstandard2.0\SkinnedMeshImporter.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -69,6 +69,13 @@
 /processorParam:SkipUVs=False
 /build:Animations/abominejszyn.fbx
 
+#begin Animations/mis_bieg_2.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mis_bieg_2.fbx
+
 #begin Animations/mis_bieg.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
@@ -76,12 +83,12 @@
 /processorParam:SkipUVs=False
 /build:Animations/mis_bieg.fbx
 
-#begin Animations/mis_Standing.fbx
+#begin Animations/mis_Standing_23.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
 /processorParam:KeyframeDecimalPlaceRounding=5
 /processorParam:SkipUVs=False
-/build:Animations/mis_Standing.fbx
+/build:Animations/mis_Standing_23.fbx
 
 #begin AnimationToon.fx
 /importer:EffectImporter
