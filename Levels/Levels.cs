@@ -20,7 +20,7 @@ namespace TheGame
     {
         private List<Level> _levels;
         #region Maps
-        private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt", "Maps/map5.txt" };
+        private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt", "Maps/map5.txt", "Maps/map_party_straight.txt" };
         private string[] maps_up_down = { "Maps/map_up_down_1.txt" };
         private string[] maps_down_up = { "Maps/map_down_up_1.txt" };
         private string[] maps_up_right = { "Maps/map_up_right.txt" };
@@ -91,19 +91,34 @@ namespace TheGame
             maps = new List<string>();
 
             //wybieranie ilości przeciwników w levelu
-            if (numberOfModules < 10)
-                enemyCount = 2;
-            else
+            if (numberOfModules > 10)
+                enemyCount = 6;
+            else if (numberOfModules > 15)
+                enemyCount = 9;
+            else 
                 enemyCount = 4;
-
+            
             //Przypadek prostych map - wylot z lewej i prawej
             if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
             {
-                maps.AddRange(maps_straight);   //dalej prosto
-                maps.AddRange(maps_left_up);    //idziemy do gory
-                maps.AddRange(maps_left_down);  //idziemy do dołu
 
-                prepareRandomModule(enemyCount);
+
+                if (numberOfModules % 10 == 0)
+                {
+                    prepareModule("Maps/map_party_straight.txt", 0);
+                    choosedMap = "Maps/map_party_straight.txt";
+                }
+                else
+                {
+                    maps.AddRange(maps_straight);   //dalej prosto
+                    maps.AddRange(maps_left_up);    //idziemy do gory
+                    maps.AddRange(maps_left_down);  //idziemy do dołu
+                    prepareRandomModule(enemyCount);
+                }
+                /*                maps.AddRange(maps_straight);   //dalej prosto
+                                maps.AddRange(maps_left_up);    //idziemy do gory
+                                maps.AddRange(maps_left_down);  //idziemy do dołu
+                                prepareRandomModule(enemyCount);*/
             }
 
             //Zakręt do góry - wylot z lewej i góry
@@ -251,7 +266,7 @@ namespace TheGame
 
             if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count - 2)
             {
-                foreach (Enemy enemy in _levels[numberOfModule+1].returnEnemies())
+                foreach (Enemy enemy in _levels[numberOfModule + 1].returnEnemies())
                 {
                     enemiesList.Add(enemy);
                 }
@@ -311,7 +326,7 @@ namespace TheGame
 
             private string fileName;
             private float separatorX, separatorZ;
-            private int enemyCount;
+            public int enemyCount;
 
 
 
@@ -746,7 +761,7 @@ namespace TheGame
                         SceneObject big_stone = new SceneObject(groundPosition, "Objects/big_stone", texture);
                         big_stone.SetScale(scale/2);
                         big_stone.SetRotation(new Vector3(0, rflot, 0));
-                        nonColideObjects.Add(big_stone);
+                        _sceneObjects.Add(big_stone);
                         break;
                     case "Objects/small_stone":
                         texture = "Textures/stone";
@@ -760,19 +775,19 @@ namespace TheGame
                         SceneObject two_stones = new SceneObject(groundPosition, "Objects/two_stones", texture);
                         two_stones.SetScale(scale);
                         two_stones.SetRotation(new Vector3(0, rflot, 0));
-                        nonColideObjects.Add(two_stones);
+                        _sceneObjects.Add(two_stones);
                         break;
                     case "Objects/bush":
                         texture = GenerateRandomString(bushTextures);
                         SceneObject bush = new SceneObject(groundPosition, "Objects/bush", texture);
                         bush.SetScale(scale/2);
-                        nonColideObjects.Add(bush);
+                        _sceneObjects.Add(bush);
                         break;
                     case "Objects/small_bush":
                         texture = GenerateRandomString(bushTextures);
                         SceneObject small_bush = new SceneObject(groundPosition, "Objects/small_bush", texture);
                         small_bush.SetScale(scale);
-                        nonColideObjects.Add(small_bush);
+                        _sceneObjects.Add(small_bush);
                         break;
                     case "Objects/flower":
                         texture = GenerateRandomString(flowerTextures);
