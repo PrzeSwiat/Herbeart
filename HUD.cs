@@ -208,7 +208,7 @@ namespace TheGame
 
         public void DrawTutorial()
         {
-            Rectangle rect = new Rectangle(WindowWidth/10, WindowHeight/10, WindowWidth/3, WindowHeight/3);
+            Rectangle rect = new Rectangle(WindowWidth * 15 / 20, WindowHeight * 13 / 20, 400, 200);
             Globals.spriteBatch.Begin();
             Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
             Globals.spriteBatch.End();

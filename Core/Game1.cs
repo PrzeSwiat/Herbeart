@@ -120,7 +120,7 @@ namespace TheGame
                 {
                     MainMenuCheck();
                 }
-
+                Globals.time = 0;
                 audioMenager.MainPlay();
             }
             else
@@ -169,9 +169,7 @@ namespace TheGame
                         }
                     }
                 }
-                else
-
-                    Globals.time = 0;
+                
             }
 
         }
@@ -182,6 +180,8 @@ namespace TheGame
             Globals.prevDeathState = GamePad.GetState(PlayerIndex.One);
             Globals.prevKeyBoardState = Keyboard.GetState();
             Globals.prevKeyBoardDeathState = Keyboard.GetState();
+            Globals.prevPauseState = GamePad.GetState(PlayerIndex.One);
+            Globals.prevKeyBoardPauseState = Keyboard.GetState();
             if (Globals.Start)
             {
                 
