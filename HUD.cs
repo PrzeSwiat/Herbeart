@@ -243,14 +243,24 @@ namespace TheGame
                 Globals.spriteBatch.DrawString(Menu2, "second", new Vector2(WindowWidth * 13 / 20, WindowHeight * 0 / 20), Color.Yellow);
                 Globals.spriteBatch.End();
             }
-            if (number == 3)
+            if (number == 3) //różni przeciwnicy to różne listki
             {
-                Rectangle rect = new Rectangle(WindowWidth * 12 / 20, WindowHeight * 0 / 20, 400, 100);
+                Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 5 / 20, 500, 450);
                 Globals.spriteBatch.Begin();
                 Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "third", new Vector2(WindowWidth * 13 / 20, WindowHeight * 0 / 20), Color.Yellow);
+                Globals.spriteBatch.DrawString(Menu2, "third", new Vector2(WindowWidth * 6 / 20, WindowHeight * 6 / 20), Color.Yellow);
                 Globals.spriteBatch.End();
             }
+            if (number == 4) //efekty miotane pierwsze, co robią efekty miotane (ziel,czer)
+            {
+                Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 0 / 20, 500, 450);
+                Globals.spriteBatch.Begin();
+                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
+                Globals.spriteBatch.DrawString(Menu2, "forth", new Vector2(WindowWidth * 6 / 20, WindowHeight * 6 / 20), Color.Yellow);
+                Globals.spriteBatch.End();
+            }
+
+
 
         }
 

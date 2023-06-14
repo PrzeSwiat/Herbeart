@@ -90,6 +90,13 @@
 /processorParam:SkipUVs=False
 /build:Animations/mis_Standing_23.fbx
 
+#begin Animations/mis_tired_run.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mis_tired_run.fbx
+
 #begin AnimationToon.fx
 /importer:EffectImporter
 /processor:EffectProcessor

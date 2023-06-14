@@ -25,14 +25,14 @@ namespace TheGame
         List<Enemy> enemies;
         private List<AnimationPlayer> allAnimations;
         private SkinnedModel Steps;
+        private SkinnedModel Steps_tired;
         private SkinnedModel Idle;
         private AnimationPlayer ASteps;
+        private AnimationPlayer ASteps_tired;
         private AnimationPlayer AIdle;
         private Texture2D texture;
         private Effect effect1;
 
-        private SkinnedModel playerModel;
-        private AnimationPlayer playerAnimations;
 
         public AnimationMenager(ContentManager content, Player _player, List<Enemy> _enemies)
         {
@@ -51,6 +51,7 @@ namespace TheGame
             Idle = Content.Load<SkinnedModel>("Animations/mis_Standing_23");
             texture = Content.Load<Texture2D>("Textures/mis_texture");
             effect1 = Content.Load<Effect>("AnimationToon");
+            Steps_tired=Content.Load<SkinnedModel>("Animations/mis_tired_run");
 
             //steps
             ASteps = new AnimationPlayer(Steps);
@@ -59,6 +60,13 @@ namespace TheGame
             ASteps.IsLooping = true;
             ASteps.CurrentTime = 1.0f;
             ASteps.CurrentTick = Steps.Animations[0].DurationInTicks;
+            //steps_tired
+            ASteps_tired = new AnimationPlayer(Steps_tired);
+            ASteps_tired.Animation = Steps_tired.Animations[0];
+            ASteps_tired.PlaybackSpeed = 0.8f;
+            ASteps_tired.IsLooping = true;
+            ASteps_tired.CurrentTime = 1.0f;
+            ASteps_tired.CurrentTick = Steps_tired.Animations[0].DurationInTicks;
             //idle
             AIdle = new AnimationPlayer(Idle);
             AIdle.Animation = Idle.Animations[0];
@@ -71,6 +79,7 @@ namespace TheGame
             // ADD ALL ANIMATION HERE
             allAnimations.Add(ASteps);
             allAnimations.Add(AIdle);
+            allAnimations.Add(ASteps_tired);
 
         }
 
@@ -87,23 +96,37 @@ namespace TheGame
 
         private void PlayerSteps(object obj, EventArgs e)
         {
-            AIdle.IsPlaying = false;
+            
             ASteps.IsPlaying = true;
+            ASteps_tired.IsPlaying = true;
+            AIdle.IsPlaying = false;
+            
+
         }
 
         public void DrawAnimations()
         {
             if(AIdle.IsPlaying)
             {
-                DrawAnimation(player, AIdle, Idle);
+               DrawAnimation(player, AIdle, Idle);
+
             }
             if(ASteps.IsPlaying)
             {
-                DrawAnimation(player, ASteps, Steps);
+                if (player.Health <= player.maxHealth * 0.5)
+                {
+                    DrawAnimation(player, ASteps_tired, Steps_tired);
+                }
+                else
+                {
+                    DrawAnimation(player, ASteps, Steps);
+                }
+                
             }
 
             AIdle.IsPlaying = true;
-            ASteps.IsPlaying=false;
+            ASteps.IsPlaying = false;
+            ASteps_tired.IsPlaying = false;
         }
 
 

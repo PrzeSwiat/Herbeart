@@ -248,6 +248,12 @@ namespace TheGame
                                 hud.DrawTutorial(3);
                             }
                             */
+                            /*
+                            if() modul 4
+                            {
+                                hud.DrawTutorial(4);
+                            }
+                            */
                         }
 
                     }
@@ -441,6 +447,13 @@ namespace TheGame
                     player.Stop();
                     Globals.TutorialPause = true;
                     //ODBLOKOWAĆ NOWY SKŁADNIK
+                }
+                if (Globals.Module4)    // wiktor modul 4
+                {
+                    player.Stop();
+                    Globals.TutorialPause = true;
+                    //ODBLOKOWAĆ NOWY SKŁADNIK
+
                 }
 
 
