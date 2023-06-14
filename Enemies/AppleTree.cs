@@ -21,7 +21,7 @@ namespace TheGame
         {
             AssignParameters(4, 12, 2, 5.0f);
             this.setBSRadius(3);
-            this.leaf = new Leafs.AppleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
+            this.leaf = new Leafs.AppleLeaf(worldPosition, "Objects/apple_pickup", "Textures/apple_pickup");
             this.shadow.SetScale(1.05f);
         }
 
@@ -141,7 +141,7 @@ namespace TheGame
     {
         int dmg = 30;
         Vector3 velocity;
-        float speed = 40f;
+        float speed = 35f;
         public event EventHandler OnDestroy;
         public Apple(Vector3 worldPosition, string modelFileName, string textureFileName, Vector3 endPosition) : base(worldPosition, modelFileName, textureFileName)
         {

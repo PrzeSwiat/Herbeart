@@ -20,7 +20,7 @@ namespace TheGame
             AssignParameters(8, 5, 1.5f, 1.0f);
             this.setBSRadius(3);
             this.shadow.SetScale(1.35f);
-            this.leaf = new Leafs.MelissaLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
+            this.leaf = new Leafs.MelissaLeaf(worldPosition, "Objects/melise_pickup", "Textures/melise_pickup");
         }
 
         public override void Update(float deltaTime, Player player)

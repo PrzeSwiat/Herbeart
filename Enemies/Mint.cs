@@ -19,7 +19,7 @@ namespace TheGame
             this.shadow.SetScale(0.7f);
             this.setBSRadius(2);
 
-            this.leaf = new Leafs.MintLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
+            this.leaf = new Leafs.MintLeaf(worldPosition, "Objects/mint_pickup", "Textures/mint_pickup");
         }
 
         public override void LoadContent()

@@ -423,7 +423,7 @@ namespace TheGame
         {
             private Vector3 velocity;
             private int dmg = 100;
-            private float speed = 40f;
+            private float speed = 35f;
             private float time = 0, maxTime = 4;
 
             public event EventHandler OnDestroy;
