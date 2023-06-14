@@ -17,8 +17,22 @@ namespace TheGame
         {
             AssignParameters(2, 15, 2, 3f);
             this.shadow.SetScale(0.7f);
-            this.leaf = new Leafs.MintLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
+            this.setBSRadius(2);
+
+            this.leaf = new Leafs.MintLeaf(worldPosition, "Objects/mint_pickup", "Textures/mint_pickup");
         }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+            float vlll = 1f;
+            BoundingBox helper;
+            helper.Min = new Vector3(-vlll, 0, -vlll);
+            helper.Max = new Vector3(vlll, 4, vlll);
+
+            SetBoundingBox(new BoundingBox(helper.Min + this.GetPosition(), helper.Max + this.GetPosition()));
+        }
+
         public override void Update(float deltaTime, Player player)
         {
             base.Update(deltaTime, player);

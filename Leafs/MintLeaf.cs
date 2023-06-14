@@ -25,6 +25,9 @@ namespace TheGame.Leafs
 
         public override bool UpdateInventory(Player player,List<Animation2D> AnimationsList)
         {
+            Vector3 rotation = GetRotation();
+            rotation.Y += 0.05f;
+            SetRotation(rotation);
             if (this.chceckCollison(player))
             {
                 AnimationsList.Add(new Animation2D(Mint_Icon, this.GetPosition(), new Vector2(150, 900),1, Globals.viewport));

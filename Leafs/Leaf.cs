@@ -21,6 +21,7 @@ namespace TheGame.Leafs
         {
 
         }
+
         public override void LoadContent()
         {
             base.LoadContent();
@@ -54,13 +55,8 @@ namespace TheGame.Leafs
         }
         public virtual bool UpdateInventory(Player player,List<Animation2D> AnimationsList)
         {
-
             if (this.chceckCollison(player))
             {
-                
-                
-                
-                
                 this.AddToInventory(player);
                 canStartAnimation = true;
                 return true;

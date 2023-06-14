@@ -17,18 +17,18 @@ namespace TheGame.Leafs
         }
         public override void AddToInventory(Player player)
         {
-            
-                player.Inventory.addAppleLeaf();
-                this.RemoveFromWorld();
-                //Debug.Write("Dodalem apple" + player.Inventory.getAppleLeaftNumber() + "\n");
-                ispossible = false;
+            player.Inventory.addAppleLeaf();
+            this.RemoveFromWorld();
+            ispossible = false;
         }
 
         public override bool UpdateInventory(Player player,List<Animation2D> AnimationsList)
         {
+            Vector3 rotation = GetRotation();
+            rotation.Y += 0.05f;
+            SetRotation(rotation);
             if (this.chceckCollison(player))
             {
-                
                 AnimationsList.Add(new Animation2D(Apple_Icon, this.GetPosition(), new Vector2(150, 700), 1, Globals.viewport));
                 this.AddToInventory(player);
                 return true;
