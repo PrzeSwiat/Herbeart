@@ -17,16 +17,18 @@ namespace TheGame
         private Boolean padButtonYClicked;
         private Boolean leftShoulderClicked;
         private Boolean rightShoulderClicked;
-
+       
         public bool isMoving;
 
         MouseState lastMouseState, currentMouseState;
 
-        private float dashTime = 0.2f, elapsedDashTime = 0;
+        private float dashTime = 0.2f, elapsedDashTime = 0;     // dash
+        private float timeToDash = 2, elapsedLastDashTime = 3;  // dash delay
         private float dashSpeed = 50f;
+        private float deltaTime;
         private Vector2 dashDirection;
         bool isDashing = false;
-
+        bool canDash = true;
 
         public PlayerMovement(Player player) 
         { 
@@ -44,6 +46,8 @@ namespace TheGame
         public void UpdatePlayerMovement(World world, float deltaTime)
         {
             float rotation = 0;
+            this.deltaTime = deltaTime;
+            elapsedLastDashTime += this.deltaTime;
             //GameControler 
             GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
             if (capabilities.IsConnected)
@@ -147,7 +151,7 @@ namespace TheGame
                 
             }
 
-            if (isDashing && player.getcanMove())
+            if (isDashing && player.getcanMove() && isMoving)
             {
                 elapsedDashTime += deltaTime;
 
@@ -345,8 +349,13 @@ namespace TheGame
 
         private void Dash()
         {
-            isDashing = true;
-            dashDirection = player.getLookingDirection();
+            if (elapsedLastDashTime >= timeToDash)
+            {
+                isDashing = true;
+                dashDirection = player.getLookingDirection();
+                elapsedLastDashTime = 0;
+            }
+            
         }
 
         public void UpdateBB(float ang, List<SceneObject> worldList, Vector3 moveVec, Vector3 normal)
