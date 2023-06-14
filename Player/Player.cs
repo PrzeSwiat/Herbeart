@@ -41,7 +41,8 @@ namespace TheGame
         private bool canMove = true;
         private bool stunEnemies = false;
         public bool immortal = false;
-
+        public int appleValue, NettleValue,NettleTime,MintTime;
+        public float MintValue;
         public event EventHandler onMove;
         public event EventHandler onRandomNoise;
 
@@ -58,6 +59,7 @@ namespace TheGame
             Crafting = new Crafting(Inventory, playerEffects);
             playerMovement = new PlayerMovement(this);
             shadow = new Shadow(this.GetPosition());
+            appleValue = 4; MintValue = 0.5f; NettleValue = 1; NettleTime = 5;MintTime = 9;
             // Uruchomienie timera
             //playerEffects.Start();
             
@@ -185,7 +187,7 @@ namespace TheGame
             if(Inventory.checkAppleLeafNumber())
             {
                 Inventory.removeAppleLeaf();
-                Apple apple = new Apple(this.GetPosition(), this.getLookingDirection());
+                Apple apple = new Apple(this.GetPosition(), this.getLookingDirection(),appleValue);
                 apple.LoadContent();
                 apple.OnDestroy += RemoveApple;
                 apples.Add(apple);
@@ -197,7 +199,7 @@ namespace TheGame
             if (Inventory.checkNettleLeafNumber()) 
             {
                 Inventory.removeNettleLeaf();
-                NettleLeaf nettle = new NettleLeaf(GetPosition(), 1, 10);
+                NettleLeaf nettle = new NettleLeaf(GetPosition(), NettleValue, NettleTime);
                 nettle.OnDestroy += RemoveNettle;
                 nettle.LoadContent();
                 nettle.SetScale(2);
@@ -211,7 +213,7 @@ namespace TheGame
             if (Inventory.checkMintLeafNumber())
             {
                 Inventory.removeMintLeaf();
-                MintLeaf mint = new MintLeaf(GetPosition(), 0.5f, 10);
+                MintLeaf mint = new MintLeaf(GetPosition(), MintValue, MintTime);
                 mint.OnDestroy += RemoveMint;
                 mint.LoadContent();
                 mint.SetScale(2);
@@ -423,18 +425,19 @@ namespace TheGame
         private class Apple : SceneObject
         {
             private Vector3 velocity;
-            private int dmg = 100;
+            private int dmg;
             private float speed = 20f;
             private float time = 0, maxTime = 4;
 
             public event EventHandler OnDestroy;
 
-            public Apple(Vector3 Position, Vector2 direction) : base(Position, "Objects/japco", "Textures/appleTexture")
+            public Apple(Vector3 Position, Vector2 direction, int dmg) : base(Position, "Objects/japco", "Textures/appleTexture")
             {
                 Vector3 startPosition = Position;
                 startPosition.Y = 2;
                 this.SetPosition(startPosition);
                 velocity = new Vector3(-direction.X * speed, 0, -direction.Y * speed);
+                this.dmg = dmg;
             }
 
             public void Update(float deltaTime, Enemies enemies)

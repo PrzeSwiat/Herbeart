@@ -32,6 +32,7 @@ namespace TheGame
         public static bool LeaderBoard;
         public static float time;
         public static int Score;
+        public static int ScoreMultipler;
         public static GamePadState prevState;
         public static ButtonState CheckA;
         public static KeyboardState prevKeyBoardState;

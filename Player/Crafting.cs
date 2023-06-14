@@ -21,11 +21,19 @@ namespace TheGame
         private Inventory inventory;
         public Texture2D Mint_Icon, Nettle_Icon, Apple_Icon, Melissa_Icon;
         public List<Animation2D> animationList = new List<Animation2D>();
+        public List<bool> bools = new List<bool>();
+        public List<int> values = new List<int>();
         public Crafting(Inventory inv, PlayerEffectHandler playerEffects) 
         { 
             recepture = string.Empty;
             this.inventory = inv;
             this.playerEffects = playerEffects;
+            bools.Add(true);
+            bools.Add(false);
+            bools.Add(false);
+            bools.Add(false);
+            bools.Add(false);
+            
             
         }
         public void LoadContent()
@@ -132,21 +140,44 @@ namespace TheGame
         {
             switch (recepture)
             {
+                case "AAA":
+                    if (bools[0])
+                    {
+                        playerEffects.RegenarateHP(100);
+                    }
+                    
+                    break;
                 case "AAB":
-                    playerEffects.RegenarateHP(200);
+                    if (bools[1])
+                    {
+                        playerEffects.RegenarateHP(200);
+                    }
+                    
                     break;
 
                 case "AXY":
-                    playerEffects.RegenarateHP(150);
-                    playerEffects.Haste(10, 10);
+                    if (bools[2])
+                    {
+                        playerEffects.RegenarateHP(150);
+                        playerEffects.Haste(10, 10);
+                    }
+                   
                     break;
                 case "XBY":
-                    playerEffects.RegenarateHP(100);
-                    playerEffects.BuffStrenght(3, 10);
+                    if (bools[3])
+                    {
+                        playerEffects.RegenarateHP(100);
+                        playerEffects.BuffStrenght(3, 10);
+                    }
+                   
                     break;
                 case "ABX":
-                    playerEffects.RegenarateHP(100);
-                    playerEffects.MakeImmortal(10);
+                    if (bools[4])
+                    {
+                        playerEffects.RegenarateHP(100);
+                        playerEffects.MakeImmortal(10);
+                    }
+                    
                     break;
 
                 default:
