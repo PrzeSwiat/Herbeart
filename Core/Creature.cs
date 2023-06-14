@@ -75,11 +75,11 @@ namespace TheGame
             boundingSphere.Radius = this.sphereRadius;
             if (distanceFromCenter != 0)
             {
-                boundingSphere.Center += this.GetPosition() + new Vector3(0, 0, distanceFromCenter);
+                boundingSphere.Center += this.GetPosition() + new Vector3(0, 3, distanceFromCenter);
             }
             else
             {
-                boundingSphere.Center += this.GetPosition() + new Vector3(0, 0, 3);
+                boundingSphere.Center += this.GetPosition() + new Vector3(0, 3, 3);
 
             }
 
@@ -155,9 +155,15 @@ namespace TheGame
         {
             this.direction.Y = y;
         }
-        public void setRadius(float radius)
+        public void setBSRadius(float radius)
         {
             this.sphereRadius = radius;
+            this.distanceFromCenter = radius;
+        }
+
+        public void setBSposition(float distance)
+        {
+            this.distanceFromCenter = distance;
         }
 
         public void NormalizeDirection()
@@ -178,6 +184,11 @@ namespace TheGame
             float dx = (float)Math.Cos(this.rotation.Y);
             float dy = (float)Math.Sin(this.rotation.Y);
             return new Vector2(-dy, -dx);
+        }
+
+        public float getRotationY()
+        {
+            return this.rotation.Y;
         }
     
 

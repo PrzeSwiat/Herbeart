@@ -63,16 +63,24 @@ namespace TheGame
             } else if (_modelFileName == "Objects/mis")
             {
                 helper.Min = new Vector3(-1f, 0, -1f);
-                helper.Max = new Vector3(1f, 4, 1f);
+                helper.Max = new Vector3(1f, 5, 1f);
                 boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
-            } else
+            } else if (_modelFileName == "Objects/japco")
+            {
+                float vlll = 0.5f;
+                helper.Min = new Vector3(-vlll, 0, -vlll);
+                helper.Max = new Vector3(vlll, vlll * 2, vlll);
+                BoundingBox helper2 = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
+                SetBoundingBox(helper2);
+            }
+            else
             {
                 this.boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
             }
-            
-            
 
-           
+
+
+
         }
 
         public virtual void Draw(Vector3 lightpos)
@@ -237,7 +245,63 @@ namespace TheGame
             vertices.Add(new Vector3(x, b, c));
             return vertices;
         }
-        public void DrawBB()
+
+        public static void DrawBB(BoundingBox boundingBox)
+        {
+            GraphicsDevice graphicsDevice = Globals._graphics.GraphicsDevice;
+
+            Vector3[] corners = boundingBox.GetCorners();
+
+            var bottom = new[]
+            {
+                new VertexPositionColor(corners[2], Color.White),
+                new VertexPositionColor(corners[3], Color.White),
+                new VertexPositionColor(corners[7], Color.White),
+                new VertexPositionColor(corners[6], Color.White),
+                new VertexPositionColor(corners[2], Color.White),
+            };
+
+            var top = new[]
+            {
+                new VertexPositionColor(corners[4], Color.White),
+                new VertexPositionColor(corners[5], Color.White),
+                new VertexPositionColor(corners[1], Color.White),
+                new VertexPositionColor(corners[0], Color.White),
+                new VertexPositionColor(corners[4], Color.White),
+            };
+
+            var rf = new[]
+            {
+                new VertexPositionColor(corners[1], Color.White),
+                new VertexPositionColor(corners[2], Color.White)
+            };
+            var lf = new[]
+            {
+                new VertexPositionColor(corners[3], Color.White),
+                new VertexPositionColor(corners[0], Color.White)
+            };
+            var rb = new[]
+            {
+                new VertexPositionColor(corners[5], Color.White),
+                new VertexPositionColor(corners[6], Color.White)
+            };
+            var lb = new[]
+            {
+                new VertexPositionColor(corners[4], Color.White),
+                new VertexPositionColor(corners[7], Color.White)
+            };
+
+            //Sciany dolna i górna
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, bottom, 0, 4);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, top, 0, 4);
+            //boki
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rf, 0, 1);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lf, 0, 1);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, rb, 0, 1);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, lb, 0, 1);
+        }
+
+    public void DrawBB()
         {
             GraphicsDevice graphicsDevice = Globals._graphics.GraphicsDevice;
             

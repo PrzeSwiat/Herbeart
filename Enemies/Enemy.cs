@@ -30,7 +30,7 @@ namespace TheGame
             lastAttackTime = DateTime.Now;
             actualTime = lastAttackTime;
             SetScale(1.5f);
-            this.setRadius(3);
+            //this.setBSRadius(3);
         }
 
         protected virtual void Attack(Player player)

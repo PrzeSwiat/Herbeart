@@ -74,6 +74,7 @@ namespace TheGame
             Globals.effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
             Globals.effectHandler1 = new EffectHandler(Content.Load<Effect>("MainShader"));
             Globals.Score = 0;
+            Globals.ScoreMultipler = 1;
             hud = new HUD(WindowWidth, WindowHeight);
             world = new World();
             player = new Player(new Vector3(50,0,60), "Objects/mis", "Textures/MisTexture");
@@ -279,19 +280,24 @@ namespace TheGame
             }
             foreach (Enemy enemy in enemies.EnemiesList)
             {
-                //enemy.DrawBB();
+                enemy.DrawBB();
                 if (enemy.GetType() == typeof(AppleTree))
                 {
                     AppleTree apple1 = (AppleTree)enemy;
                     foreach (Apple apple in apple1.bullet)
                     {
-                        //apple.DrawBB();
+                        apple.DrawBB();
                     }
                 }
-                //DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
+                DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
 
             player.DrawBB();
+            foreach (BoundingBox bb in player.returnApplesBB())
+            {
+                SceneObject.DrawBB(bb);
+            }
+            //DrawBS(player.)
             DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }
 
