@@ -27,7 +27,6 @@ namespace TheGame
         HUD hud;
         InteractionEventHandler interactionEventHandler;
         Player player;
-        Player animacyjnaPacynka;
         Enemies enemies;
         LeafList Leafs;
         SoundActorPlayer soundActorPlayer;
@@ -78,7 +77,6 @@ namespace TheGame
             hud = new HUD(WindowWidth, WindowHeight);
             world = new World();
             player = new Player(new Vector3(50,0,60), "Objects/mis", "Textures/MisTexture");
-            animacyjnaPacynka = new Player(new Vector3(0, 15, 30), "Objects/mis", "Textures/tekstura");
             serializator = new Serializator("zapis.txt");
             PlayerNames = new Serializator("PlayerNames.txt");
             interactionEventHandler = new InteractionEventHandler(player, enemies.EnemiesList);
@@ -103,7 +101,6 @@ namespace TheGame
             player.LoadContent();
             enemies.LoadModels();
             Leafs.LoadModels();
-            animacyjnaPacynka.LoadContent();
             audioMenager.LoadContent();
             soundActorPlayer.LoadContent();
             animationMenager.LoadContent();
@@ -124,7 +121,7 @@ namespace TheGame
                 {
                     MainMenuCheck();
                 }
-
+                Globals.time = 0;
                 audioMenager.MainPlay();
             }
             else
@@ -146,32 +143,34 @@ namespace TheGame
                     }
                     else
                     {
-                        var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        Globals.time += delta;
-                        camera.CamPosition = player.GetPosition() + camera.CamPositionState;
-                        camera.nextpos = player.GetPosition();
-                        Globals.viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
-                        basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
-                        player.Update(world, delta, enemies,gameTime);
-                        enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
-                        enemies.Move(delta, player);    // i po co 3 funkcje a nie 1
-                        enemies.RefreshOnDestroy();
-                        Leafs.RefreshInventory(this.player);
-                        Leafs.UpdateScene(enemies.EnemiesList,gameTime);
-                        camera.Update1(player.GetPosition());
+                        TutorialPauseCheck(Globals.time);
+                        if (!Globals.TutorialPause)
+                        {
+                            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                            Globals.time += delta;
+                            camera.CamPosition = player.GetPosition() + camera.CamPositionState;
+                            camera.nextpos = player.GetPosition();
+                            Globals.viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
+                            basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
+                            player.Update(world, delta, enemies, gameTime);
+                            enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
+                            enemies.Move(delta, player);    // i po co 3 funkcje a nie 1
+                            enemies.RefreshOnDestroy();
+                            Leafs.RefreshInventory(this.player);
+                            Leafs.UpdateScene(enemies.EnemiesList, gameTime);
+                            camera.Update1(player.GetPosition());
 
 
-                        interactionEventHandler.Update(enemies.EnemiesList);
-                        Globals.viewport = GraphicsDevice.Viewport;
-                         
-                        animationMenager.Update(gameTime);
-                        SaveControl();
-                        base.Update(gameTime);
+                            interactionEventHandler.Update(enemies.EnemiesList);
+                            Globals.viewport = GraphicsDevice.Viewport;
+
+                            animationMenager.Update(gameTime);
+                            SaveControl();
+                            base.Update(gameTime);
+                        }
                     }
                 }
-                else
-
-                    Globals.time = 0;
+                
             }
 
         }
@@ -182,12 +181,18 @@ namespace TheGame
             Globals.prevDeathState = GamePad.GetState(PlayerIndex.One);
             Globals.prevKeyBoardState = Keyboard.GetState();
             Globals.prevKeyBoardDeathState = Keyboard.GetState();
+            Globals.prevPauseState = GamePad.GetState(PlayerIndex.One);
+            Globals.prevKeyBoardPauseState = Keyboard.GetState();
             if (Globals.Start)
             {
-                hud.DrawMainMenu();
+                
                 if(Globals.Tutorial)
                 {
                     hud.DrawTutorialMenu();
+                }
+                else
+                {
+                    hud.DrawMainMenu();
                 }
             }
             else
@@ -207,23 +212,29 @@ namespace TheGame
                     }
                     else
                     {
-                        GraphicsDevice.Clear(Color.Black);
-                        base.Draw(gameTime);
-                        GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                            
+                            GraphicsDevice.Clear(Color.Black);
+                            base.Draw(gameTime);
+                            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-                        world.Draw(player.GetPosition());
-                        player.DrawPlayer(player.GetPosition());
+                            world.Draw(player.GetPosition());
+                            player.DrawPlayer(player.GetPosition());
 
-                        enemies.Draw(player.GetPosition());
+                            enemies.Draw(player.GetPosition());
 
-                        Leafs.Draw(player.GetPosition());
-                        animationMenager.DrawAnimations();
-                        player.DrawEffectsShadow(player.GetPosition());
-                        
-                        hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture());
-                        hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
-                        Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
-                        player.DrawAnimation();
+                            Leafs.Draw(player.GetPosition());
+                            animationMenager.DrawAnimations();
+                            player.DrawEffectsShadow(player.GetPosition());
+
+                            hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture());
+                            hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
+                            Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
+                            player.DrawAnimation();
+                            if (Globals.TutorialPause)
+                            {
+                                hud.DrawTutorial();
+                            }
+
                     }
 
                 }
@@ -373,6 +384,8 @@ namespace TheGame
                     LoadContent();
                     Initialize();
                     Globals.Start = true;
+                    Globals.Easy = false;
+                    Globals.Hard = false;
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3) //exit 
                 {
@@ -384,6 +397,35 @@ namespace TheGame
         }
         #endregion
 
+        #region TUTORIALPAUSE_CHECK
+        void TutorialPauseCheck(float time)
+        {
+            if(Globals.Easy)
+            {
+                if ((int)time == 5)
+                {
+                    player.Stop();
+                    Globals.TutorialPause = true;
+                    Globals.time = 6f;
+                }
+
+
+                if (Globals.TutorialPause)
+                {
+                    GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+                    KeyboardState state = Keyboard.GetState();
+
+                    if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)))) //ACCEPT
+                    {
+                        player.Start();
+                        Globals.TutorialPause = false;
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region LEADERBOARD_CHECK
         void LeaderBoardCheck()
         {
             if (Globals.LeaderBoard)
@@ -402,6 +444,8 @@ namespace TheGame
                     Globals.LeaderBoard = false;
                     Globals.Death = false;
                     Globals.Tutorial = false;
+                    Globals.Easy = false;
+                    Globals.Hard = false;
                     LoadContent();
                     Initialize();
                     Globals.Pause = false;
@@ -409,7 +453,7 @@ namespace TheGame
                 }
             }
         }
-
+        #endregion
 
         #region DEATH_CHECK
         void DeathMenuCheck()
@@ -447,7 +491,6 @@ namespace TheGame
             {
                 Globals.Death = false;
                 Globals.Tutorial = false;
-
                 LoadContent();
                 Initialize();
                 player.Start();
@@ -457,6 +500,8 @@ namespace TheGame
             {
                 Globals.Death = false;
                 Globals.Tutorial = false;
+                Globals.Easy = false;
+                Globals.Hard = false;
                 LoadContent();
                 Initialize();
                 Globals.Pause = false;
@@ -544,10 +589,15 @@ namespace TheGame
                 {
                     player.Start();
                     Globals.Start = false;
+                    Globals.Easy = true;
+                    Globals.Pause = false;
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
                 {
-                  
+                    player.Start();
+                    Globals.Start = false;
+                    Globals.Hard = true;
+                    Globals.Pause = false;
                 }
             }
 

@@ -206,6 +206,14 @@ namespace TheGame
             Globals.spriteBatch.End();
         }
 
+        public void DrawTutorial()
+        {
+            Rectangle rect = new Rectangle(WindowWidth * 15 / 20, WindowHeight * 13 / 20, 400, 200);
+            Globals.spriteBatch.Begin();
+            Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
+            Globals.spriteBatch.End();
+        }
+
         public void DrawDeathMenu()
         {
             Color one = Color.Gray;
@@ -275,22 +283,27 @@ namespace TheGame
         {
             Color one = Color.Gray;
             Color two = Color.Gray;
-
+            Rectangle rect = new Rectangle(-WindowWidth, -WindowHeight, 2 * WindowWidth, 2 * WindowHeight);
+            Globals.spriteBatch.Begin();
+            Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
             if (MenuOption == 1)
             {
                 one = Color.White;
+                Globals.spriteBatch.DrawString(Menu2, "New player mode (hints enabled)", new Vector2(WindowWidth / 10, WindowHeight * 16 / 20), Color.Gray);
+                
             }
             if (MenuOption == 2)
             {
                 two = Color.White;
+                Globals.spriteBatch.DrawString(Menu2, "Expert player mode (hints disabled)", new Vector2(WindowWidth / 10, WindowHeight * 16 / 20), Color.Gray);
+                
             }
 
-            Rectangle rect = new Rectangle(-WindowWidth, -WindowHeight, 2 * WindowWidth, 2 * WindowHeight);
-            Globals.spriteBatch.Begin();
-            Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-            Globals.spriteBatch.DrawString(Menu2, "Do you want to play with tutorial?", new Vector2(WindowWidth / 5, WindowHeight * 2 / 20), Color.Gray);
-            Globals.spriteBatch.DrawString(Menu2, "No", new Vector2(WindowWidth / 10, WindowHeight * 7 / 20), one);
-            Globals.spriteBatch.DrawString(Menu2, "In development", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);
+            
+            
+            Globals.spriteBatch.DrawString(Menu2, "Choose difficulty", new Vector2(WindowWidth / 5, WindowHeight * 2 / 20), Color.Gray);
+            Globals.spriteBatch.DrawString(Menu2, "Easy", new Vector2(WindowWidth / 10, WindowHeight * 7 / 20), one);
+            Globals.spriteBatch.DrawString(Menu2, "Hard", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);
             Globals.spriteBatch.End();
 
         }
