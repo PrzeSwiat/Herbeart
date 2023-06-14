@@ -227,7 +227,7 @@ namespace TheGame
                         animationMenager.DrawAnimations();
                         player.DrawEffectsShadow(player.GetPosition());
 
-                        hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture());
+                        hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture(), player.getRotationY());
                         hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
                         Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
                         player.DrawAnimation();
