@@ -18,6 +18,7 @@ namespace TheGame
         public Nettle(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(6, 12, 2, 1f);
+            this.setBSRadius(2.5f);
             this.shadow.SetScale(0.95f);
             this.leaf = new Leafs.NettleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
             lastHealth = this.Health;
@@ -27,6 +28,17 @@ namespace TheGame
             base.Update(deltaTime, player);
             this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.8f,0,-1.9f));
         }
+        public override void LoadContent()
+        {
+            base.LoadContent();
+            float vlll = 2f;
+            BoundingBox helper;
+            helper.Min = new Vector3(-vlll, 0, -vlll);
+            helper.Max = new Vector3(vlll, 4, vlll);
+
+            SetBoundingBox(new BoundingBox(helper.Min + this.GetPosition(), helper.Max + this.GetPosition()));
+        }
+
         protected override void Attack(Player player)
         {
             actualTime = DateTime.Now;

@@ -24,6 +24,7 @@ namespace TheGame
         private Texture2D craftingTex, appleTex, meliseTex, mintTex, nettleTex;
         private Texture2D EnemyHealth, HalfEnemyHealth;
         private Texture2D ReceptureBar;
+        private Texture2D Arrow;
         private int WindowWidth, WindowHeight;
         public string name = "";
         
@@ -33,6 +34,7 @@ namespace TheGame
         private bool isThrowing = false;
         private bool isCrafting = false;
         private string[] actualRecepture = new string[3];
+        float playerRotation = 0;
 
         public HUD(int windowWidth, int windowHeight)
         {
@@ -54,6 +56,7 @@ namespace TheGame
             EnemyHealth = models.getTexture("Textures/EnemyHealth");
             HalfEnemyHealth = models.getTexture("Textures/HalfEnemyHealth");
             ReceptureBar = models.getTexture("HUD/przepisy_preview");
+            Arrow = models.getTexture("HUD/celownik");
 
             craftingTex = models.getTexture("HUD/robienieherbatki_preview");
             appleTex = models.getTexture("HUD/ikona_japco_menu");
@@ -68,12 +71,13 @@ namespace TheGame
             Menu2 = Globals.content.Load<SpriteFont>("Menu2");
         }
 
-        public void Update(Dictionary<string, int> leafs, bool crafting, bool throwing, string[] recepture)
+        public void Update(Dictionary<string, int> leafs, bool crafting, bool throwing, string[] recepture, float playerRotation)
         {
             this.leafs = leafs;
             this.isThrowing = throwing;
             this.isCrafting = crafting;
             actualRecepture = recepture;
+            this.playerRotation = playerRotation;
         }
 
         public void DrawFrontground(int hp, List<Enemy> enemies)
@@ -95,6 +99,19 @@ namespace TheGame
             Globals.spriteBatch.Draw(this.healthBar, healthBar, Color.White); 
         }
         
+        private void DrawArrow()
+        {
+            Vector2 midPos = new Vector2(Arrow.Width / 2, Arrow.Height / 2);
+            Vector2 arrowPosition = new Vector2(WindowWidth / 2, 200);
+            float rotation = (float)(2 * Math.PI - playerRotation);
+            Point point = new Point(WindowWidth / 2, WindowHeight / 2);
+            Point rotatedPoint = RotatePoint(new Point(WindowWidth / 2 + 110, WindowHeight / 2),point, rotation + Math.PI / 2);
+
+            
+            arrowPosition.X = rotatedPoint.X;
+            arrowPosition.Y = rotatedPoint.Y - 140;
+            Globals.spriteBatch.Draw(Arrow, arrowPosition, null, Color.White, rotation, midPos, 0.25f, SpriteEffects.None, 0f);
+        }
 
         private void DrawReceptures()
         {
@@ -130,13 +147,14 @@ namespace TheGame
         {
             int invLenght = WindowHeight / 3;
             Rectangle inv = new Rectangle(20, WindowHeight - invLenght - 20, invLenght, invLenght);
-            Rectangle rect_crafting = new Rectangle(WindowWidth / 2 - 70, WindowHeight / 2 - 220, 150, 50);
-            DrawReceptures();
+            Rectangle rect_crafting = new Rectangle(WindowWidth / 2 - 70, WindowHeight / 2 - 240, 150, 50);
+            
 
             if (isCrafting) 
             {
                 Globals.spriteBatch.Draw(teaItemFrame, inv, Color.White);
                 Globals.spriteBatch.Draw(craftingTex, rect_crafting, Color.White);
+                DrawReceptures();
 
                 int leafPosition = WindowWidth / 2 - 66;
                 for (int i = 0; i < 3; i++)
@@ -166,7 +184,8 @@ namespace TheGame
             } 
             else if (isThrowing) 
             {
-                Globals.spriteBatch.Draw(offensiveItemFrame, inv, Color.White); 
+                Globals.spriteBatch.Draw(offensiveItemFrame, inv, Color.White);
+                DrawArrow();
             } else
             {
                 Globals.spriteBatch.Draw(defaultItemFrame, inv, Color.White);
@@ -401,5 +420,26 @@ namespace TheGame
                 }
             }
         }
+
+        public Point RotatePoint(Point p1, Point p2, double angle)
+        {
+
+            double radians = angle;
+            double sin = Math.Sin(radians);
+            double cos = Math.Cos(radians);
+
+            // Translate point back to origin
+            p1.X -= p2.X;
+            p1.Y -= p2.Y;
+
+            // Rotate point
+            double xnew = p1.X * cos - p1.Y * sin;
+            double ynew = p1.X * sin + p1.Y * cos;
+
+            // Translate point back
+            Point newPoint = new Point((int)xnew + p2.X, (int)ynew + p2.Y);
+            return newPoint;
+        }
+
     }
 }

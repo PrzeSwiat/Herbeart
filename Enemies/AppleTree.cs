@@ -20,9 +20,11 @@ namespace TheGame
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(4, 12, 2, 5.0f);
+            this.setBSRadius(3);
             this.leaf = new Leafs.AppleLeaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
             this.shadow.SetScale(1.05f);
         }
+
 
         public void RemoveBullet(object sender,EventArgs e)
         {
@@ -123,13 +125,23 @@ namespace TheGame
             
 
         }
+        public override void LoadContent()
+        {
+            base.LoadContent();
+            float vlll = 2f;
+            BoundingBox helper;
+            helper.Min = new Vector3(-vlll, 0, -vlll);
+            helper.Max = new Vector3(vlll, 6, vlll);
+
+            SetBoundingBox(new BoundingBox(helper.Min + this.GetPosition(), helper.Max + this.GetPosition()));
+        }
     }
 
     internal class Apple : SceneObject
     {
-        float dmg;
+        int dmg = 30;
         Vector3 velocity;
-        float speed = 10f;
+        float speed = 40f;
         public event EventHandler OnDestroy;
         public Apple(Vector3 worldPosition, string modelFileName, string textureFileName, Vector3 endPosition) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -142,7 +154,7 @@ namespace TheGame
             velocity.X = velocity.X * speed;
             velocity.Y = velocity.Y * 6;
             velocity.Z = velocity.Z * speed;
-
+            SetScale(1.4f);
 
              
         }
@@ -157,7 +169,7 @@ namespace TheGame
             // Check if the bullet has collided with the player
             if (this.boundingBox.Intersects(player.boundingBox))
             {
-                player.Hit(5);
+                player.Hit(dmg);
 
                 OnDestroy?.Invoke(this, EventArgs.Empty);
             }

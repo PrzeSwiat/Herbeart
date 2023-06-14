@@ -225,7 +225,7 @@ namespace TheGame
                             animationMenager.DrawAnimations();
                             player.DrawEffectsShadow(player.GetPosition());
 
-                            hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture());
+                            hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture(), player.getRotationY());
                             hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
                             Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
                             player.DrawAnimation();
@@ -264,19 +264,24 @@ namespace TheGame
             }
             foreach (Enemy enemy in enemies.EnemiesList)
             {
-                //enemy.DrawBB();
+                enemy.DrawBB();
                 if (enemy.GetType() == typeof(AppleTree))
                 {
                     AppleTree apple1 = (AppleTree)enemy;
                     foreach (Apple apple in apple1.bullet)
                     {
-                        //apple.DrawBB();
+                        apple.DrawBB();
                     }
                 }
-                //DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
+                DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
 
             player.DrawBB();
+            foreach (BoundingBox bb in player.returnApplesBB())
+            {
+                SceneObject.DrawBB(bb);
+            }
+            //DrawBS(player.)
             DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }
 

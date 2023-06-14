@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Xml;
 using TheGame.Core;
-using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
 {
@@ -45,12 +44,11 @@ namespace TheGame
         public event EventHandler onMove;
         public event EventHandler onRandomNoise;
 
-
-
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
             SetScale(1.2f);
-            this.setRadius(3);
+            this.setBSRadius(3);
+            setBSposition(2);
 
             AssignParameters(300, 1, 20, 0.5f);
             playerEffects = new PlayerEffectHandler(this);
@@ -125,20 +123,15 @@ namespace TheGame
 
         public override void LoadContent()
         {
+            base.LoadContent();
             shadow.LoadContent();
             Crafting.LoadContent();
-            base.LoadContent();
-            
         }
 
         public override void DrawPlayer(Vector3 lightpos)
         {
-            
-           
-
             foreach (NettleLeaf nettle in nettles)
             {
-                
                 nettle.Draw(lightpos);
             }
 
@@ -146,15 +139,11 @@ namespace TheGame
             {
                 mint.Draw(lightpos);
             }
-            
-            //base.DrawPlayer(lightpos);
 
             foreach (Apple apple in apples)
             {
-                apple.DrawPlayer(lightpos);
-                //apple.DrawBB(); why not working ???
+                apple.Draw(lightpos);
             }
-
         }
         public void DrawEffectsShadow(Vector3 lightpos)
         {
@@ -420,11 +409,21 @@ namespace TheGame
 
         }
 
+        public BoundingBox[] returnApplesBB()
+        {
+            BoundingBox[] boundingBoxes = new BoundingBox[apples.Count];
+            for (int i = 0; i < apples.Count; i++)
+            {
+                boundingBoxes[i] = apples[i].returnBB();
+            }
+            return boundingBoxes;
+        }
+
         private class Apple : SceneObject
         {
             private Vector3 velocity;
             private int dmg = 100;
-            private float speed = 20f;
+            private float speed = 40f;
             private float time = 0, maxTime = 4;
 
             public event EventHandler OnDestroy;
@@ -432,8 +431,10 @@ namespace TheGame
             public Apple(Vector3 Position, Vector2 direction) : base(Position, "Objects/japco", "Textures/appleTexture")
             {
                 Vector3 startPosition = Position;
-                startPosition.Y = 2;
+                startPosition.Y += 3;
                 this.SetPosition(startPosition);
+
+                SetScale(1.4f);
                 velocity = new Vector3(-direction.X * speed, 0, -direction.Y * speed);
             }
 
@@ -459,6 +460,12 @@ namespace TheGame
                     OnDestroy?.Invoke(this, EventArgs.Empty);
                 }
             }
+
+            public BoundingBox returnBB()
+            {
+                return this.boundingBox;
+            }
+
         }
 
 
