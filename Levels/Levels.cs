@@ -20,7 +20,7 @@ namespace TheGame
     {
         private List<Level> _levels;
         #region Maps
-        private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt", "Maps/map5.txt", "Maps/map_party_straight.txt" };
+        private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt", "Maps/map5.txt" };
         private string[] maps_up_down = { "Maps/map_up_down_1.txt" };
         private string[] maps_down_up = { "Maps/map_down_up_1.txt" };
         private string[] maps_up_right = { "Maps/map_up_right.txt" };
@@ -92,9 +92,9 @@ namespace TheGame
 
             //wybieranie ilości przeciwników w levelu
             if (numberOfModules > 10)
-                enemyCount = 6;
-            else if (numberOfModules > 15)
                 enemyCount = 9;
+            else if (numberOfModules > 15)
+                enemyCount = 15;
             else 
                 enemyCount = 4;
             
@@ -102,11 +102,26 @@ namespace TheGame
             if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
             {
 
-
                 if (numberOfModules % 10 == 0)
                 {
-                    prepareModule("Maps/map_party_straight.txt", 0);
-                    choosedMap = "Maps/map_party_straight.txt";
+                    maps.Add("Maps/map_party_straight.txt");
+                    maps.Add("Maps/map_party_left_up.txt");
+                    maps.Add("Maps/map_party_left_down.txt");
+                    string map = generateRandomStringFromList(maps);
+                    prepareModule(map, 0);
+                    switch (map)
+                    {
+                        case "Maps/map_party_straight.txt":
+                            choosedMap = "Maps/map_2.txt";
+                            break;
+                        case "Maps/map_party_left_up.txt":
+                            choosedMap = "Maps/map_left_up_1.txt";
+                            break;
+                        case "Maps/map_party_left_down.txt":
+                            choosedMap = "Maps/map_left_down_1.txt";
+                            break;
+                    }
+                    maps.Clear();
                 }
                 else
                 {
@@ -115,75 +130,162 @@ namespace TheGame
                     maps.AddRange(maps_left_down);  //idziemy do dołu
                     prepareRandomModule(enemyCount);
                 }
-                /*                maps.AddRange(maps_straight);   //dalej prosto
-                                maps.AddRange(maps_left_up);    //idziemy do gory
-                                maps.AddRange(maps_left_down);  //idziemy do dołu
-                                prepareRandomModule(enemyCount);*/
             }
 
             //Zakręt do góry - wylot z lewej i góry
             if (maps_left_up.Contains(currentMap))
             {
-                maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
-                maps.AddRange(maps_down_up);
-
                 moduleSeparatorZCount--;
                 moduleHeightChange++;
+                if (numberOfModules % 10 == 0)
+                {
+                    maps.Add("Maps/map_party_down_up.txt");
+                    maps.Add("Maps/map_party_down_right.txt");
+                    string map = generateRandomStringFromList(maps);
+                    prepareModule(map, 0);
+                    switch (map)
+                    {
+                        case "Maps/map_party_down_up.txt":
+                            choosedMap = "Maps/map_down_up_1.txt";
+                            break;
+                        case "Maps/map_party_down_right.txt":
+                            choosedMap = "Maps/map_down_right_1.txt";
+                            break;
+                    }
+                    maps.Clear();
+                }
+                else
+                {
+                    maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
+                    maps.AddRange(maps_down_up);
+                    prepareRandomModule(enemyCount);
+                }
 
-                prepareRandomModule(enemyCount);
             }
 
             //Zakręt od dołu w prawo - wylot z dołu i po prawo
             if (maps_down_right.Contains(currentMap))
             {
-                maps.AddRange(maps_straight);
-                maps.AddRange(maps_left_up);
-
-                prepareRandomModule(enemyCount);
+                if(numberOfModules % 10 == 0)
+                {
+                    maps.Add("Maps/map_party_straight.txt");
+                    maps.Add("Maps/map_party_left_up.txt");
+                    string map = generateRandomStringFromList(maps);
+                    prepareModule(map, 0);
+                    switch (map)
+                    {
+                        case "Maps/map_party_straight.txt":
+                            choosedMap = "Maps/map_2.txt";
+                            break;
+                        case "Maps/map_party_left_up.txt":
+                            choosedMap = "Maps/map_left_up_1.txt";
+                            break;
+                    }
+                    maps.Clear();
+                }
+                else
+                {
+                    maps.AddRange(maps_straight);
+                    maps.AddRange(maps_left_up);
+                    prepareRandomModule(enemyCount);
+                }
             }
 
             //Zakręt w dół - wylot z lewej i z dołu
             if (maps_left_down.Contains(currentMap))
             {
-                maps.AddRange(maps_up_right);
-                maps.AddRange(maps_up_down);
-
                 moduleSeparatorZCount++;
                 moduleHeightChange++;
-
-                prepareRandomModule(enemyCount);
+                if (numberOfModules % 10 == 0)
+                {
+                    maps.Add("Maps/map_party_up_right.txt");
+                    maps.Add("Maps/map_party_up_down.txt");
+                    string map = generateRandomStringFromList(maps);
+                    prepareModule(map, 0);
+                    switch (map)
+                    {
+                        case "Maps/map_party_up_right.txt":
+                            choosedMap = "Maps/map_up_right.txt";
+                            break;
+                        case "Maps/map_party_up_down.txt":
+                            choosedMap = "Maps/map_up_down_1.txt";
+                            break;
+                    }
+                    maps.Clear();
+                }
+                else
+                {
+                    maps.AddRange(maps_up_right);
+                    maps.AddRange(maps_up_down);
+                    prepareRandomModule(enemyCount);
+                }
             }
 
             //Wylot z góry i z prawej
             if (maps_up_right.Contains(currentMap))
             {
-                maps.AddRange(maps_straight);   //dalej prosto
-                maps.AddRange(maps_left_up);    //idziemy do gory
-                maps.AddRange(maps_left_down);  //idziemy do dołu
-
-                prepareRandomModule(enemyCount);
+                if (numberOfModules % 10 == 0)
+                {
+                    maps.Add("Maps/map_party_straight.txt");
+                    maps.Add("Maps/map_party_left_up.txt");
+                    maps.Add("Maps/map_party_left_down.txt");
+                    string map = generateRandomStringFromList(maps);
+                    prepareModule(map, 0);
+                    switch (map)
+                    {
+                        case "Maps/map_party_straight.txt":
+                            choosedMap = "Maps/map_2.txt";
+                            break;
+                        case "Maps/map_party_left_up.txt":
+                            choosedMap = "Maps/map_left_up_1.txt";
+                            break;
+                        case "Maps/map_party_left_down.txt":
+                            choosedMap = "Maps/map_left_down_1.txt";
+                            break;
+                    }
+                    maps.Clear();
+                }
+                else
+                {
+                    maps.AddRange(maps_straight);   //dalej prosto
+                    maps.AddRange(maps_left_up);    //idziemy do gory
+                    maps.AddRange(maps_left_down);  //idziemy do dołu
+                    prepareRandomModule(enemyCount);
+                }
             }
             //Prosta od góry do dołu              //work in progress
             if (maps_up_down.Contains(currentMap))
             {
-                maps.AddRange(maps_up_right);
-
                 moduleSeparatorZCount++;
                 moduleHeightChange++;
-
-                prepareRandomModule(enemyCount);
+                if (numberOfModules % 10 == 0)
+                {
+                    prepareModule("Maps/map_party_up_right.txt", 0);
+                    choosedMap = "Maps/map_up_right.txt";
+                }
+                else
+                {
+                    maps.AddRange(maps_up_right);
+                    prepareRandomModule(enemyCount);
+                }
 
             }
 
             //Prosta od dołu do góry
             if (maps_down_up.Contains(currentMap))
             {
-                maps.AddRange(maps_down_right);
-
                 moduleSeparatorZCount--;
                 moduleHeightChange++;
-
-                prepareRandomModule(enemyCount);
+                if (numberOfModules % 10 == 0)
+                {
+                    prepareModule("Maps/map_party_down_right.txt", 0);
+                    choosedMap = "Maps/map_down_right.txt";
+                }
+                else
+                {
+                    maps.AddRange(maps_down_right);
+                    prepareRandomModule(enemyCount);
+                }
 
             }
 
@@ -474,7 +576,7 @@ namespace TheGame
                     }
                     
                 }
-                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground1", "Textures/tekstura_wielkiego_tila"));
+                _sceneObjects.Add(new SceneObject(groundPos, "Objects/ground1", "Textures/tekstura_wielkiego_tila2"));
                 Random random = new Random();
                 int grassCount = random.Next(35, 40);
                 GenerateGrassAndStones(grassCount, 4);
@@ -490,7 +592,6 @@ namespace TheGame
                 ChangeTileVectorAdvanced(tile, -6, -5, 5, 6, true, false);
                 string objectType = GenerateRandomString(grassModels);
                 GenerateGrass(objectType, tile.position);
-                //GenerateOtherObjects("Objects/bush", tile.position);
             }
 
             public void SetInitialProbabilities(List<Tile> tileList)

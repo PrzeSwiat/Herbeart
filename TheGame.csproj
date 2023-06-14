@@ -25,7 +25,13 @@
     <None Remove="Maps\map_left_up_1.txt" />
     <None Remove="Maps\map_left_up_2.txt" />
     <None Remove="Maps\map_left_up_3.txt" />
+    <None Remove="Maps\map_party_down_right.txt" />
+    <None Remove="Maps\map_party_down_up.txt" />
+    <None Remove="Maps\map_party_left_down.txt" />
+    <None Remove="Maps\map_party_left_up.txt" />
     <None Remove="Maps\map_party_straight.txt" />
+    <None Remove="Maps\map_party_up_down.txt" />
+    <None Remove="Maps\map_party_up_right.txt" />
     <None Remove="Maps\map_up_down_1.txt" />
     <None Remove="Maps\map_up_right.txt" />
     <None Remove="map_Down_1.txt" />
@@ -74,7 +80,25 @@
     <Content Include="Maps\map_left_up_3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Maps\map_party_down_right.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_party_down_up.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_party_left_down.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_party_left_up.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Maps\map_party_straight.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_party_up_down.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_party_up_right.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Maps\map_up_down_1.txt">
