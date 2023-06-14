@@ -68,6 +68,18 @@ namespace TheGame
             {
                 //Reward3=AddmultipleScore
             }
+            else if (rewards[2] == 3)
+            {
+                //Reward3=AddMintLeafBuff
+            }
+            else if (rewards[2] == 4)
+            {
+                //Reward3=AddAppleLeafBuff
+            }
+            else if (rewards[2] == 5)
+            {
+                //Reward3=AddNettleLeafBuff
+            }
 
 
 
