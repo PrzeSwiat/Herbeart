@@ -23,7 +23,10 @@ namespace TheGame
         public static Matrix projectionMatrix;
         public static Matrix viewMatrix;
         public static Matrix worldMatrix;
-        
+
+        public static int counter = 0;
+        public static bool Module2;
+        public static bool Module3;
         public static bool Start;
         public static bool Death;
         public static bool Tutorial;

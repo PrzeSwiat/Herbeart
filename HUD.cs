@@ -206,12 +206,33 @@ namespace TheGame
             Globals.spriteBatch.End();
         }
 
-        public void DrawTutorial()
+        public void DrawTutorial(int number)
         {
-            Rectangle rect = new Rectangle(WindowWidth * 15 / 20, WindowHeight * 13 / 20, 400, 200);
-            Globals.spriteBatch.Begin();
-            Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-            Globals.spriteBatch.End();
+            if(number==1)    //wiktor 2 modul
+            {
+                Rectangle rect = new Rectangle(WindowWidth * 15 / 20, WindowHeight * 13 / 20, 400, 200);
+                Globals.spriteBatch.Begin();
+                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
+                Globals.spriteBatch.DrawString(Menu2, "first", new Vector2(WindowWidth * 16 / 20, WindowHeight * 14 / 20), Color.Yellow);
+                Globals.spriteBatch.End();
+            }
+            if(number==2)
+            {
+                Rectangle rect = new Rectangle(WindowWidth * 12 / 20, WindowHeight * 0 / 20, 400, 100);
+                Globals.spriteBatch.Begin();
+                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
+                Globals.spriteBatch.DrawString(Menu2, "second", new Vector2(WindowWidth * 13 / 20, WindowHeight * 0 / 20), Color.Yellow);
+                Globals.spriteBatch.End();
+            }
+            if (number == 3)
+            {
+                Rectangle rect = new Rectangle(WindowWidth * 12 / 20, WindowHeight * 0 / 20, 400, 100);
+                Globals.spriteBatch.Begin();
+                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
+                Globals.spriteBatch.DrawString(Menu2, "third", new Vector2(WindowWidth * 13 / 20, WindowHeight * 0 / 20), Color.Yellow);
+                Globals.spriteBatch.End();
+            }
+
         }
 
         public void DrawDeathMenu()

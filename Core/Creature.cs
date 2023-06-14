@@ -11,7 +11,7 @@ namespace TheGame
     [Serializable]
     internal class Creature : SceneObject
     {
-        private int maxHealth, health;
+        public int maxHealth, health;
         private int maxStrenght, strenght;
         private float maxSpeed, actualSpeed;
         private float attackSpeed, actualAttackSpeed;

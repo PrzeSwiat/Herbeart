@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
@@ -211,28 +212,42 @@ namespace TheGame
                     }
                     else
                     {
-                            
-                            GraphicsDevice.Clear(Color.Black);
-                            base.Draw(gameTime);
-                            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-                            world.Draw(player.GetPosition());
-                            player.DrawPlayer(player.GetPosition());
+                        GraphicsDevice.Clear(Color.Black);
+                        base.Draw(gameTime);
+                        GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-                            enemies.Draw(player.GetPosition());
+                        world.Draw(player.GetPosition());
+                        player.DrawPlayer(player.GetPosition());
 
-                            Leafs.Draw(player.GetPosition());
-                            animationMenager.DrawAnimations();
-                            player.DrawEffectsShadow(player.GetPosition());
+                        enemies.Draw(player.GetPosition());
 
-                            hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture());
-                            hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
-                            Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
-                            player.DrawAnimation();
-                            if (Globals.TutorialPause)
+                        Leafs.Draw(player.GetPosition());
+                        animationMenager.DrawAnimations();
+                        player.DrawEffectsShadow(player.GetPosition());
+
+                        hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture());
+                        hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
+                        Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
+                        player.DrawAnimation();
+
+                        if (Globals.TutorialPause)
+                        {
+                            if (player.Health <= player.maxHealth * 0.80)    // 80% zycia 
                             {
-                                hud.DrawTutorial();
+                                hud.DrawTutorial(2);
                             }
+                            else
+                            {
+                                hud.DrawTutorial(1);
+                            }
+                            /*
+                            if() modul 3
+                            {
+                                hud.DrawTutorial(3);
+                            }
+                            */
+                        }
 
                     }
 
@@ -401,25 +416,40 @@ namespace TheGame
         {
             if(Globals.Easy)
             {
-                if ((int)time == 5)
+                if (Globals.Module2) // wiktor modul 2 jak???
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
                     Globals.time = 6f;
                 }
 
+                if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
+                {
+                    player.Stop();
+                    Globals.TutorialPause = true;
+                    Globals.counter += 1;
+                }
+
+                if(Globals.Module3)    // wiktor modul 3
+                {
+                    player.Stop();
+                    Globals.TutorialPause = true;
+                    //ODBLOKOWAĆ NOWY SKŁADNIK
+                }
+
+
 
                 if (Globals.TutorialPause)
-                {
-                    GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-                    KeyboardState state = Keyboard.GetState();
-
-                    if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)))) //ACCEPT
                     {
-                        player.Start();
-                        Globals.TutorialPause = false;
+                        GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+                        KeyboardState state = Keyboard.GetState();
+
+                        if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)))) //ACCEPT
+                        {
+                            player.Start();
+                            Globals.TutorialPause = false;
+                        }
                     }
-                }
             }
         }
         #endregion
