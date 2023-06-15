@@ -155,6 +155,7 @@ namespace TheGame
                             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
                             player.Update(world, delta, enemies, gameTime);
                             enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
+                            enemies.SetObstaclePositions(world.GetEnemiesColliders(player.GetPosition().X, player.GetPosition().Z));
                             enemies.Move(delta, player);    // i po co 3 funkcje a nie 1
                             enemies.RefreshOnDestroy();
                             Leafs.RefreshInventory(this.player);
@@ -218,7 +219,7 @@ namespace TheGame
                         base.Draw(gameTime);
                         GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-                        world.Draw(player.GetPosition());
+                        world.Draw(new System.Numerics.Vector3(player.GetPosition().X, player.GetPosition().Y, player.GetPosition().Z));
                         player.DrawPlayer(player.GetPosition());
 
                         enemies.Draw(player.GetPosition());
@@ -695,6 +696,11 @@ namespace TheGame
 
         }
         #endregion
+
+        private Vector2 ConvertToXnaVector2(System.Numerics.Vector2 systemVector2)
+        {
+            return new Vector2(systemVector2.X, systemVector2.Y);
+        }
 
     }
 
