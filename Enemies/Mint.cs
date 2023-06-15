@@ -18,7 +18,7 @@ namespace TheGame
             AssignParameters(2, 15, 2, 3f);
             this.shadow.SetScale(0.7f);
             this.setBSRadius(2);
-
+            this.visionRange = 30f;
             this.leaf = new Leafs.MintLeaf(worldPosition, "Objects/mint_pickup", "Textures/mint_pickup");
         }
 

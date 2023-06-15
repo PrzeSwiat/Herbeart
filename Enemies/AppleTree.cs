@@ -16,11 +16,12 @@ namespace TheGame
         bool canShoot = true;
         float timecounter = 0;
         float timetoshoot = 0;
-        public List<Apple> bullet = new List<Apple>(); 
+        public List<Apple> bullet = new List<Apple>();
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(4, 12, 2, 1.5f);
             this.setBSRadius(3);
+            this.visionRange = 30f;
             this.leaf = new Leafs.AppleLeaf(worldPosition, "Objects/apple_pickup", "Textures/apple_pickup");
             this.shadow.SetScale(1.05f);
         }

@@ -20,7 +20,7 @@ namespace TheGame
         public Shadow shadow;
         private DateTime lastAttackTime, actualTime;
         private bool collides = false;
-        public float visionRange = 20f;
+        public float visionRange = 0f;
 
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
