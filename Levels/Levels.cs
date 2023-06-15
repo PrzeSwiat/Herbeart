@@ -83,26 +83,42 @@ namespace TheGame
 
         }
 
+        public int setEnemiesCount()
+        {
+            int enemyCount;
+
+            if (numberOfModules <= 10)
+            {
+                enemyCount = 4;
+            }
+            else if (numberOfModules <= 15)
+            {
+                enemyCount = 9;
+            }
+            else
+            {
+                int moduleIncrements = (numberOfModules - 15) / 10;
+                enemyCount = 9 + (moduleIncrements * 5);
+            }
+            return enemyCount;
+        }
+
         public void prepareMap()
         {
             numberOfModules++;
 
-            int enemyCount;
+            
             maps = new List<string>();
 
             //wybieranie ilości przeciwników w levelu
-            if (numberOfModules > 10)
-                enemyCount = 9;
-            else if (numberOfModules > 15)
-                enemyCount = 15;
-            else 
-                enemyCount = 4;
-            
+            int enemyCount = setEnemiesCount(); 
+
+
             //Przypadek prostych map - wylot z lewej i prawej
             if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
             {
 
-                if (numberOfModules % 10 == 0)
+                if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
@@ -137,7 +153,7 @@ namespace TheGame
             {
                 moduleSeparatorZCount--;
                 moduleHeightChange++;
-                if (numberOfModules % 10 == 0)
+                if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     maps.Add("Maps/map_party_down_up.txt");
                     maps.Add("Maps/map_party_down_right.txt");
@@ -166,7 +182,7 @@ namespace TheGame
             //Zakręt od dołu w prawo - wylot z dołu i po prawo
             if (maps_down_right.Contains(currentMap))
             {
-                if(numberOfModules % 10 == 0)
+                if(numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
@@ -196,7 +212,7 @@ namespace TheGame
             {
                 moduleSeparatorZCount++;
                 moduleHeightChange++;
-                if (numberOfModules % 10 == 0)
+                if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     maps.Add("Maps/map_party_up_right.txt");
                     maps.Add("Maps/map_party_up_down.txt");
@@ -224,7 +240,7 @@ namespace TheGame
             //Wylot z góry i z prawej
             if (maps_up_right.Contains(currentMap))
             {
-                if (numberOfModules % 10 == 0)
+                if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
@@ -258,7 +274,7 @@ namespace TheGame
             {
                 moduleSeparatorZCount++;
                 moduleHeightChange++;
-                if (numberOfModules % 10 == 0)
+                if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     prepareModule("Maps/map_party_up_right.txt", 0);
                     choosedMap = "Maps/map_up_right.txt";
@@ -276,7 +292,7 @@ namespace TheGame
             {
                 moduleSeparatorZCount--;
                 moduleHeightChange++;
-                if (numberOfModules % 10 == 0)
+                if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     prepareModule("Maps/map_party_down_right.txt", 0);
                     choosedMap = "Maps/map_down_right.txt";
@@ -390,6 +406,16 @@ namespace TheGame
                     numberOfModule = i;
                 }
             }
+
+/*            if (numberOfModule == 2)
+                Globals.Module2 = true;
+            if (numberOfModule == 3)
+                Globals.Module3 = true;
+            if (numberOfModule == 4)
+                Globals.Module4 = true;
+            if (numberOfModule == 5)
+                Globals.Module5 = true;*/
+
             return numberOfModule;
         }
 
@@ -571,6 +597,15 @@ namespace TheGame
                             height = -2.0f;
                             Vector3 wektor2 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
                             spawnTiles.Add(new Tile(groundType, height, wektor2, 0));
+                            x++;
+                            break;
+                        case 99:
+                            groundType = "party";
+                            height = 0.0f;
+                            Vector3 wektor4 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                            SceneObject plotek = new SceneObject(wektor4, "Objects/festiwal", "Textures/festiwal");
+                            nonColideObjects.Add(plotek);
+                            //spawnTiles.Add(new Tile(groundType, height, wektor4, 0));
                             x++;
                             break;
                     }
