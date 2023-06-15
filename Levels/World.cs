@@ -16,6 +16,7 @@ namespace TheGame
     {
         private List<SceneObject> _worldArray;
         private List<SceneObject> nonCollideArray;
+        private List<Vector2> enemiesCollidersArray;
         private Levels level;
         private List<Enemy> enemies;
 
@@ -23,6 +24,7 @@ namespace TheGame
         {
             _worldArray = new List<SceneObject>();
             nonCollideArray = new List<SceneObject>();
+            enemiesCollidersArray = new List<Vector2>();
             level = new Levels();
             enemies = new List<Enemy>();
         }
@@ -58,6 +60,10 @@ namespace TheGame
             return _worldArray;
         }
         
+        public List<Vector2> GetEnemiesColliders()
+        {
+            return enemiesCollidersArray;
+        }
         
     }
 }
