@@ -65,6 +65,12 @@ namespace TheGame
             enemiesCollidersArray = level.returnEnemiesColliders(playerX, playerZ);
             return enemiesCollidersArray;
         }
-        
+
+
+        private Vector2 ConvertToXnaVector2(System.Numerics.Vector2 systemVector2)
+        {
+            return new Vector2(systemVector2.X, systemVector2.Y);
+        }
+
     }
 }

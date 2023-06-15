@@ -15,6 +15,7 @@ namespace TheGame
     internal class Enemies
     {
         private List<Enemy> enemiesList;
+        private List<Vector2> obstaclePositions;
 
         public Enemies()
         {
@@ -34,6 +35,15 @@ namespace TheGame
             }
         }
 
+        public void SetObstaclePositions(List<System.Numerics.Vector2> obstacles)
+        {
+            this.obstaclePositions = new List<Vector2>();
+            foreach (Vector2 obstacle in obstacles)
+            {
+                this.obstaclePositions.Add(new Vector2(obstacle.X, obstacle.Y));
+            }
+        }
+
 
         public void Move(float deltaTime, Player player)
         {
@@ -41,9 +51,7 @@ namespace TheGame
             foreach (Enemy enemy in enemiesList)
             {
                 // avoid other enemies and chase player
-                Vector2 flockVel = FlockBehaviour(enemy, 20, 0.7f);
-                Vector2 avoidVel = AvoidanceBehaviour(enemy, 9, 0.5f);
-                Vector2 alignVel = AlignBehaviour(enemy, 20, 0.1f);
+                //Vector2 alignVel = AlignBehaviour(enemy, 20, 0.1f);
                 Vector2 towardsPlayerVel = enemy.CalculateDirectionTowardsTarget(playerPosition);
                 if (enemy.Collides)
                 {
@@ -51,7 +59,10 @@ namespace TheGame
                 }
                 else if (Vector3.Distance(enemy.GetPosition(), playerPosition) < enemy.visionRange)
                 {
-                    enemy.Direction = flockVel + towardsPlayerVel + avoidVel;
+                    Vector2 flockVel = FlockBehaviour(enemy, 20, 0.7f);
+                    Vector2 avoidOthersVelocity = AvoidanceBehaviour(enemy, 9, 0.5f);
+                    Vector2 avoidObstaclesVelocity = AvoidObstacles(enemy, 10, 0.4f);
+                    enemy.Direction = flockVel + towardsPlayerVel + avoidOthersVelocity + avoidObstaclesVelocity;
                     enemy.ActualSpeed = enemy.MaxSpeed;
                 }
                 else
@@ -74,6 +85,27 @@ namespace TheGame
             float deltaCenterZ = meanZ - enemy.GetPosition().Z;
             Vector2 output = new Vector2(deltaCenterX, deltaCenterZ) * power;
             return output;
+        }
+
+        private Vector2 AvoidObstacles(Enemy enemy, float distance, float power)
+        {
+            Vector2 output = Vector2.Zero;
+            Vector3 currentPositionV3 = enemy.GetPosition();
+            Vector2 currentPosition = new Vector2(currentPositionV3.X, currentPositionV3.Z);
+            float detectionDistanceSquared = (float)Math.Pow(distance, 2);
+            foreach (Vector2 obstaclePosition in obstaclePositions)
+            {
+                if (Vector2.DistanceSquared(currentPosition, obstaclePosition) > detectionDistanceSquared)
+                {
+                    continue;
+                }
+                float distanceToObstacle = Vector2.Distance(currentPosition, obstaclePosition);
+                float closeness = distance - distanceToObstacle;
+                output += new Vector2(currentPosition.X - obstaclePosition.X, currentPosition.Y - obstaclePosition.Y) * closeness;
+
+            }
+
+            return output * power;
         }
 
         private Vector2 AvoidanceBehaviour(Enemy enemy, float distance, float power)
@@ -160,7 +192,7 @@ namespace TheGame
 
         public void RefreshOnDestroy()
         {
-            foreach(Enemy enemy in enemiesList.ToList())
+            foreach (Enemy enemy in enemiesList.ToList())
             {
                 enemy.OnDestroy += DestroyControl;
             }
