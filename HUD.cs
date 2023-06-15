@@ -232,15 +232,15 @@ namespace TheGame
                 Rectangle rect = new Rectangle(WindowWidth * 15 / 20, WindowHeight * 13 / 20, 400, 200);
                 Globals.spriteBatch.Begin();
                 Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "first", new Vector2(WindowWidth * 16 / 20, WindowHeight * 14 / 20), Color.Yellow);
+                Globals.spriteBatch.DrawString(Menu2, "Attack -> A", new Vector2(WindowWidth * 10 / 20, WindowHeight * 14 / 20), Color.Yellow);
                 Globals.spriteBatch.End();
             }
-            if(number==2)
+            if(number == 2)
             {
                 Rectangle rect = new Rectangle(WindowWidth * 12 / 20, WindowHeight * 0 / 20, 400, 100);
                 Globals.spriteBatch.Begin();
                 Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "second", new Vector2(WindowWidth * 13 / 20, WindowHeight * 0 / 20), Color.Yellow);
+                Globals.spriteBatch.DrawString(Menu2, "< hold LT to heal yourself ", new Vector2(WindowWidth * 10 / 20, WindowHeight * 0 / 20), Color.Yellow);
                 Globals.spriteBatch.End();
             }
             if (number == 3) //różni przeciwnicy to różne listki
@@ -248,7 +248,7 @@ namespace TheGame
                 Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 5 / 20, 500, 450);
                 Globals.spriteBatch.Begin();
                 Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "third", new Vector2(WindowWidth * 6 / 20, WindowHeight * 6 / 20), Color.Yellow);
+                Globals.spriteBatch.DrawString(Menu2, "new enemies drops new leaf", new Vector2(WindowWidth * 6 / 20, WindowHeight * 6 / 20), Color.Yellow);
                 Globals.spriteBatch.End();
             }
             if (number == 4) //efekty miotane pierwsze, co robią efekty miotane (ziel,czer)
@@ -256,7 +256,7 @@ namespace TheGame
                 Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 0 / 20, 500, 450);
                 Globals.spriteBatch.Begin();
                 Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "forth", new Vector2(WindowWidth * 6 / 20, WindowHeight * 6 / 20), Color.Yellow);
+                Globals.spriteBatch.DrawString(Menu2, "hold RT for special abilities", new Vector2(WindowWidth * 6 / 20, WindowHeight * 9 / 20), Color.Yellow);
                 Globals.spriteBatch.End();
             }
 

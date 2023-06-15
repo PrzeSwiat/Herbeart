@@ -234,26 +234,24 @@ namespace TheGame
 
                         if (Globals.TutorialPause)
                         {
-                            if (player.Health <= player.maxHealth * 0.80)    // 80% zycia 
+                            if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
                             {
                                 hud.DrawTutorial(2);
+
                             }
-                            else
-                            {
+                             if(Globals.Module2 && Globals.moduleCounter == 0)
+                            { 
                                 hud.DrawTutorial(1);
                             }
-                            /*
-                            if() modul 3
+                             if(Globals.Module3 && Globals.moduleCounter == 1) 
                             {
                                 hud.DrawTutorial(3);
                             }
-                            */
-                            /*
-                            if() modul 4
+                             if(Globals.Module4 && Globals.moduleCounter == 2) 
                             {
                                 hud.DrawTutorial(4);
                             }
-                            */
+                            
                         }
 
                     }
@@ -428,47 +426,61 @@ namespace TheGame
         {
             if(Globals.Easy)
             {
-                if (Globals.Module2) // wiktor modul 2 jak???
+                if (Globals.Module2 && Globals.moduleCounter == 0) 
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
-                    Globals.time = 6f;
                 }
 
                 if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
-                    Globals.counter += 1;
                 }
 
-                if(Globals.Module3)    // wiktor modul 3
+                if(Globals.Module3 && Globals.moduleCounter == 1)    
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
                     //ODBLOKOWAĆ NOWY SKŁADNIK
                 }
-                if (Globals.Module4)    // wiktor modul 4
+                if (Globals.Module4 && Globals.moduleCounter == 2)   
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
                     //ODBLOKOWAĆ NOWY SKŁADNIK
 
                 }
-
 
 
                 if (Globals.TutorialPause)
-                    {
-                        GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-                        KeyboardState state = Keyboard.GetState();
+                {
+                    GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+                    KeyboardState state = Keyboard.GetState();
 
-                        if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)))) //ACCEPT
+                    if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)))) //ACCEPT
+                    {
+                        if (Globals.Module2 && Globals.moduleCounter == 0)
                         {
-                            player.Start();
-                            Globals.TutorialPause = false;
+                            Globals.moduleCounter += 1;
                         }
+                        if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
+                        {
+                            Globals.counter += 1;
+                        }
+                        if (Globals.Module3 && Globals.moduleCounter == 1)
+                        {
+                            Globals.moduleCounter += 1;
+                        }
+                        if (Globals.Module4 && Globals.moduleCounter == 2)
+                        {
+                            Globals.moduleCounter += 1;
+                        }
+                        player.Start();
+                        Globals.TutorialPause = false;
+
                     }
+                }
             }
         }
         #endregion

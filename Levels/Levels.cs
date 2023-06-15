@@ -89,16 +89,16 @@ namespace TheGame
 
             if (numberOfModules <= 10)
             {
-                enemyCount = 4;
+                enemyCount = 8;
             }
             else if (numberOfModules <= 15)
             {
-                enemyCount = 9;
+                enemyCount = 15;
             }
             else
             {
-                int moduleIncrements = (numberOfModules - 15) / 10;
-                enemyCount = 9 + (moduleIncrements * 5);
+                int moduleIncrements = (numberOfModules - 15) / 5;
+                enemyCount = 9 + (moduleIncrements * 8);
             }
             return enemyCount;
         }
@@ -120,7 +120,7 @@ namespace TheGame
 
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
-                    maps.Add("Maps/map_party_straight.txt");
+                    //maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
                     maps.Add("Maps/map_party_left_down.txt");
                     string map = generateRandomStringFromList(maps);
@@ -407,14 +407,14 @@ namespace TheGame
                 }
             }
 
-/*            if (numberOfModule == 2)
+            if (numberOfModule == 1)
                 Globals.Module2 = true;
-            if (numberOfModule == 3)
+            if (numberOfModule == 2)
                 Globals.Module3 = true;
-            if (numberOfModule == 4)
+            if (numberOfModule == 3)
                 Globals.Module4 = true;
-            if (numberOfModule == 5)
-                Globals.Module5 = true;*/
+            if (numberOfModule == 4)
+                Globals.Module5 = true;
 
             return numberOfModule;
         }
