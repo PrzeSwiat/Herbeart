@@ -30,7 +30,6 @@ namespace TheGame
         public Crafting Crafting;
         private DateTime lastAttackTime;
         private DateTime actualTime;
-        private Boolean isAttacking = false;
         private PlayerMovement playerMovement;
         private PlayerEffectHandler playerEffects;
         public event EventHandler OnAttackPressed;
@@ -79,18 +78,6 @@ namespace TheGame
             Update();
             playerMovement.UpdatePlayerMovement(world, deltaTime);
             Crafting.Update(gametime);
-
-            if (isAttacking)
-            {
-                actualTime = DateTime.Now;
-                TimeSpan time = actualTime - lastAttackTime;
-                if (time.TotalSeconds > 0.4)
-                {
-                    OnAttackPressed?.Invoke(this, EventArgs.Empty);
-                    //lastAttackTime = actualTime;
-                    isAttacking = false;
-                }
-            }
 
             foreach (Apple apple in apples.ToList())
             {
@@ -177,7 +164,7 @@ namespace TheGame
             TimeSpan time = actualTime - lastAttackTime;
             if (time.TotalSeconds > this.ActualAttackSpeed)
             {
-                isAttacking = true;
+                OnAttackPressed?.Invoke(this, EventArgs.Empty);
                 lastAttackTime = actualTime;
             }
         }

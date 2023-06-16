@@ -15,6 +15,8 @@ namespace TheGame
     {
         private Player player;
         private List<Enemy> enemies;
+        private Boolean isAttacking = false;
+        private DateTime AttackTime;
 
         public InteractionEventHandler(Player player, List<Enemy> enemies)
         {
@@ -33,20 +35,31 @@ namespace TheGame
         public void Update(List<Enemy> enemiesList)
         {
             this.enemies = enemiesList;
+
+            if (isAttacking)
+            {
+                DateTime actualTime = DateTime.Now;
+                TimeSpan time = actualTime - AttackTime;
+                if (time.TotalSeconds > 0.3)
+                {
+                    foreach (Enemy enemy in enemies.ToList())
+                    {
+                        if (player.boundingSphere.Intersects(enemy.boundingBox))
+                        {
+                            enemy.Hit(player.Strength);
+                        }
+                    }
+                    AttackTime = actualTime;
+                    isAttacking = false;
+                }
+            }
         }
 
         #region PLAYER
         private void PlayerAttack(object sender, EventArgs e) //A
         {
-            
-            foreach (Enemy enemy in enemies.ToList())
-            {
-                if (player.boundingSphere.Intersects(enemy.boundingBox))
-                {
-                    enemy.Hit(player.Strength);
-                }
-            }
-            
+            isAttacking = true;
+            AttackTime = DateTime.Now;
         }
         #endregion
 
