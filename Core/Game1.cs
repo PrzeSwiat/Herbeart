@@ -155,6 +155,7 @@ namespace TheGame
                             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
                             player.Update(world, delta, enemies, gameTime);
                             enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
+                            enemies.SetObstaclePositions(world.GetEnemiesColliders(player.GetPosition().X, player.GetPosition().Z));
                             enemies.Move(delta, player);    // i po co 3 funkcje a nie 1
                             enemies.RefreshOnDestroy();
                             Leafs.RefreshInventory(this.player);
@@ -218,7 +219,7 @@ namespace TheGame
                         base.Draw(gameTime);
                         GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-                        world.Draw(player.GetPosition());
+                        world.Draw(new System.Numerics.Vector3(player.GetPosition().X, player.GetPosition().Y, player.GetPosition().Z));
                         player.DrawPlayer(player.GetPosition());
 
                         enemies.Draw(player.GetPosition());
@@ -234,26 +235,24 @@ namespace TheGame
 
                         if (Globals.TutorialPause)
                         {
-                            if (player.Health <= player.maxHealth * 0.80)    // 80% zycia 
+                            if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
                             {
                                 hud.DrawTutorial(2);
+
                             }
-                            else
-                            {
+                             if(Globals.Module2 && Globals.moduleCounter == 0)
+                            { 
                                 hud.DrawTutorial(1);
                             }
-                            /*
-                            if() modul 3
+                             if(Globals.Module3 && Globals.moduleCounter == 1) 
                             {
                                 hud.DrawTutorial(3);
                             }
-                            */
-                            /*
-                            if() modul 4
+                             if(Globals.Module4 && Globals.moduleCounter == 2) 
                             {
                                 hud.DrawTutorial(4);
                             }
-                            */
+                            
                         }
 
                     }
@@ -428,47 +427,61 @@ namespace TheGame
         {
             if(Globals.Easy)
             {
-                if (Globals.Module2) // wiktor modul 2 jak???
+                if (Globals.Module2 && Globals.moduleCounter == 0) 
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
-                    Globals.time = 6f;
                 }
 
                 if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
-                    Globals.counter += 1;
                 }
 
-                if(Globals.Module3)    // wiktor modul 3
+                if(Globals.Module3 && Globals.moduleCounter == 1)    
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
                     //ODBLOKOWAĆ NOWY SKŁADNIK
                 }
-                if (Globals.Module4)    // wiktor modul 4
+                if (Globals.Module4 && Globals.moduleCounter == 2)   
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
                     //ODBLOKOWAĆ NOWY SKŁADNIK
 
                 }
-
 
 
                 if (Globals.TutorialPause)
-                    {
-                        GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-                        KeyboardState state = Keyboard.GetState();
+                {
+                    GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+                    KeyboardState state = Keyboard.GetState();
 
-                        if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)))) //ACCEPT
+                    if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)))) //ACCEPT
+                    {
+                        if (Globals.Module2 && Globals.moduleCounter == 0)
                         {
-                            player.Start();
-                            Globals.TutorialPause = false;
+                            Globals.moduleCounter += 1;
                         }
+                        if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
+                        {
+                            Globals.counter += 1;
+                        }
+                        if (Globals.Module3 && Globals.moduleCounter == 1)
+                        {
+                            Globals.moduleCounter += 1;
+                        }
+                        if (Globals.Module4 && Globals.moduleCounter == 2)
+                        {
+                            Globals.moduleCounter += 1;
+                        }
+                        player.Start();
+                        Globals.TutorialPause = false;
+
                     }
+                }
             }
         }
         #endregion
@@ -683,6 +696,11 @@ namespace TheGame
 
         }
         #endregion
+
+        private Vector2 ConvertToXnaVector2(System.Numerics.Vector2 systemVector2)
+        {
+            return new Vector2(systemVector2.X, systemVector2.Y);
+        }
 
     }
 

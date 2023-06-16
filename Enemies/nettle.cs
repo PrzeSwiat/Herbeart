@@ -20,6 +20,7 @@ namespace TheGame
             AssignParameters(6, 12, 2, 1f);
             this.setBSRadius(2.5f);
             this.shadow.SetScale(0.95f);
+            this.visionRange = 30f;
             this.leaf = new Leafs.NettleLeaf(worldPosition, "Objects/nettle_pickup", "Textures/nettle_pickup");
             lastHealth = this.Health;
         }

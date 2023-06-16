@@ -29,10 +29,10 @@ namespace TheGame
             this.inventory = inv;
             this.playerEffects = playerEffects;
             bools.Add(true);
-            bools.Add(false);
-            bools.Add(false);
-            bools.Add(false);
-            bools.Add(false);
+            bools.Add(true);
+            bools.Add(true);
+            bools.Add(true);
+            bools.Add(true);
             
             
         }
@@ -145,6 +145,7 @@ namespace TheGame
                     {
                         playerEffects.RegenarateHP(100);
                     }
+                    else { cleanRecepture(); }
                     
                     break;
                 case "AAB":
@@ -152,7 +153,8 @@ namespace TheGame
                     {
                         playerEffects.RegenarateHP(200);
                     }
-                    
+                    else { cleanRecepture(); }
+
                     break;
 
                 case "AXY":
@@ -161,7 +163,8 @@ namespace TheGame
                         playerEffects.RegenarateHP(150);
                         playerEffects.Haste(10, 10);
                     }
-                   
+                    else { cleanRecepture(); }
+
                     break;
                 case "XBY":
                     if (bools[3])
@@ -169,7 +172,8 @@ namespace TheGame
                         playerEffects.RegenarateHP(100);
                         playerEffects.BuffStrenght(3, 10);
                     }
-                   
+                    else { cleanRecepture(); }
+
                     break;
                 case "ABX":
                     if (bools[4])
@@ -177,7 +181,8 @@ namespace TheGame
                         playerEffects.RegenarateHP(100);
                         playerEffects.MakeImmortal(10);
                     }
-                    
+                    else { cleanRecepture(); }
+
                     break;
 
                 default:

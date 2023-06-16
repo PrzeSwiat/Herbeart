@@ -23,13 +23,18 @@ namespace TheGame
         ContentManager Content;
         Player player;
         List<Enemy> enemies;
+        private bool Atak;
         private List<AnimationPlayer> allAnimations;
         private SkinnedModel Steps;
         private SkinnedModel Steps_tired;
         private SkinnedModel Idle;
+        private SkinnedModel Attack1;
+        private SkinnedModel Attack2;
         private AnimationPlayer ASteps;
         private AnimationPlayer ASteps_tired;
         private AnimationPlayer AIdle;
+        private AnimationPlayer AAttack1;
+        private AnimationPlayer AAttack2;
         private Texture2D texture;
         private Effect effect1;
 
@@ -46,12 +51,15 @@ namespace TheGame
         {
 
             player.onMove += PlayerSteps;
+            player.OnAttackPressed += PlayerAttack;
 
             Steps = Content.Load<SkinnedModel>("Animations/mis_bieg_2");
             Idle = Content.Load<SkinnedModel>("Animations/mis_Standing_23");
             texture = Content.Load<Texture2D>("Textures/mis_texture");
             effect1 = Content.Load<Effect>("AnimationToon");
             Steps_tired=Content.Load<SkinnedModel>("Animations/mis_tired_run");
+            Attack1 = Content.Load<SkinnedModel>("Animations/atak1blend");
+            Attack2 = Content.Load<SkinnedModel>("Animations/atak2blend");
 
             //steps
             ASteps = new AnimationPlayer(Steps);
@@ -75,12 +83,27 @@ namespace TheGame
             AIdle.IsPlaying = true;
             AIdle.CurrentTime = 1.0f;
             AIdle.CurrentTick = Idle.Animations[0].DurationInTicks;
+            //atack1
+            AAttack1 = new AnimationPlayer(Attack1);
+            AAttack1.Animation = Attack1.Animations[0];
+            AAttack1.PlaybackSpeed = 0.8f;
+            AAttack1.IsLooping = false;
+            AAttack1.CurrentTime = 1.0f;
+            AAttack1.CurrentTick = Attack1.Animations[0].DurationInTicks;
+            //atack1
+            AAttack2 = new AnimationPlayer(Attack2);
+            AAttack2.Animation = Attack2.Animations[0];
+            AAttack2.PlaybackSpeed = 0.8f;
+            AAttack2.IsLooping = false;
+            AAttack2.CurrentTime = 1.0f;
+            AAttack2.CurrentTick = Attack2.Animations[0].DurationInTicks;
 
             // ADD ALL ANIMATION HERE
             allAnimations.Add(ASteps);
             allAnimations.Add(AIdle);
             allAnimations.Add(ASteps_tired);
-
+            allAnimations.Add(AAttack1);
+            allAnimations.Add(AAttack2);
         }
 
         public void Update(GameTime gameTime)
@@ -103,6 +126,11 @@ namespace TheGame
             
 
         }
+        private void PlayerAttack(object obj, EventArgs e)
+        {
+            Atak = true; //ból
+            
+        }
 
         public void DrawAnimations()
         {
@@ -111,7 +139,7 @@ namespace TheGame
                DrawAnimation(player, AIdle, Idle);
 
             }
-            if(ASteps.IsPlaying)
+            if(ASteps.IsPlaying && !Atak)
             {
                 if (player.Health <= player.maxHealth * 0.5)
                 {
@@ -123,10 +151,30 @@ namespace TheGame
                 }
                 
             }
-
             AIdle.IsPlaying = true;
             ASteps.IsPlaying = false;
             ASteps_tired.IsPlaying = false;
+
+            if (Atak)
+            {
+                player.ActualSpeed = 13;
+                AAttack1.IsPlaying = true;
+                AIdle.IsPlaying = false;
+                ASteps.IsPlaying = false;
+                ASteps_tired.IsPlaying = false;
+                DrawAnimation(player, AAttack1, Attack1);
+
+                if (Math.Round(AAttack1.CurrentTime, 1) >= AAttack1.Animation.DurationInSeconds)
+                {
+                    Atak = false;
+                    player.ActualSpeed = 20;
+                }
+
+            }
+
+            
+            
+            
         }
 
 
