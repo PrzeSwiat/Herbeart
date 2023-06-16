@@ -28,7 +28,7 @@ namespace TheGame
         }
 
 
-        public bool checkGeneratedRewards()
+        public void checkGeneratedRewards()
         {
             if (rewards[0] == 0 && rewards[1] == 0 && rewards[2] == 0)
             {
@@ -139,17 +139,12 @@ namespace TheGame
                 
                 //Reward3=AddmultipleScore
             }
-            return true;
+           
         }
-
+        
         public void drawSelectMenu()
         {
-
-          
-
-
-
-
+            checkGeneratedRewards();
             if (canDraw)
             {
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -190,18 +185,90 @@ namespace TheGame
 
                 if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 1)
                 {
-                   canDraw = false;
-                   Globals.TutorialPause = false;
+                   
+                    if (rewards[0] == 1 || rewards[0] == 2 || rewards[0] == 3)
+                    {
+                        //dodaj nowy przepis
+                        unlockRecepture();
+                    }
+                    if (rewards[0] == 4)
+                    {
+                        //dodaj zestaw lisci
+                        addLeafs(5);
+                    }
+                    canDraw = false;
+                    Globals.TutorialPause = false;
+                    resetRewardArray();
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 2)
                 {
+                    
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if (rewards[1] == 1)
+                    {
+                        
+                            // Reward2=tekstura dodatkowego attackspeeda
+                        addAttackSpeed(5);
+                        attackspeedcounter++;
+                      
+                    }
+                    if (rewards[1] == 2)
+                    {
+                        addStrenght(2);
+                        dmgcounter++;
+                        // Reward2=tekstura dodatkowego Atacka
+
+                    }
+                    if (rewards[1] == 3)
+                    {
+                        addSpeed(3);
+                        speedcounter++;
+                        // Reward2=tekstura dodatkowego speeda
+
+                    }
+                    if (rewards[1] == 4)
+                    {
+                        addMaxHealth(4);
+                        // Reward2=tekstura dodatkowego zycka
+
+                    }
                     canDraw = false;
                     Globals.TutorialPause = false;
+                    resetRewardArray();
+
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 3)
                 {
+                    if (rewards[2] == 1)
+                    {
+
+                        //Reward3=AddNettleLeafBuff
+                        addNettleValue();
+                    }
+                    if (rewards[2] == 2)
+                    {
+                        //Reward3=AddAppleLeafBuff
+                        addAppleValue();
+                    }
+                    if (rewards[2] == 3)
+                    {
+                        addMintValue();
+                        //Reward3=AddMelissaLeafBuff
+
+                    }
+                    if (rewards[2] == 4)
+                    {
+                        AddScore(100);
+                        //Reward3=AddScore
+                    }
+                    if (rewards[2] == 5)
+                    {
+                        AddMultipleScore();
+                        //Reward3=AddmultipleScore
+                    }
                     canDraw = false;
                     Globals.TutorialPause = false;
+                    resetRewardArray();
                 }
                 Globals.spriteBatch.Begin();
                 //Globals.spriteBatch.Draw(texture, position, null, one, ang, Vector2.Zero, scale, SpriteEffects.None, 0f);
@@ -226,19 +293,26 @@ namespace TheGame
             
         }
 
+        public void resetRewardArray()
+        {
+            for(int i=0; i<rewards.Length; i++)
+            {
+                rewards[i] = 0;
+            }
+        }
         public void unlockRecepture()
         {
-            
-            int value = random.Next(0, player.Crafting.bools.Count());
-            if (!player.Crafting.bools[value])
+
+            int value = -1; 
+            do
             {
-                player.Crafting.bools[value] = true;
-            }
-            else
-            {
-                value = random.Next(0, player.Crafting.bools.Count());
-            }
-            
+               value = random.Next(0, player.Crafting.bools.Count());
+                
+            } while (!player.Crafting.bools[value]);
+            player.Crafting.bools[value] = true;
+
+
+
         }
 
         public void AddMultipleScore()
