@@ -17,18 +17,19 @@ namespace TheGame
         public int MenuOption = 1;
         public int[] rewards = { 0, 0, 0 };
         Texture2D Reward1,Reward2,Reward3;
-
+        int attackspeedcounter, dmgcounter, speedcounter;
+        int nettlecounter,applecounter,Melissacounter;
         public ProgressSystem(Player player)
         {
             this.player = player;
+            attackspeedcounter = 0;
+            dmgcounter = 0;
+            speedcounter = 0;
         }
 
 
-
-
-        public void drawSelectMenu()
+        public void checkGeneratedRewards()
         {
-
             if (rewards[0] == 0 && rewards[1] == 0 && rewards[2] == 0)
             {
                 rewards = generateRewards();
@@ -36,54 +37,114 @@ namespace TheGame
 
             if (rewards[0] == 1 || rewards[0] == 2 || rewards[0] == 3)
             {
-                //  Reward1=tekstura Nowej herbatki
+                if (isRecepturetoUnlock()) 
+                {
+                    //  Reward1=tekstura Nowej herbatki
+                }
+                else
+                {
+                    //  Reward1=tekstura Zestawow Listkow
+                }
+
             }
-            else
+            if (rewards[0]==4)
             {
                 //  Reward1=tekstura Zestawow Listkow
             }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (rewards[1] == 1)
             {
+                if(attackspeedcounter <3)
+                {
+                    // Reward2=tekstura dodatkowego attackspeeda
+                }
+                else
+                {
+                    rewards[1]++;
+                }
+            }
+            if (rewards[1] == 2)
+            {
+                if(dmgcounter<3)
+                {
+                    // Reward2=tekstura dodatkowego Atacka
+                }
+                else
+                {
+                    rewards[1]++;
+                }
+
+            }
+             if (rewards[1] == 3)
+            {
+                if(speedcounter<3)
+                {
+                    // Reward2=tekstura dodatkowego speeda
+                }
+                else
+                {
+                    rewards[1]++;
+                }
+
+            }
+            if (rewards[1] == 4)
+            {
                 // Reward2=tekstura dodatkowego zycka
+                
             }
-            else if (rewards[1] == 2)
+///////////////////////////////////////////////////////////////////////////////////
+            if (rewards[2] == 1)
             {
-                // Reward2=tekstura dodatkowego Atacka
+                if (nettlecounter < 3)
+                {
+                    //Reward3=AddNettleLeafBuff
+                }
+                else
+                {
+                    rewards[2]++;
+                }
+                
             }
-            else if (rewards[1] == 3)
+            if (rewards[2] == 2)
             {
-                // Reward2=tekstura dodatkowego speeda
+                if(applecounter < 3)
+                {
+                    //Reward3=AddAppleLeafBuff
+                }
+                else
+                {
+                    rewards[1]++;
+                }
+                
             }
-            else
+            if (rewards[2] == 3)
             {
-                // Reward2=tekstura dodatkowego attackspeeda
-            }
+                if (Melissacounter < 3)
+                {
+                    //Reward3=AddMelissaLeafBuff
+                }
+                else
+                {
+                    rewards[1]++;
+                }
 
-            if (rewards[2]== 1)
+            }
+            if (rewards[2] == 4)
             {
+                
+                //Reward3=AddScore
+            }
+            if (rewards[2] == 5)
+            {
+                
                 //Reward3=AddmultipleScore
             }
-            else if (rewards[2] == 2)
-            {
-                //Reward3=AddmultipleScore
-            }
-            else if (rewards[2] == 3)
-            {
-                //Reward3=AddMintLeafBuff
-            }
-            else if (rewards[2] == 4)
-            {
-                //Reward3=AddAppleLeafBuff
-            }
-            else if (rewards[2] == 5)
-            {
-                //Reward3=AddNettleLeafBuff
-            }
-
-
-
-
+           
+        }
+        
+        public void drawSelectMenu()
+        {
+            checkGeneratedRewards();
             if (canDraw)
             {
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -124,18 +185,90 @@ namespace TheGame
 
                 if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 1)
                 {
-                   canDraw = false;
-                   Globals.TutorialPause = false;
+                   
+                    if (rewards[0] == 1 || rewards[0] == 2 || rewards[0] == 3)
+                    {
+                        //dodaj nowy przepis
+                        unlockRecepture();
+                    }
+                    if (rewards[0] == 4)
+                    {
+                        //dodaj zestaw lisci
+                        addLeafs(5);
+                    }
+                    canDraw = false;
+                    Globals.TutorialPause = false;
+                    resetRewardArray();
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 2)
                 {
+                    
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if (rewards[1] == 1)
+                    {
+                        
+                            // Reward2=tekstura dodatkowego attackspeeda
+                        addAttackSpeed(5);
+                        attackspeedcounter++;
+                      
+                    }
+                    if (rewards[1] == 2)
+                    {
+                        addStrenght(2);
+                        dmgcounter++;
+                        // Reward2=tekstura dodatkowego Atacka
+
+                    }
+                    if (rewards[1] == 3)
+                    {
+                        addSpeed(3);
+                        speedcounter++;
+                        // Reward2=tekstura dodatkowego speeda
+
+                    }
+                    if (rewards[1] == 4)
+                    {
+                        addMaxHealth(4);
+                        // Reward2=tekstura dodatkowego zycka
+
+                    }
                     canDraw = false;
                     Globals.TutorialPause = false;
+                    resetRewardArray();
+
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 3)
                 {
+                    if (rewards[2] == 1)
+                    {
+
+                        //Reward3=AddNettleLeafBuff
+                        addNettleValue();
+                    }
+                    if (rewards[2] == 2)
+                    {
+                        //Reward3=AddAppleLeafBuff
+                        addAppleValue();
+                    }
+                    if (rewards[2] == 3)
+                    {
+                        addMintValue();
+                        //Reward3=AddMelissaLeafBuff
+
+                    }
+                    if (rewards[2] == 4)
+                    {
+                        AddScore(100);
+                        //Reward3=AddScore
+                    }
+                    if (rewards[2] == 5)
+                    {
+                        AddMultipleScore();
+                        //Reward3=AddmultipleScore
+                    }
                     canDraw = false;
                     Globals.TutorialPause = false;
+                    resetRewardArray();
                 }
                 Globals.spriteBatch.Begin();
                 //Globals.spriteBatch.Draw(texture, position, null, one, ang, Vector2.Zero, scale, SpriteEffects.None, 0f);
@@ -160,18 +293,26 @@ namespace TheGame
             
         }
 
+        public void resetRewardArray()
+        {
+            for(int i=0; i<rewards.Length; i++)
+            {
+                rewards[i] = 0;
+            }
+        }
         public void unlockRecepture()
         {
-            int value = random.Next(0, player.Crafting.bools.Count());
-            if (!player.Crafting.bools[value])
+
+            int value = -1; 
+            do
             {
-                player.Crafting.bools[value] = true;
-            }
-            else
-            {
-                value = random.Next(0, player.Crafting.bools.Count());
-            }
-            
+               value = random.Next(0, player.Crafting.bools.Count());
+                
+            } while (!player.Crafting.bools[value]);
+            player.Crafting.bools[value] = true;
+
+
+
         }
 
         public void AddMultipleScore()
@@ -231,6 +372,17 @@ namespace TheGame
         public void addAppleValue()
         {
             player.appleValue = 10;
+        }
+        public bool isRecepturetoUnlock()
+        {
+            foreach(bool b in player.Crafting.bools)
+            {
+                if (!b)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }
