@@ -6,13 +6,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
+using static Assimp.Metadata;
 
 namespace TheGame
 {
     internal class InteractionEventHandler
     {
-        Player player;
-        List<Enemy> enemies;
+        private Player player;
+        private List<Enemy> enemies;
 
         public InteractionEventHandler(Player player, List<Enemy> enemies)
         {
@@ -20,7 +22,6 @@ namespace TheGame
             this.enemies = enemies;
 
             this.player.OnAttackPressed += PlayerAttack;
-
 
             foreach (Enemy enemy in enemies)
             {
@@ -63,5 +64,7 @@ namespace TheGame
             
         }
         #endregion
+
+        
     }
 }

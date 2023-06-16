@@ -30,6 +30,7 @@ namespace TheGame
         public Crafting Crafting;
         private DateTime lastAttackTime;
         private DateTime actualTime;
+        private Boolean isAttacking = false;
         private PlayerMovement playerMovement;
         private PlayerEffectHandler playerEffects;
         public event EventHandler OnAttackPressed;
@@ -45,13 +46,14 @@ namespace TheGame
         public event EventHandler onMove;
         public event EventHandler onRandomNoise;
 
+
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
             SetScale(1.2f);
             this.setBSRadius(3);
             setBSposition(2);
 
-            AssignParameters(300, 1, 20, 0.5f);
+            AssignParameters(300, 1, 20, 1.1f);
             playerEffects = new PlayerEffectHandler(this);
             Inventory = new Inventory();
             Crafting = new Crafting(Inventory, playerEffects);
@@ -77,6 +79,18 @@ namespace TheGame
             Update();
             playerMovement.UpdatePlayerMovement(world, deltaTime);
             Crafting.Update(gametime);
+
+            if (isAttacking)
+            {
+                actualTime = DateTime.Now;
+                TimeSpan time = actualTime - lastAttackTime;
+                if (time.TotalSeconds > 0.4)
+                {
+                    OnAttackPressed?.Invoke(this, EventArgs.Empty);
+                    //lastAttackTime = actualTime;
+                    isAttacking = false;
+                }
+            }
 
             foreach (Apple apple in apples.ToList())
             {
@@ -161,9 +175,9 @@ namespace TheGame
         {
             actualTime = DateTime.Now;
             TimeSpan time = actualTime - lastAttackTime;
-            if (time.TotalSeconds > this.getAttackSpeed())
+            if (time.TotalSeconds > this.ActualAttackSpeed)
             {
-                OnAttackPressed?.Invoke(this, EventArgs.Empty);
+                isAttacking = true;
                 lastAttackTime = actualTime;
             }
         }
