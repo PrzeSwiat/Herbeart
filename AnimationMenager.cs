@@ -139,7 +139,7 @@ namespace TheGame
                DrawAnimation(player, AIdle, Idle);
 
             }
-            if(ASteps.IsPlaying)
+            if(ASteps.IsPlaying && !Atak)
             {
                 if (player.Health <= player.maxHealth * 0.5)
                 {
@@ -157,6 +157,7 @@ namespace TheGame
 
             if (Atak)
             {
+                player.ActualSpeed = 13;
                 AAttack1.IsPlaying = true;
                 AIdle.IsPlaying = false;
                 ASteps.IsPlaying = false;
@@ -166,6 +167,7 @@ namespace TheGame
                 if (Math.Round(AAttack1.CurrentTime, 1) >= AAttack1.Animation.DurationInSeconds)
                 {
                     Atak = false;
+                    player.ActualSpeed = 20;
                 }
 
             }
