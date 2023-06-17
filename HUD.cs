@@ -116,7 +116,7 @@ namespace TheGame
 
         private void DrawReceptures()
         {
-            string[] recepture = { "AAB", "AXY", "XBY", "ABX" };
+            //string[] recepture = { "AAB", "AXY", "XBY", "ABX" };
             Rectangle receptureRect = new Rectangle(0, 200, 300, 100);
             Globals.spriteBatch.Draw(ReceptureBar, receptureRect, Color.White);
 
