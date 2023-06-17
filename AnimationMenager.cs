@@ -134,20 +134,21 @@ namespace TheGame
                 }*/
 
                 AAttack1.IsPlaying = true;
-
+                
                 if (Math.Round(AAttack1.CurrentTime, 1) >= AAttack1.Animation.DurationInSeconds )
                 {
                     Atak = false;
                     player.ActualSpeed = 20;
                     allow = true;
                 }
+                /*
                 if (Math.Round(AAttack2.CurrentTime, 1) >= AAttack2.Animation.DurationInSeconds)
                 {
                     Atak = false;
                     player.ActualSpeed = 20;
                     allow = true;
                 }
-
+                */
             }
 
         }
@@ -190,7 +191,16 @@ namespace TheGame
                DrawAnimation(player, AIdle, Idle);
 
             }
-            if(ASteps.IsPlaying && !AAttack1.IsPlaying && !AAttack2.IsPlaying)
+            if (AAttack1.IsPlaying)
+            {
+
+                AIdle.IsPlaying = false;
+                ASteps.IsPlaying = false;
+                ASteps_tired.IsPlaying = false;
+                DrawAnimation(player, AAttack1, Attack1);
+            }
+
+            if (ASteps.IsPlaying && !AAttack1.IsPlaying && !AAttack2.IsPlaying)
             {
                 if (player.Health <= player.maxHealth * 0.5)
                 {
@@ -203,19 +213,15 @@ namespace TheGame
                 
             }
 
-            AIdle.IsPlaying = true;
+            if(!Atak)
+            {
+                AIdle.IsPlaying = true;
+            }
             ASteps.IsPlaying = false;
             ASteps_tired.IsPlaying = false;
             
 
-            if (AAttack1.IsPlaying)
-            {
-               
-                AIdle.IsPlaying = false;
-                ASteps.IsPlaying = false;
-                ASteps_tired.IsPlaying = false;
-                DrawAnimation(player, AAttack1, Attack1);
-            }
+
             /*
             if (AAttack2.IsPlaying)
             {
