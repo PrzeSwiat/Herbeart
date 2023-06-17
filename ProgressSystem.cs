@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,18 +14,20 @@ namespace TheGame
     {
         Player player;
         private static readonly Random random = new Random();
-        public bool canDraw = false;
+        public bool canDraw =false;
         public int MenuOption = 1;
         public int[] rewards = { 0, 0, 0 };
         Texture2D Reward1,Reward2,Reward3;
         int attackspeedcounter, dmgcounter, speedcounter;
         int nettlecounter,applecounter,Melissacounter;
+        Texture2D rewe;
         public ProgressSystem(Player player)
         {
             this.player = player;
             attackspeedcounter = 0;
             dmgcounter = 0;
             speedcounter = 0;
+            rewe = Globals.content.Load<Texture2D>("Textures/itemFrame");
         }
 
 
@@ -39,24 +42,24 @@ namespace TheGame
             {
                 if (isRecepturetoUnlock()) 
                 {
-                    //  Reward1=tekstura Nowej herbatki
+                    Reward1 = rewe;
                 }
                 else
                 {
-                    //  Reward1=tekstura Zestawow Listkow
+                      Reward1= rewe;
                 }
 
             }
             if (rewards[0]==4)
             {
-                //  Reward1=tekstura Zestawow Listkow
+                  Reward1= rewe;
             }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (rewards[1] == 1)
             {
                 if(attackspeedcounter <3)
                 {
-                    // Reward2=tekstura dodatkowego attackspeeda
+                     Reward2= rewe;
                 }
                 else
                 {
@@ -67,7 +70,7 @@ namespace TheGame
             {
                 if(dmgcounter<3)
                 {
-                    // Reward2=tekstura dodatkowego Atacka
+                     Reward2= rewe;
                 }
                 else
                 {
@@ -79,7 +82,7 @@ namespace TheGame
             {
                 if(speedcounter<3)
                 {
-                    // Reward2=tekstura dodatkowego speeda
+                     Reward2= rewe;
                 }
                 else
                 {
@@ -89,15 +92,15 @@ namespace TheGame
             }
             if (rewards[1] == 4)
             {
-                // Reward2=tekstura dodatkowego zycka
-                
+                Reward2= rewe;
+
             }
 ///////////////////////////////////////////////////////////////////////////////////
             if (rewards[2] == 1)
             {
                 if (nettlecounter < 3)
                 {
-                    //Reward3=AddNettleLeafBuff
+                    Reward3= rewe;
                 }
                 else
                 {
@@ -109,7 +112,7 @@ namespace TheGame
             {
                 if(applecounter < 3)
                 {
-                    //Reward3=AddAppleLeafBuff
+                    Reward3= rewe;
                 }
                 else
                 {
@@ -121,7 +124,7 @@ namespace TheGame
             {
                 if (Melissacounter < 3)
                 {
-                    //Reward3=AddMelissaLeafBuff
+                    Reward3= rewe;
                 }
                 else
                 {
@@ -132,31 +135,35 @@ namespace TheGame
             if (rewards[2] == 4)
             {
                 
-                //Reward3=AddScore
+                Reward3= rewe;
             }
             if (rewards[2] == 5)
             {
                 
-                //Reward3=AddmultipleScore
+                Reward3= rewe;
             }
            
         }
         
         public void drawSelectMenu()
         {
+
             checkGeneratedRewards();
             if (canDraw)
             {
                 GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
                 KeyboardState state = Keyboard.GetState();
                 Globals.TutorialPause = true;
-                if ((gamePadState.ThumbSticks.Left.X >= 0.5f && !(Globals.prevPauseState.ThumbSticks.Left.X >= 0.5f)) || (state.IsKeyDown(Keys.D) && !Globals.prevKeyBoardPauseState.IsKeyDown(Keys.D)))
+               
+                if ((gamePadState.ThumbSticks.Left.X >= 0.5f && !(Globals.prevProggresState.ThumbSticks.Left.X >= 0.5f)) || (state.IsKeyDown(Keys.D) && !Globals.prevKeyBoardProggresState.IsKeyDown(Keys.D)))
+                {
+                    Debug.WriteLine("Dupa");
+                    MenuOption += 1;
+                }
+                if ((gamePadState.ThumbSticks.Left.X <= -0.5f && !(Globals.prevProggresState.ThumbSticks.Left.X <= -0.5f)) || (state.IsKeyDown(Keys.A) && !Globals.prevKeyBoardProggresState.IsKeyDown(Keys.A)))
                 {
                     MenuOption -= 1;
-                }
-                if ((gamePadState.ThumbSticks.Left.X <= -0.5f && !(Globals.prevPauseState.ThumbSticks.Left.X <= -0.5f)) || (state.IsKeyDown(Keys.A) && !Globals.prevKeyBoardPauseState.IsKeyDown(Keys.A)))
-                {
-                    MenuOption += 1;
+                    Debug.WriteLine("Dupa");
                 }
                 if (MenuOption < 1)
                 {
@@ -166,6 +173,7 @@ namespace TheGame
                 {
                     MenuOption = 3;
                 }
+                
                 Color one = Color.Gray;
                 Color two = Color.Gray;
                 Color three = Color.Gray;
@@ -183,7 +191,7 @@ namespace TheGame
                     three = Color.White;
                 }
 
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 1)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState .Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 1)
                 {
                    
                     if (rewards[0] == 1 || rewards[0] == 2 || rewards[0] == 3)
@@ -200,7 +208,7 @@ namespace TheGame
                     Globals.TutorialPause = false;
                     resetRewardArray();
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 2)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 2)
                 {
                     
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -208,7 +216,7 @@ namespace TheGame
                     {
                         
                             // Reward2=tekstura dodatkowego attackspeeda
-                        addAttackSpeed(5);
+                        addAttackSpeed(0.5f);
                         attackspeedcounter++;
                       
                     }
@@ -237,7 +245,7 @@ namespace TheGame
                     resetRewardArray();
 
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 3)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 3)
                 {
                     if (rewards[2] == 1)
                     {
@@ -266,16 +274,20 @@ namespace TheGame
                         AddMultipleScore();
                         //Reward3=AddmultipleScore
                     }
-                    canDraw = false;
+                    
                     Globals.TutorialPause = false;
+                    canDraw = false;
                     resetRewardArray();
                 }
                 Globals.spriteBatch.Begin();
-                //Globals.spriteBatch.Draw(texture, position, null, one, ang, Vector2.Zero, scale, SpriteEffects.None, 0f);
-                //Globals.spriteBatch.Draw(texture, position, null, two, ang, Vector2.Zero, scale, SpriteEffects.None, 0f);
-                //Globals.spriteBatch.Draw(texture, position, null, three, ang, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                Globals.spriteBatch.Draw(rewe, new Vector2(400,400), null, one, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                Globals.spriteBatch.Draw(rewe, new Vector2(600, 600), null, two, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                Globals.spriteBatch.Draw(rewe, new Vector2(800, 800), null, three, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
                 Globals.spriteBatch.End();
+                Globals.prevProggresState = gamePadState;
+                Globals.prevKeyBoardProggresState = state;
             }
+
             
         }
 
@@ -309,6 +321,22 @@ namespace TheGame
                value = random.Next(0, player.Crafting.bools.Count());
                 
             } while (!player.Crafting.bools[value]);
+            if (value == 1) 
+            {
+                Globals.learnedRecepture.Add("AAB");
+            }
+            if (value == 1)
+            {
+                Globals.learnedRecepture.Add("AXY");
+            }
+            if (value == 1)
+            {
+                Globals.learnedRecepture.Add("XBY");
+            }
+            if (value == 1)
+            {
+                Globals.learnedRecepture.Add("ABX");
+            }
             player.Crafting.bools[value] = true;
 
 
@@ -337,7 +365,7 @@ namespace TheGame
             player.Strength += str;
             player.MaxStrength += str;
         }
-        public void addAttackSpeed(int speed)
+        public void addAttackSpeed(float speed)
         {
             player.AttackSpeed += speed;
             player.ActualAttackSpeed += speed;

@@ -23,7 +23,7 @@ namespace TheGame
         public List<Animation2D> animationList = new List<Animation2D>();
         public List<bool> bools = new List<bool>();
         public List<int> values = new List<int>();
-        int k =0;
+        
         public Crafting(Inventory inv, PlayerEffectHandler playerEffects) 
         { 
             recepture = string.Empty;
@@ -235,12 +235,7 @@ namespace TheGame
         }
         public void Update(GameTime gametime)
         {
-            if(k == 0)
-            {
-                bools[1] = true;
-                Globals.learnedRecepture.Add("AAB");
-                k++;
-            }
+          
             foreach (Animation2D anim in animationList.ToList())
             {
                 anim.Update(gametime,true);
