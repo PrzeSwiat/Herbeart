@@ -122,7 +122,7 @@ namespace TheGame
 
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
-                    modulesWithParty.Add(numberOfModules);
+                    modulesWithParty.Add(numberOfModules - 1);
                     //maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
                     maps.Add("Maps/map_party_left_down.txt");
@@ -158,7 +158,7 @@ namespace TheGame
                 moduleHeightChange++;
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
-                    modulesWithParty.Add(numberOfModules);
+                    modulesWithParty.Add(numberOfModules - 1);
                     maps.Add("Maps/map_party_down_up.txt");
                     maps.Add("Maps/map_party_down_right.txt");
                     string map = generateRandomStringFromList(maps);
@@ -219,7 +219,7 @@ namespace TheGame
                 moduleHeightChange++;
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
-                    modulesWithParty.Add(numberOfModules);
+                    modulesWithParty.Add(numberOfModules - 1);
                     maps.Add("Maps/map_party_up_right.txt");
                     maps.Add("Maps/map_party_up_down.txt");
                     string map = generateRandomStringFromList(maps);
@@ -248,7 +248,7 @@ namespace TheGame
             {
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
-                    modulesWithParty.Add(numberOfModules);
+                    modulesWithParty.Add(numberOfModules - 1);
                     maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
                     maps.Add("Maps/map_party_left_down.txt");
@@ -283,7 +283,7 @@ namespace TheGame
                 moduleHeightChange++;
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
-                    modulesWithParty.Add(numberOfModules);
+                    modulesWithParty.Add(numberOfModules - 1);
                     prepareModule("Maps/map_party_up_right.txt", 0);
                     choosedMap = "Maps/map_up_right.txt";
                 }
@@ -302,7 +302,7 @@ namespace TheGame
                 moduleHeightChange++;
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
-                    modulesWithParty.Add(numberOfModules);
+                    modulesWithParty.Add(numberOfModules - 1);
                     prepareModule("Maps/map_party_down_right.txt", 0);
                     choosedMap = "Maps/map_down_right.txt";
                 }
