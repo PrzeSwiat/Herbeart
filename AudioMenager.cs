@@ -106,7 +106,7 @@ namespace TheGame
             steps.Volume = 0.1f;
 
             //player Attack
-            player.OnAttackPressed += PlayerAttack;
+            player.onAttackNoise += PlayerAttack;
             attack = Content.Load<SoundEffect>("SoundFX/punch").CreateInstance();
             attack.Volume = 0.5f;
 
