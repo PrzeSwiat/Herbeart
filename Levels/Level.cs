@@ -21,7 +21,6 @@ namespace TheGame
 
         #region Models
         private string[] treeModels = { "Objects/drzewo1", "Objects/drzewo2", "Objects/drzewo3" };
-        private string[] enemyTypes = { "Objects/apple", "Objects/mint", "Objects/nettle", "Objects/melissa" };
         private string[] grassModels = { "Objects/big_grass", "Objects/grass1", "Objects/grass2", "Objects/grass3", "Objects/three_grass" };
         private string[] otherSmallModels = { "Objects/big_stone", "Objects/small_stone", "Objects/two_stones", "Objects/bush", "Objects/small_bush", "Objects/flower", "Objects/flower", "Objects/flower" };
         #endregion
@@ -89,7 +88,7 @@ namespace TheGame
             public Vector3 position;
             public double probability;
 
-            public Tile(String groundType, float height, Vector3 position, double probability)
+            public Tile(string groundType, float height, Vector3 position, double probability)
             {
                 this.groundType = groundType;
                 this.height = height;
@@ -226,9 +225,21 @@ namespace TheGame
             GenerateGrassAndStones(grassCount, 4);
             if (enemyCount != 0)
             {
-                GenerateRandomEnemies(enemyCount);
+                List<Vector3> enemiesPositions= new List<Vector3>();
+                for (int i = 0; i < enemyCount; i++)
+                {
+                    Vector3 enemyPosition = ChoosedTileVector();
+                    enemiesPositions.Add(enemyPosition);
+                }    
+                EnemiesGenerator enemiesGenerator = new EnemiesGenerator(enemiesPositions);
+                enemies.AddRange(enemiesGenerator.returnEnemies());
             }
             ObjectInitializer();
+        }
+
+        public void GenerateEnemy(string enemyType, Vector3 enemyPosition)
+        {
+            
         }
 
         public void GenerateGreenObjectsNearTrees(Tile tile)
@@ -309,18 +320,6 @@ namespace TheGame
             return tiles[tiles.Count - 1];
         }
 
-        public void GenerateRandomEnemies(int enemyCount)
-        {
-            if (this.enemyCount != 0)
-            {
-                for (int i = 0; i < this.enemyCount; i++)
-                {
-                    string enemyType = GenerateRandomString(enemyTypes);
-                    Vector3 groundPosition = ChoosedTileVector();
-                    GenerateEnemy(enemyType, groundPosition);
-                }
-            }
-        }
 
         public Vector3 ChangeTileVector(Tile tile, double min, double max, bool x, bool z, double min1, double max1)
         {
@@ -418,33 +417,6 @@ namespace TheGame
             }
             else
                 return false;
-        }
-
-        public void GenerateEnemy(string enemyType, Vector3 groundPosition)
-        {
-            switch (enemyType)
-            {
-                case "Objects/apple":
-                    AppleTree apple = new AppleTree(groundPosition, "Objects/jablon", "Textures/drzewotekstur");
-                    apple.LoadContent();
-                    enemies.Add(apple);
-                    break;
-                case "Objects/melissa":
-                    Melissa melissa = new Melissa(groundPosition, "Objects/melisa", "Textures/melisa");
-                    melissa.LoadContent();
-                    enemies.Add(melissa);
-                    break;
-                case "Objects/nettle":
-                    Nettle nettle = new Nettle(groundPosition, "Objects/pokrzywa", "Textures/pokrzyw");
-                    nettle.LoadContent();
-                    enemies.Add(nettle);
-                    break;
-                case "Objects/mint":
-                    Mint mint = new Mint(groundPosition, "Objects/mieta", "Textures/mieta");
-                    mint.LoadContent();
-                    enemies.Add(mint);
-                    break;
-            }
         }
 
         public void GenerateGrass(string objectType, Vector3 groundPosition)
