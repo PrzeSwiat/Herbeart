@@ -337,6 +337,7 @@ namespace TheGame
             {
                 Globals.learnedRecepture.Add("ABX");
             }
+            Globals.numberOfRecepture++;
             player.Crafting.bools[value] = true;
 
 
