@@ -40,14 +40,17 @@ namespace TheGame
         private AnimationPlayer AAttack2;
         private Texture2D texture;
         private Effect effect1;
-
-
+        private int Combocounter = 0;
+        private DateTime LAT, AT;
+        DateTime lastAttackExecutionTime;
+        DateTime ComboCounter,lastcomboTimer;
         public AnimationMenager(ContentManager content, Player _player, List<Enemy> _enemies)
         {
             Content = content;
             player = _player;
             enemies = _enemies;
             allAnimations = new List<AnimationPlayer>();
+            
         }
 
         public void LoadContent()
@@ -119,34 +122,50 @@ namespace TheGame
 
             if(Atak)
             {
-                player.ActualSpeed = 13;
-                /*
-                if(combo)
-                {
-                    AAttack1.IsPlaying = true;
-                    AAttack2.IsPlaying = false;
-                }
-                else
-                {
-                    AAttack2.IsPlaying = true;
-                    AAttack1.IsPlaying = false;
-                }*/
+               
 
-                AAttack1.IsPlaying = true;
-                //AAttack2.IsPlaying = true;    piotrek
-                if (Math.Round(AAttack1.CurrentTime, 1) >= AAttack1.Animation.DurationInSeconds )
+                TimeSpan timeSinceLastAttack = DateTime.Now - lastAttackExecutionTime;
+                if (timeSinceLastAttack.TotalSeconds >= 0.01f)
                 {
-                    Atak = false;
-                    player.ActualSpeed = 20;
+                    player.ActualSpeed = 13;
+
+                        if (Combocounter == 0)
+                        {
+                            AAttack1.IsPlaying = true;
+
+                            if (Math.Round(AAttack1.CurrentTime, 1) >= AAttack1.Animation.DurationInSeconds)
+                            {
+                            
+                            player.ActualSpeed = 20;
+                            }
+                            Combocounter +=1;
+                        lastcomboTimer = DateTime.Now;
+                    }
+                        else if (Combocounter == 1)
+                        {
+                            AAttack2.IsPlaying = true;
+                            if (Math.Round(AAttack2.CurrentTime, 1) >= AAttack2.Animation.DurationInSeconds)
+                            {
+                                
+                                player.ActualSpeed = 20;
+                            }
+                            Combocounter = 0;
+                        Debug.WriteLine("Dupsko");
+                        }
+                    // Zaktualizuj czas ostatniego ataku
+                    lastAttackExecutionTime = DateTime.Now;
                 }
-                /*
-                if (Math.Round(AAttack2.CurrentTime, 1) >= AAttack2.Animation.DurationInSeconds)
+
+                Atak = false;
+            }
+            if (Combocounter != 0)
+            {
+                TimeSpan combotimerek = DateTime.Now - lastcomboTimer;
+                if (combotimerek.TotalSeconds > 3)
                 {
-                    Atak = false;
-                    player.ActualSpeed = 20;
-                    allow = true;
+                    Combocounter = 0;   
                 }
-                */
+
             }
 
         }
@@ -162,32 +181,14 @@ namespace TheGame
 
         }
         private void PlayerAttack(object obj, EventArgs e)
-        {
+        {  
             Atak = true; //ból
-
-            actualTime = DateTime.Now;
-            TimeSpan time = actualTime - lastAttackTime;
-            if(time.TotalSeconds <= 1.5)
-            {
-                combo = true;
-            }
-            else
-            {
-                combo = false;
-            }
-
-            lastAttackTime = actualTime;
-
         }
 
         public void DrawAnimations()
         {
             #region PLAYER
-            if (AIdle.IsPlaying)
-            {
-               DrawAnimation(player, AIdle, Idle);
-
-            }
+            
             if (AAttack1.IsPlaying)
             {
 
@@ -196,7 +197,7 @@ namespace TheGame
                 ASteps_tired.IsPlaying = false;
                 DrawAnimation(player, AAttack1, Attack1);
             }
-            /*  piotrek 
+            
             if (AAttack2.IsPlaying)
             {
 
@@ -205,7 +206,11 @@ namespace TheGame
                 ASteps_tired.IsPlaying = false;
                 DrawAnimation(player, AAttack2, Attack2);
             }
-            */
+            if (AIdle.IsPlaying)
+            {
+                DrawAnimation(player, AIdle, Idle);
+
+            }
             if (ASteps.IsPlaying && !AAttack1.IsPlaying && !AAttack2.IsPlaying)
             {
                 if (player.Health <= player.maxHealth * 0.5)
