@@ -33,6 +33,7 @@ namespace TheGame
         LeafList Leafs;
         SoundActorPlayer soundActorPlayer;
         AnimationMenager animationMenager;
+        ProgressSystem progressSystem;
        
 
         public Game1()
@@ -58,7 +59,7 @@ namespace TheGame
             Leafs = new LeafList();
             enemies = new Enemies();
             Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 65), (WindowWidth / 65), -(WindowHeight / 65f), (WindowHeight / 65f), -10f, 100f);      // orthographic view 
-                                                                                                                                                                              //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
+                                                                                                                                                            //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
             // PERSPECTIVE point of view
             //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f),GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
@@ -88,7 +89,7 @@ namespace TheGame
             soundActorPlayer = new SoundActorPlayer(Content, player, enemies.EnemiesList);
             animationMenager = new AnimationMenager(Content, player, enemies.EnemiesList);
             Globals.viewport = GraphicsDevice.Viewport;
-
+            
             base.Initialize();
 
         }
@@ -109,6 +110,7 @@ namespace TheGame
             soundActorPlayer.LoadContent();
             animationMenager.LoadContent();
             player.OnDestroy += DestroyControl;
+            progressSystem = new ProgressSystem(player);
 
         }
 
@@ -164,11 +166,24 @@ namespace TheGame
                             Leafs.RefreshInventory(this.player);
                             Leafs.UpdateScene(enemies.EnemiesList, gameTime);
                             camera.Update1(player.GetPosition());
-
-
                             interactionEventHandler.Update(enemies.EnemiesList);
                             Globals.viewport = GraphicsDevice.Viewport;
-
+                            if(progressSystem.canDraw==true && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z)==false)
+                            {
+                                progressSystem.canDraw = true;
+                            }
+                            else if(progressSystem.canDraw==false && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z) == false) 
+                            { 
+                                progressSystem.canDraw = false;
+                            }
+                            else if(progressSystem.canDraw == false && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z) == true) 
+                            {
+                                progressSystem.canDraw=true;
+                            }
+                            else if(progressSystem.canDraw == true && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z) == true)
+                            {
+                                progressSystem.canDraw=true;
+                            }
                             animationMenager.Update(gameTime);
                             SaveControl();
                             base.Update(gameTime);
@@ -235,8 +250,8 @@ namespace TheGame
                         hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
                         Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
                         player.DrawAnimation();
-
-                        if (Globals.TutorialPause)
+                        progressSystem.drawSelectMenu();
+                        if (Globals.TutorialPause && !progressSystem.canDraw)
                         {
                             if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
                             {
@@ -256,6 +271,9 @@ namespace TheGame
                                 hud.DrawTutorial(4);
                             }
                             
+                         
+                            
+                               
                         }
 
                     }
