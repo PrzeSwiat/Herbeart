@@ -32,6 +32,7 @@ namespace TheGame
 
         }
 
+
         public void Update(List<Enemy> enemiesList)
         {
             this.enemies = enemiesList;
@@ -46,6 +47,7 @@ namespace TheGame
                     {
                         if (player.boundingSphere.Intersects(enemy.boundingBox))
                         {
+                            player.InvokeOnAttackNoise();
                             enemy.Hit(player.Strength);
                         }
                     }

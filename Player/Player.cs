@@ -44,6 +44,7 @@ namespace TheGame
         public float MintValue;
         public event EventHandler onMove;
         public event EventHandler onRandomNoise;
+        public event EventHandler onAttackNoise;
 
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
@@ -229,6 +230,11 @@ namespace TheGame
                     enemy.Stun(10);
                 }
             }
+        }
+
+        public void InvokeOnAttackNoise()
+        {
+            onAttackNoise?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddIngredientA()

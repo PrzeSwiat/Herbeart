@@ -23,7 +23,11 @@ namespace TheGame
         ContentManager Content;
         Player player;
         List<Enemy> enemies;
+        private DateTime lastAttackTime = DateTime.Now;
+        private DateTime actualTime;
         private bool Atak;
+        private bool combo = false;
+        private bool allow = true;
         private List<AnimationPlayer> allAnimations;
         private SkinnedModel Steps;
         private SkinnedModel Steps_tired;
@@ -114,6 +118,38 @@ namespace TheGame
                 animationPlayer.Update(gameTime);
             }
 
+            if(Atak)
+            {
+                player.ActualSpeed = 13;
+                /*
+                if(combo)
+                {
+                    AAttack1.IsPlaying = true;
+                    AAttack2.IsPlaying = false;
+                }
+                else
+                {
+                    AAttack2.IsPlaying = true;
+                    AAttack1.IsPlaying = false;
+                }*/
+
+                AAttack1.IsPlaying = true;
+
+                if (Math.Round(AAttack1.CurrentTime, 1) >= AAttack1.Animation.DurationInSeconds )
+                {
+                    Atak = false;
+                    player.ActualSpeed = 20;
+                    allow = true;
+                }
+                if (Math.Round(AAttack2.CurrentTime, 1) >= AAttack2.Animation.DurationInSeconds)
+                {
+                    Atak = false;
+                    player.ActualSpeed = 20;
+                    allow = true;
+                }
+
+            }
+
         }
 
 
@@ -129,17 +165,32 @@ namespace TheGame
         private void PlayerAttack(object obj, EventArgs e)
         {
             Atak = true; //ból
-            
+
+            actualTime = DateTime.Now;
+            TimeSpan time = actualTime - lastAttackTime;
+            if(time.TotalSeconds <= 1.5 && allow)
+            {
+                combo = true;
+                allow = false;
+            }
+            else
+            {
+                combo = false;
+            }
+
+            lastAttackTime = actualTime;
+
         }
 
         public void DrawAnimations()
         {
-            if(AIdle.IsPlaying)
+            #region PLAYER
+            if (AIdle.IsPlaying)
             {
                DrawAnimation(player, AIdle, Idle);
 
             }
-            if(ASteps.IsPlaying && !Atak)
+            if(ASteps.IsPlaying && !AAttack1.IsPlaying && !AAttack2.IsPlaying)
             {
                 if (player.Health <= player.maxHealth * 0.5)
                 {
@@ -151,30 +202,51 @@ namespace TheGame
                 }
                 
             }
+
             AIdle.IsPlaying = true;
             ASteps.IsPlaying = false;
             ASteps_tired.IsPlaying = false;
+            
 
-            if (Atak)
+            if (AAttack1.IsPlaying)
             {
-                player.ActualSpeed = 13;
-                AAttack1.IsPlaying = true;
+               
                 AIdle.IsPlaying = false;
                 ASteps.IsPlaying = false;
                 ASteps_tired.IsPlaying = false;
                 DrawAnimation(player, AAttack1, Attack1);
-
-                if (Math.Round(AAttack1.CurrentTime, 1) >= AAttack1.Animation.DurationInSeconds)
-                {
-                    Atak = false;
-                    player.ActualSpeed = 20;
-                }
-
             }
+            /*
+            if (AAttack2.IsPlaying)
+            {
+                AIdle.IsPlaying = false;
+                ASteps.IsPlaying = false;
+                ASteps_tired.IsPlaying = false;
+                DrawAnimation(player, AAttack2, Attack2);
+            }*/
 
-            
-            
-            
+            #endregion
+
+            #region MIETA
+
+
+            #endregion
+
+            #region POKRZYWA
+
+
+            #endregion
+
+            #region MELISA
+
+
+            #endregion
+
+            #region JABLON
+
+
+            #endregion
+
         }
 
 

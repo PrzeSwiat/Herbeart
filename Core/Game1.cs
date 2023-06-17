@@ -12,8 +12,8 @@ namespace TheGame
     public class Game1 : Game
     {
         //DON'T TOUCH IT MORTALS
-        int WindowWidth = 1300;
-        int WindowHeight = 700;
+        int WindowWidth = 1900;
+        int WindowHeight = 1000;
 
         Camera camera;
         EffectHandler effectHandler;
