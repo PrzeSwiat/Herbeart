@@ -19,6 +19,7 @@ namespace TheGame
         private List<Vector2> enemiesCollidersArray;
         private Levels level;
         private List<Enemy> enemies;
+        private bool ifPartyModule;
 
         public World()   
         {
@@ -49,6 +50,7 @@ namespace TheGame
 
         }
 
+
         public List<Enemy> returnEnemiesList(float playerX, float playerZ)
         {
             enemies = level.returnEnemiesList(playerX, playerZ);
@@ -66,6 +68,11 @@ namespace TheGame
             return enemiesCollidersArray;
         }
 
+        public bool ifPlayerOnPartyModule(float playerX, float playerZ)
+        {
+            ifPartyModule = level.ifPlayerOnPartyModule(playerX, playerZ);
+            return ifPartyModule;
+        }
 
         private Vector2 ConvertToXnaVector2(System.Numerics.Vector2 systemVector2)
         {

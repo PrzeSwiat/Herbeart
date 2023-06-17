@@ -183,6 +183,17 @@ namespace TheGame
                         enemiesColliders.Add(new Vector2(newVector1.X, newVector1.Z));
                         x++;
                         break;
+                    case 50:
+                        groundType = "forest_border_without_obj";
+                        height = 0.0f;
+                        Vector3 wektor5 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                        Tile tile5 = new Tile(groundType, height, wektor5, 0);
+                        forestTiles.Add(tile5);
+                        Vector3 newVector5 = ChangeTileVector(tile5, -2, 2, true, true, -1.5, 1.5);
+                        GenerateForest(newVector5, 150, 220);
+                        enemiesColliders.Add(new Vector2(newVector5.X, newVector5.Z));
+                        x++;
+                        break;
                     case 97: //a
                         groundType = "grass";
                         height = 0.0f;

@@ -41,6 +41,7 @@ namespace TheGame
         List<Rectangle> modulesList;
         Rectangle module;
         HashSet<Rectangle> visited;
+        List<int> modulesWithParty;
         #endregion
         #region Enemies Types
         private string mintEnemy = "Objects/mint";
@@ -56,6 +57,7 @@ namespace TheGame
             _levels = new List<Level>();
             modulesList = new List<Rectangle>();
             visited = new HashSet<Rectangle>();
+            modulesWithParty = new List<int>();
         }
 
         public void LoadContent()
@@ -120,6 +122,7 @@ namespace TheGame
 
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
+                    modulesWithParty.Add(numberOfModules);
                     //maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
                     maps.Add("Maps/map_party_left_down.txt");
@@ -155,6 +158,7 @@ namespace TheGame
                 moduleHeightChange++;
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
+                    modulesWithParty.Add(numberOfModules);
                     maps.Add("Maps/map_party_down_up.txt");
                     maps.Add("Maps/map_party_down_right.txt");
                     string map = generateRandomStringFromList(maps);
@@ -184,6 +188,7 @@ namespace TheGame
             {
                 if(numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
+                    modulesWithParty.Add(numberOfModules);
                     maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
                     string map = generateRandomStringFromList(maps);
@@ -214,6 +219,7 @@ namespace TheGame
                 moduleHeightChange++;
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
+                    modulesWithParty.Add(numberOfModules);
                     maps.Add("Maps/map_party_up_right.txt");
                     maps.Add("Maps/map_party_up_down.txt");
                     string map = generateRandomStringFromList(maps);
@@ -242,6 +248,7 @@ namespace TheGame
             {
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
+                    modulesWithParty.Add(numberOfModules);
                     maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
                     maps.Add("Maps/map_party_left_down.txt");
@@ -276,6 +283,7 @@ namespace TheGame
                 moduleHeightChange++;
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
+                    modulesWithParty.Add(numberOfModules);
                     prepareModule("Maps/map_party_up_right.txt", 0);
                     choosedMap = "Maps/map_up_right.txt";
                 }
@@ -294,6 +302,7 @@ namespace TheGame
                 moduleHeightChange++;
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
+                    modulesWithParty.Add(numberOfModules);
                     prepareModule("Maps/map_party_down_right.txt", 0);
                     choosedMap = "Maps/map_down_right.txt";
                 }
@@ -347,6 +356,18 @@ namespace TheGame
             return result;
         }
 
+        public bool ifPlayerOnPartyModule(float playerX, float playerY)
+        {
+            int numberOfModule = returnModuleNumber(playerX, playerY);
+            if (modulesWithParty.Contains(numberOfModule) && !visited.Contains(modulesList[numberOfModule]))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public List<SceneObject> returnSceneObjects(float playerX, float playerY)
         {
