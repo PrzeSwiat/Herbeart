@@ -51,13 +51,13 @@ namespace TheGame
         #endregion
 
 
-
         public Levels()
         {
             _levels = new List<Level>();
             modulesList = new List<Rectangle>();
             visited = new HashSet<Rectangle>();
             modulesWithParty = new List<int>();
+
         }
 
         public void LoadContent()
@@ -189,7 +189,7 @@ namespace TheGame
                 if(numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     modulesWithParty.Add(numberOfModules);
-                    maps.Add("Maps/map_party_straight.txt");
+                    //maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
                     string map = generateRandomStringFromList(maps);
                     prepareModule(map, 0);
@@ -375,10 +375,6 @@ namespace TheGame
 
             int numberOfModule = returnModuleNumber(playerX, playerY);
 
-            if (numberOfModule == numberOfModules-2)
-            {
-                prepareMap();
-            }
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
                 if (i >= 0 && i < _levels.Count - 1)
@@ -393,6 +389,17 @@ namespace TheGame
 
 
             return _sceneObjects;
+        }
+
+        public void prepareRandomMap(float playerX, float playerY)
+        {
+            int numberOfModule = returnModuleNumber(playerX, playerY);
+
+
+            if (numberOfModule == numberOfModules - 2)
+            {
+                prepareMap();
+            }
         }
 
         public List<SceneObject> returnNonCollideSceneObjects(float playerX, float playerY)

@@ -21,7 +21,7 @@ namespace TheGame
         private List<Enemy> enemies;
         private bool ifPartyModule;
 
-        public World()   
+        public World()
         {
             _worldArray = new List<SceneObject>();
             nonCollideArray = new List<SceneObject>();
@@ -50,6 +50,10 @@ namespace TheGame
 
         }
 
+        public void PrepareRandomMap(float playerX, float playerZ)
+        {
+            level.prepareRandomMap(playerX, playerZ);
+        }
 
         public List<Enemy> returnEnemiesList(float playerX, float playerZ)
         {
