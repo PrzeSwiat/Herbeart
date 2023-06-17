@@ -173,8 +173,7 @@ namespace TheGame
                 {
                     MenuOption = 3;
                 }
-                Globals.prevProggresState = gamePadState;
-                Globals.prevKeyBoardProggresState = state;
+                
                 Color one = Color.Gray;
                 Color two = Color.Gray;
                 Color three = Color.Gray;
@@ -192,7 +191,7 @@ namespace TheGame
                     three = Color.White;
                 }
 
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 1)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState .Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 1)
                 {
                    
                     if (rewards[0] == 1 || rewards[0] == 2 || rewards[0] == 3)
@@ -209,7 +208,7 @@ namespace TheGame
                     Globals.TutorialPause = false;
                     resetRewardArray();
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 2)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 2)
                 {
                     
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -217,7 +216,7 @@ namespace TheGame
                     {
                         
                             // Reward2=tekstura dodatkowego attackspeeda
-                        addAttackSpeed(5);
+                        addAttackSpeed(0.5f);
                         attackspeedcounter++;
                       
                     }
@@ -246,7 +245,7 @@ namespace TheGame
                     resetRewardArray();
 
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 3)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 3)
                 {
                     if (rewards[2] == 1)
                     {
@@ -285,6 +284,8 @@ namespace TheGame
                 Globals.spriteBatch.Draw(rewe, new Vector2(600, 600), null, two, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
                 Globals.spriteBatch.Draw(rewe, new Vector2(800, 800), null, three, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
                 Globals.spriteBatch.End();
+                Globals.prevProggresState = gamePadState;
+                Globals.prevKeyBoardProggresState = state;
             }
 
             
@@ -348,7 +349,7 @@ namespace TheGame
             player.Strength += str;
             player.MaxStrength += str;
         }
-        public void addAttackSpeed(int speed)
+        public void addAttackSpeed(float speed)
         {
             player.AttackSpeed += speed;
             player.ActualAttackSpeed += speed;

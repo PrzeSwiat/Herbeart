@@ -99,8 +99,8 @@ namespace TheGame
             }
             else
             {
-                int moduleIncrements = (numberOfModules - 15) / 5;
-                enemyCount = 9 + (moduleIncrements * 8);
+                //int moduleIncrements = (numberOfModules - 15) / 5;
+                enemyCount = 15;
             }
             return enemyCount;
         }
