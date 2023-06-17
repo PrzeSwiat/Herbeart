@@ -78,6 +78,7 @@ namespace TheGame
             this.isCrafting = crafting;
             actualRecepture = recepture;
             this.playerRotation = playerRotation;
+            Globals.maxReceptures = Globals.learnedRecepture.Count();
         }
 
         public void DrawFrontground(int hp, List<Enemy> enemies)
