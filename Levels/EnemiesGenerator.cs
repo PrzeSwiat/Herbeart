@@ -10,22 +10,16 @@ namespace TheGame
     internal class EnemiesGenerator
     {
         private List<Enemy> enemies;
-        private int enemiesCount;
-        private List<Vector3> enemiesPositions;
 
-        private static EnemyType Mint = new EnemyType("Objects/mint", 0.5);
-        private static EnemyType Apple = new EnemyType("Objects/apple", 0.2);
-        private static EnemyType Nettle = new EnemyType("Objects/nettle", 0.2);
-        private static EnemyType Melissa = new EnemyType("Objects/melissa", 0.1);
+        private static EnemyType Mint = new EnemyType("Objects/mint", 0.8);
+        private static EnemyType Apple = new EnemyType("Objects/apple", 0.08);
+        private static EnemyType Nettle = new EnemyType("Objects/nettle", 0.08);
+        private static EnemyType Melissa = new EnemyType("Objects/melissa", 0.04);
         private EnemyType[] enemyTypes = {Mint, Apple, Nettle, Melissa};
 
-        public EnemiesGenerator(List<Vector3> enemiesPositions)
+        public EnemiesGenerator()
         {
-            this.enemiesCount = enemiesPositions.Count();
-            this.enemiesPositions = enemiesPositions;
-
             enemies = new List<Enemy>();
-            GenerateRandomEnemies();
         }
 
         public struct EnemyType
@@ -43,18 +37,33 @@ namespace TheGame
 
         public EnemyType GenerateRandomEnemyTypeWithProbability()
         {
-            Random random = new Random();
-
-            double randomNumber = random.NextDouble();
+            
+            double sumOfProbabilities = enemyTypes.Sum(e => e.probability);
+            double randomNumber = new Random().NextDouble();
 
             // Znalezienie elementu, którego prawdopodobieństwo przekracza wylosowaną liczbę
-            double cumulativeProbability = 0;
+            double cumulativeProbability = 0.0;
 
-            for (int i = 0; i < enemyTypes.Count(); i++)
+            for (int i = 0; i < enemyTypes.Length; i++)
             {
-                cumulativeProbability += enemyTypes[i].probability;
+                double probability = enemyTypes[i].probability/ sumOfProbabilities;
+                cumulativeProbability += probability;
                 if (randomNumber < cumulativeProbability)
                 {
+                    if (enemyTypes[i].enemyType != "Objects/mint")
+                    {
+                        enemyTypes[i].probability = enemyTypes[i].probability / 2;
+
+                        double increaseProbability = enemyTypes[i].probability / (enemyTypes.Length - 1);
+                        for (int j = 0; j < enemyTypes.Length; j++)
+                        {
+                            if (j != i)
+                            {
+                                enemyTypes[j].probability += increaseProbability;
+                            }
+                        }
+                    }
+
                     return enemyTypes[i];
                 }
             }
@@ -63,11 +72,11 @@ namespace TheGame
         }
 
 
-        public void GenerateRandomEnemies()
+        public void GenerateRandomEnemies(List<Vector3> enemiesPositions)
         {
-            if (this.enemiesCount != 0)
+            if (enemiesPositions.Count() != 0)
             {
-                for (int i = 0; i < this.enemiesCount; i++)
+                for (int i = 0; i < enemiesPositions.Count(); i++)
                 {
                     string enemyType = GenerateRandomEnemyTypeWithProbability().enemyType;
                     Vector3 enemyPosition = enemiesPositions[i];

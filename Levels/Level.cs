@@ -42,6 +42,7 @@ namespace TheGame
         private List<Enemy> enemies;
         private List<Vector2> enemiesColliders;       //lista drzew z ktorymi mają kolidować przeciwnicy
 
+        private EnemiesGenerator enemiesGenerator;
         private string fileName;
         private float separatorX, separatorZ;
         public int enemyCount;
@@ -53,6 +54,7 @@ namespace TheGame
             _sceneObjects = new List<SceneObject>();
             nonColideObjects = new List<SceneObject>();
             enemies = new List<Enemy>();
+            enemiesGenerator = new EnemiesGenerator();
             enemiesColliders = new List<Vector2>();       
             groundTiles = new List<Tile>();
             forestTiles = new List<Tile>();
@@ -223,23 +225,29 @@ namespace TheGame
             Random random = new Random();
             int grassCount = random.Next(35, 40);
             GenerateGrassAndStones(grassCount, 4);
+            GenerateRandomEnemies();
+            ObjectInitializer();
+        }
+
+        public void GenerateRandomEnemies()
+        {
             if (enemyCount != 0)
             {
-                List<Vector3> enemiesPositions= new List<Vector3>();
+                List<Vector3> enemiesPositions = new List<Vector3>();
                 for (int i = 0; i < enemyCount; i++)
                 {
                     Vector3 enemyPosition = ChoosedTileVector();
                     enemiesPositions.Add(enemyPosition);
-                }    
-                EnemiesGenerator enemiesGenerator = new EnemiesGenerator(enemiesPositions);
+                }
+                enemiesGenerator.GenerateRandomEnemies(enemiesPositions);
                 enemies.AddRange(enemiesGenerator.returnEnemies());
             }
-            ObjectInitializer();
         }
 
         public void GenerateEnemy(string enemyType, Vector3 enemyPosition)
         {
-            
+            enemiesGenerator.GenerateEnemy(enemyType, enemyPosition);
+            enemies.AddRange(enemiesGenerator.returnEnemies());
         }
 
         public void GenerateGreenObjectsNearTrees(Tile tile)
