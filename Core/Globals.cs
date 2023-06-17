@@ -52,7 +52,7 @@ namespace TheGame
         public static KeyboardState prevKeyBoardTutorialState;
         public static GamePadState prevLeaderState;
         public static KeyboardState prevKeyBoardLeaderState;
-
+        public static List<String> learnedRecepture;
         public static int numberOfRecepture = 0;
         public static int maxReceptures = 4;
     }

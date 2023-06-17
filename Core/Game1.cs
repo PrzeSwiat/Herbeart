@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using Color = Microsoft.Xna.Framework.Color;
@@ -75,6 +76,8 @@ namespace TheGame
             Globals.effectHandler1 = new EffectHandler(Content.Load<Effect>("MainShader"));
             Globals.Score = 0;
             Globals.ScoreMultipler = 1;
+            Globals.learnedRecepture = new List<String>();
+            Globals.learnedRecepture.Add("AAA");
             hud = new HUD(WindowWidth, WindowHeight);
             world = new World();
             player = new Player(new Vector3(50,0,60), "Objects/mis", "Textures/MisTexture");

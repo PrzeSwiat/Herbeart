@@ -122,7 +122,7 @@ namespace TheGame
             for (int i = 0; i < 3; i++)
             {
                 Rectangle rect = new Rectangle(receptureRect.X + 30 + i * 80, receptureRect.Y + 10, 80, 80);
-                switch (recepture[Globals.numberOfRecepture][i])
+                switch (Globals.learnedRecepture[Globals.numberOfRecepture][i])
                 {
                     case 'A':
                         Globals.spriteBatch.Draw(mintTex, rect, Color.White);
