@@ -27,7 +27,6 @@ namespace TheGame
         private DateTime actualTime;
         private bool Atak;
         private bool combo = false;
-        private bool allow = true;
         private List<AnimationPlayer> allAnimations;
         private SkinnedModel Steps;
         private SkinnedModel Steps_tired;
@@ -134,12 +133,11 @@ namespace TheGame
                 }*/
 
                 AAttack1.IsPlaying = true;
-                
+                //AAttack2.IsPlaying = true;    piotrek
                 if (Math.Round(AAttack1.CurrentTime, 1) >= AAttack1.Animation.DurationInSeconds )
                 {
                     Atak = false;
                     player.ActualSpeed = 20;
-                    allow = true;
                 }
                 /*
                 if (Math.Round(AAttack2.CurrentTime, 1) >= AAttack2.Animation.DurationInSeconds)
@@ -169,10 +167,9 @@ namespace TheGame
 
             actualTime = DateTime.Now;
             TimeSpan time = actualTime - lastAttackTime;
-            if(time.TotalSeconds <= 1.5 && allow)
+            if(time.TotalSeconds <= 1.5)
             {
                 combo = true;
-                allow = false;
             }
             else
             {
@@ -199,7 +196,16 @@ namespace TheGame
                 ASteps_tired.IsPlaying = false;
                 DrawAnimation(player, AAttack1, Attack1);
             }
+            /*  piotrek 
+            if (AAttack2.IsPlaying)
+            {
 
+                AIdle.IsPlaying = false;
+                ASteps.IsPlaying = false;
+                ASteps_tired.IsPlaying = false;
+                DrawAnimation(player, AAttack2, Attack2);
+            }
+            */
             if (ASteps.IsPlaying && !AAttack1.IsPlaying && !AAttack2.IsPlaying)
             {
                 if (player.Health <= player.maxHealth * 0.5)
