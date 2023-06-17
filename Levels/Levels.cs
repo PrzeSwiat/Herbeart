@@ -130,9 +130,9 @@ namespace TheGame
                     prepareModule(map, 0);
                     switch (map)
                     {
-                        case "Maps/map_party_straight.txt":
+/*                        case "Maps/map_party_straight.txt":
                             choosedMap = "Maps/map_2.txt";
-                            break;
+                            break;*/
                         case "Maps/map_party_left_up.txt":
                             choosedMap = "Maps/map_left_up_1.txt";
                             break;
@@ -195,9 +195,9 @@ namespace TheGame
                     prepareModule(map, 0);
                     switch (map)
                     {
-                        case "Maps/map_party_straight.txt":
+/*                        case "Maps/map_party_straight.txt":
                             choosedMap = "Maps/map_2.txt";
-                            break;
+                            break;*/
                         case "Maps/map_party_left_up.txt":
                             choosedMap = "Maps/map_left_up_1.txt";
                             break;
@@ -249,16 +249,16 @@ namespace TheGame
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     modulesWithParty.Add(numberOfModules - 1);
-                    maps.Add("Maps/map_party_straight.txt");
+                    //maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
                     maps.Add("Maps/map_party_left_down.txt");
                     string map = generateRandomStringFromList(maps);
                     prepareModule(map, 0);
                     switch (map)
                     {
-                        case "Maps/map_party_straight.txt":
+/*                        case "Maps/map_party_straight.txt":
                             choosedMap = "Maps/map_2.txt";
-                            break;
+                            break;*/
                         case "Maps/map_party_left_up.txt":
                             choosedMap = "Maps/map_left_up_1.txt";
                             break;
