@@ -320,20 +320,20 @@ namespace TheGame
             {
                value = random.Next(0, player.Crafting.bools.Count());
                 
-            } while (!player.Crafting.bools[value]);
+            } while (player.Crafting.bools[value]);
             if (value == 1) 
             {
                 Globals.learnedRecepture.Add("AAB");
             }
-            if (value == 1)
+            if (value == 2)
             {
                 Globals.learnedRecepture.Add("AXY");
             }
-            if (value == 1)
+            if (value == 3)
             {
                 Globals.learnedRecepture.Add("XBY");
             }
-            if (value == 1)
+            if (value == 4)
             {
                 Globals.learnedRecepture.Add("ABX");
             }
