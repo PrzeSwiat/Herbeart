@@ -158,11 +158,11 @@ namespace TheGame
                 if ((gamePadState.ThumbSticks.Left.X >= 0.5f && !(Globals.prevProggresState.ThumbSticks.Left.X >= 0.5f)) || (state.IsKeyDown(Keys.D) && !Globals.prevKeyBoardProggresState.IsKeyDown(Keys.D)))
                 {
                     Debug.WriteLine("Dupa");
-                    MenuOption -= 1;
+                    MenuOption += 1;
                 }
                 if ((gamePadState.ThumbSticks.Left.X <= -0.5f && !(Globals.prevProggresState.ThumbSticks.Left.X <= -0.5f)) || (state.IsKeyDown(Keys.A) && !Globals.prevKeyBoardProggresState.IsKeyDown(Keys.A)))
                 {
-                    MenuOption += 1;
+                    MenuOption -= 1;
                     Debug.WriteLine("Dupa");
                 }
                 if (MenuOption < 1)
@@ -321,6 +321,22 @@ namespace TheGame
                value = random.Next(0, player.Crafting.bools.Count());
                 
             } while (!player.Crafting.bools[value]);
+            if (value == 1) 
+            {
+                Globals.learnedRecepture.Add("AAB");
+            }
+            if (value == 1)
+            {
+                Globals.learnedRecepture.Add("AXY");
+            }
+            if (value == 1)
+            {
+                Globals.learnedRecepture.Add("XBY");
+            }
+            if (value == 1)
+            {
+                Globals.learnedRecepture.Add("ABX");
+            }
             player.Crafting.bools[value] = true;
 
 
