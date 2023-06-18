@@ -17,7 +17,8 @@ namespace TheGame
         private Boolean padButtonYClicked;
         private Boolean leftShoulderClicked;
         private Boolean rightShoulderClicked;
-       
+        private Boolean rightStickClicked;
+
         public bool isMoving;
 
         MouseState lastMouseState, currentMouseState;
@@ -41,6 +42,7 @@ namespace TheGame
             padButtonXClicked = false;
             leftShoulderClicked = false;
             rightShoulderClicked = false;
+            rightStickClicked = false;
     }
 
         public void UpdatePlayerMovement(World world, float deltaTime)
@@ -190,7 +192,17 @@ namespace TheGame
                 // Button A
                 if (capabilities.HasAButton)
                 {
-                    if (gamePadState.IsButtonDown(Buttons.A) && !padButtonAClicked)
+                    if (gamePadState.IsButtonDown(Buttons.RightStick) && isCraftingTea && !rightStickClicked)
+                    {
+                        rightStickClicked = true;
+                        player.Crafting.cleanRecepture();
+                    } else if (gamePadState.IsButtonDown(Buttons.RightStick) && isCraftingTea && rightStickClicked)
+                    {
+                        rightStickClicked = false;
+                    }
+
+
+                        if (gamePadState.IsButtonDown(Buttons.A) && !padButtonAClicked)
                     {
                         if (isCraftingTea && !isThrowing)           // Tworzenie herbatek
                         {

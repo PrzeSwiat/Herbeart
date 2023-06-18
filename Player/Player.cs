@@ -59,7 +59,7 @@ namespace TheGame
             Crafting = new Crafting(Inventory, playerEffects);
             playerMovement = new PlayerMovement(this);
             shadow = new Shadow(this.GetPosition());
-            appleValue = 4; MintValue = 0.5f; NettleValue = 1; NettleTime = 5;MintTime = 9;
+            appleValue = 4; MintValue = 0.5f; NettleValue = 1; NettleTime = 5; MintTime = 9;
             // Uruchomienie timera
             //playerEffects.Start();
             
@@ -156,6 +156,7 @@ namespace TheGame
         }
         public void DrawAnimation()
         {
+
             Crafting.DrawAnimation();
         }
 
