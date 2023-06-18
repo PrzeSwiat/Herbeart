@@ -72,12 +72,13 @@ namespace TheGame
 
             //Moduł 2
             prepareModule("Maps/map2.txt", 0, 0);
+            _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 80));
             _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 50));
-            _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 60));
 
             //Moduł 3
             prepareModule("Maps/map3.txt", 0, 0);
             _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 50));
+            _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 55));
             _levels[2].GenerateEnemy(nettleEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 60));
 
             currentMap = "Maps/map3.txt";

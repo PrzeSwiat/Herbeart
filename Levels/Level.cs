@@ -45,7 +45,6 @@ namespace TheGame
         private List<Enemy> enemies;
         private List<Vector2> enemiesColliders;       //lista drzew z ktorymi mają kolidować przeciwnicy
         private int enemyCount;
-        private EnemiesGenerator enemiesGenerator;
         private int difficultyLevel;
         #endregion
         private string fileName;
@@ -59,7 +58,6 @@ namespace TheGame
             _sceneObjects = new List<SceneObject>();
             nonColideObjects = new List<SceneObject>();
             enemies = new List<Enemy>();
-            enemiesGenerator = new EnemiesGenerator();
             enemiesColliders = new List<Vector2>();       
             groundTiles = new List<Tile>();
             forestTiles = new List<Tile>();
@@ -237,6 +235,7 @@ namespace TheGame
 
         public void GenerateRandomEnemies()
         {
+            EnemiesGenerator enemiesGenerator = new EnemiesGenerator();
             if (enemyCount != 0)
             {
                 List<Vector3> enemiesPositions = new List<Vector3>();
@@ -252,6 +251,7 @@ namespace TheGame
 
         public void GenerateEnemy(string enemyType, Vector3 enemyPosition)
         {
+            EnemiesGenerator enemiesGenerator = new EnemiesGenerator();
             enemiesGenerator.GenerateEnemy(enemyType, enemyPosition);
             enemies.AddRange(enemiesGenerator.returnEnemies());
         }
