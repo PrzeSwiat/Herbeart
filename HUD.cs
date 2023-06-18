@@ -244,12 +244,12 @@ namespace TheGame
                 Globals.spriteBatch.DrawString(Menu2, "< hold LT to heal yourself ", new Vector2(WindowWidth * 10 / 20, WindowHeight * 0 / 20), Color.Yellow);
                 Globals.spriteBatch.End();
             }
-            if (number == 3) //różni przeciwnicy to różne listki
+            if (number == 3) //pokrzywa przeciwnik
             {
                 Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 5 / 20, 500, 450);
                 Globals.spriteBatch.Begin();
                 Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "new enemies drops new leaf", new Vector2(WindowWidth * 6 / 20, WindowHeight * 6 / 20), Color.Yellow);
+                Globals.spriteBatch.DrawString(Menu2, "pokrzywa", new Vector2(WindowWidth * 6 / 20, WindowHeight * 6 / 20), Color.Yellow);
                 Globals.spriteBatch.End();
             }
             if (number == 4) //efekty miotane pierwsze, co robią efekty miotane (ziel,czer)
@@ -261,7 +261,22 @@ namespace TheGame
                 Globals.spriteBatch.End();
             }
 
-
+            if (number == 6) //jablon przeciwnik 
+            {
+                Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 0 / 20, 500, 450);
+                Globals.spriteBatch.Begin();
+                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
+                Globals.spriteBatch.DrawString(Menu2, "jablon", new Vector2(WindowWidth * 6 / 20, WindowHeight * 9 / 20), Color.Yellow);
+                Globals.spriteBatch.End();
+            }
+            if (number == 9) //melisa przeciwnik 
+            {
+                Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 0 / 20, 500, 450);
+                Globals.spriteBatch.Begin();
+                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
+                Globals.spriteBatch.DrawString(Menu2, "melisa", new Vector2(WindowWidth * 6 / 20, WindowHeight * 9 / 20), Color.Yellow);
+                Globals.spriteBatch.End();
+            }
 
         }
 

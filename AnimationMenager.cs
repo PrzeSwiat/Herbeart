@@ -122,35 +122,24 @@ namespace TheGame
 
             if(Atak)
             {
-               
-
                 TimeSpan timeSinceLastAttack = DateTime.Now - lastAttackExecutionTime;
                 if (timeSinceLastAttack.TotalSeconds >= 0.01f)
                 {
                     player.ActualSpeed = 13;
 
-                        if (Combocounter == 0)
-                        {
-                            AAttack1.IsPlaying = true;
+                    if (Combocounter == 0)
+                    {
+                        AAttack1.IsPlaying = true;
 
-                            if (Math.Round(AAttack1.CurrentTime, 1) >= AAttack1.Animation.DurationInSeconds)
-                            {
-                            
-                            player.ActualSpeed = 20;
-                            }
-                            Combocounter +=1;
+                        Combocounter += 1;
                         lastcomboTimer = DateTime.Now;
                     }
-                        else if (Combocounter == 1)
-                        {
-                            AAttack2.IsPlaying = true;
-                            if (Math.Round(AAttack2.CurrentTime, 1) >= AAttack2.Animation.DurationInSeconds)
-                            {
-                                
-                                player.ActualSpeed = 20;
-                            }
-                            Combocounter = 0;
-                        }
+                    else if (Combocounter == 1)
+                    {
+                        AAttack2.IsPlaying = true;
+
+                        Combocounter = 0;
+                    }
                     // Zaktualizuj czas ostatniego ataku
                     lastAttackExecutionTime = DateTime.Now;
                 }
@@ -238,16 +227,6 @@ namespace TheGame
             ASteps.IsPlaying = false;
             ASteps_tired.IsPlaying = false;
             
-
-
-            /*
-            if (AAttack2.IsPlaying)
-            {
-                AIdle.IsPlaying = false;
-                ASteps.IsPlaying = false;
-                ASteps_tired.IsPlaying = false;
-                DrawAnimation(player, AAttack2, Attack2);
-            }*/
 
             #endregion
 

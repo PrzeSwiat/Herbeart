@@ -484,6 +484,10 @@ namespace TheGame
                 Globals.Module4 = true;
             if (numberOfModule == 4)
                 Globals.Module5 = true;
+            if (numberOfModule == 5)
+                Globals.Module6 = true;
+            if (numberOfModule == 8)
+                Globals.Module9 = true;
 
             return numberOfModule;
         }

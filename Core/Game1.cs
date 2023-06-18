@@ -253,6 +253,8 @@ namespace TheGame
                         Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
                         player.DrawAnimation();
                         progressSystem.drawSelectMenu();
+
+
                         if (Globals.TutorialPause && !progressSystem.canDraw)
                         {
                             if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
@@ -260,22 +262,27 @@ namespace TheGame
                                 hud.DrawTutorial(2);
 
                             }
-                             if(Globals.Module2 && Globals.moduleCounter == 0)
-                            { 
+                            if (Globals.Module2 && Globals.moduleCounter == 0)
+                            {
                                 hud.DrawTutorial(1);
                             }
-                             if(Globals.Module3 && Globals.moduleCounter == 1) 
+                            if (Globals.Module3 && Globals.moduleCounter == 1)
                             {
                                 hud.DrawTutorial(3);
                             }
-                             if(Globals.Module4 && Globals.moduleCounter == 2) 
+                            if (Globals.Module4 && Globals.moduleCounter == 2)
                             {
                                 hud.DrawTutorial(4);
                             }
-                            
-                         
-                            
-                               
+                            if(Globals.Module6 && Globals.moduleCounter == 3)
+                            {
+                                hud.DrawTutorial(6);
+                            }
+                            if (Globals.Module9 && Globals.moduleCounter == 4)
+                            {
+                                hud.DrawTutorial(9);
+                            }
+
                         }
 
                     }
@@ -429,8 +436,18 @@ namespace TheGame
                 {
                     Globals.Death = false;
                     Globals.Tutorial = false;
+                    Globals.TutorialPause = false;
+                    Globals.Module2 = false;
+                    Globals.Module3 = false;
+                    Globals.Module4 = false;
+                    Globals.Module5 = false;
+                    Globals.Module6 = false;
+                    Globals.Module9 = false;
+                    Globals.counter = 0;
+                    Globals.moduleCounter = 0;
                     LoadContent();
                     Initialize();
+                    
                     Globals.Start = true;
                     Globals.Easy = false;
                     Globals.Hard = false;
@@ -466,13 +483,26 @@ namespace TheGame
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
-                    //ODBLOKOWAĆ NOWY SKŁADNIK
+                    //ODBLOKOWAĆ NOWY SKŁADNIK POKRZYWA
                 }
                 if (Globals.Module4 && Globals.moduleCounter == 2)   
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
-                    //ODBLOKOWAĆ NOWY SKŁADNIK
+
+                }
+                if (Globals.Module6 && Globals.moduleCounter == 3)
+                {
+                    player.Stop();
+                    Globals.TutorialPause = true;
+                    //ODBLOKOWAĆ NOWY SKŁADNIK  JABŁOŃ
+
+                }
+                if (Globals.Module9 && Globals.moduleCounter == 4)
+                {
+                    player.Stop();
+                    Globals.TutorialPause = true;
+                    //ODBLOKOWAĆ NOWY SKŁADNIK  JABŁOŃ
 
                 }
 
@@ -497,6 +527,14 @@ namespace TheGame
                             Globals.moduleCounter += 1;
                         }
                         if (Globals.Module4 && Globals.moduleCounter == 2)
+                        {
+                            Globals.moduleCounter += 1;
+                        }
+                        if (Globals.Module6 && Globals.moduleCounter == 3)
+                        {
+                            Globals.moduleCounter += 1;
+                        }
+                        if (Globals.Module9 && Globals.moduleCounter == 4)
                         {
                             Globals.moduleCounter += 1;
                         }
@@ -567,14 +605,31 @@ namespace TheGame
 
             if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1) //leader board
             {
+                Globals.TutorialPause = false;
+                Globals.Module2 = false;
+                Globals.Module3 = false;
+                Globals.Module4 = false;
+                Globals.Module5 = false;
+                Globals.Module6 = false;
+                Globals.Module9 = false;
+                Globals.counter = 0;
+                Globals.moduleCounter = 0;
                 Window.TextInput += hud.TextInputHandler;
                 Globals.LeaderBoard = true;
 
             }
             if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2) //try again 
             {
+                Globals.TutorialPause = false;
+                Globals.Module2 = false;
+                Globals.Module3 = false;
+                Globals.Module4 = false;
+                Globals.Module5 = false;
+                Globals.Module6 = false;
+                Globals.Module9 = false;
                 Globals.Death = false;
                 Globals.Tutorial = false;
+               
                 LoadContent();
                 Initialize();
                 player.Start();
@@ -582,6 +637,15 @@ namespace TheGame
             }
             if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3) // main menu
             {
+                Globals.TutorialPause = false;
+                Globals.Module2 = false;
+                Globals.Module3 = false;
+                Globals.Module4 = false;
+                Globals.Module5 = false;
+                Globals.Module6 = false;
+                Globals.Module9 = false;
+                Globals.counter = 0;
+                Globals.moduleCounter = 0;
                 Globals.Death = false;
                 Globals.Tutorial = false;
                 Globals.Easy = false;

@@ -30,6 +30,8 @@ namespace TheGame
         public static bool Module3;
         public static bool Module4;
         public static bool Module5;
+        public static bool Module6;
+        public static bool Module9;
         public static bool Start;
         public static bool Death;
         public static bool Tutorial;
