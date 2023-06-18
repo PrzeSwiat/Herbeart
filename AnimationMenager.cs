@@ -150,7 +150,6 @@ namespace TheGame
                                 player.ActualSpeed = 20;
                             }
                             Combocounter = 0;
-                        Debug.WriteLine("Dupsko");
                         }
                     // Zaktualizuj czas ostatniego ataku
                     lastAttackExecutionTime = DateTime.Now;
@@ -166,6 +165,14 @@ namespace TheGame
                     Combocounter = 0;   
                 }
 
+            }
+            if (AAttack1.IsPlaying || AAttack2.IsPlaying)
+            {
+                player.ActualSpeed = 13;
+            }
+            else
+            {
+                player.ActualSpeed = player.MaxSpeed;
             }
 
         }
