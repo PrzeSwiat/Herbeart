@@ -157,13 +157,11 @@ namespace TheGame
                
                 if ((gamePadState.ThumbSticks.Left.X >= 0.5f && !(Globals.prevProggresState.ThumbSticks.Left.X >= 0.5f)) || (state.IsKeyDown(Keys.D) && !Globals.prevKeyBoardProggresState.IsKeyDown(Keys.D)))
                 {
-                    Debug.WriteLine("Dupa");
                     MenuOption += 1;
                 }
                 if ((gamePadState.ThumbSticks.Left.X <= -0.5f && !(Globals.prevProggresState.ThumbSticks.Left.X <= -0.5f)) || (state.IsKeyDown(Keys.A) && !Globals.prevKeyBoardProggresState.IsKeyDown(Keys.A)))
                 {
                     MenuOption -= 1;
-                    Debug.WriteLine("Dupa");
                 }
                 if (MenuOption < 1)
                 {
