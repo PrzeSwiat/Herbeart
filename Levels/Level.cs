@@ -30,26 +30,31 @@ namespace TheGame
         private string[] bigGrassTextures = { "Textures/big_grass1", "Textures/big_grass2" };
         private string[] grassTextures = { "Textures/grass1", "Textures/grass2", "Textures/grass3", "Textures/grass4", "Textures/grass5", "Textures/grass6" };
         #endregion
+        #region TileLists
         private List<Tile> groundTiles;
         private List<Tile> forestTiles;
         private List<Tile> spawnTiles;
         private List<Tile> borderTiles;
+        #endregion
         private List<SceneObject> _sceneObjects;
         private List<SceneObject> nonColideObjects;
         private int tileSize = 6;
         private int moduleWidth = 26;
         private int moduleHeight = 26;
+        #region Enemies
         private List<Enemy> enemies;
         private List<Vector2> enemiesColliders;       //lista drzew z ktorymi mają kolidować przeciwnicy
-
+        private int enemyCount;
         private EnemiesGenerator enemiesGenerator;
+        private int difficultyLevel;
+        #endregion
         private string fileName;
         private float separatorX, separatorZ;
-        public int enemyCount;
 
 
 
-        public Level(string fileName, float separatorX, int enemyCount, float separatorZ)
+
+        public Level(string fileName, float separatorX, float separatorZ, int enemyCount, int difficultyLevel)
         {
             _sceneObjects = new List<SceneObject>();
             nonColideObjects = new List<SceneObject>();
@@ -65,6 +70,7 @@ namespace TheGame
             this.separatorX = separatorX;
             this.separatorZ = separatorZ;
             this.enemyCount = enemyCount;
+            this.difficultyLevel = difficultyLevel;
 
         }
 
@@ -239,7 +245,7 @@ namespace TheGame
                     Vector3 enemyPosition = ChoosedTileVector();
                     enemiesPositions.Add(enemyPosition);
                 }
-                enemiesGenerator.GenerateRandomEnemies(enemiesPositions);
+                enemiesGenerator.GenerateRandomEnemies(enemiesPositions, difficultyLevel);
                 enemies.AddRange(enemiesGenerator.returnEnemies());
             }
         }

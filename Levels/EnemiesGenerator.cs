@@ -22,22 +22,35 @@ namespace TheGame
             enemies = new List<Enemy>();
         }
 
-        public struct EnemyType
-        {
-            public string enemyType;
-            public double probability;
 
-            public EnemyType(string enemyType, double probability)
+        public void prepareDifficultyLevels(int difficultyLevel)
+        {
+            switch (difficultyLevel)
             {
-                this.enemyType = enemyType;
-                this.probability = probability;
+                case 2:
+                    Mint.probability = 0.6;
+                    Apple.probability = 0.15;
+                    Nettle.probability = 0.15;
+                    Melissa.probability = 0.1;
+                    break;
+                case 3:
+                    Mint.probability = 0.4;
+                    Apple.probability = 0.2;
+                    Nettle.probability = 0.2;
+                    Melissa.probability = 0.2;
+                    break;
+                case 4:
+                    Mint.probability = 0.3;
+                    Apple.probability = 0.25;
+                    Nettle.probability = 0.25;
+                    Melissa.probability = 0.2;
+                    break;
             }
         }
 
-
-        public EnemyType GenerateRandomEnemyTypeWithProbability()
+        public EnemyType GenerateRandomEnemyTypeWithProbability(int difficultyLevel)
         {
-            
+            prepareDifficultyLevels(difficultyLevel);
             double sumOfProbabilities = enemyTypes.Sum(e => e.probability);
             double randomNumber = new Random().NextDouble();
 
@@ -50,7 +63,7 @@ namespace TheGame
                 cumulativeProbability += probability;
                 if (randomNumber < cumulativeProbability)
                 {
-                    if (enemyTypes[i].enemyType != "Objects/mint")
+                    if (enemyTypes[i].enemyType != "Objects/mint" || difficultyLevel > 2)
                     {
                         enemyTypes[i].probability = enemyTypes[i].probability / 2;
 
@@ -72,13 +85,13 @@ namespace TheGame
         }
 
 
-        public void GenerateRandomEnemies(List<Vector3> enemiesPositions)
+        public void GenerateRandomEnemies(List<Vector3> enemiesPositions, int difficultyLevel)
         {
             if (enemiesPositions.Count() != 0)
             {
                 for (int i = 0; i < enemiesPositions.Count(); i++)
                 {
-                    string enemyType = GenerateRandomEnemyTypeWithProbability().enemyType;
+                    string enemyType = GenerateRandomEnemyTypeWithProbability(difficultyLevel).enemyType;
                     Vector3 enemyPosition = enemiesPositions[i];
                     GenerateEnemy(enemyType, enemyPosition);
                 }

@@ -68,15 +68,15 @@ namespace TheGame
         public void prepareFirstLevels()
         {
             //Moduł 1 - z salą weselną
-            prepareModule("Maps/map1.txt", 0);
+            prepareModule("Maps/map1.txt", 0, 0);
 
             //Moduł 2
-            prepareModule("Maps/map2.txt", 0);
+            prepareModule("Maps/map2.txt", 0, 0);
             _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 50));
             _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 60));
 
             //Moduł 3
-            prepareModule("Maps/map3.txt", 0);
+            prepareModule("Maps/map3.txt", 0, 0);
             _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 50));
             _levels[2].GenerateEnemy(nettleEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 60));
 
@@ -85,24 +85,32 @@ namespace TheGame
 
         }
 
-        public int setEnemiesCount()
+        public (int, int) setEnemiesCount()
         {
             int enemyCount;
+            int difficultyLevel;
 
             if (numberOfModules <= 10)
             {
                 enemyCount = 8;
+                difficultyLevel = 1;
             }
             else if (numberOfModules <= 15)
             {
                 enemyCount = 15;
+                difficultyLevel = 2;
             }
             else
             {
                 int moduleIncrements = (numberOfModules - 15) / 5;
                 enemyCount = 9 + (moduleIncrements * 8);
+                difficultyLevel = 1 + moduleIncrements;
+                if (difficultyLevel > 4)
+                {
+                    difficultyLevel = 4;
+                }
             }
-            return enemyCount;
+            return (enemyCount, difficultyLevel);
         }
 
         public void prepareMap()
@@ -113,7 +121,9 @@ namespace TheGame
             maps = new List<string>();
 
             //wybieranie ilości przeciwników w levelu
-            int enemyCount = setEnemiesCount(); 
+            var result = setEnemiesCount();
+            int enemyCount = result.Item1;
+            int difficultyLevel = result.Item2;
 
 
             //Przypadek prostych map - wylot z lewej i prawej
@@ -127,7 +137,7 @@ namespace TheGame
                     maps.Add("Maps/map_party_left_up.txt");
                     maps.Add("Maps/map_party_left_down.txt");
                     string map = generateRandomStringFromList(maps);
-                    prepareModule(map, 0);
+                    prepareModule(map, 0, 0);
                     switch (map)
                     {
 /*                        case "Maps/map_party_straight.txt":
@@ -147,7 +157,7 @@ namespace TheGame
                     maps.AddRange(maps_straight);   //dalej prosto
                     maps.AddRange(maps_left_up);    //idziemy do gory
                     maps.AddRange(maps_left_down);  //idziemy do dołu
-                    prepareRandomModule(enemyCount);
+                    prepareRandomModule(enemyCount, difficultyLevel);
                 }
             }
 
@@ -162,7 +172,7 @@ namespace TheGame
                     maps.Add("Maps/map_party_down_up.txt");
                     maps.Add("Maps/map_party_down_right.txt");
                     string map = generateRandomStringFromList(maps);
-                    prepareModule(map, 0);
+                    prepareModule(map, 0, 0);
                     switch (map)
                     {
                         case "Maps/map_party_down_up.txt":
@@ -178,7 +188,7 @@ namespace TheGame
                 {
                     maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
                     maps.AddRange(maps_down_up);
-                    prepareRandomModule(enemyCount);
+                    prepareRandomModule(enemyCount, difficultyLevel);
                 }
 
             }
@@ -192,7 +202,7 @@ namespace TheGame
                     //maps.Add("Maps/map_party_straight.txt");
                     maps.Add("Maps/map_party_left_up.txt");
                     string map = generateRandomStringFromList(maps);
-                    prepareModule(map, 0);
+                    prepareModule(map, 0, 0);
                     switch (map)
                     {
 /*                        case "Maps/map_party_straight.txt":
@@ -208,7 +218,7 @@ namespace TheGame
                 {
                     maps.AddRange(maps_straight);
                     maps.AddRange(maps_left_up);
-                    prepareRandomModule(enemyCount);
+                    prepareRandomModule(enemyCount, difficultyLevel);
                 }
             }
 
@@ -223,7 +233,7 @@ namespace TheGame
                     maps.Add("Maps/map_party_up_right.txt");
                     maps.Add("Maps/map_party_up_down.txt");
                     string map = generateRandomStringFromList(maps);
-                    prepareModule(map, 0);
+                    prepareModule(map, 0, 0);
                     switch (map)
                     {
                         case "Maps/map_party_up_right.txt":
@@ -239,7 +249,7 @@ namespace TheGame
                 {
                     maps.AddRange(maps_up_right);
                     maps.AddRange(maps_up_down);
-                    prepareRandomModule(enemyCount);
+                    prepareRandomModule(enemyCount, difficultyLevel);
                 }
             }
 
@@ -253,7 +263,7 @@ namespace TheGame
                     maps.Add("Maps/map_party_left_up.txt");
                     maps.Add("Maps/map_party_left_down.txt");
                     string map = generateRandomStringFromList(maps);
-                    prepareModule(map, 0);
+                    prepareModule(map, 0, 0);
                     switch (map)
                     {
 /*                        case "Maps/map_party_straight.txt":
@@ -273,7 +283,7 @@ namespace TheGame
                     maps.AddRange(maps_straight);   //dalej prosto
                     maps.AddRange(maps_left_up);    //idziemy do gory
                     maps.AddRange(maps_left_down);  //idziemy do dołu
-                    prepareRandomModule(enemyCount);
+                    prepareRandomModule(enemyCount, difficultyLevel);
                 }
             }
             //Prosta od góry do dołu              //work in progress
@@ -284,13 +294,13 @@ namespace TheGame
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     modulesWithParty.Add(numberOfModules - 1);
-                    prepareModule("Maps/map_party_up_right.txt", 0);
+                    prepareModule("Maps/map_party_up_right.txt", 0, 0);
                     choosedMap = "Maps/map_up_right.txt";
                 }
                 else
                 {
                     maps.AddRange(maps_up_right);
-                    prepareRandomModule(enemyCount);
+                    prepareRandomModule(enemyCount, difficultyLevel);
                 }
 
             }
@@ -303,13 +313,13 @@ namespace TheGame
                 if (numberOfModules == 5 || numberOfModules % 15 == 0)
                 {
                     modulesWithParty.Add(numberOfModules - 1);
-                    prepareModule("Maps/map_party_down_right.txt", 0);
+                    prepareModule("Maps/map_party_down_right.txt", 0, 0);
                     choosedMap = "Maps/map_down_right.txt";
                 }
                 else
                 {
                     maps.AddRange(maps_down_right);
-                    prepareRandomModule(enemyCount);
+                    prepareRandomModule(enemyCount, difficultyLevel);
                 }
 
             }
@@ -317,20 +327,20 @@ namespace TheGame
             currentMap = choosedMap;
         }
 
-        public void prepareRandomModule(int enemyCount)
+        public void prepareRandomModule(int enemyCount, int difficultyLevel)
         {
             choosedMap = generateRandomStringFromList(maps);
 
-            prepareModule(choosedMap, enemyCount);
+            prepareModule(choosedMap, enemyCount, difficultyLevel);
 
             maps.Clear();
 
         }
 
-        public void prepareModule(string map, int enemyCount)
+        public void prepareModule(string map, int enemyCount, int difficultyLevel)
         {
             module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
-            Level level = new Level(map, (_levels.Count - moduleHeightChange) * moduleSeparatorX, enemyCount, moduleSeparatorZCount * moduleSeparatorZ);
+            Level level = new Level(map, (_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, enemyCount, difficultyLevel);
             level.LoadContent();
             _levels.Add(level);
             modulesList.Add(module);
