@@ -11,10 +11,10 @@ namespace TheGame
     {
         private List<Enemy> enemies;
 
-        private static EnemyType Mint = new EnemyType("Objects/mint", 0.8);
-        private static EnemyType Apple = new EnemyType("Objects/apple", 0.08);
-        private static EnemyType Nettle = new EnemyType("Objects/nettle", 0.08);
-        private static EnemyType Melissa = new EnemyType("Objects/melissa", 0.04);
+        private static EnemyType Mint = new EnemyType("Objects/mint", 0.65);
+        private static EnemyType Apple = new EnemyType("Objects/apple", 0.15);
+        private static EnemyType Nettle = new EnemyType("Objects/nettle", 0.15);
+        private static EnemyType Melissa = new EnemyType("Objects/melissa", 0.05);
         private EnemyType[] enemyTypes = {Mint, Apple, Nettle, Melissa};
 
         public EnemiesGenerator()
@@ -27,19 +27,37 @@ namespace TheGame
         {
             switch (difficultyLevel)
             {
-                case 2:
-                    Mint.probability = 0.6;
-                    Apple.probability = 0.15;
+                case 1:     //Dla modułu 4 ma losować tylko mięte i pokrzywe
+                    Mint.probability = 0.8;
+                    Apple.probability = 0.0;
+                    Nettle.probability = 0.2;
+                    Melissa.probability = 0.0;
+                    break;
+                case 2:     //Dla modułów 6-8 ma wylosować pierwszy raz jabłko, oraz mięte i pokrzywe
+                    Mint.probability = 0.75;
+                    Apple.probability = 0.05;
+                    Nettle.probability = 0.2;
+                    Melissa.probability = 0.0;
+                    break;
+                case 3:     //Dla modułów 9-11 ma wylosować pierwszy raz melisse, oraz mięte, pokrzywe, jabłko
+                    Mint.probability = 0.7;
+                    Apple.probability = 0.1;
                     Nettle.probability = 0.15;
+                    Melissa.probability = 0.05;
+                    break;
+                case 5:
+                    Mint.probability = 0.54;
+                    Apple.probability = 0.18;
+                    Nettle.probability = 0.18;
                     Melissa.probability = 0.1;
                     break;
-                case 3:
+                case 6:
                     Mint.probability = 0.4;
                     Apple.probability = 0.2;
                     Nettle.probability = 0.2;
                     Melissa.probability = 0.2;
                     break;
-                case 4:
+                case 7:
                     Mint.probability = 0.3;
                     Apple.probability = 0.25;
                     Nettle.probability = 0.25;
@@ -63,7 +81,7 @@ namespace TheGame
                 cumulativeProbability += probability;
                 if (randomNumber < cumulativeProbability)
                 {
-                    if (enemyTypes[i].enemyType != "Objects/mint" || difficultyLevel > 2)
+                    if (enemyTypes[i].enemyType != "Objects/mint" && difficultyLevel < 7)
                     {
                         enemyTypes[i].probability = enemyTypes[i].probability / 2;
 
@@ -91,7 +109,24 @@ namespace TheGame
             {
                 for (int i = 0; i < enemiesPositions.Count(); i++)
                 {
-                    string enemyType = GenerateRandomEnemyTypeWithProbability(difficultyLevel).enemyType;
+                    string enemyType;
+                    if (difficultyLevel == 1 && i == 0)
+                    {
+                        enemyType = "Objects/nettle";
+                    }
+                    else if (difficultyLevel == 2 && i == 0)
+                    {
+                        enemyType = "Objects/apple";
+                    }
+                    else if (difficultyLevel == 3 && i == 0)
+                    {
+                        enemyType = "Objects/melissa";
+                    }
+                    else
+                    {
+                        enemyType = GenerateRandomEnemyTypeWithProbability(difficultyLevel).enemyType;
+                    }
+                    
                     Vector3 enemyPosition = enemiesPositions[i];
                     GenerateEnemy(enemyType, enemyPosition);
                 }

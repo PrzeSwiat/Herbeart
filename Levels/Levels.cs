@@ -89,26 +89,35 @@ namespace TheGame
         public (int, int) setEnemiesCount()
         {
             int enemyCount;
-            int difficultyLevel;
-
-            if (numberOfModules <= 10)
+            int difficultyLevel;        //od 4 są normalne, do 4 są tutorialowe ze spacjalnymi ograniczeniami
+            if (numberOfModules == 4)
+            {
+                enemyCount = 6;
+                difficultyLevel = 1;
+            }
+            else if (numberOfModules <= 8)
+            {
+                enemyCount = 7;
+                difficultyLevel = 2;
+            }
+            else if (numberOfModules <= 11)
             {
                 enemyCount = 8;
-                difficultyLevel = 1;
+                difficultyLevel = 3;    //bez zmian prawdopodobienstwa
             }
             else if (numberOfModules <= 15)
             {
-                enemyCount = 15;
-                difficultyLevel = 2;
+                enemyCount = 10;
+                difficultyLevel = 4;
             }
             else
             {
                 int moduleIncrements = (numberOfModules - 15) / 5;
                 enemyCount = 9 + (moduleIncrements * 8);
-                difficultyLevel = 1 + moduleIncrements;
-                if (difficultyLevel > 4)
+                difficultyLevel = 4 + moduleIncrements;
+                if (difficultyLevel > 7)
                 {
-                    difficultyLevel = 4;
+                    difficultyLevel = 7;
                 }
             }
             return (enemyCount, difficultyLevel);
