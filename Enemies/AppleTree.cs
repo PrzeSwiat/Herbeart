@@ -138,6 +138,50 @@ namespace TheGame
         }
     }
 
+    /*internal class Apple : SceneObject
+    {
+        private Vector3 velocity;
+        private int dmg;
+        private float speed = 35f;
+        private float time = 0, maxTime = 4;
+
+        public event EventHandler OnDestroy;
+
+        public Apple(Vector3 Position, Vector2 playerPosition, int dmg) : base(Position, "Objects/japco", "Textures/appleTexture")
+        {
+            Vector3 startPosition = Position;
+            startPosition.Y += 3;
+            this.SetPosition(startPosition);
+            Vector2 direction = playerPosition - startPosition;
+            SetScale(1.4f);
+            velocity = new Vector3(-direction.X * speed, 0, -direction.Y * speed);
+            this.dmg = dmg;
+        }
+
+        public void Update(float deltaTime, Enemies enemies)
+        {
+            time += deltaTime;
+            // Move the bullet
+            this.Move(velocity * deltaTime);
+
+            // Check if the bullet has collided with the player
+            foreach (Enemy enemy in enemies.EnemiesList.ToList())
+            {
+                if (this.boundingBox.Intersects(enemy.boundingBox))
+                {
+                    enemy.Hit(dmg);
+                    OnDestroy?.Invoke(this, EventArgs.Empty);
+                }
+            }
+
+            // Check if the bullet has hit the ground
+            if (time >= maxTime)
+            {
+                OnDestroy?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }*/
+
     internal class Apple : SceneObject
     {
         int dmg = 30;
@@ -146,14 +190,16 @@ namespace TheGame
         public event EventHandler OnDestroy;
         public Apple(Vector3 worldPosition, string modelFileName, string textureFileName, Vector3 endPosition) : base(worldPosition, modelFileName, textureFileName)
         {
-
             Vector3 startPosition = this.GetPosition();
             startPosition.Y += 3;
-            Vector3 direction = Vector3.Normalize(endPosition - startPosition);
             this.SetPosition(startPosition);
-            velocity = Vector3.Normalize(direction);
+            
+            Vector2 direction = new Vector2(endPosition.X - startPosition.X, endPosition.Z - startPosition.Z);
+            direction = Vector2.Normalize(direction);
+           
+            velocity = new Vector3(direction.X, 0, direction.Y);
             velocity.X = velocity.X * speed;
-            velocity.Y = velocity.Y * 6;
+            velocity.Y = 6;
             velocity.Z = velocity.Z * speed;
             SetScale(1.4f);
 
@@ -170,7 +216,7 @@ namespace TheGame
             // Check if the bullet has collided with the player
             if (this.boundingBox.Intersects(player.boundingBox))
             {
-                player.Hit(dmg);
+                player.HitWithParticle(dmg);
 
                 OnDestroy?.Invoke(this, EventArgs.Empty);
             }

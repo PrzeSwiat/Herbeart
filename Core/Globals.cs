@@ -59,5 +59,8 @@ namespace TheGame
         public static List<String> learnedRecepture;
         public static int numberOfRecepture = 0;
         public static int maxReceptures = 1;
+
+        public static int WindowWidth;
+        public static int WindowHeight;
     }
 }

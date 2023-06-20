@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using TheGame.Core;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
@@ -12,15 +13,13 @@ namespace TheGame
     public class Game1 : Game
     {
         //DON'T TOUCH IT MORTALS
-        int WindowWidth = 1900;
-        int WindowHeight = 1000;
-
         Camera camera;
         EffectHandler effectHandler;
         EffectHandler effectPlayerHandler;
         Serializator serializator;
         Serializator PlayerNames;
         AudioMenager audioMenager;
+        ParticleSystem particleSystem;
         //.................
 
 
@@ -34,7 +33,7 @@ namespace TheGame
         SoundActorPlayer soundActorPlayer;
         AnimationMenager animationMenager;
         ProgressSystem progressSystem;
-       
+
 
         public Game1()
         {
@@ -42,8 +41,10 @@ namespace TheGame
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            Globals._graphics.PreferredBackBufferWidth = WindowWidth;
-            Globals._graphics.PreferredBackBufferHeight = WindowHeight;
+            Globals.WindowWidth = 1920;
+            Globals.WindowHeight = 1080;
+            Globals._graphics.PreferredBackBufferWidth = Globals.WindowWidth;
+            Globals._graphics.PreferredBackBufferHeight = Globals.WindowHeight;
             Globals._graphics.ApplyChanges();
             Globals.Pause = false;
             Globals.Start = true;
@@ -58,7 +59,7 @@ namespace TheGame
             camera = new Camera();
             Leafs = new LeafList();
             enemies = new Enemies();
-            Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(WindowWidth / 65), (WindowWidth / 65), -(WindowHeight / 65f), (WindowHeight / 65f), -10f, 100f);      // orthographic view 
+            Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(Globals.WindowWidth / 65), (Globals.WindowWidth / 65), -(Globals.WindowHeight / 65f), (Globals.WindowHeight / 65f), -10f, 100f);      // orthographic view 
                                                                                                                                                             //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
             // PERSPECTIVE point of view
@@ -79,7 +80,7 @@ namespace TheGame
             Globals.ScoreMultipler = 1;
             Globals.learnedRecepture = new List<String>();
             Globals.learnedRecepture.Add("AAA");
-            hud = new HUD(WindowWidth, WindowHeight);
+            hud = new HUD();
             world = new World();
             player = new Player(new Vector3(50,0,60), "Objects/mis", "Textures/MisTexture");
             serializator = new Serializator("zapis.txt");
@@ -112,10 +113,18 @@ namespace TheGame
             player.OnDestroy += DestroyControl;
             progressSystem = new ProgressSystem(player);
 
+
+            //List<Texture2D> textures = new List<Texture2D>();
+            //textures.Add(Content.Load<Texture2D>("Particles/Textures/circle"));
+            //textures.Add(Content.Load<Texture2D>("Particles/Textures/star"));
+            //textures.Add(Content.Load<Texture2D>("diamond"));
+            //particleSystem = new ParticleSystem(textures, new Vector2(400, 240));
         }
 
         protected override void Update(GameTime gameTime)
         {
+            //particleSystem.EmitterLocation = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+            //particleSystem.Update();
             if (Globals.Start)
             {
                 hud.name = "";
@@ -296,7 +305,7 @@ namespace TheGame
                 //DrawBoundingBoxes();
             }
 
-
+            //particleSystem.Draw(Globals.spriteBatch);
             //}
             // else
             // {
@@ -329,10 +338,10 @@ namespace TheGame
             }
 
             player.DrawBB();
-            foreach (BoundingBox bb in player.returnApplesBB())
+            /*foreach (BoundingBox bb in player.returnApplesBB())
             {
                 SceneObject.DrawBB(bb);
-            }
+            }*/
             //DrawBS(player.)
             DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }

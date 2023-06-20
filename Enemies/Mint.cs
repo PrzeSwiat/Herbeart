@@ -49,7 +49,7 @@ namespace TheGame
             {
                 OnAttack?.Invoke(this, EventArgs.Empty);
                 lastAttackTime = actualTime;
-                player.Hit(this.Strength);
+                player.HitWithParticle(this.Strength);
             }
         }
     }

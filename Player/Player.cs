@@ -8,17 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Net;
-using System.Net.Http.Json;
-using System.Reflection;
 using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
-using System.Xml;
 using TheGame.Core;
 
 namespace TheGame
@@ -40,12 +30,14 @@ namespace TheGame
         private bool canMove = true;
         private bool stunEnemies = false;
         public bool immortal = false;
-        public int appleValue, NettleValue,NettleTime,MintTime;
+        public int appleValue, NettleValue, NettleTime, MintTime;
         public float MintValue;
         public event EventHandler onMove;
         public event EventHandler onRandomNoise;
         public event EventHandler onAttackNoise;
         private bool canAttack = true;
+
+        ParticleSystem particleSystem;
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
@@ -60,25 +52,30 @@ namespace TheGame
             playerMovement = new PlayerMovement(this);
             shadow = new Shadow(this.GetPosition());
             appleValue = 4; MintValue = 0.5f; NettleValue = 1; NettleTime = 5; MintTime = 9;
-            // Uruchomienie timera
-            //playerEffects.Start();
-            
-        }
-        public void Start()
-        {
-            playerEffects.Start();
         }
 
-        public void Stop()
+        public override void LoadContent()
         {
-            playerEffects.Stop();
+            base.LoadContent();
+            List<Texture2D> textures = new List<Texture2D>();
+            textures.Add(Globals.content.Load<Texture2D>("Particles/Textures/circle"));
+            textures.Add(Globals.content.Load<Texture2D>("Particles/Textures/star"));
+            textures.Add(Globals.content.Load<Texture2D>("Particles/Textures/diamond"));
+            particleSystem = new ParticleSystem(textures, new Vector2(Globals.WindowWidth / 2, Globals.WindowHeight / 2 - 100));
+
+            shadow.LoadContent();
+            Crafting.LoadContent();
         }
+
+        
 
         public void Update(World world, float deltaTime, Enemies enemies,GameTime gametime) //Logic player here
         {
             Update();
             playerMovement.UpdatePlayerMovement(world, deltaTime);
             Crafting.Update(gametime);
+
+            particleSystem.Update();
 
             foreach (Apple apple in apples.ToList())
             {
@@ -113,6 +110,13 @@ namespace TheGame
             shadow.UpdatingPlayer(this.GetPosition());
 
         }
+
+        public void HitWithParticle(int damage)
+        {
+            this.Hit(damage);
+            particleSystem.addParticles();
+        }
+
         public override void Hit(int damage)
         {
             if (!immortal)
@@ -125,12 +129,7 @@ namespace TheGame
             }
         }
 
-        public override void LoadContent()
-        {
-            base.LoadContent();
-            shadow.LoadContent();
-            Crafting.LoadContent();
-        }
+        
 
         public override void DrawPlayer(Vector3 lightpos)
         {
@@ -156,8 +155,18 @@ namespace TheGame
         }
         public void DrawAnimation()
         {
-
+            particleSystem.Draw(Globals.spriteBatch);
             Crafting.DrawAnimation();
+        }
+
+        public void Start()
+        {
+            playerEffects.Start();
+        }
+
+        public void Stop()
+        {
+            playerEffects.Stop();
         }
 
         public void Attack()
@@ -419,21 +428,11 @@ namespace TheGame
 
         }
 
-        public BoundingBox[] returnApplesBB()
-        {
-            BoundingBox[] boundingBoxes = new BoundingBox[apples.Count];
-            for (int i = 0; i < apples.Count; i++)
-            {
-                boundingBoxes[i] = apples[i].returnBB();
-            }
-            return boundingBoxes;
-        }
-
         private class Apple : SceneObject
         {
             private Vector3 velocity;
             private int dmg;
-            private float speed = 20f;
+            private float speed = 35f;
             private float time = 0, maxTime = 4;
 
             public event EventHandler OnDestroy;
@@ -471,12 +470,6 @@ namespace TheGame
                     OnDestroy?.Invoke(this, EventArgs.Empty);
                 }
             }
-
-            public BoundingBox returnBB()
-            {
-                return this.boundingBox;
-            }
-
         }
 
 

@@ -345,7 +345,7 @@ namespace TheGame
                     isCraftingTea = false;
                 }
 
-                if (gamePadState.IsButtonDown(Buttons.RightTrigger))
+                if (gamePadState.IsButtonDown(Buttons.RightTrigger) && !isCraftingTea)
                 {
                     isThrowing = true;
                 }

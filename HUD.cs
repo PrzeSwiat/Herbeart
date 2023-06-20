@@ -36,10 +36,10 @@ namespace TheGame
         private string[] actualRecepture = new string[3];
         float playerRotation = 0;
 
-        public HUD(int windowWidth, int windowHeight)
+        public HUD()
         {
-            WindowWidth = windowWidth;
-            WindowHeight = windowHeight;
+            WindowWidth = Globals.WindowWidth;
+            WindowHeight = Globals.WindowHeight;
 
             //buttons = new string[] { "A", "B", "X", "Y" };
         }

@@ -73,7 +73,7 @@ namespace TheGame
             {
                 if(sender==enemy)
                 {
-                    player.Hit(enemy.Strength);
+                    player.HitWithParticle(enemy.Strength);
                 }
             }
             
