@@ -308,6 +308,7 @@ namespace TheGame
             Globals.spriteBatch.Begin();
             Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
             Globals.spriteBatch.DrawString(Menu, "You fell asleep", new Vector2(WindowWidth / 3.5f, WindowHeight * 1 / 20), Color.OrangeRed);
+            Globals.spriteBatch.DrawString(Menu2, "Score: " + Globals.Score, new Vector2(WindowWidth * 12/20, WindowHeight * 10 / 20), Color.White);
             Globals.spriteBatch.DrawString(Menu2, "Save your score !", new Vector2(WindowWidth / 10, WindowHeight * 6 / 20), one);
             Globals.spriteBatch.DrawString(Menu2, "Try again", new Vector2(WindowWidth / 10, WindowHeight * 9 / 20), two);
             Globals.spriteBatch.DrawString(Menu2, "Main menu", new Vector2(WindowWidth / 10, WindowHeight * 12 / 20), three);

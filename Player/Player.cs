@@ -45,7 +45,7 @@ namespace TheGame
             this.setBSRadius(3);
             setBSposition(2);
 
-            AssignParameters(300, 1, 20, 1.1f);
+            AssignParameters(300, 1, 20, 0.8f);
             playerEffects = new PlayerEffectHandler(this);
             Inventory = new Inventory();
             Crafting = new Crafting(Inventory, playerEffects);
@@ -432,7 +432,7 @@ namespace TheGame
         {
             private Vector3 velocity;
             private int dmg;
-            private float speed = 35f;
+            private float speed = 30f;
             private float time = 0, maxTime = 4;
 
             public event EventHandler OnDestroy;

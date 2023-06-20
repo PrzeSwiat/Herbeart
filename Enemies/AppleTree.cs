@@ -34,7 +34,9 @@ namespace TheGame
 
         public  void Throw(int damage,Player player)
         {
-          bullet.Add(new Apple(this.boundingSphere.Center, "Objects/japco", "Textures/appleTexture", player.GetPosition()));
+            Vector3 pos = (this.boundingBox.Min + this.boundingBox.Max) / 2;
+
+            bullet.Add(new Apple(pos, "Objects/japco", "Textures/appleTexture", player.GetPosition()));
         }
 
 
@@ -138,60 +140,16 @@ namespace TheGame
         }
     }
 
-    /*internal class Apple : SceneObject
-    {
-        private Vector3 velocity;
-        private int dmg;
-        private float speed = 35f;
-        private float time = 0, maxTime = 4;
-
-        public event EventHandler OnDestroy;
-
-        public Apple(Vector3 Position, Vector2 playerPosition, int dmg) : base(Position, "Objects/japco", "Textures/appleTexture")
-        {
-            Vector3 startPosition = Position;
-            startPosition.Y += 3;
-            this.SetPosition(startPosition);
-            Vector2 direction = playerPosition - startPosition;
-            SetScale(1.4f);
-            velocity = new Vector3(-direction.X * speed, 0, -direction.Y * speed);
-            this.dmg = dmg;
-        }
-
-        public void Update(float deltaTime, Enemies enemies)
-        {
-            time += deltaTime;
-            // Move the bullet
-            this.Move(velocity * deltaTime);
-
-            // Check if the bullet has collided with the player
-            foreach (Enemy enemy in enemies.EnemiesList.ToList())
-            {
-                if (this.boundingBox.Intersects(enemy.boundingBox))
-                {
-                    enemy.Hit(dmg);
-                    OnDestroy?.Invoke(this, EventArgs.Empty);
-                }
-            }
-
-            // Check if the bullet has hit the ground
-            if (time >= maxTime)
-            {
-                OnDestroy?.Invoke(this, EventArgs.Empty);
-            }
-        }
-    }*/
-
     internal class Apple : SceneObject
     {
         int dmg = 30;
         Vector3 velocity;
-        float speed = 35f;
+        float speed = 30f;
         public event EventHandler OnDestroy;
         public Apple(Vector3 worldPosition, string modelFileName, string textureFileName, Vector3 endPosition) : base(worldPosition, modelFileName, textureFileName)
         {
             Vector3 startPosition = this.GetPosition();
-            startPosition.Y += 3;
+            startPosition.Y = 4;
             this.SetPosition(startPosition);
             
             Vector2 direction = new Vector2(endPosition.X - startPosition.X, endPosition.Z - startPosition.Z);
@@ -199,7 +157,7 @@ namespace TheGame
            
             velocity = new Vector3(direction.X, 0, direction.Y);
             velocity.X = velocity.X * speed;
-            velocity.Y = 6;
+            velocity.Y = -6;
             velocity.Z = velocity.Z * speed;
             SetScale(1.4f);
 
