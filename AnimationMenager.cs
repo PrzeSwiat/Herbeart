@@ -64,8 +64,8 @@ namespace TheGame
             texture = Content.Load<Texture2D>("Textures/mis_texture");
             effect1 = Content.Load<Effect>("AnimationToon");
             Steps_tired=Content.Load<SkinnedModel>("Animations/mis_tired_run");
-            Attack1 = Content.Load<SkinnedModel>("Animations/atak1blend");
-            Attack2 = Content.Load<SkinnedModel>("Animations/atak2blend");
+            Attack1 = Content.Load<SkinnedModel>("Animations/atak1blend2");
+            Attack2 = Content.Load<SkinnedModel>("Animations/atak2blend2");
 
             //steps
             ASteps = new AnimationPlayer(Steps);
