@@ -30,7 +30,7 @@ namespace TheGame.Leafs
             SetRotation(rotation);
             if (this.chceckCollison(player))
             {
-                AnimationsList.Add(new Animation2D(Mint_Icon, this.GetPosition(), new Vector2(150, 900),1, Globals.viewport));
+                AnimationsList.Add(new Animation2D(Mint_Icon, this.GetPosition(), new Vector2(150, 930),1, Globals.viewport));
                 this.AddToInventory(player);
                 return true;
             }
