@@ -171,6 +171,18 @@
 /processorParam:TextureFormat=Color
 /build:HUD/defens.png
 
+#begin HUD/ikona_japco_crafting.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/ikona_japco_crafting.png
+
 #begin HUD/ikona_japco_menu.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -182,6 +194,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:HUD/ikona_japco_menu.png
+
+#begin HUD/ikona_melisa_crafting.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/ikona_melisa_crafting.png
 
 #begin HUD/ikona_melisa_menu.png
 /importer:TextureImporter
@@ -195,6 +219,18 @@
 /processorParam:TextureFormat=Color
 /build:HUD/ikona_melisa_menu.png
 
+#begin HUD/ikona_mieta_crafting.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/ikona_mieta_crafting.png
+
 #begin HUD/ikona_mieta_menu.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -206,6 +242,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:HUD/ikona_mieta_menu.png
+
+#begin HUD/ikona_pokrzywa_crafting.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/ikona_pokrzywa_crafting.png
 
 #begin HUD/ikona_pokrzywa_menu.png
 /importer:TextureImporter
@@ -255,7 +303,7 @@
 /processorParam:TextureFormat=Color
 /build:HUD/przepisy_preview.png
 
-#begin HUD/robienieherbatki_preview.png
+#begin HUD/robienieherbatki_preview0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -265,7 +313,43 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:HUD/robienieherbatki_preview.png
+/build:HUD/robienieherbatki_preview0.png
+
+#begin HUD/robienieherbatki_preview1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/robienieherbatki_preview1.png
+
+#begin HUD/robienieherbatki_preview2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/robienieherbatki_preview2.png
+
+#begin HUD/robienieherbatki_preview3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/robienieherbatki_preview3.png
 
 #begin ItemFont.spritefont
 /importer:FontDescriptionImporter

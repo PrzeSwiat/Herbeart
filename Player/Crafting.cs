@@ -99,7 +99,7 @@ namespace TheGame
             return this.recepture2;
         }
 
-        public void restartRecepture() { recepture = string.Empty; recepture2 = new string[3]; }
+        public void restartRecepture() { recepture = string.Empty; recepture2 = new string[3] { "", "", ""}; }
 
         public void cleanRecepture()
         {

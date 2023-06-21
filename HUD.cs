@@ -21,7 +21,9 @@ namespace TheGame
         private SpriteFont Menu2;
         private Texture2D healtColor, healthBar;
         private Texture2D defaultItemFrame, offensiveItemFrame, teaItemFrame;
-        private Texture2D craftingTex, appleTex, meliseTex, mintTex, nettleTex;
+        private Texture2D appleTex, meliseTex, mintTex, nettleTex;
+        private Texture2D appleTexCrafting, meliseTexCrafting, mintTexCrafting, nettleTexCrafting;
+        private Texture2D[] craftingTextures = new Texture2D[4];
         private Texture2D EnemyHealth, HalfEnemyHealth;
         private Texture2D ReceptureBar;
         private Texture2D Arrow;
@@ -58,11 +60,18 @@ namespace TheGame
             ReceptureBar = models.getTexture("HUD/przepisy_preview");
             Arrow = models.getTexture("HUD/celownik");
 
-            craftingTex = models.getTexture("HUD/robienieherbatki_preview");
+            craftingTextures[0] = models.getTexture("HUD/robienieherbatki_preview0");
+            craftingTextures[1] = models.getTexture("HUD/robienieherbatki_preview1");
+            craftingTextures[2] = models.getTexture("HUD/robienieherbatki_preview2");
+            craftingTextures[3] = models.getTexture("HUD/robienieherbatki_preview3");
             appleTex = models.getTexture("HUD/ikona_japco_menu");
             mintTex = models.getTexture("HUD/ikona_mieta_menu");
             nettleTex = models.getTexture("HUD/ikona_pokrzywa_menu");
             meliseTex = models.getTexture("HUD/ikona_melisa_menu");
+            appleTexCrafting = models.getTexture("HUD/ikona_japco_crafting");
+            mintTexCrafting = models.getTexture("HUD/ikona_mieta_crafting");
+            nettleTexCrafting = models.getTexture("HUD/ikona_pokrzywa_crafting");
+            meliseTexCrafting = models.getTexture("HUD/ikona_melisa_crafting");
 
 
             ItemFont = Globals.content.Load<SpriteFont>("ItemFont");
@@ -117,12 +126,13 @@ namespace TheGame
         private void DrawReceptures()
         {
             //string[] recepture = { "AAB", "AXY", "XBY", "ABX" };
-            Rectangle receptureRect = new Rectangle(0, 200, 300, 100);
+            float scale = 4.5f;
+            Rectangle receptureRect = new Rectangle(WindowWidth / 2 - (int)(2208 / scale) / 2, WindowHeight - (int)(622 / scale) - 40, (int)(2208 / scale), (int)(622 / scale));
             Globals.spriteBatch.Draw(ReceptureBar, receptureRect, Color.White);
 
             for (int i = 0; i < 3; i++)
             {
-                Rectangle rect = new Rectangle(receptureRect.X + 30 + i * 80, receptureRect.Y + 10, 80, 80);
+                Rectangle rect = new Rectangle(receptureRect.X + 30 + i * 104, receptureRect.Y + 17, 100, 100);
                 switch (Globals.learnedRecepture[Globals.numberOfRecepture][i])
                 {
                     case 'A':
@@ -148,13 +158,21 @@ namespace TheGame
         {
             int invLenght = WindowHeight / 3;
             Rectangle inv = new Rectangle(20, WindowHeight - invLenght - 20, invLenght, invLenght);
-            Rectangle rect_crafting = new Rectangle(WindowWidth / 2 - 70, WindowHeight / 2 - 240, 150, 50);
-            
+            Rectangle rect_crafting = new Rectangle(WindowWidth / 2 - 100, WindowHeight / 2 - 240, 200, 70);
+            int craftingIndex = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                if (actualRecepture[i] != "")
+                {
+                    craftingIndex = i + 1;
+                }
+                
+            }
 
             if (isCrafting) 
             {
                 Globals.spriteBatch.Draw(teaItemFrame, inv, Color.White);
-                Globals.spriteBatch.Draw(craftingTex, rect_crafting, Color.White);
+                Globals.spriteBatch.Draw(craftingTextures[craftingIndex], rect_crafting, Color.White);
                 DrawReceptures();
 
                 int leafPosition = WindowWidth / 2 - 66;
@@ -162,20 +180,20 @@ namespace TheGame
                 {
                     if (actualRecepture[i] != "")
                     {
-                        Rectangle rect = new Rectangle(rect_crafting.X + i * 50 + 5, rect_crafting.Y + 6, 37, 37);
+                        Rectangle rect = new Rectangle(rect_crafting.X + i * 58 + 20, rect_crafting.Y + 14, 40, 40);
                         switch (actualRecepture[i])
                         {
                             case "mint":
-                                Globals.spriteBatch.Draw(mintTex, rect, Color.White);
+                                Globals.spriteBatch.Draw(mintTexCrafting, rect, Color.White);
                                 break;
                             case "melise":
-                                Globals.spriteBatch.Draw(meliseTex, rect, Color.White);
+                                Globals.spriteBatch.Draw(meliseTexCrafting, rect, Color.White);
                                 break;
                             case "apple":
-                                Globals.spriteBatch.Draw(appleTex, rect, Color.White);
+                                Globals.spriteBatch.Draw(appleTexCrafting, rect, Color.White);
                                 break;
                             case "nettle":
-                                Globals.spriteBatch.Draw(nettleTex, rect, Color.White);
+                                Globals.spriteBatch.Draw(nettleTexCrafting, rect, Color.White);
                                 break;
                             default:
                                 break;
@@ -191,10 +209,21 @@ namespace TheGame
             {
                 Globals.spriteBatch.Draw(defaultItemFrame, inv, Color.White);
             }
-            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(0).Value.ToString(), new Vector2(invLenght / 2 + 32, WindowHeight - 55), Color.White);    // mint
-            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(1).Value.ToString(), new Vector2(invLenght - 12, WindowHeight - invLenght / 2 - 12), Color.White);    // nettle
-            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(2).Value.ToString(), new Vector2(35, WindowHeight - invLenght / 2 - 12), Color.White);    // melise
-            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(3).Value.ToString(), new Vector2(invLenght / 2 + 32, WindowHeight - invLenght + 44), Color.White);    // apple
+
+
+            Vector2 mintVec = new Vector2(invLenght / 2 + 50 - ItemFont.MeasureString(leafs.ElementAt(0).Value.ToString()).X, WindowHeight - 70);
+            Vector2 nettleVec = new Vector2(invLenght + 4 - ItemFont.MeasureString(leafs.ElementAt(1).Value.ToString()).X, WindowHeight - invLenght / 2 - 22);
+            Vector2 meliseVec = new Vector2(116 - ItemFont.MeasureString(leafs.ElementAt(2).Value.ToString()).X, WindowHeight - invLenght / 2 - 22);
+            Vector2 appleVec = new Vector2(invLenght / 2 + 50 - ItemFont.MeasureString(leafs.ElementAt(3).Value.ToString()).X, WindowHeight - invLenght + 37);
+
+            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(0).Value.ToString(), new Vector2(mintVec.X - 2, mintVec.Y + 2), Color.Black);    // mint
+            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(1).Value.ToString(), new Vector2(nettleVec.X - 2, nettleVec.Y + 2), Color.Black);    // nettle
+            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(2).Value.ToString(), new Vector2(meliseVec.X - 2, meliseVec.Y + 2), Color.Black);    // melise
+            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(3).Value.ToString(), new Vector2(appleVec.X - 2, appleVec.Y + 2), Color.Black);    // apple
+            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(0).Value.ToString(), mintVec, Color.White);    // mint
+            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(1).Value.ToString(), nettleVec, Color.White);    // nettle
+            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(2).Value.ToString(), meliseVec, Color.White);    // melise
+            Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(3).Value.ToString(), appleVec, Color.White);    // apple
         }
 
         public void DrawPause()
