@@ -28,6 +28,7 @@ namespace TheGame
         {
             base.Update(deltaTime, player);
             this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.8f,0,-1.9f));
+            this.SetPositionY(this.GetPosition().Y + 2);
         }
         public override void LoadContent()
         {
