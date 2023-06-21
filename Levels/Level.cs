@@ -41,6 +41,7 @@ namespace TheGame
         private int tileSize = 6;
         private int moduleWidth = 26;
         private int moduleHeight = 26;
+        public Vector3 shopOnPartyModule;
         #region Enemies
         private List<Enemy> enemies;
         private List<Vector2> enemiesColliders;       //lista drzew z ktorymi mają kolidować przeciwnicy
@@ -63,6 +64,7 @@ namespace TheGame
             forestTiles = new List<Tile>();
             spawnTiles = new List<Tile>();
             borderTiles = new List<Tile>();
+            shopOnPartyModule = new Vector3(0, 0, 0);
 
             this.fileName = fileName;
             this.separatorX = separatorX;
@@ -219,7 +221,7 @@ namespace TheGame
                         Vector3 wektor4 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
                         SceneObject plotek = new SceneObject(wektor4, "Objects/festiwal", "Textures/festiwal");
                         nonColideObjects.Add(plotek);
-                        //spawnTiles.Add(new Tile(groundType, height, wektor4, 0));
+                        shopOnPartyModule = wektor4;
                         x++;
                         break;
                 }

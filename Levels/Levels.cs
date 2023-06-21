@@ -42,6 +42,7 @@ namespace TheGame
         Rectangle module;
         HashSet<Rectangle> visited;
         List<int> modulesWithParty;
+        List<Vector3> shopsOnPartyModules;
         #endregion
         #region Enemies Types
         private string mintEnemy = "Objects/mint";
@@ -57,6 +58,7 @@ namespace TheGame
             modulesList = new List<Rectangle>();
             visited = new HashSet<Rectangle>();
             modulesWithParty = new List<int>();
+            shopsOnPartyModules = new List<Vector3>();
 
         }
 
@@ -126,7 +128,6 @@ namespace TheGame
         public void prepareMap()
         {
             numberOfModules++;
-
             
             maps = new List<string>();
 
@@ -333,7 +334,6 @@ namespace TheGame
                 }
 
             }
-
             currentMap = choosedMap;
         }
 
@@ -354,6 +354,10 @@ namespace TheGame
             level.LoadContent();
             _levels.Add(level);
             modulesList.Add(module);
+            if(!level.shopOnPartyModule.Equals(Vector3.Zero))
+            {
+                shopsOnPartyModules.Add(level.shopOnPartyModule);
+            }
         }
 
         public List<Vector2> returnEnemiesColliders(float playerX, float playerY)
@@ -376,17 +380,27 @@ namespace TheGame
             return result;
         }
 
-        public bool ifPlayerOnPartyModule(float playerX, float playerY)
+        public bool ifPlayerOnPartyModule(Vector3 playerPosition)
         {
-            int numberOfModule = returnModuleNumber(playerX, playerY);
-            if (modulesWithParty.Contains(numberOfModule) && !visited.Contains(modulesList[numberOfModule]))
+            if (shopsOnPartyModules.Count > 0)
             {
-                return true;
+                foreach (Vector3 shopVector in shopsOnPartyModules)
+                {
+                    float distance = Vector3.Distance(playerPosition, shopVector);
+                    if (distance < 20.0f)
+                    {
+                        shopsOnPartyModules.Remove(shopVector);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
-            else
-            {
-                return false;
-            }
+            return false;
+
+
         }
 
         public List<SceneObject> returnSceneObjects(float playerX, float playerY)

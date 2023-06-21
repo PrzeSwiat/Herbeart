@@ -188,23 +188,24 @@ namespace TheGame
 
                             interactionEventHandler.Update(enemies.EnemiesList);
                             Globals.viewport = GraphicsDevice.Viewport;
-                            if(progressSystem.canDraw==true && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z)==false)
+                            bool check = world.ifPlayerOnPartyModule(player.GetPosition());
+                            if (progressSystem.canDraw==true && check==false)
                             {
                                 
                                 progressSystem.canDraw = true;
                                 player.Stop();
                             }
-                            else if(progressSystem.canDraw==false && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z) == false) 
+                            else if(progressSystem.canDraw==false && check == false) 
                             { 
                                 progressSystem.canDraw = false;
                             }
-                            else if(progressSystem.canDraw == false && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z) == true) 
+                            else if(progressSystem.canDraw == false && check == true) 
                             {
                                 pause_timer = DateTime.Now;
                                 progressSystem.canDraw=true;
                                 player.Stop();
                             }
-                            else if(progressSystem.canDraw == true && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z) == true)
+                            else if(progressSystem.canDraw == true && check == true)
                             {
                                 
                                 progressSystem.canDraw=true;
