@@ -72,9 +72,10 @@ namespace TheGame
             return enemiesCollidersArray;
         }
 
-        public bool ifPlayerOnPartyModule(float playerX, float playerZ)
+        public bool ifPlayerOnPartyModule(Microsoft.Xna.Framework.Vector3 playerPosition)
         {
-            ifPartyModule = level.ifPlayerOnPartyModule(playerX, playerZ);
+            Vector3 newPlayerPosition = new Vector3(playerPosition.X, playerPosition.Y, playerPosition.Z);
+            ifPartyModule = level.ifPlayerOnPartyModule(newPlayerPosition);
             return ifPartyModule;
         }
 
