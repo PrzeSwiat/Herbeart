@@ -60,6 +60,9 @@ namespace TheGame
         public static int numberOfRecepture = 0;
         public static int maxReceptures = 1;
 
+        public static bool[] tutorialDone;
+
+
         public static int WindowWidth;
         public static int WindowHeight;
     }

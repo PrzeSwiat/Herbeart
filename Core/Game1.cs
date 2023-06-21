@@ -20,6 +20,7 @@ namespace TheGame
         Serializator PlayerNames;
         AudioMenager audioMenager;
         ParticleSystem particleSystem;
+        DateTime pause_timer;
         //.................
 
 
@@ -72,8 +73,12 @@ namespace TheGame
             Globals.worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
             //.................
 
-            
-
+            Globals.tutorialDone = new bool[7];
+            for(int i=0;i<Globals.tutorialDone.Length;i++)
+            {
+                Globals.tutorialDone[i] = false;
+            }
+            pause_timer = new DateTime();
             Globals.effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
             Globals.effectHandler1 = new EffectHandler(Content.Load<Effect>("MainShader"));
             Globals.Score = 0;
@@ -89,6 +94,7 @@ namespace TheGame
             audioMenager = new AudioMenager(Content);
             soundActorPlayer = new SoundActorPlayer(Content, player, enemies.EnemiesList);
             animationMenager = new AnimationMenager(Content, player, enemies.EnemiesList);
+            Globals.numberOfRecepture = 0;
             Globals.viewport = GraphicsDevice.Viewport;
             
             base.Initialize();
@@ -153,6 +159,7 @@ namespace TheGame
                         }
                         else
                         {
+
                             DeathMenuCheck();
                         }
                     }
@@ -182,7 +189,9 @@ namespace TheGame
                             Globals.viewport = GraphicsDevice.Viewport;
                             if(progressSystem.canDraw==true && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z)==false)
                             {
+                                
                                 progressSystem.canDraw = true;
+                                player.Stop();
                             }
                             else if(progressSystem.canDraw==false && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z) == false) 
                             { 
@@ -190,11 +199,15 @@ namespace TheGame
                             }
                             else if(progressSystem.canDraw == false && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z) == true) 
                             {
+                                pause_timer = DateTime.Now;
                                 progressSystem.canDraw=true;
+                                player.Stop();
                             }
                             else if(progressSystem.canDraw == true && world.ifPlayerOnPartyModule(player.GetPosition().X, player.GetPosition().Z) == true)
                             {
+                                
                                 progressSystem.canDraw=true;
+                                player.Stop();
                             }
                             animationMenager.Update(gameTime);
                             SaveControl();
@@ -262,7 +275,7 @@ namespace TheGame
                         hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
                         Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
                         player.DrawAnimation();
-                        progressSystem.drawSelectMenu();
+                        progressSystem.drawSelectMenu(pause_timer);
 
 
                         if (Globals.TutorialPause && !progressSystem.canDraw)
@@ -270,6 +283,7 @@ namespace TheGame
                             if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
                             {
                                 hud.DrawTutorial(2);
+
 
                             }
                             if (Globals.Module2 && Globals.moduleCounter == 0)
@@ -481,30 +495,56 @@ namespace TheGame
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
+                    if (!Globals.tutorialDone[0])
+                    {
+                        Globals.tutorialDone[0] = true;
+                        pause_timer = DateTime.Now;
+                    }
+                    
                 }
 
                 if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
+                    if (!Globals.tutorialDone[1])
+                    {
+                        Globals.tutorialDone[1] = true;
+                        pause_timer = DateTime.Now;
+                    }
                 }
 
                 if(Globals.Module3 && Globals.moduleCounter == 1)    
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
+                    if (!Globals.tutorialDone[2])
+                    {
+                        Globals.tutorialDone[2] = true;
+                        pause_timer = DateTime.Now;
+                    }
                     //ODBLOKOWAĆ NOWY SKŁADNIK POKRZYWA
                 }
                 if (Globals.Module4 && Globals.moduleCounter == 2)   
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
+                    if (!Globals.tutorialDone[3])
+                    {
+                        Globals.tutorialDone[3] = true;
+                        pause_timer = DateTime.Now;
+                    }
 
                 }
                 if (Globals.Module6 && Globals.moduleCounter == 3)
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
+                    if (!Globals.tutorialDone[4])
+                    {
+                        Globals.tutorialDone[4] = true;
+                        pause_timer = DateTime.Now;
+                    }
                     //ODBLOKOWAĆ NOWY SKŁADNIK  JABŁOŃ
 
                 }
@@ -512,6 +552,11 @@ namespace TheGame
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
+                    if (!Globals.tutorialDone[5])
+                    {
+                        Globals.tutorialDone[5] = true;
+                        pause_timer = DateTime.Now;
+                    }
                     //ODBLOKOWAĆ NOWY SKŁADNIK  JABŁOŃ
 
                 }
@@ -524,6 +569,9 @@ namespace TheGame
 
                     if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevPauseState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)))) //ACCEPT
                     {
+                        
+                        TimeSpan deltatime_Pause = DateTime.Now - pause_timer;
+                        if(deltatime_Pause.TotalSeconds > 1) { 
                         if (Globals.Module2 && Globals.moduleCounter == 0)
                         {
                             Globals.moduleCounter += 1;
@@ -548,9 +596,10 @@ namespace TheGame
                         {
                             Globals.moduleCounter += 1;
                         }
+
                         player.Start();
                         Globals.TutorialPause = false;
-
+                        }
                     }
                 }
             }
@@ -612,62 +661,66 @@ namespace TheGame
             Globals.prevDeathState = gamePadState;
             Globals.prevKeyBoardDeathState = state;
 
+            TimeSpan deltatime_Pause = DateTime.Now - pause_timer;
+            if (deltatime_Pause.TotalSeconds >= 1)
+            {
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1) //leader board
+                {
 
-            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1) //leader board
-            {
-                Globals.TutorialPause = false;
-                Globals.Module2 = false;
-                Globals.Module3 = false;
-                Globals.Module4 = false;
-                Globals.Module5 = false;
-                Globals.Module6 = false;
-                Globals.Module9 = false;
-                Globals.counter = 0;
-                Globals.moduleCounter = 0;
-                Window.TextInput += hud.TextInputHandler;
-                Globals.LeaderBoard = true;
+                    Globals.TutorialPause = false;
+                    Globals.Module2 = false;
+                    Globals.Module3 = false;
+                    Globals.Module4 = false;
+                    Globals.Module5 = false;
+                    Globals.Module6 = false;
+                    Globals.Module9 = false;
+                    Globals.counter = 0;
+                    Globals.moduleCounter = 0;
+                    Window.TextInput += hud.TextInputHandler;
+                    Globals.LeaderBoard = true;
 
-            }
-            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2) //try again 
-            {
-                Globals.TutorialPause = false;
-                Globals.Module2 = false;
-                Globals.Module3 = false;
-                Globals.Module4 = false;
-                Globals.Module5 = false;
-                Globals.Module6 = false;
-                Globals.Module9 = false;
-                Globals.Death = false;
-                Globals.Tutorial = false;
-               
-                LoadContent();
-                Initialize();
-                player.Start();
+                }
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2) //try again 
+                {
+                    Globals.TutorialPause = false;
+                    Globals.Module2 = false;
+                    Globals.Module3 = false;
+                    Globals.Module4 = false;
+                    Globals.Module5 = false;
+                    Globals.Module6 = false;
+                    Globals.Module9 = false;
+                    Globals.Death = false;
+                    Globals.Tutorial = false;
 
-            }
-            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3) // main menu
-            {
-                Globals.TutorialPause = false;
-                Globals.Module2 = false;
-                Globals.Module3 = false;
-                Globals.Module4 = false;
-                Globals.Module5 = false;
-                Globals.Module6 = false;
-                Globals.Module9 = false;
-                Globals.counter = 0;
-                Globals.moduleCounter = 0;
-                Globals.Death = false;
-                Globals.Tutorial = false;
-                Globals.Easy = false;
-                Globals.Hard = false;
-                LoadContent();
-                Initialize();
-                Globals.Pause = false;
-                Globals.Start = true;
-            }
-            if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 4) // exit
-            {
-                Exit();
+                    LoadContent();
+                    Initialize();
+                    player.Start();
+
+                }
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3) // main menu
+                {
+                    Globals.TutorialPause = false;
+                    Globals.Module2 = false;
+                    Globals.Module3 = false;
+                    Globals.Module4 = false;
+                    Globals.Module5 = false;
+                    Globals.Module6 = false;
+                    Globals.Module9 = false;
+                    Globals.counter = 0;
+                    Globals.moduleCounter = 0;
+                    Globals.Death = false;
+                    Globals.Tutorial = false;
+                    Globals.Easy = false;
+                    Globals.Hard = false;
+                    LoadContent();
+                    Initialize();
+                    Globals.Pause = false;
+                    Globals.Start = true;
+                }
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 4) // exit
+                {
+                    Exit();
+                }
             }
         }
         #endregion
@@ -787,6 +840,7 @@ namespace TheGame
             if (obj is Player)
             {
                 //Exit();
+                pause_timer=DateTime.Now;
                 Globals.Death = true;
                 // GAME OVER HERE;
             }

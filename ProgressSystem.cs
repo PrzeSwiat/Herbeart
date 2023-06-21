@@ -145,7 +145,7 @@ namespace TheGame
            
         }
         
-        public void drawSelectMenu()
+        public void drawSelectMenu(DateTime dt)
         {
 
             checkGeneratedRewards();
@@ -188,8 +188,9 @@ namespace TheGame
                 {
                     three = Color.White;
                 }
-
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState .Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 1)
+                TimeSpan ts = DateTime.Now - dt;
+               
+                if (((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState .Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 1)&& ts.TotalSeconds > 1)
                 {
                    
                     if (rewards[0] == 1 || rewards[0] == 2 || rewards[0] == 3)
@@ -204,9 +205,10 @@ namespace TheGame
                     }
                     canDraw = false;
                     Globals.TutorialPause = false;
+                    player.Start();
                     resetRewardArray();
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 2)
+                if (((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 2) &&ts.TotalSeconds > 1)
                 {
                     
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,10 +242,11 @@ namespace TheGame
                     }
                     canDraw = false;
                     Globals.TutorialPause = false;
+                    player.Start();
                     resetRewardArray();
-
+                    
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 3)
+                if (((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardPauseState.IsKeyUp(Keys.Enter)) && MenuOption == 3)&& ts.TotalSeconds > 1)
                 {
                     if (rewards[2] == 1)
                     {
@@ -274,9 +277,11 @@ namespace TheGame
                     }
                     
                     Globals.TutorialPause = false;
+                    player.Start();
                     canDraw = false;
                     resetRewardArray();
                 }
+                
                 Globals.spriteBatch.Begin();
                 Globals.spriteBatch.Draw(rewe, new Vector2(400,400), null, one, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
                 Globals.spriteBatch.Draw(rewe, new Vector2(600, 600), null, two, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
