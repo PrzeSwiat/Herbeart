@@ -123,7 +123,7 @@ namespace TheGame
         }
 
 
-        public void GenerateForest(Vector3 wektor, float minSize, float maxSize)
+        public void GenerateForest(Vector3 wektor, int minSize, int maxSize)
         {
             string treeModel = GenerateRandomString(treeModels);
             string texture = "null";
@@ -142,7 +142,7 @@ namespace TheGame
             SceneObject tree = new SceneObject(wektor, treeModel, texture);
             Random rand = new Random();
             float rflot = (float)rand.NextDouble() * 2 * (float)Math.PI;            //zmiana obrotu drzewa losowo
-            float size = (float)rand.Next(100, 220) / 100;                                //zmiana wielkosci drzewa losowo
+            float size = (float)rand.Next(minSize, maxSize) / 100;                                //zmiana wielkosci drzewa losowo
             tree.SetScale(size);
             tree.SetRotation(new Vector3(0, rflot, 0));
             _sceneObjects.Add(tree);
@@ -185,7 +185,7 @@ namespace TheGame
                         forestTiles.Add(tile1);
                         borderTiles.Add(tile1);
                         Vector3 newVector1 = ChangeTileVector(tile1, -2, 2, true, true, -1.5, 1.5);
-                        GenerateForest(newVector1, 130, 150);
+                        GenerateForest(newVector1, 100, 220);
                         GenerateGreenObjectsNearTrees(tile1);
                         enemiesColliders.Add(new Vector2(newVector1.X, newVector1.Z));
                         x++;
