@@ -69,11 +69,13 @@ namespace TheGame
         {
             //Moduł 1 - z salą weselną
             prepareModule("Maps/map1.txt", 0, 0);
+            
 
             //Moduł 2
             prepareModule("Maps/map2.txt", 0, 0);
-            _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 80));
-            _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 50));
+            //_levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 80));
+            //_levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 50));
+            _levels[1].GenerateEnemy(nettleEnemy, new Vector3(moduleSeparatorX + 30, 0, 50));
 
             //Moduł 3
             prepareModule("Maps/map3.txt", 0, 0);
