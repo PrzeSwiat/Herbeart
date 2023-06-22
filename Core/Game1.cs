@@ -279,14 +279,18 @@ namespace TheGame
                         GraphicsDevice.Clear(Color.Black);
                         base.Draw(gameTime);
                         GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
+                        GraphicsDevice.BlendState  = BlendState.AlphaBlend;
+                        animationMenager.DrawAnimations();
                         world.Draw(new System.Numerics.Vector3(player.GetPosition().X, player.GetPosition().Y, player.GetPosition().Z));
+                        GraphicsDevice.BlendState = BlendState.Opaque;
                         player.DrawPlayer(player.GetPosition());
+                        
 
                         enemies.Draw(player.GetPosition());
 
                         Leafs.Draw(player.GetPosition());
-                        animationMenager.DrawAnimations();
+                        
+                        
                         player.DrawEffectsShadow(player.GetPosition());
 
                         hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture(), player.getRotationY());

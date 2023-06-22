@@ -83,6 +83,15 @@ namespace TheGame
 
         }
 
+        public virtual void DrawTransparency(Vector3 lightpos)
+        {
+            Globals.effectHandler1.WroldTransparencyDraw(GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())
+                        * Matrix.CreateRotationX(GetRotation().X) * Matrix.CreateRotationY(GetRotation().Y) *
+                        Matrix.CreateRotationZ(GetRotation().Z)
+                        * Matrix.CreateTranslation(GetPosition().X, GetPosition().Y, GetPosition().Z)
+                         , Globals.viewMatrix, Globals.projectionMatrix, GetTexture2D(), lightpos);
+        }
+
         public virtual void Draw(Vector3 lightpos)
         {
             Globals.effectHandler.WroldDraw(GetModel(), Globals.worldMatrix * Matrix.CreateScale(GetScale())

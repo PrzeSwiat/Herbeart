@@ -150,6 +150,33 @@ namespace TheGame
                 mesh.Draw();
             }
         }
+        public void WroldTransparencyDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D, Vector3 Lightpos)
+        {
+            // point light (fire light?)
+            float percent = Globals.HPpercent;
+            if (percent > 0.4f) { percent = 0.6f; }
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = _effect;
+                    _effect.Parameters["World"].SetValue(world * mesh.ParentBone.Transform);
+                    _effect.Parameters["View"].SetValue(view);
+                    _effect.Parameters["Projection"].SetValue(projection);
+                    Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
+                    _effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
+                    _effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(0f, 0f, 0f));
+                    _effect.Parameters["DiffuseColor"].SetValue(new Vector4(10f, 10F, 10f, 0.99f));
+                    _effect.Parameters["DiffuseIntensity"].SetValue(1f);
+                    _effect.Parameters["LineColor"].SetValue(new Vector4(0, 0, 0, 0.5f));
+                    _effect.Parameters["LineThickness"].SetValue(0.045f);
+                    //_effect.Parameters["AmbientColor"].SetValue(new Vector4(0.3f, 0.3f, 0.3f, 1f));  
+                    _effect.Parameters["Texture"].SetValue(texture2D);
+                    _effect.Parameters["hp"].SetValue(percent);
+                }
+                mesh.Draw();
+            }
+        }
 
-}
+    }
 }
