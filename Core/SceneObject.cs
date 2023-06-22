@@ -55,10 +55,10 @@ namespace TheGame
             texture2D = models.getTexture(_textureFileName);
             BoundingBox helper = CreateBoundingBox(this.model);
 
-            if (_modelFileName == "Objects/tree1" || _modelFileName == "Objects/tree2" || _modelFileName == "Objects/tree3")
+            if (_modelFileName == "Objects/drzewo1" || _modelFileName == "Objects/drzewo2" || _modelFileName == "Objects/drzewo3")
             {
-                helper.Min = new Vector3(-2f, 0, -2f);
-                helper.Max = new Vector3(2f, 6, 2f);
+                helper.Min = new Vector3(-2.5f, 0, -2.5f);
+                helper.Max = new Vector3(2.5f, 6, 2.5f);
                 boundingBox = new BoundingBox(helper.Min + this.position, helper.Max + this.position);
             } else if (_modelFileName == "Objects/mis")
             {
