@@ -49,12 +49,12 @@ namespace TheGame
                 apple.Update(deltaTime, player);
                 apple.OnDestroy += RemoveBullet;
             }
-            if (isStun)
+            if (isStunned)
             {
                 elapsedStunTime += deltaTime;
                 if (elapsedStunTime >= stunTime)
                 {
-                    isStun = false;
+                    isStunned = false;
                     elapsedStunTime = 0;
                 }
             } else

@@ -13,8 +13,8 @@ namespace TheGame
     internal class Enemy : Creature
     {
         public event EventHandler OnAttack;
-        public bool isStun = false;
-        private bool isSlow = false;
+        public bool isStunned = false;
+        private bool isSlowed = false;
         public float stunTime = 0, elapsedStunTime = 0;
         public float slowTime = 1, elapsedSlowTime = 0;
         public Shadow shadow;
@@ -56,58 +56,67 @@ namespace TheGame
 
         }
 
-        protected void checkCollision(Player player)
+        protected void CheckCollision(Player player)
         {
             if (this.boundingSphere.Intersects(player.boundingBox) == true) collides = true;
             else collides = false;
         }
 
+        private void HandleStunnedStatus(float deltaTime)
+        {
+            if (!isStunned) return;
+
+            elapsedStunTime += deltaTime;
+            if (elapsedStunTime >= stunTime)
+            {
+                isStunned = false;
+                elapsedStunTime = 0;
+            }
+        }
+
+        public void HandleSlowedStatus(float deltaTime)
+        {
+            if (!isSlowed) return;
+
+            elapsedSlowTime += deltaTime;
+            if (elapsedSlowTime >= slowTime)
+            {
+                SetNormalSpeed();
+            }
+        }
+
         public virtual void Update(float deltaTime, Player player)
         {
             Update();
-            if (isStun)
+            HandleStunnedStatus(deltaTime);
+            if (isStunned)
             {
-                elapsedStunTime += deltaTime;
-                if (elapsedStunTime >= stunTime)
-                {
-                    isStun = false;
-                    elapsedStunTime = 0;
-                }
+                return;
+            }
+
+            HandleSlowedStatus(deltaTime);
+            CheckCollision(player);
+            RotateTowardsCurrentDirection();
+            if (collides)
+            {
+                Attack(player);
             }
             else
             {
-                if (isSlow)
-                {
-                    elapsedSlowTime += deltaTime;
-                    if (elapsedSlowTime >= slowTime)
-                    {
-                        SetNormalSpeed();
-                    }
-                }
-
-                checkCollision(player);
-                RotateTowardsCurrentDirection();
-                if (collides)
-                {
-                    Attack(player);
-                }
-                else
-                {
-                    MoveForwards(deltaTime, true);
-                }
+                MoveForwards(deltaTime, true);
             }
-            
         }
+            
 
         public void Stun(int time)
         {
-            isStun = true;
+            isStunned = true;
             stunTime = time;
         }
 
         public void Slow (float slowMultiplier)
         {
-            isSlow = true;
+            isSlowed = true;
             this.ActualAttackSpeed = this.AttackSpeed * slowMultiplier;
             this.ActualSpeed = this.MaxSpeed * slowMultiplier;
         }
@@ -116,7 +125,7 @@ namespace TheGame
         {
             this.ActualAttackSpeed = this.AttackSpeed;
             this.ActualSpeed = this.MaxSpeed;
-            isSlow = false;
+            isSlowed = false;
             elapsedSlowTime = 0;
         }
 
