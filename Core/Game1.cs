@@ -130,6 +130,7 @@ namespace TheGame
 
         protected override void Update(GameTime gameTime)
         {
+            Globals.HPpercent = player.calculateHPPercent();
             //particleSystem.EmitterLocation = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
             //particleSystem.Update();
             if (Globals.Start)
@@ -337,28 +338,23 @@ namespace TheGame
 
             foreach (SceneObject obj in world.GetWorldList())
             {
-                //obj.DrawBB();
+                obj.DrawBB();
             }
             foreach (Enemy enemy in enemies.EnemiesList)
             {
-                enemy.DrawBB();
+                //enemy.DrawBB();
                 if (enemy.GetType() == typeof(AppleTree))
                 {
                     AppleTree apple1 = (AppleTree)enemy;
                     foreach (Apple apple in apple1.bullet)
                     {
-                        apple.DrawBB();
+                        //apple.DrawBB();
                     }
                 }
-                DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
+                //DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
             }
 
-            player.DrawBB();
-            /*foreach (BoundingBox bb in player.returnApplesBB())
-            {
-                SceneObject.DrawBB(bb);
-            }*/
-            //DrawBS(player.)
+            //player.DrawBB();
             DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
         }
 
