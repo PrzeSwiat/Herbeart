@@ -130,6 +130,8 @@ namespace TheGame
 
         protected override void Update(GameTime gameTime)
         {
+            Globals.HPpercent = player.calculateHPPercent();
+            Debug.WriteLine(Globals.HPpercent);
             //particleSystem.EmitterLocation = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
             //particleSystem.Update();
             if (Globals.Start)

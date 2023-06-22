@@ -126,6 +126,8 @@ namespace TheGame
         public void WroldDraw(Model model, Matrix world, Matrix view, Matrix projection, Texture2D texture2D,Vector3 Lightpos)
         {
             // point light (fire light?)
+            float percent = Globals.HPpercent;
+            if (percent > 0.4f) { percent = 0.4f; }
             foreach (ModelMesh mesh in model.Meshes)
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
@@ -143,6 +145,7 @@ namespace TheGame
                     _effect.Parameters["LineThickness"].SetValue(0.045f);
                     //_effect.Parameters["AmbientColor"].SetValue(new Vector4(0.3f, 0.3f, 0.3f, 1f));  
                     _effect.Parameters["Texture"].SetValue(texture2D);
+                    _effect.Parameters["hp"].SetValue(percent);
                 }
                 mesh.Draw();
             }

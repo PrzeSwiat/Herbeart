@@ -129,7 +129,10 @@ namespace TheGame
             }
         }
 
-        
+        public float calculateHPPercent()
+        {
+            return (float)((float)(this.health)/ (float)(this.maxHealth));
+        }
 
         public override void DrawPlayer(Vector3 lightpos)
         {

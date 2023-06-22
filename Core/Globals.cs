@@ -41,6 +41,7 @@ namespace TheGame
         public static bool Hard;
         public static bool LeaderBoard;
         public static float time;
+        public static float HPpercent;
         public static int Score;
         public static int ScoreMultipler;
         public static GamePadState prevState;
