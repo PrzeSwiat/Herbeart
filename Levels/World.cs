@@ -52,7 +52,7 @@ namespace TheGame
             }
             foreach (SceneObject sceneObject in transparentTrees)
             {
-                sceneObject.DrawTransparency(player);
+                sceneObject.Draw(player);
             }
 
         }

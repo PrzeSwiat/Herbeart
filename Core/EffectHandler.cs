@@ -166,11 +166,10 @@ namespace TheGame
                     Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
                     _effect.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
                     _effect.Parameters["DiffuseLightDirection"].SetValue(new Vector3(0f, 0f, 0f));
-                    _effect.Parameters["DiffuseColor"].SetValue(new Vector4(10f, 10F, 10f, 0.99f));
+                    _effect.Parameters["DiffuseColor"].SetValue(new Vector4(10f, 10F, 10f, 1f));
                     _effect.Parameters["DiffuseIntensity"].SetValue(1f);
-                    _effect.Parameters["LineColor"].SetValue(new Vector4(0, 0, 0, 0.5f));
+                    _effect.Parameters["LineColor"].SetValue(new Vector4(0, 0, 0, 0.1f));
                     _effect.Parameters["LineThickness"].SetValue(0.045f);
-                    //_effect.Parameters["AmbientColor"].SetValue(new Vector4(0.3f, 0.3f, 0.3f, 1f));  
                     _effect.Parameters["Texture"].SetValue(texture2D);
                     _effect.Parameters["hp"].SetValue(percent);
                 }

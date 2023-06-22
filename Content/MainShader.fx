@@ -146,7 +146,7 @@ technique BasicColorDrawing
     }
     pass P1
     {
-        
+
         VertexShader = compile VS_SHADERMODEL CelVertexShader();
         PixelShader = compile PS_SHADERMODEL CelPixelShader();
         CullMode = CCW;

@@ -339,7 +339,7 @@ namespace TheGame
                 effect1.Parameters["Projection"].SetValue(Globals.projectionMatrix);
                 effect1.Parameters["WorldInverseTranspose"].SetValue(Matrix.Transpose(Matrix.Invert(Globals.worldMatrix)));
                 effect1.Parameters["DiffuseLightDirection"].SetValue(new Vector3(0, 0, 0));
-                effect1.Parameters["DiffuseColor"].SetValue(new Vector4(10f, 10F, 10f, 1));
+                effect1.Parameters["DiffuseColor"].SetValue(new Vector4(10f, 10F, 10f, 0.9f));
                 effect1.Parameters["DiffuseIntensity"].SetValue(1);
                 effect1.Parameters["LineColor"].SetValue(Color.Black.ToVector4());
                 effect1.Parameters["LineThickness"].SetValue(7f);
