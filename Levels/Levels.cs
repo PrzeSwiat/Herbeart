@@ -459,6 +459,29 @@ namespace TheGame
             return _sceneObjects;
         }
 
+        public List<SceneObject> returnTransparentTrees(float playerX, float playerY)
+        {
+            List<SceneObject> _sceneObjects = new List<SceneObject>();
+
+            int numberOfModule = returnModuleNumber(playerX, playerY);
+
+
+            for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
+            {
+                if (i >= 0 && i < _levels.Count - 1)
+                {
+                    foreach (SceneObject obj in _levels[i].returnTransparentTrees())
+                    {
+                        _sceneObjects.Add(obj);
+                    }
+                }
+
+            }
+
+
+            return _sceneObjects;
+        }
+
         public List<Enemy> returnEnemiesList(float playerX, float playerY)
         {
             List<Enemy> enemiesList = new List<Enemy>();
