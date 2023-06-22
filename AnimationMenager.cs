@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -23,6 +24,7 @@ namespace TheGame
         ContentManager Content;
         Player player;
         List<Enemy> enemies;
+        private int cont = 0;
         private DateTime lastAttackTime = DateTime.Now;
         private DateTime actualTime;
         private bool Atak;
@@ -30,11 +32,13 @@ namespace TheGame
         private List<AnimationPlayer> allAnimations;
         private SkinnedModel Steps;
         private SkinnedModel Sleep;
+        private SkinnedModel Death;
         private SkinnedModel Steps_tired;
         private SkinnedModel Idle;
         private SkinnedModel Attack1;
         private SkinnedModel Attack2;
         private AnimationPlayer ASteps;
+        private AnimationPlayer ADeath;
         private AnimationPlayer ASleep;
         private AnimationPlayer ASteps_tired;
         private AnimationPlayer AIdle;
@@ -61,7 +65,7 @@ namespace TheGame
 
             player.onMove += PlayerSteps;
             player.OnAttackPressed += PlayerAttack;
-
+            Death = Content.Load<SkinnedModel>("Animations/mis_death3");
             Sleep = Content.Load<SkinnedModel>("Animations/mis_spanie");
             Steps = Content.Load<SkinnedModel>("Animations/mis_bieg_2");
             Idle = Content.Load<SkinnedModel>("Animations/mis_Standing_23");
@@ -70,6 +74,15 @@ namespace TheGame
             Steps_tired=Content.Load<SkinnedModel>("Animations/mis_tired_run");
             Attack1 = Content.Load<SkinnedModel>("Animations/atak1blend2");
             Attack2 = Content.Load<SkinnedModel>("Animations/atak2blend2");
+
+            //Death
+            ADeath = new AnimationPlayer(Death);
+            ADeath.Animation = Death.Animations[0];
+            ADeath.PlaybackSpeed = 0.1f;
+            ADeath.IsPlaying = false;
+            ADeath.IsLooping = false;
+            ADeath.CurrentTime = 1.0f;
+            ADeath.CurrentTick = Death.Animations[0].DurationInTicks;
 
             //Sleep
             ASleep = new AnimationPlayer(Sleep);
@@ -142,7 +155,6 @@ namespace TheGame
             }
             
 
-
             if(Atak)
             {
                 TimeSpan timeSinceLastAttack = DateTime.Now - lastAttackExecutionTime;
@@ -189,6 +201,29 @@ namespace TheGame
 
         }
 
+        public void DeathAnimationDraw()
+        {
+            if(ADeath.IsPlaying)
+            {
+                DrawAnimation(player, ADeath, Death);
+            }
+         
+        }
+
+        public void DeathAnimationUpdate(GameTime gameTime)
+        {
+            if (cont == 0)
+            {
+                ASteps.IsPlaying = false;
+                AIdle.IsPlaying = false;
+                AAttack1.IsPlaying = false;
+                AAttack2.IsPlaying = false;
+                ADeath.IsPlaying = true;
+                cont++;
+            }
+
+            ADeath.Update(gameTime);
+        }
 
         private void PlayerSteps(object obj, EventArgs e)
         {
@@ -205,9 +240,12 @@ namespace TheGame
             Atak = true; //ból
         }
 
+
+
         public void DrawAnimations()
         {
             #region PLAYER
+         
             if(ASleep.IsPlaying)
             {
                 AIdle.IsPlaying = false;
@@ -256,6 +294,7 @@ namespace TheGame
             }
             ASteps.IsPlaying = false;
             ASteps_tired.IsPlaying = false;
+            
             
 
             #endregion

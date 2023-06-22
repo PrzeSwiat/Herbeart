@@ -21,6 +21,7 @@ namespace TheGame
         AudioMenager audioMenager;
         ParticleSystem particleSystem;
         DateTime pause_timer;
+        DateTime death_timer;
         //.................
 
 
@@ -161,8 +162,13 @@ namespace TheGame
                         }
                         else
                         {
-
-                            DeathMenuCheck();
+                            TimeSpan timeSpan = DateTime.Now - death_timer;
+                            animationMenager.DeathAnimationUpdate(gameTime);
+                            if (timeSpan.TotalSeconds > 4)
+                            {
+                                DeathMenuCheck();
+                            }
+                           
                         }
                     }
                     else
@@ -249,13 +255,22 @@ namespace TheGame
                 {
                     if(Globals.Death)
                     {
+
                         if(Globals.LeaderBoard)
                         {
                             hud.DrawLeaderBoard();
                         }
                         else
                         {
-                            hud.DrawDeathMenu();
+                            GraphicsDevice.Clear(Color.Black);
+                            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                            TimeSpan timeSpan = DateTime.Now - death_timer;
+                            animationMenager.DeathAnimationDraw();
+                            if (timeSpan.TotalSeconds > 4)
+                            {
+                                
+                                hud.DrawDeathMenu();
+                            }
                         }
                     }
                     else
@@ -839,6 +854,7 @@ namespace TheGame
             {
                 //Exit();
                 pause_timer=DateTime.Now;
+                death_timer = DateTime.Now;
                 Globals.Death = true;
                 // GAME OVER HERE;
             }

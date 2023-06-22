@@ -111,6 +111,13 @@
 /processorParam:SkipUVs=False
 /build:Animations/mis_bieg.fbx
 
+#begin Animations/mis_death3.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mis_death3.fbx
+
 #begin Animations/mis_spanie.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
