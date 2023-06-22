@@ -127,7 +127,7 @@ namespace TheGame
         {
             // point light (fire light?)
             float percent = Globals.HPpercent;
-            if (percent > 0.4f) { percent = 0.4f; }
+            if (percent > 0.4f) { percent = 0.6f; }
             foreach (ModelMesh mesh in model.Meshes)
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)

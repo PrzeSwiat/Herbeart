@@ -88,7 +88,7 @@ float4 CelPixelShader(VertexToPixel input) : COLOR0
     clip(color.a < 0.75f ? -1 : 1);
 
     // Wartość HealthPercent z zakresu [0, 1]
-    float healthIntensity = 0.4f - hp; ///parame
+    float healthIntensity = 0.6f - hp; ///parame
 
     // Zastosowanie efektu poszarzenia w zależności od wartości HealthPercent
     float4 grayColor = float4(0.5, 0.5, 0.5, 1.0);
