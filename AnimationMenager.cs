@@ -29,15 +29,18 @@ namespace TheGame
         private bool combo = false;
         private List<AnimationPlayer> allAnimations;
         private SkinnedModel Steps;
+        private SkinnedModel Sleep;
         private SkinnedModel Steps_tired;
         private SkinnedModel Idle;
         private SkinnedModel Attack1;
         private SkinnedModel Attack2;
         private AnimationPlayer ASteps;
+        private AnimationPlayer ASleep;
         private AnimationPlayer ASteps_tired;
         private AnimationPlayer AIdle;
         private AnimationPlayer AAttack1;
         private AnimationPlayer AAttack2;
+        private bool sleeping = true;
         private Texture2D texture;
         private Effect effect1;
         private int Combocounter = 0;
@@ -59,6 +62,7 @@ namespace TheGame
             player.onMove += PlayerSteps;
             player.OnAttackPressed += PlayerAttack;
 
+            Sleep = Content.Load<SkinnedModel>("Animations/mis_spanie");
             Steps = Content.Load<SkinnedModel>("Animations/mis_bieg_2");
             Idle = Content.Load<SkinnedModel>("Animations/mis_Standing_23");
             texture = Content.Load<Texture2D>("Textures/mis_texture");
@@ -67,6 +71,13 @@ namespace TheGame
             Attack1 = Content.Load<SkinnedModel>("Animations/atak1blend2");
             Attack2 = Content.Load<SkinnedModel>("Animations/atak2blend2");
 
+            //Sleep
+            ASleep = new AnimationPlayer(Sleep);
+            ASleep.Animation = Sleep.Animations[0];
+            ASleep.PlaybackSpeed = 0.8f;
+            ASleep.IsLooping = true;
+            ASleep.CurrentTime = 1.0f;
+            ASleep.CurrentTick = Sleep.Animations[0].DurationInTicks;
             //steps
             ASteps = new AnimationPlayer(Steps);
             ASteps.Animation = Steps.Animations[0];
@@ -110,6 +121,7 @@ namespace TheGame
             allAnimations.Add(ASteps_tired);
             allAnimations.Add(AAttack1);
             allAnimations.Add(AAttack2);
+            allAnimations.Add(ASleep);
         }
 
         public void Update(GameTime gameTime)
@@ -119,6 +131,17 @@ namespace TheGame
             {
                 animationPlayer.Update(gameTime);
             }
+            if(sleeping)
+            {
+                AIdle.IsPlaying = false;
+                ASleep.IsPlaying = true;
+            }
+            else
+            {
+                ASleep.IsPlaying = false;
+            }
+            
+
 
             if(Atak)
             {
@@ -169,7 +192,7 @@ namespace TheGame
 
         private void PlayerSteps(object obj, EventArgs e)
         {
-            
+            sleeping = false;
             ASteps.IsPlaying = true;
             ASteps_tired.IsPlaying = true;
             AIdle.IsPlaying = false;
@@ -177,14 +200,21 @@ namespace TheGame
 
         }
         private void PlayerAttack(object obj, EventArgs e)
-        {  
+        {
+            sleeping = false;
             Atak = true; //ból
         }
 
         public void DrawAnimations()
         {
             #region PLAYER
-            
+            if(ASleep.IsPlaying)
+            {
+                AIdle.IsPlaying = false;
+                ASteps.IsPlaying = false;
+                ASteps_tired.IsPlaying = false;
+                DrawAnimation(player, ASleep, Sleep);
+            }
             if (AAttack1.IsPlaying)
             {
 
@@ -220,7 +250,7 @@ namespace TheGame
                 
             }
 
-            if(!Atak)
+            if(!Atak || !sleeping)
             {
                 AIdle.IsPlaying = true;
             }
