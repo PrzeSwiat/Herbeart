@@ -38,6 +38,7 @@ namespace TheGame
         #endregion
         private List<SceneObject> _sceneObjects;
         private List<SceneObject> nonColideObjects;
+        private List<SceneObject> treesThatShouldBeTransparent;
         private int tileSize = 6;
         private int moduleWidth = 26;
         private int moduleHeight = 26;
@@ -58,6 +59,7 @@ namespace TheGame
         {
             _sceneObjects = new List<SceneObject>();
             nonColideObjects = new List<SceneObject>();
+            treesThatShouldBeTransparent = new List<SceneObject>();
             enemies = new List<Enemy>();
             enemiesColliders = new List<Vector2>();       
             groundTiles = new List<Tile>();
@@ -110,6 +112,8 @@ namespace TheGame
 
         public List<SceneObject> returnNonCollideSceneObjects() { return nonColideObjects; }
 
+        public List<SceneObject> returnTransparentTrees() {  return treesThatShouldBeTransparent; }
+
         public void ObjectInitializer()
         {
             foreach (SceneObject obj in _sceneObjects)
@@ -123,7 +127,7 @@ namespace TheGame
         }
 
 
-        public void GenerateForest(Vector3 wektor, int minSize, int maxSize)
+        public void GenerateForest(Vector3 wektor, int minSize, int maxSize, bool transparent)
         {
             string treeModel = GenerateRandomString(treeModels);
             string texture = "null";
@@ -146,6 +150,10 @@ namespace TheGame
             tree.SetScale(size);
             tree.SetRotation(new Vector3(0, rflot, 0));
             _sceneObjects.Add(tree);
+            if (transparent)
+            {
+                treesThatShouldBeTransparent.Add(tree);
+            }
         }
 
         public void LoadScene()
@@ -174,7 +182,7 @@ namespace TheGame
                         Tile tile = new Tile(groundType, height, wektor, 0);
                         forestTiles.Add(tile);
                         Vector3 newVector = ChangeTileVector(tile, -2.5, 2.5, true, false, 0, 0);
-                        GenerateForest(newVector, 150, 220);
+                        GenerateForest(newVector, 150, 220, false);
                         x++;
                         break;
                     case 49: //1
@@ -185,19 +193,19 @@ namespace TheGame
                         forestTiles.Add(tile1);
                         borderTiles.Add(tile1);
                         Vector3 newVector1 = ChangeTileVector(tile1, -2, 2, true, true, -1.5, 1.5);
-                        GenerateForest(newVector1, 100, 220);
+                        GenerateForest(newVector1, 100, 220, false);
                         GenerateGreenObjectsNearTrees(tile1);
                         enemiesColliders.Add(new Vector2(newVector1.X, newVector1.Z));
                         x++;
                         break;
-                    case 50:
+                    case 50:    //2
                         groundType = "forest_border_without_obj";
                         height = 0.0f;
                         Vector3 wektor5 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
                         Tile tile5 = new Tile(groundType, height, wektor5, 0);
                         forestTiles.Add(tile5);
                         Vector3 newVector5 = ChangeTileVector(tile5, -2, 2, true, true, -1.5, 1.5);
-                        GenerateForest(newVector5, 150, 220);
+                        GenerateForest(newVector5, 150, 220, true);
                         enemiesColliders.Add(new Vector2(newVector5.X, newVector5.Z));
                         x++;
                         break;
