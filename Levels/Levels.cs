@@ -459,28 +459,27 @@ namespace TheGame
             return _sceneObjects;
         }
 
-        public List<SceneObject> returnTransparentTrees(float playerX, float playerY)
+        public void setTransparentTrees(Vector3 playerPosition)
         {
-            List<SceneObject> _sceneObjects = new List<SceneObject>();
 
-            int numberOfModule = returnModuleNumber(playerX, playerY);
+            int numberOfModule = returnModuleNumber(playerPosition.X, playerPosition.Y);
 
 
-            for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
+            foreach (SceneObject obj in _levels[numberOfModule].returnTransparentTrees())
             {
-                if (i >= 0 && i < _levels.Count - 1)
+                float distance = Microsoft.Xna.Framework.Vector3.Distance(playerPosition, obj.GetPosition());
+                if (distance < 10.0f)
                 {
-                    foreach (SceneObject obj in _levels[i].returnTransparentTrees())
-                    {
-                        _sceneObjects.Add(obj);
-                    }
+                    obj.transparency = true;
                 }
-
+                else
+                {
+                    obj.transparency = false;   
+                }
             }
 
-
-            return _sceneObjects;
         }
+        
 
         public List<Enemy> returnEnemiesList(float playerX, float playerY)
         {

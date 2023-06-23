@@ -16,7 +16,6 @@ namespace TheGame
     {
         private List<SceneObject> _worldArray;
         private List<SceneObject> nonCollideArray;
-        private List<SceneObject> transparentTrees;
         private List<Vector2> enemiesCollidersArray;
         private Levels level;
         private List<Enemy> enemies;
@@ -26,7 +25,6 @@ namespace TheGame
         {
             _worldArray = new List<SceneObject>();
             nonCollideArray = new List<SceneObject>();
-            transparentTrees = new List<SceneObject>();
             enemiesCollidersArray = new List<Vector2>();
             level = new Levels();
             enemies = new List<Enemy>();
@@ -41,19 +39,23 @@ namespace TheGame
         {
             _worldArray = level.returnSceneObjects(player.X, player.Z);
             nonCollideArray = level.returnNonCollideSceneObjects(player.X, player.Z);
-            transparentTrees = level.returnTransparentTrees(player.X, player.Z);
+            level.setTransparentTrees(player);
             foreach (SceneObject sceneObject in _worldArray)
             {
-                sceneObject.Draw(player);
+                if (sceneObject.transparency)
+                {
+                    sceneObject.DrawTransparency(player);
+                }
+                else
+                {
+                    sceneObject.Draw(player);
+                }
             }
             foreach (SceneObject sceneObject in nonCollideArray)
             {
                 sceneObject.Draw(player);
             }
-            foreach (SceneObject sceneObject in transparentTrees)
-            {
-                sceneObject.Draw(player);
-            }
+
 
         }
 
