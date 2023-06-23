@@ -369,7 +369,7 @@ namespace TheGame
             Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
             Globals.spriteBatch.DrawString(Menu, "Herbeart", new Vector2(WindowWidth / 3, WindowHeight * 1 / 20), Color.Gray);
             Globals.spriteBatch.DrawString(Menu2, "Start new game", new Vector2(WindowWidth / 10, WindowHeight * 7 / 20), one);
-            Globals.spriteBatch.DrawString(Menu2, "Not implemented option", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);
+            Globals.spriteBatch.DrawString(Menu2, "Credits", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);
             Globals.spriteBatch.DrawString(Menu2, "Exit", new Vector2(WindowWidth / 10, WindowHeight * 15 / 20), three);
             Globals.spriteBatch.End();
 
