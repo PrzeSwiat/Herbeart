@@ -23,12 +23,14 @@ namespace TheGame
         SkinnedEffect skinnedEffect;
         public BoundingBox boundingBox;
         private DateTime lastEventTime, actualTime;
+        public bool transparency;
 
         public SceneObject(Vector3 worldPosition, string modelFileName, string textureFileName)
         {
             position = worldPosition;
             _modelFileName = modelFileName;
             _textureFileName = textureFileName;
+            transparency = false;
         }
 
       
