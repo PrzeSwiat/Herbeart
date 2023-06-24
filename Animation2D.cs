@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Assimp;
 
 namespace TheGame
 {
@@ -20,6 +21,7 @@ namespace TheGame
         private float ang = 0f;
         public event EventHandler OnDestroy;
         public bool destroyAnimation = false;
+        private SpriteFont ScoreFont;
         public Animation2D(Texture2D texture, Vector3 initialPosition, Vector2 targetPosition, float animationDuration,Viewport viewport)
         {
             Vector3 projectedPosition = viewport.Project(initialPosition,
@@ -31,6 +33,17 @@ namespace TheGame
             this.elapsedTime = 0f;
             this.scale = new Vector2(0.1f,0.1f);
         }
+        public Animation2D(Vector3 initialPosition, Vector2 targetPosition, float animationDuration, Viewport viewport)
+        {
+            Vector3 projectedPosition = viewport.Project(initialPosition,
+                    Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
+            this.position = new Vector2(projectedPosition.X, projectedPosition.Y) - new Vector2(0,40);
+            this.targetPosition = targetPosition;
+            this.animationDuration = animationDuration;
+            this.elapsedTime = 0f;
+            this.scale = new Vector2(0.1f, 0.1f);
+            ScoreFont = Globals.content.Load<SpriteFont>("ScoreFont");
+        }
         public Animation2D(Texture2D texture, Vector2 initialPosition, Vector2 targetPosition, float animationDuration, Viewport viewport)
         {
             
@@ -40,6 +53,35 @@ namespace TheGame
             this.animationDuration = animationDuration;
             this.elapsedTime = 0f;
             this.scale = new Vector2(0.1f, 0.1f);
+        }
+        public void UpdateScore(GameTime gameTime)
+        {
+            elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            position = CalculateScore();
+            
+        }
+        public Vector2 CalculateScore()
+        {
+            if (elapsedTime >= animationDuration)
+            {
+                EndAnimation();
+                destroyAnimation = true;
+                return this.position; // Jeśli czas przekracza czas trwania animacji, zwracamy pozycję końcową
+            }
+            else
+            {
+                float t = elapsedTime / animationDuration;
+                Vector2 newPosition = new Vector2(position.X, position.Y - 1f);
+                scale.X = scale.X + 0.025f;
+                scale.Y = scale.Y + 0.025f;
+                return newPosition;
+            }
+        }
+        public void DrawScore()
+        {
+            Globals.spriteBatch.Begin();
+            Globals.spriteBatch.DrawString(ScoreFont, (10 * Globals.ScoreMultipler).ToString(), position,Color.White,  ang, Vector2.Zero,  scale, SpriteEffects.None, 0f);
+            Globals.spriteBatch.End();
         }
         public void EndAnimation()
         {

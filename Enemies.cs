@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,10 +17,11 @@ namespace TheGame
     {
         private List<Enemy> enemiesList;
         private List<Vector2> obstaclePositions;
-
+        List<Animation2D> anim;
         public Enemies()
         {
             enemiesList = new List<Enemy>();
+            anim = new List<Animation2D>();
         }
 
         public void AddEnemy(Enemy enemy)
@@ -44,9 +46,15 @@ namespace TheGame
             }
         }
 
-
-        public void Move(float deltaTime, Player player)
+       
+        public void Move(float deltaTime, Player player,GameTime gametime)
         {
+            foreach (Animation2D a  in anim.ToList())
+            {
+                a.UpdateScore(gametime);
+                a.OnDestroy += DestroyAnimation;
+
+            }
             Vector3 playerPosition = player.GetPosition();
             foreach (Enemy enemy in enemiesList)
             {
@@ -182,6 +190,9 @@ namespace TheGame
 
         private void DestroyControl(object obj, EventArgs e)
         {
+            
+            Enemy en= (Enemy)obj;
+            anim.Add(new Animation2D( en.GetPosition(), new Vector2(0,0), 0.7f, Globals.viewport));
             enemiesList.Remove((Enemy)obj);
         }
 
@@ -196,6 +207,23 @@ namespace TheGame
             {
                 enemy.OnDestroy += DestroyControl;
             }
+        }
+        private void DestroyAnimation(object obj, EventArgs e)
+        {
+            anim.Remove((Animation2D)obj);
+        }
+        private void CreateAnimation(object obj, EventArgs e)
+        {
+            anim.Add((Animation2D)obj);
+        }
+        public void DrawHud()
+        {
+
+            foreach (Animation2D a in anim)
+            {
+                a.DrawScore();
+            }
+
         }
     }
 

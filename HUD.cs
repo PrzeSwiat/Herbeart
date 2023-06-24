@@ -450,7 +450,7 @@ namespace TheGame
                 Vector3 projectedPosition = Globals.viewport.Project(e.GetPosition(),
                 Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
                 int fakeHealth = e.Health / 2;
-                Rectangle rect = new Rectangle(0, 0, 1, 1);
+                Rectangle rect = new Rectangle(0, 0, 0, 0);
 
                 for (int i = 0; i < fakeHealth; i++)
                 {
