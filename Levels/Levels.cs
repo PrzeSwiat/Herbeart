@@ -19,25 +19,16 @@ namespace TheGame
     internal class Levels
     {
         private List<Level> _levels;
-        #region Maps
-        private string[] maps_straight = { "Maps/map2.txt", "Maps/map3.txt", "Maps/map4.txt", "Maps/map5.txt" };
-        private string[] maps_up_down = { "Maps/map_up_down_1.txt" };
-        private string[] maps_down_up = { "Maps/map_down_up_1.txt" };
-        private string[] maps_up_right = { "Maps/map_up_right.txt" };
-        private string[] maps_left_down = { "Maps/map_left_down_1.txt", "Maps/map_left_down_2.txt", "Maps/map_left_down_3.txt" };
-        private string[] maps_left_up = { "Maps/map_left_up_1.txt", "Maps/map_left_up_2.txt", "Maps/map_left_up_3.txt" };
-        private string[] maps_down_right = { "Maps/map_down_right_1.txt" };
-        #endregion
-        private List<string> maps = new List<string>();
-        private string currentMap;
-        private string choosedMap;
+        private List<MapType> maps;
+        private MapType currentMap;
+        private MapType choosedMap;
 
         #region Module parametrs and rectangles
         private int numberOfModules;
         private int moduleSeparatorX = 156;
+        private int moduleSeparatorZ = 156;
         private int moduleSeparatorZCount = 0;
         private int moduleHeightChange = 0;
-        private int moduleSeparatorZ = 156;
         List<Rectangle> modulesList;
         Rectangle module;
         HashSet<Rectangle> visited;
@@ -50,7 +41,7 @@ namespace TheGame
         private string appleEnemy = "Objects/apple";
         private string melissaEnemy = "Objects/melissa";
         #endregion
-
+        
 
         public Levels()
         {
@@ -59,7 +50,7 @@ namespace TheGame
             visited = new HashSet<Rectangle>();
             modulesWithParty = new List<int>();
             shopsOnPartyModules = new List<Vector3>();
-
+            
         }
 
         public void LoadContent()
@@ -70,20 +61,20 @@ namespace TheGame
         public void prepareFirstLevels()
         {
             //Moduł 1 - z salą weselną
-            prepareModule("Maps/map1.txt", 0, 0);
+            prepareModule(MapType.Map_spawn, 0, 0);
 
             //Moduł 2
-            prepareModule("Maps/map2.txt", 0, 0);
+            prepareModule(MapType.Map_straight_1, 0, 0);
             _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 80));
             _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 50));
 
             //Moduł 3
-            prepareModule("Maps/map3.txt", 0, 0);
+            prepareModule(MapType.Map_straight_2, 0, 0);
             _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 50));
             _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 55));
             _levels[2].GenerateEnemy(nettleEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 60));
 
-            currentMap = "Maps/map3.txt";
+            currentMap = MapType.Map_straight_2;
             numberOfModules = 3;
 
         }
@@ -129,228 +120,148 @@ namespace TheGame
         {
             numberOfModules++;
             
-            maps = new List<string>();
+            maps = new List<MapType>();
 
             //wybieranie ilości przeciwników w levelu
             var result = setEnemiesCount();
             int enemyCount = result.Item1;
             int difficultyLevel = result.Item2;
 
-
-            //Przypadek prostych map - wylot z lewej i prawej
-            if (currentMap == "Maps/map1.txt" || maps_straight.Contains(currentMap))
+            switch (currentMap.type)
             {
-
-                if (numberOfModules == 5 || numberOfModules % 15 == 0)
-                {
-                    modulesWithParty.Add(numberOfModules - 1);
-                    //maps.Add("Maps/map_party_straight.txt");
-                    maps.Add("Maps/map_party_left_up.txt");
-                    maps.Add("Maps/map_party_left_down.txt");
-                    string map = generateRandomStringFromList(maps);
-                    prepareModule(map, 0, 0);
-                    switch (map)
+                case "straight":        //Przypadek prostych map - wylot z lewej i prawej
+                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
                     {
-/*                        case "Maps/map_party_straight.txt":
-                            choosedMap = "Maps/map_2.txt";
-                            break;*/
-                        case "Maps/map_party_left_up.txt":
-                            choosedMap = "Maps/map_left_up_1.txt";
-                            break;
-                        case "Maps/map_party_left_down.txt":
-                            choosedMap = "Maps/map_left_down_1.txt";
-                            break;
+                        modulesWithParty.Add(numberOfModules - 1);
+                        maps.Add(MapType.Map_party_left_up);
+                        maps.Add(MapType.Map_party_left_down);
+                        MapType map = MapType.GenerateRandomMap(maps);
+                        prepareModule(map, 0, 0);
+                        maps.Clear();
                     }
-                    maps.Clear();
-                }
-                else
-                {
-                    maps.AddRange(maps_straight);   //dalej prosto
-                    maps.AddRange(maps_left_up);    //idziemy do gory
-                    maps.AddRange(maps_left_down);  //idziemy do dołu
-                    prepareRandomModule(enemyCount, difficultyLevel);
-                }
-            }
-
-            //Zakręt do góry - wylot z lewej i góry
-            if (maps_left_up.Contains(currentMap))
-            {
-                moduleSeparatorZCount--;
-                moduleHeightChange++;
-                if (numberOfModules == 5 || numberOfModules % 15 == 0)
-                {
-                    modulesWithParty.Add(numberOfModules - 1);
-                    maps.Add("Maps/map_party_down_up.txt");
-                    maps.Add("Maps/map_party_down_right.txt");
-                    string map = generateRandomStringFromList(maps);
-                    prepareModule(map, 0, 0);
-                    switch (map)
+                    else
                     {
-                        case "Maps/map_party_down_up.txt":
-                            choosedMap = "Maps/map_down_up_1.txt";
-                            break;
-                        case "Maps/map_party_down_right.txt":
-                            choosedMap = "Maps/map_down_right_1.txt";
-                            break;
+                        maps.AddRange(MapType.Maps_straight);   //dalej prosto
+                        maps.AddRange(MapType.Maps_left_up);    //idziemy do gory
+                        maps.AddRange(MapType.Maps_left_down);  //idziemy do dołu
+                        prepareRandomModule(enemyCount, difficultyLevel);
                     }
-                    maps.Clear();
-                }
-                else
-                {
-                    maps.AddRange(maps_down_right);     //idziemy od dołu w prawo
-                    maps.AddRange(maps_down_up);
-                    prepareRandomModule(enemyCount, difficultyLevel);
-                }
-
-            }
-
-            //Zakręt od dołu w prawo - wylot z dołu i po prawo
-            if (maps_down_right.Contains(currentMap))
-            {
-                if(numberOfModules == 5 || numberOfModules % 15 == 0)
-                {
-                    modulesWithParty.Add(numberOfModules);
-                    //maps.Add("Maps/map_party_straight.txt");
-                    maps.Add("Maps/map_party_left_up.txt");
-                    string map = generateRandomStringFromList(maps);
-                    prepareModule(map, 0, 0);
-                    switch (map)
+                    break;
+                case "left_up":         //Zakręt do góry - wylot z lewej i góry
+                    moduleSeparatorZCount--;
+                    moduleHeightChange++;
+                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
                     {
-/*                        case "Maps/map_party_straight.txt":
-                            choosedMap = "Maps/map_2.txt";
-                            break;*/
-                        case "Maps/map_party_left_up.txt":
-                            choosedMap = "Maps/map_left_up_1.txt";
-                            break;
+                        modulesWithParty.Add(numberOfModules - 1);
+                        maps.Add(MapType.Map_party_down_up);
+                        maps.Add(MapType.Map_party_down_right);
+                        MapType map = MapType.GenerateRandomMap(maps);
+                        prepareModule(map, 0, 0);
+                        maps.Clear();
                     }
-                    maps.Clear();
-                }
-                else
-                {
-                    maps.AddRange(maps_straight);
-                    maps.AddRange(maps_left_up);
-                    prepareRandomModule(enemyCount, difficultyLevel);
-                }
-            }
-
-            //Zakręt w dół - wylot z lewej i z dołu
-            if (maps_left_down.Contains(currentMap))
-            {
-                moduleSeparatorZCount++;
-                moduleHeightChange++;
-                if (numberOfModules == 5 || numberOfModules % 15 == 0)
-                {
-                    modulesWithParty.Add(numberOfModules - 1);
-                    maps.Add("Maps/map_party_up_right.txt");
-                    maps.Add("Maps/map_party_up_down.txt");
-                    string map = generateRandomStringFromList(maps);
-                    prepareModule(map, 0, 0);
-                    switch (map)
+                    else
                     {
-                        case "Maps/map_party_up_right.txt":
-                            choosedMap = "Maps/map_up_right.txt";
-                            break;
-                        case "Maps/map_party_up_down.txt":
-                            choosedMap = "Maps/map_up_down_1.txt";
-                            break;
+                        maps.Add(MapType.Map_down_right_1);     //idziemy od dołu w prawo
+                        maps.Add(MapType.Map_down_up_1);
+                        prepareRandomModule(enemyCount, difficultyLevel);
                     }
-                    maps.Clear();
-                }
-                else
-                {
-                    maps.AddRange(maps_up_right);
-                    maps.AddRange(maps_up_down);
-                    prepareRandomModule(enemyCount, difficultyLevel);
-                }
-            }
-
-            //Wylot z góry i z prawej
-            if (maps_up_right.Contains(currentMap))
-            {
-                if (numberOfModules == 5 || numberOfModules % 15 == 0)
-                {
-                    modulesWithParty.Add(numberOfModules - 1);
-                    //maps.Add("Maps/map_party_straight.txt");
-                    maps.Add("Maps/map_party_left_up.txt");
-                    maps.Add("Maps/map_party_left_down.txt");
-                    string map = generateRandomStringFromList(maps);
-                    prepareModule(map, 0, 0);
-                    switch (map)
+                    break;
+                case "down_right":          //Zakręt od dołu w prawo - wylot z dołu i po prawo
+                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
                     {
-/*                        case "Maps/map_party_straight.txt":
-                            choosedMap = "Maps/map_2.txt";
-                            break;*/
-                        case "Maps/map_party_left_up.txt":
-                            choosedMap = "Maps/map_left_up_1.txt";
-                            break;
-                        case "Maps/map_party_left_down.txt":
-                            choosedMap = "Maps/map_left_down_1.txt";
-                            break;
+                        modulesWithParty.Add(numberOfModules - 1);
+                        maps.Add(MapType.Map_party_left_up);
+                        MapType map = MapType.GenerateRandomMap(maps);
+                        prepareModule(map, 0, 0);
+                        maps.Clear();
                     }
-                    maps.Clear();
-                }
-                else
-                {
-                    maps.AddRange(maps_straight);   //dalej prosto
-                    maps.AddRange(maps_left_up);    //idziemy do gory
-                    maps.AddRange(maps_left_down);  //idziemy do dołu
-                    prepareRandomModule(enemyCount, difficultyLevel);
-                }
-            }
-            //Prosta od góry do dołu              //work in progress
-            if (maps_up_down.Contains(currentMap))
-            {
-                moduleSeparatorZCount++;
-                moduleHeightChange++;
-                if (numberOfModules == 5 || numberOfModules % 15 == 0)
-                {
-                    modulesWithParty.Add(numberOfModules - 1);
-                    prepareModule("Maps/map_party_up_right.txt", 0, 0);
-                    choosedMap = "Maps/map_up_right.txt";
-                }
-                else
-                {
-                    maps.AddRange(maps_up_right);
-                    prepareRandomModule(enemyCount, difficultyLevel);
-                }
-
-            }
-
-            //Prosta od dołu do góry
-            if (maps_down_up.Contains(currentMap))
-            {
-                moduleSeparatorZCount--;
-                moduleHeightChange++;
-                if (numberOfModules == 5 || numberOfModules % 15 == 0)
-                {
-                    modulesWithParty.Add(numberOfModules - 1);
-                    prepareModule("Maps/map_party_down_right.txt", 0, 0);
-                    choosedMap = "Maps/map_down_right.txt";
-                }
-                else
-                {
-                    maps.AddRange(maps_down_right);
-                    prepareRandomModule(enemyCount, difficultyLevel);
-                }
-
+                    else
+                    {
+                        maps.AddRange(MapType.Maps_straight);
+                        maps.AddRange(MapType.Maps_left_up);
+                        prepareRandomModule(enemyCount, difficultyLevel);
+                    }
+                    break;
+                case "left_down":           //Zakręt w dół - wylot z lewej i z dołu
+                    moduleSeparatorZCount++;
+                    moduleHeightChange++;
+                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    {
+                        modulesWithParty.Add(numberOfModules - 1);
+                        maps.Add(MapType.Map_party_up_right);
+                        maps.Add(MapType.Map_party_up_down);
+                        MapType map = MapType.GenerateRandomMap(maps);
+                        prepareModule(map, 0, 0);
+                        maps.Clear();
+                    }
+                    else
+                    {
+                        maps.Add(MapType.Map_up_right_1);
+                        maps.Add(MapType.Map_up_down_1);
+                        prepareRandomModule(enemyCount, difficultyLevel);
+                    }
+                    break;
+                case "up_right":            //Wylot z góry i z prawej
+                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    {
+                        modulesWithParty.Add(numberOfModules - 1);
+                        maps.Add(MapType.Map_party_left_up);
+                        maps.Add(MapType.Map_party_left_down);
+                        MapType map = MapType.GenerateRandomMap(maps);
+                        prepareModule(map, 0, 0);
+                        maps.Clear();
+                    }
+                    else
+                    {
+                        maps.AddRange(MapType.Maps_straight);   //dalej prosto
+                        maps.AddRange(MapType.Maps_left_up);    //idziemy do gory
+                        maps.AddRange(MapType.Maps_left_down);  //idziemy do dołu
+                        prepareRandomModule(enemyCount, difficultyLevel);
+                    }
+                    break;
+                case "up_down":     //Prosta od góry do dołu 
+                    moduleSeparatorZCount++;
+                    moduleHeightChange++;
+                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    {
+                        modulesWithParty.Add(numberOfModules - 1);
+                        prepareModule(MapType.Map_party_up_right, 0, 0);
+                    }
+                    else
+                    {
+                        maps.Add(MapType.Map_up_right_1);
+                        prepareRandomModule(enemyCount, difficultyLevel);
+                    }
+                    break;
+                case "down_up":     //Prosta od dołu do góry
+                    moduleSeparatorZCount--;
+                    moduleHeightChange++;
+                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    {
+                        modulesWithParty.Add(numberOfModules - 1);
+                        prepareModule(MapType.Map_party_down_right, 0, 0);
+                    }
+                    else
+                    {
+                        maps.Add(MapType.Map_down_right_1);
+                        prepareRandomModule(enemyCount, difficultyLevel);
+                    }
+                    break;
             }
             currentMap = choosedMap;
         }
 
         public void prepareRandomModule(int enemyCount, int difficultyLevel)
         {
-            choosedMap = generateRandomStringFromList(maps);
-
-            prepareModule(choosedMap, enemyCount, difficultyLevel);
-
+            prepareModule(MapType.GenerateRandomMap(maps), enemyCount, difficultyLevel);
             maps.Clear();
-
         }
 
-        public void prepareModule(string map, int enemyCount, int difficultyLevel)
+        public void prepareModule(MapType map, int enemyCount, int difficultyLevel)
         {
+            choosedMap = map;
             module = new Rectangle((_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, moduleSeparatorX, moduleSeparatorZ);
-            Level level = new Level(map, (_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, enemyCount, difficultyLevel);
+            Level level = new Level(map.name, (_levels.Count - moduleHeightChange) * moduleSeparatorX, moduleSeparatorZCount * moduleSeparatorZ, enemyCount, difficultyLevel);
             level.LoadContent();
             _levels.Add(level);
             modulesList.Add(module);
