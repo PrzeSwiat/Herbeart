@@ -13,6 +13,7 @@ namespace TheGame
         public Bush(Vector3 worldPosition) : base(worldPosition, "Objects/test", "Textures/Shadow")
         {
             AssignParameters(1, 0, 0, 0);
+            this.leaf = new Leafs.MelissaLeaf(worldPosition, "Objects/melise_pickup", "Textures/melise_pickup");
         }
         public override void Update(float deltaTime, Player player)
         {
@@ -30,7 +31,7 @@ namespace TheGame
         {
 
             AssignParameters(1, 0, 0, 0);
-
+            this.leaf = new Leafs.MelissaLeaf(worldPosition, "Objects/melise_pickup", "Textures/melise_pickup");
         }
 
         public override void Update(float deltaTime, Player player)
