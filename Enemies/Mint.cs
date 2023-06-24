@@ -1,7 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Liru3D.Animations;
+using Liru3D.Models;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +14,6 @@ namespace TheGame
     {
 
         private DateTime lastAttackTime, actualTime;
-        public event EventHandler OnAttack;
 
         public Mint(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -20,11 +22,43 @@ namespace TheGame
             this.setBSRadius(2);
             this.visionRange = 30f;
             this.leaf = new Leafs.MintLeaf(worldPosition, "Objects/mint_pickup", "Textures/mint_pickup");
+            
         }
 
         public override void LoadContent()
         {
             base.LoadContent();
+
+            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle");
+            Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
+            Run = Globals.content.Load<SkinnedModel>("Animations/mieta_run");
+
+            //Idle
+            AIdle = new AnimationPlayer(Idle);
+            AIdle.Animation = Idle.Animations[0];
+            AIdle.PlaybackSpeed = 1f;
+            AIdle.IsPlaying = true;
+            AIdle.IsLooping = false;
+            AIdle.CurrentTime = 1.0f;
+            AIdle.CurrentTick = Idle.Animations[0].DurationInTicks;
+            //Attack
+            AAttack = new AnimationPlayer(Atak);
+            AAttack.Animation = Atak.Animations[0];
+            AAttack.PlaybackSpeed = 1f;
+            AAttack.IsPlaying = false;
+            AAttack.IsLooping = false;
+            AAttack.CurrentTime = 1.0f;
+            AAttack.CurrentTick = Atak.Animations[0].DurationInTicks;
+            //Run
+            ARun = new AnimationPlayer(Run);
+            ARun.Animation = Run.Animations[0];
+            ARun.PlaybackSpeed = 1f;
+            ARun.IsPlaying = false;
+            ARun.IsLooping = false;
+            ARun.CurrentTime = 1.0f;
+            ARun.CurrentTick = Run.Animations[0].DurationInTicks;
+
+
             float vlll = 1f;
             BoundingBox helper;
             helper.Min = new Vector3(-vlll, 0, -vlll);
@@ -47,7 +81,8 @@ namespace TheGame
             TimeSpan time = actualTime - lastAttackTime;
             if (time.TotalSeconds > 1)
             {
-                OnAttack?.Invoke(this, EventArgs.Empty);
+                base.OnAttackGo();
+
                 lastAttackTime = actualTime;
                 player.HitWithParticle(this.Strength);
             }

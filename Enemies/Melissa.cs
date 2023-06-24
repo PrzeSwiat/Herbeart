@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Liru3D.Animations;
+using Liru3D.Models;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,35 @@ namespace TheGame
         }
         public override void LoadContent()
         {
+            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle");
+            Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
+            Run = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
+
+            //Idle
+            AIdle = new AnimationPlayer(Idle);
+            AIdle.Animation = Idle.Animations[0];
+            AIdle.PlaybackSpeed = 1f;
+            AIdle.IsPlaying = true;
+            AIdle.IsLooping = false;
+            AIdle.CurrentTime = 1.0f;
+            AIdle.CurrentTick = Idle.Animations[0].DurationInTicks;
+            //Attack
+            AAttack = new AnimationPlayer(Atak);
+            AAttack.Animation = Atak.Animations[0];
+            AAttack.PlaybackSpeed = 1f;
+            AAttack.IsPlaying = false;
+            AAttack.IsLooping = false;
+            AAttack.CurrentTime = 1.0f;
+            AAttack.CurrentTick = Atak.Animations[0].DurationInTicks;
+            //Run
+            ARun = new AnimationPlayer(Run);
+            ARun.Animation = Run.Animations[0];
+            ARun.PlaybackSpeed = 1f;
+            ARun.IsPlaying = false;
+            ARun.IsLooping = false;
+            ARun.CurrentTime = 1.0f;
+            ARun.CurrentTick = Run.Animations[0].DurationInTicks;
+
             base.LoadContent();
             float vlll = 2f;
             BoundingBox helper;
