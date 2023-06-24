@@ -103,7 +103,7 @@ float4 CelPixelShader(VertexToPixel input) : COLOR0
     else
         color *= float4(0.1, 0.1, 0.1, 1.0);
 
-    color.a = 1;
+   
     return color;
 }
  

@@ -282,14 +282,14 @@ namespace TheGame
 
                         GraphicsDevice.BlendState = BlendState.AlphaBlend;
                         GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-                        
                         animationMenager.DrawAnimations();
                         world.Draw(new System.Numerics.Vector3(player.GetPosition().X, player.GetPosition().Y, player.GetPosition().Z));
                         player.DrawPlayer(player.GetPosition());
                         enemies.Draw(player.GetPosition());
                         Leafs.Draw(player.GetPosition());
-                        GraphicsDevice.BlendState = BlendState.Opaque;
                         player.DrawEffectsShadow(player.GetPosition());
+                        GraphicsDevice.BlendState = BlendState.Opaque;
+                        
                         hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture(), player.getRotationY());
                         hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
                         Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
