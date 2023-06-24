@@ -52,7 +52,7 @@ namespace TheGame
             {
                 if (enemy.GetType() == typeof(Nettle))
                 {
-                    enemy.Update();
+                    enemy.Update(deltaTime, player);
                     continue;
                 }
                 // avoid other enemies and chase player

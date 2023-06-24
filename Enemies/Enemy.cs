@@ -33,6 +33,28 @@ namespace TheGame
             //this.setBSRadius(3);
         }
 
+        public virtual void Update(float deltaTime, Player player)
+        {
+            Update();
+            HandleStunnedStatus(deltaTime);
+            if (isStunned)
+            {
+                return;
+            }
+
+            HandleSlowedStatus(deltaTime);
+            CheckCollision(player);
+            RotateTowardsCurrentDirection();
+            if (collides)
+            {
+                Attack(player);
+            }
+            else
+            {
+                MoveForwards(deltaTime, true);
+            }
+        }
+
         protected virtual void Attack(Player player)
         {
             actualTime = DateTime.Now;
@@ -62,7 +84,7 @@ namespace TheGame
             else collides = false;
         }
 
-        private void HandleStunnedStatus(float deltaTime)
+        protected void HandleStunnedStatus(float deltaTime)
         {
             if (!isStunned) return;
 
@@ -74,7 +96,7 @@ namespace TheGame
             }
         }
 
-        public void HandleSlowedStatus(float deltaTime)
+        protected void HandleSlowedStatus(float deltaTime)
         {
             if (!isSlowed) return;
 
@@ -85,28 +107,6 @@ namespace TheGame
             }
         }
 
-        public virtual void Update(float deltaTime, Player player)
-        {
-            Update();
-            HandleStunnedStatus(deltaTime);
-            if (isStunned)
-            {
-                return;
-            }
-
-            HandleSlowedStatus(deltaTime);
-            CheckCollision(player);
-            RotateTowardsCurrentDirection();
-            if (collides)
-            {
-                Attack(player);
-            }
-            else
-            {
-                MoveForwards(deltaTime, true);
-            }
-        }
-            
 
         public void Stun(int time)
         {
@@ -134,7 +134,6 @@ namespace TheGame
         {
             return new Vector2(targetPosition.X - GetPosition().X, targetPosition.Z - GetPosition().Z);
         }
-
 
 
         protected void RotateTowardsCurrentDirection()
