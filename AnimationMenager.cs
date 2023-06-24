@@ -30,6 +30,7 @@ namespace TheGame
         private bool Atak;
         private bool combo = false;
         private List<AnimationPlayer> allAnimations;
+
         private SkinnedModel Steps;
         private SkinnedModel Sleep;
         private SkinnedModel Death;
@@ -46,6 +47,7 @@ namespace TheGame
         private AnimationPlayer AAttack2;
         private bool sleeping = true;
         private Texture2D texture;
+        private Texture2D MintTexture;
         private Effect effect1;
         private int Combocounter = 0;
         private DateTime LAT, AT;
@@ -62,18 +64,27 @@ namespace TheGame
 
         public void LoadContent()
         {
+            texture = Content.Load<Texture2D>("Textures/mis_texture");
+            MintTexture = Content.Load<Texture2D>("Textures/mieta");
+            effect1 = Content.Load<Effect>("AnimationToon");
 
-            player.onMove += PlayerSteps;
-            player.OnAttackPressed += PlayerAttack;
+         
+
             Death = Content.Load<SkinnedModel>("Animations/mis_death3");
             Sleep = Content.Load<SkinnedModel>("Animations/mis_spanie");
             Steps = Content.Load<SkinnedModel>("Animations/mis_bieg_2");
             Idle = Content.Load<SkinnedModel>("Animations/mis_Standing_23");
-            texture = Content.Load<Texture2D>("Textures/mis_texture");
-            effect1 = Content.Load<Effect>("AnimationToon");
             Steps_tired=Content.Load<SkinnedModel>("Animations/mis_tired_run");
             Attack1 = Content.Load<SkinnedModel>("Animations/atak1blend2");
             Attack2 = Content.Load<SkinnedModel>("Animations/atak2blend2");
+
+            
+            #region PLAYER
+            player.onMove += PlayerSteps;
+            player.OnAttackPressed += PlayerAttack;
+
+          
+
 
             //Death
             ADeath = new AnimationPlayer(Death);
@@ -127,6 +138,9 @@ namespace TheGame
             AAttack2.IsLooping = false;
             AAttack2.CurrentTime = 1.0f;
             AAttack2.CurrentTick = Attack2.Animations[0].DurationInTicks;
+            #endregion
+
+
 
             // ADD ALL ANIMATION HERE
             allAnimations.Add(ASteps);
@@ -135,16 +149,36 @@ namespace TheGame
             allAnimations.Add(AAttack1);
             allAnimations.Add(AAttack2);
             allAnimations.Add(ASleep);
+           
         }
 
         public void Update(GameTime gameTime)
         {
+            foreach (Enemy enemi in enemies)
+            {
+                enemi.OnAttack += EnemyAttack;
+                enemi.OnDestroy += EnemyDestroy;
+                
+                    if (!allAnimations.Contains(enemi.AIdle))
+                    {
+                        allAnimations.Add(enemi.AIdle);
+                    }
+                    if(!enemi.AAttack.IsPlaying && !enemi.ARun.IsPlaying)
+                    {
+                        enemi.AIdle.IsPlaying = true;
+                    }
+               
 
-            foreach(AnimationPlayer animationPlayer in allAnimations)
+            }
+
+
+            foreach (AnimationPlayer animationPlayer in allAnimations)
             {
                 animationPlayer.Update(gameTime);
             }
-            if(sleeping)
+
+            #region PLAYER
+            if (sleeping)
             {
                 AIdle.IsPlaying = false;
                 ASleep.IsPlaying = true;
@@ -153,7 +187,6 @@ namespace TheGame
             {
                 ASleep.IsPlaying = false;
             }
-            
 
             if(Atak)
             {
@@ -198,19 +231,20 @@ namespace TheGame
             {
                 player.ActualSpeed = player.MaxSpeed;
             }
+            #endregion
 
         }
-
-        public void DeathAnimationDraw()
+        #region PLAYER
+        public void DeathAnimationDraw()    //PLAYER
         {
             if(ADeath.IsPlaying)
             {
-                DrawAnimation(player, ADeath, Death);
+                DrawAnimation(player, ADeath, Death,texture);
             }
          
         }
 
-        public void DeathAnimationUpdate(GameTime gameTime)
+        public void DeathAnimationUpdate(GameTime gameTime) //PLAYER
         {
             if (cont == 0)
             {
@@ -232,14 +266,44 @@ namespace TheGame
             ASteps_tired.IsPlaying = true;
             AIdle.IsPlaying = false;
             
-
         }
+
         private void PlayerAttack(object obj, EventArgs e)
         {
             sleeping = false;
             Atak = true; //ból
         }
+        #endregion
 
+        private void EnemyAttack(object obj, EventArgs e)
+        {
+            Enemy enemy = (Enemy)obj;
+
+            enemy.AAttack.IsPlaying = true;
+            if (!allAnimations.Contains(enemy.AAttack))
+            {
+                allAnimations.Add(enemy.AAttack);
+            }
+
+
+        }
+
+        private void EnemyDestroy(object obj, EventArgs e)
+        {
+            Enemy enemy = (Enemy)obj;
+            if(allAnimations.Contains(enemy.ARun))
+            {
+                allAnimations.Remove(enemy.ARun);
+            }
+            if (allAnimations.Contains(enemy.AIdle))
+            {
+                allAnimations.Remove(enemy.AIdle);
+            }
+            if (allAnimations.Contains(enemy.AAttack))
+            {
+                allAnimations.Remove(enemy.AAttack);
+            }
+        }
 
 
         public void DrawAnimations()
@@ -251,7 +315,7 @@ namespace TheGame
                 AIdle.IsPlaying = false;
                 ASteps.IsPlaying = false;
                 ASteps_tired.IsPlaying = false;
-                DrawAnimation(player, ASleep, Sleep);
+                DrawAnimation(player, ASleep, Sleep, texture);
             }
             if (AAttack1.IsPlaying)
             {
@@ -259,7 +323,7 @@ namespace TheGame
                 AIdle.IsPlaying = false;
                 ASteps.IsPlaying = false;
                 ASteps_tired.IsPlaying = false;
-                DrawAnimation(player, AAttack1, Attack1);
+                DrawAnimation(player, AAttack1, Attack1, texture);
             }
             
             if (AAttack2.IsPlaying)
@@ -268,22 +332,22 @@ namespace TheGame
                 AIdle.IsPlaying = false;
                 ASteps.IsPlaying = false;
                 ASteps_tired.IsPlaying = false;
-                DrawAnimation(player, AAttack2, Attack2);
+                DrawAnimation(player, AAttack2, Attack2, texture);
             }
             if (AIdle.IsPlaying)
             {
-                DrawAnimation(player, AIdle, Idle);
+                DrawAnimation(player, AIdle, Idle, texture);
 
             }
             if (ASteps.IsPlaying && !AAttack1.IsPlaying && !AAttack2.IsPlaying)
             {
                 if (player.Health <= player.maxHealth * 0.5)
                 {
-                    DrawAnimation(player, ASteps_tired, Steps_tired);
+                    DrawAnimation(player, ASteps_tired, Steps_tired, texture);
                 }
                 else
                 {
-                    DrawAnimation(player, ASteps, Steps);
+                    DrawAnimation(player, ASteps, Steps, texture);
                 }
                 
             }
@@ -299,30 +363,26 @@ namespace TheGame
 
             #endregion
 
-            #region MIETA
 
+            foreach(Enemy enemy in enemies)
+            {
+                
+                    if (enemy.AAttack.IsPlaying)
+                    {
+                        DrawAnimation(enemy, enemy.AAttack, enemy.Atak, enemy.GetTexture2D());
+                    }
+                    else
+                    {
+                        DrawAnimation(enemy, enemy.AIdle, enemy.Idle, enemy.GetTexture2D());
+                    }
+                
+            }
 
-            #endregion
-
-            #region POKRZYWA
-
-
-            #endregion
-
-            #region MELISA
-
-
-            #endregion
-
-            #region JABLON
-
-
-            #endregion
 
         }
 
 
-        public void DrawAnimation(Creature creature, AnimationPlayer animation, SkinnedModel model)
+        public void DrawAnimation(Creature creature, AnimationPlayer animation, SkinnedModel model, Texture2D texture)
         {
             Matrix[] boneTransforms = (Matrix[])animation.BoneSpaceTransforms;
 

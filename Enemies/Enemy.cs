@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Threading;
 using System.Timers;
+using Liru3D.Animations;
+using Liru3D.Models;
 
 namespace TheGame
 {
@@ -21,6 +23,12 @@ namespace TheGame
         private DateTime lastAttackTime, actualTime;
         private bool collides = false;
         public float visionRange = 0f;
+        public SkinnedModel Idle;
+        public SkinnedModel Atak;
+        public SkinnedModel Run;
+        public AnimationPlayer AIdle;
+        public AnimationPlayer AAttack;
+        public AnimationPlayer ARun;
 
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
@@ -31,6 +39,13 @@ namespace TheGame
             actualTime = lastAttackTime;
             SetScale(1.5f);
             //this.setBSRadius(3);
+        }
+        public void OnAttackGo()
+        {
+            if (OnAttack != null)
+            {
+                OnAttack?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         protected virtual void Attack(Player player)
@@ -51,7 +66,7 @@ namespace TheGame
         }
         public override void DrawPlayer(Vector3 lightpos)
         {
-            base.DrawPlayer(lightpos);
+            //base.DrawPlayer(lightpos);
             shadow.Draw(lightpos);
 
         }
