@@ -195,7 +195,7 @@ namespace TheGame
 
                             interactionEventHandler.Update(enemies.EnemiesList);
                             Globals.viewport = GraphicsDevice.Viewport;
-                            bool check = world.ifPlayerOnPartyModule(player.GetPosition());
+                            bool check = world.ifPlayerIsCloseToShop(player.GetPosition());
                             if (progressSystem.canDraw==true && check==false)
                             {
                                 

@@ -19,8 +19,8 @@ namespace TheGame
         private List<Vector2> enemiesCollidersArray;
         private Levels level;
         private List<Enemy> enemies;
-        private bool ifPartyModule;
-
+        private bool ifPlayerCloseToShop;
+        private bool ifPlayerPartyModule;
         public World()
         {
             _worldArray = new List<SceneObject>();
@@ -81,11 +81,18 @@ namespace TheGame
             return enemiesCollidersArray;
         }
 
-        public bool ifPlayerOnPartyModule(Microsoft.Xna.Framework.Vector3 playerPosition)
+        public bool ifPlayerIsCloseToShop(Microsoft.Xna.Framework.Vector3 playerPosition)
         {
             Vector3 newPlayerPosition = new Vector3(playerPosition.X, playerPosition.Y, playerPosition.Z);
-            ifPartyModule = level.ifPlayerOnPartyModule(newPlayerPosition);
-            return ifPartyModule;
+            ifPlayerCloseToShop = level.ifPlayerIsCloseToShop(newPlayerPosition);
+            return ifPlayerCloseToShop;
+        }
+
+        private bool ifPlayerOnPartyModule(Microsoft.Xna.Framework.Vector3 playerPosition)
+        {
+            Vector3 newPlayerPosition = new Vector3(playerPosition.X, playerPosition.Y, playerPosition.Z);
+            ifPlayerPartyModule = level.ifPlayerOnPartyModule(newPlayerPosition);
+            return ifPlayerPartyModule;
         }
 
         private Vector2 ConvertToXnaVector2(System.Numerics.Vector2 systemVector2)

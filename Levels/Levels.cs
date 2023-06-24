@@ -291,7 +291,7 @@ namespace TheGame
             return result;
         }
 
-        public bool ifPlayerOnPartyModule(Vector3 playerPosition)
+        public bool ifPlayerIsCloseToShop(Vector3 playerPosition)
         {
             if (shopsOnPartyModules.Count > 0)
             {
@@ -310,15 +310,28 @@ namespace TheGame
                 }
             }
             return false;
-
-
         }
 
-        public List<SceneObject> returnSceneObjects(float playerX, float playerY)
+        public bool ifPlayerOnPartyModule(Vector3 playerPosition)
+        {
+            int numberOfModule = returnModuleNumber(playerPosition.X, playerPosition.Z);
+
+            //&& !visited.Contains(modulesList[numberOfModule])
+            if (modulesWithParty.Contains(numberOfModule)) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public List<SceneObject> returnSceneObjects(float playerX, float playerZ)
         {
             List<SceneObject> _sceneObjects = new List<SceneObject>();
 
-            int numberOfModule = returnModuleNumber(playerX, playerY);
+            int numberOfModule = returnModuleNumber(playerX, playerZ);
 
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
@@ -336,9 +349,9 @@ namespace TheGame
             return _sceneObjects;
         }
 
-        public void prepareRandomMap(float playerX, float playerY)
+        public void prepareRandomMap(float playerX, float playerZ)
         {
-            int numberOfModule = returnModuleNumber(playerX, playerY);
+            int numberOfModule = returnModuleNumber(playerX, playerZ);
 
 
             if (numberOfModule == numberOfModules - 2)
@@ -347,11 +360,11 @@ namespace TheGame
             }
         }
 
-        public List<SceneObject> returnNonCollideSceneObjects(float playerX, float playerY)
+        public List<SceneObject> returnNonCollideSceneObjects(float playerX, float playerZ)
         {
             List<SceneObject> _sceneObjects = new List<SceneObject>();
 
-            int numberOfModule = returnModuleNumber(playerX, playerY);
+            int numberOfModule = returnModuleNumber(playerX, playerZ);
 
 
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
@@ -373,7 +386,7 @@ namespace TheGame
         public void setTransparentTrees(Vector3 playerPosition)
         {
 
-            int numberOfModule = returnModuleNumber(playerPosition.X, playerPosition.Y);
+            int numberOfModule = returnModuleNumber(playerPosition.X, playerPosition.Z);
 
 
             foreach (SceneObject obj in _levels[numberOfModule].returnTransparentTrees())
@@ -392,11 +405,11 @@ namespace TheGame
         }
         
 
-        public List<Enemy> returnEnemiesList(float playerX, float playerY)
+        public List<Enemy> returnEnemiesList(float playerX, float playerZ)
         {
             List<Enemy> enemiesList = new List<Enemy>();
 
-            int numberOfModule = returnModuleNumber(playerX, playerY);
+            int numberOfModule = returnModuleNumber(playerX, playerZ);
 
             if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count - 2)
             {
@@ -411,13 +424,13 @@ namespace TheGame
             return enemiesList;
         }
 
-        public int returnModuleNumber(float playerX, float playerY)
+        public int returnModuleNumber(float playerX, float playerZ)
         {
             int numberOfModule = 0;
 
             for (int i = 0; i < modulesList.Count; i++)
             {
-                if (modulesList[i].Contains((int)playerX, (int)playerY))
+                if (modulesList[i].Contains((int)playerX, (int)playerZ))
                 {
                     numberOfModule = i;
                 }
