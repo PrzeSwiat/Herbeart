@@ -22,6 +22,7 @@ namespace TheGame
         public event EventHandler OnDestroy;
         public bool destroyAnimation = false;
         private SpriteFont ScoreFont;
+        private bool bcanSmaller = true;
         public Animation2D(Texture2D texture, Vector3 initialPosition, Vector2 targetPosition, float animationDuration,Viewport viewport)
         {
             Vector3 projectedPosition = viewport.Project(initialPosition,
@@ -37,7 +38,7 @@ namespace TheGame
         {
             Vector3 projectedPosition = viewport.Project(initialPosition,
                     Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
-            this.position = new Vector2(projectedPosition.X, projectedPosition.Y) - new Vector2(0,40);
+            this.position = new Vector2(projectedPosition.X, projectedPosition.Y) - new Vector2(0,80);
             this.targetPosition = targetPosition;
             this.animationDuration = animationDuration;
             this.elapsedTime = 0f;
@@ -52,7 +53,7 @@ namespace TheGame
             this.targetPosition = targetPosition;
             this.animationDuration = animationDuration;
             this.elapsedTime = 0f;
-            this.scale = new Vector2(0.1f, 0.1f);
+            this.scale = new Vector2(0.2f, 0.2f);
         }
         public void UpdateScore(GameTime gameTime)
         {
@@ -72,15 +73,24 @@ namespace TheGame
             {
                 float t = elapsedTime / animationDuration;
                 Vector2 newPosition = new Vector2(position.X, position.Y - 1f);
-                scale.X = scale.X + 0.025f;
-                scale.Y = scale.Y + 0.025f;
+                if (bcanSmaller)
+                {
+                    scale.X = scale.X + 0.1f;
+                    scale.Y = scale.Y + 0.1f;
+                    if (scale.X > 0.8f)
+                    {
+                        bcanSmaller = false;
+                    }
+                }
+                
                 return newPosition;
             }
         }
         public void DrawScore()
         {
             Globals.spriteBatch.Begin();
-            Globals.spriteBatch.DrawString(ScoreFont, (10 * Globals.ScoreMultipler).ToString(), position,Color.White,  ang, Vector2.Zero,  scale, SpriteEffects.None, 0f);
+            Globals.spriteBatch.DrawString(ScoreFont, "+ " + (10 * Globals.ScoreMultipler).ToString(), position + new Vector2(-3,3), Color.Black, ang, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            Globals.spriteBatch.DrawString(ScoreFont, "+ " + (10 * Globals.ScoreMultipler).ToString(), position,Color.White,  ang, Vector2.Zero,  scale, SpriteEffects.None, 0f);
             Globals.spriteBatch.End();
         }
         public void EndAnimation()
