@@ -40,7 +40,7 @@ namespace TheGame.Leafs
         {
             Vector3 direction =  this.GetPosition()- player.GetPosition();
             Vector3.Normalize(direction);   
-            velocity += direction * 0.01f ;
+            velocity += direction * 0.002f ;
             if (velocity.X > 30)
             {
                 velocity.X = 30;
