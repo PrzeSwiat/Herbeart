@@ -66,7 +66,6 @@ namespace TheGame
             if (elapsedTime >= animationDuration)
             {
                 EndAnimation();
-                destroyAnimation = true;
                 return this.position; // Jeśli czas przekracza czas trwania animacji, zwracamy pozycję końcową
             }
             else

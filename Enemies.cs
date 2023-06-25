@@ -51,8 +51,9 @@ namespace TheGame
         {
             foreach (Animation2D a  in anim.ToList())
             {
+                
                 a.UpdateScore(gametime);
-                a.OnDestroy += DestroyAnimation;
+                
 
             }
             Vector3 playerPosition = player.GetPosition();
@@ -198,7 +199,9 @@ namespace TheGame
         {
             
             Enemy en= (Enemy)obj;
-            anim.Add(new Animation2D( en.GetPosition(), new Vector2(0,0), 0.7f, Globals.viewport));
+            Animation2D anima = new Animation2D(en.GetPosition(), new Vector2(0, 0), 0.7f, Globals.viewport);
+            anima.OnDestroy += DestroyAnimation;
+            anim.Add(anima);
             enemiesList.Remove((Enemy)obj);
         }
 
@@ -217,11 +220,9 @@ namespace TheGame
         private void DestroyAnimation(object obj, EventArgs e)
         {
             anim.Remove((Animation2D)obj);
+            obj = null;
         }
-        private void CreateAnimation(object obj, EventArgs e)
-        {
-            anim.Add((Animation2D)obj);
-        }
+       
         public void DrawHud()
         {
 
