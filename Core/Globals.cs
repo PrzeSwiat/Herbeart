@@ -18,6 +18,7 @@ namespace TheGame
         public static GraphicsDeviceManager _graphics;
         public static SpriteBatch spriteBatch;
         public static Viewport viewport;
+        public static GameTime gameTime;
         public static EffectHandler effectHandler;
         public static EffectHandler effectHandler1;
         public static Matrix projectionMatrix;

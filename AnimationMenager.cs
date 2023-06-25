@@ -283,11 +283,12 @@ namespace TheGame
             Enemy enemy = (Enemy)obj;
 
             enemy.AAttack.IsPlaying = true;
+            /*
             if (!allAnimations.Contains(enemy.AAttack))
             {
                 allAnimations.Add(enemy.AAttack);
             }
-
+            */
 
         }
 

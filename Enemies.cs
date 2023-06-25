@@ -67,6 +67,7 @@ namespace TheGame
                 }
                 else if (Vector3.Distance(enemy.GetPosition(), playerPosition) < enemy.visionRange)
                 {
+
                     Vector2 flockVel = FlockBehaviour(enemy, 20, 0.7f);
                     Vector2 avoidOthersVelocity = AvoidanceBehaviour(enemy, 9, 0.5f);
                     Vector2 avoidObstaclesVelocity = AvoidObstacles(enemy, 10, 0.4f);
@@ -77,8 +78,13 @@ namespace TheGame
                 {
                     enemy.ActualSpeed = 0;
                 }
-                enemy.NormalizeDirection();
-                enemy.Update(deltaTime, player);
+                if (Vector3.Distance(enemy.GetPosition(), playerPosition) < 50)
+                {
+                    enemy.NormalizeDirection();
+                    enemy.Update(deltaTime, player);
+                }
+                
+               
             }
         }
 
