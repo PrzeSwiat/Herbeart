@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Diagnostics;
+using TheGame.Core;
 using TheGame.Leafs;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
@@ -44,6 +45,7 @@ namespace TheGame
         public virtual void Hit(int damage)
         {
             health -= damage;
+
             if (health <= 0)
             {
                 leaf.AddToWorld();

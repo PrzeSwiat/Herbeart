@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheGame.Core;
 
 namespace TheGame
 {
@@ -139,12 +140,15 @@ namespace TheGame
         
         public void makeTea()
         {
+            ParticleSystem particleSystem = ParticleSystem.Instance;
+            Vector2 particlePosition = new Vector2(Globals.WindowWidth / 2, Globals.WindowHeight / 2 - 120);
             switch (recepture)
             {
                 case "AAA":
                     if (bools[0])
                     {
                         playerEffects.RegenarateHP(100);
+                        particleSystem.addHerbParticles(particlePosition);
                     }
                     else { cleanRecepture(); }
                     
@@ -153,6 +157,7 @@ namespace TheGame
                     if (bools[1])
                     {
                         playerEffects.RegenarateHP(200);
+                        particleSystem.addHerbParticles(particlePosition);
                     }
                     else { cleanRecepture(); }
 
@@ -163,6 +168,7 @@ namespace TheGame
                     {
                         playerEffects.RegenarateHP(150);
                         playerEffects.Haste(10, 10);
+                        particleSystem.addHerbParticles(particlePosition);
                     }
                     else { cleanRecepture(); }
 
@@ -172,6 +178,7 @@ namespace TheGame
                     {
                         playerEffects.RegenarateHP(100);
                         playerEffects.BuffStrenght(3, 10);
+                        particleSystem.addHerbParticles(particlePosition);
                     }
                     else { cleanRecepture(); }
 
@@ -181,6 +188,7 @@ namespace TheGame
                     {
                         playerEffects.RegenarateHP(100);
                         playerEffects.MakeImmortal(10);
+                        particleSystem.addHerbParticles(particlePosition);
                     }
                     else { cleanRecepture(); }
 

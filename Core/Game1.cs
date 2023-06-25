@@ -184,7 +184,7 @@ namespace TheGame
                             camera.nextpos = player.GetPosition();
                             Globals.viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
                             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
-                            
+                            world.PrepareRandomMap(player.GetPosition().X, player.GetPosition().Z);
                             enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
                             enemies.SetObstaclePositions(world.GetEnemiesColliders(player.GetPosition().X, player.GetPosition().Z));
                             enemies.Move(delta, player,gameTime);    // i po co 3 funkcje a nie 1
@@ -192,10 +192,13 @@ namespace TheGame
                             Leafs.RefreshInventory(this.player);
                             Leafs.UpdateScene(enemies.EnemiesList, gameTime);
                             camera.Update1(player.GetPosition());
-                            world.PrepareRandomMap(player.GetPosition().X, player.GetPosition().Z);
+                            
 
                             interactionEventHandler.Update(enemies.EnemiesList);
                             Globals.viewport = GraphicsDevice.Viewport;
+                            ParticleSystem particleSystem = ParticleSystem.Instance;
+                            particleSystem.Update();
+
                             if (world.ifPlayerOnPartyModule(player.GetPosition()))
                             {
                                 player.Stop();
@@ -302,6 +305,8 @@ namespace TheGame
                         
                         hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture(), player.getRotationY());
                         hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
+                        ParticleSystem particleSystem = ParticleSystem.Instance;
+                        particleSystem.Draw();
                         Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
                         player.DrawAnimation();
                         progressSystem.drawSelectMenu(pause_timer);

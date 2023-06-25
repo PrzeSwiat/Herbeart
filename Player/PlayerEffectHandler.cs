@@ -42,11 +42,6 @@ namespace TheGame
 
         // FUNKCJE PLAYEROWE
 
-        public void DamagePlayer(int dmg)
-        {
-            player.SubstractHealth(dmg);
-        }
-
         public void DamagePlayer(int damage, int time)
         {
             this.damage = damage;
@@ -125,7 +120,7 @@ namespace TheGame
 
         private void EffectTakeHealth()
         {
-            player.Hit(damage);
+            player.Hit2(damage);
         }
 
 

@@ -63,6 +63,12 @@ namespace TheGame
                     Nettle.probability = 0.25;
                     Melissa.probability = 0.2;
                     break;
+                case 8:
+                    Mint.probability = 1.0;
+                    Apple.probability = 0.0;
+                    Nettle.probability = 0.0;
+                    Melissa.probability = 0.0;
+                    break;
             }
         }
 
@@ -81,7 +87,7 @@ namespace TheGame
                 cumulativeProbability += probability;
                 if (randomNumber < cumulativeProbability)
                 {
-                    if (enemyTypes[i].enemyType != "Objects/mint" && difficultyLevel < 7)
+                    if (enemyTypes[i].enemyType != "Objects/mint" && (difficultyLevel != 7 || difficultyLevel != 6))
                     {
                         enemyTypes[i].probability = enemyTypes[i].probability / 2;
 

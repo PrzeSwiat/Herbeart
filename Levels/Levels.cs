@@ -63,20 +63,9 @@ namespace TheGame
         {
             //Moduł 1 - z salą weselną
             prepareModule(MapType.Map_spawn, 0, 0);
-
-            //Moduł 2
-            prepareModule(MapType.Map_straight_1, 0, 0);
-            _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 80));
-            _levels[1].GenerateEnemy(mintEnemy, new Vector3(moduleSeparatorX + 30, 0, 50));
-
-            //Moduł 3
-            prepareModule(MapType.Map_straight_2, 0, 0);
-            _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 50));
-            _levels[2].GenerateEnemy(mintEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 55));
-            _levels[2].GenerateEnemy(nettleEnemy, new Vector3(2 * moduleSeparatorX + 30, 0, 60));
-
             currentMap = MapType.Map_straight_2;
-            numberOfModules = 3;
+            numberOfModules = 0;
+            
 
         }
 
@@ -84,17 +73,27 @@ namespace TheGame
         {
             int enemyCount;
             int difficultyLevel;        //od 4 są normalne, do 4 są tutorialowe ze spacjalnymi ograniczeniami
-            if (numberOfModules == 4)
+            if (numberOfModules == 1)
+            {
+                enemyCount = 2; 
+                difficultyLevel = 8;
+            }
+            else if (numberOfModules == 2)
+            {
+                enemyCount = 4;
+                difficultyLevel = 8;
+            }
+            else if (numberOfModules == 3)
             {
                 enemyCount = 6;
                 difficultyLevel = 1;
             }
-            else if (numberOfModules <= 8)
+            else if (numberOfModules <= 7)
             {
                 enemyCount = 7;
                 difficultyLevel = 2;
             }
-            else if (numberOfModules <= 11)
+            else if (numberOfModules <= 10)
             {
                 enemyCount = 8;
                 difficultyLevel = 3;    //bez zmian prawdopodobienstwa
@@ -131,7 +130,7 @@ namespace TheGame
             switch (currentMap.type)
             {
                 case "straight":        //Przypadek prostych map - wylot z lewej i prawej
-                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         maps.Add(MapType.Map_party_left_up);
@@ -151,7 +150,7 @@ namespace TheGame
                 case "left_up":         //Zakręt do góry - wylot z lewej i góry
                     moduleSeparatorZCount--;
                     moduleHeightChange++;
-                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         maps.Add(MapType.Map_party_down_up);
@@ -168,7 +167,7 @@ namespace TheGame
                     }
                     break;
                 case "down_right":          //Zakręt od dołu w prawo - wylot z dołu i po prawo
-                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         maps.Add(MapType.Map_party_left_up);
@@ -186,7 +185,7 @@ namespace TheGame
                 case "left_down":           //Zakręt w dół - wylot z lewej i z dołu
                     moduleSeparatorZCount++;
                     moduleHeightChange++;
-                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         maps.Add(MapType.Map_party_up_right);
@@ -203,7 +202,7 @@ namespace TheGame
                     }
                     break;
                 case "up_right":            //Wylot z góry i z prawej
-                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         maps.Add(MapType.Map_party_left_up);
@@ -223,7 +222,7 @@ namespace TheGame
                 case "up_down":     //Prosta od góry do dołu 
                     moduleSeparatorZCount++;
                     moduleHeightChange++;
-                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         prepareModule(MapType.Map_party_up_right, 0, 0);
@@ -237,7 +236,7 @@ namespace TheGame
                 case "down_up":     //Prosta od dołu do góry
                     moduleSeparatorZCount--;
                     moduleHeightChange++;
-                    if (numberOfModules == 5 || numberOfModules % 15 == 0)
+                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         prepareModule(MapType.Map_party_down_right, 0, 0);
@@ -280,7 +279,7 @@ namespace TheGame
 
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
-                if (i >= 0 && i < _levels.Count - 1)
+                if (i >= 0 && i < _levels.Count)
                 {
                     foreach (Vector2 vector in _levels[i].returnEnemiesColliders())
                     {
@@ -336,7 +335,7 @@ namespace TheGame
 
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
-                if (i >= 0 && i < _levels.Count - 1)
+                if (i >= 0 && i < _levels.Count)
                 {
                     foreach (SceneObject obj in _levels[i].returnSceneObjects())
                     {
@@ -354,10 +353,10 @@ namespace TheGame
         {
             int numberOfModule = returnModuleNumber(playerX, playerZ);
 
-
-            if (numberOfModule == numberOfModules - 2)
+            if (numberOfModule == numberOfModules)
             {
                 prepareMap();
+                
             }
         }
 
@@ -370,7 +369,7 @@ namespace TheGame
 
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
-                if (i >= 0 && i < _levels.Count - 1)
+                if (i >= 0 && i < _levels.Count)
                 {
                     foreach (SceneObject obj in _levels[i].returnNonCollideSceneObjects())
                     {
@@ -412,7 +411,7 @@ namespace TheGame
 
             int numberOfModule = returnModuleNumber(playerX, playerZ);
 
-            if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count - 2)
+            if (!visited.Contains(modulesList[numberOfModule]) && numberOfModule != modulesList.Count - 1)
             {
                 foreach (Enemy enemy in _levels[numberOfModule + 1].returnEnemies())
                 {

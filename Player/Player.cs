@@ -37,8 +37,6 @@ namespace TheGame
         public event EventHandler onAttackNoise;
         private bool canAttack = true;
 
-        ParticleSystem particleSystem;
-
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
             SetScale(1.2f);
@@ -57,12 +55,6 @@ namespace TheGame
         public override void LoadContent()
         {
             base.LoadContent();
-            List<Texture2D> textures = new List<Texture2D>();
-            textures.Add(Globals.content.Load<Texture2D>("Particles/Textures/circle"));
-            textures.Add(Globals.content.Load<Texture2D>("Particles/Textures/star"));
-            textures.Add(Globals.content.Load<Texture2D>("Particles/Textures/diamond"));
-            particleSystem = new ParticleSystem(textures, new Vector2(Globals.WindowWidth / 2, Globals.WindowHeight / 2 - 100));
-
             shadow.LoadContent();
             Crafting.LoadContent();
         }
@@ -74,8 +66,6 @@ namespace TheGame
             Update();
             playerMovement.UpdatePlayerMovement(world, deltaTime);
             Crafting.Update(gametime);
-
-            particleSystem.Update();
 
             foreach (Apple apple in apples.ToList())
             {
@@ -114,7 +104,8 @@ namespace TheGame
         public void HitWithParticle(int damage)
         {
             this.Hit(damage);
-            particleSystem.addParticles();
+            ParticleSystem particleSystem = ParticleSystem.Instance;
+            particleSystem.addParticles(new Vector2(Globals.WindowWidth / 2, Globals.WindowHeight / 2 - 100));
         }
 
         public override void Hit(int damage)
@@ -128,6 +119,19 @@ namespace TheGame
                 }  
             }
         }
+
+        public void Hit2(int damage)
+        {
+            if (!immortal)
+            {
+                base.Hit(damage);
+                if (this.Health <= 0)
+                {
+                    playerEffects.Stop();
+                }
+            }
+        }
+
 
         public float calculateHPPercent()
         {
@@ -158,7 +162,7 @@ namespace TheGame
         }
         public void DrawAnimation()
         {
-            particleSystem.Draw(Globals.spriteBatch);
+            //particleSystem.Draw(Globals.spriteBatch);
             Crafting.DrawAnimation();
         }
 
@@ -236,6 +240,14 @@ namespace TheGame
 
         private void StunEnemies(Enemies enemies)
         {
+            ParticleSystem particleSystem = ParticleSystem.Instance;
+
+            Vector3 projectedPosition = Globals.viewport.Project(boundingSphere.Center,
+                Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
+            Vector2 particlePosition = new Vector2(projectedPosition.X, projectedPosition.Y);
+            
+
+            particleSystem.addHerbParticles(particlePosition);
             foreach (Enemy enemy in enemies.EnemiesList) 
             {
                 if (this.boundingSphere.Intersects(enemy.boundingBox))
@@ -296,14 +308,6 @@ namespace TheGame
             else { this.Health += amount; }
         }
 
-        public void SubstractHealth(int amount)
-        {
-            if (this.Health - amount < 0)
-            {
-                this.Health = 0;
-            }
-            else { this.Health -= amount; }
-        }
         public bool getcanMove()
         {
             return this.canMove;
