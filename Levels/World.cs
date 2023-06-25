@@ -88,7 +88,7 @@ namespace TheGame
             return ifPlayerCloseToShop;
         }
 
-        private bool ifPlayerOnPartyModule(Microsoft.Xna.Framework.Vector3 playerPosition)
+        public bool ifPlayerOnPartyModule(Microsoft.Xna.Framework.Vector3 playerPosition)
         {
             Vector3 newPlayerPosition = new Vector3(playerPosition.X, playerPosition.Y, playerPosition.Z);
             ifPlayerPartyModule = level.ifPlayerOnPartyModule(newPlayerPosition);
