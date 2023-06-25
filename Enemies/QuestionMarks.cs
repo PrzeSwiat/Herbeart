@@ -20,6 +20,11 @@ namespace TheGame
                 base.Update(deltaTime, player);
         }
 
+        public override void LoadContent()
+        {
+            base.LoadContent();
+        }
+
         public void dropLeafs(object obj, EventArgs e)
         {
 

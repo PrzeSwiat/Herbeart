@@ -159,13 +159,15 @@ namespace TheGame
         public void LoadScene()
         {
             string groundType;
-            float height;
+            float height = 0.0f;
 
             int x = 0;  //do poprawnego wyswietlania tile'ow
             int z = 0;
 
             List<int> tileList = ReadFile(fileName);
             Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -0.7f, 0.5f * moduleHeight * tileSize + separatorZ);
+            Vector3 wektor = new Vector3();
+            Vector3 newVector = new Vector3();
             for (int i = 0; i < tileList.Count; i++)
             {
                 if (x == moduleWidth)
@@ -177,60 +179,61 @@ namespace TheGame
                 {
                     case 48: //0
                         groundType = "forest";
-                        height = 0.0f;
-                        Vector3 wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                        wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
                         Tile tile = new Tile(groundType, height, wektor, 0);
                         forestTiles.Add(tile);
-                        Vector3 newVector = ChangeTileVector(tile, -2.5, 2.5, true, false, 0, 0);
+                        newVector = ChangeTileVector(tile, -2.5, 2.5, true, false, 0, 0);
                         GenerateForest(newVector, 150, 220, false);
                         x++;
                         break;
                     case 49: //1
                         groundType = "forest_border";
-                        height = 0.0f;
-                        Vector3 wektor3 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
-                        Tile tile1 = new Tile(groundType, height, wektor3, 0);
+                        wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                        Tile tile1 = new Tile(groundType, height, wektor, 0);
                         forestTiles.Add(tile1);
                         borderTiles.Add(tile1);
-                        Vector3 newVector1 = ChangeTileVector(tile1, -2, 2, true, true, -1.5, 1.5);
-                        GenerateForest(newVector1, 100, 220, false);
+                        newVector = ChangeTileVector(tile1, -2, 2, true, true, -1.5, 1.5);
+                        GenerateForest(newVector, 100, 220, false);
                         GenerateGreenObjectsNearTrees(tile1);
-                        enemiesColliders.Add(new Vector2(newVector1.X, newVector1.Z));
+                        enemiesColliders.Add(new Vector2(newVector.X, newVector.Z));
                         x++;
                         break;
                     case 50:    //2
                         groundType = "forest_border_without_obj";
-                        height = 0.0f;
-                        Vector3 wektor5 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
-                        Tile tile5 = new Tile(groundType, height, wektor5, 0);
+                        wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                        Tile tile5 = new Tile(groundType, height, wektor, 0);
                         forestTiles.Add(tile5);
-                        Vector3 newVector5 = ChangeTileVector(tile5, -2, 2, true, true, -1.5, 1.5);
-                        GenerateForest(newVector5, 150, 220, true);
-                        enemiesColliders.Add(new Vector2(newVector5.X, newVector5.Z));
+                        newVector = ChangeTileVector(tile5, -2, 2, true, true, -1.5, 1.5);
+                        GenerateForest(newVector, 150, 220, true);
+                        enemiesColliders.Add(new Vector2(newVector.X, newVector.Z));
                         x++;
                         break;
                     case 97: //a
                         groundType = "grass";
-                        height = 0.0f;
-                        Vector3 wektor1 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
-                        groundTiles.Add(new Tile(groundType, height, wektor1, 0));
+                        wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                        groundTiles.Add(new Tile(groundType, height, wektor, 0));
                         x++;
                         break;
                     case 98: //b
                         groundType = "spawn";
-                        height = -2.0f;
-                        Vector3 wektor2 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
-                        spawnTiles.Add(new Tile(groundType, height, wektor2, 0));
+                        wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                        spawnTiles.Add(new Tile(groundType, height, wektor, 0));
                         x++;
                         break;
                     case 99:
-                        groundType = "party";
-                        height = 0.0f;
-                        Vector3 wektor4 = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
-                        SceneObject plotek = new SceneObject(wektor4, "Objects/festiwal", "Textures/festiwal");
-                        nonColideObjects.Add(plotek);
-                        shopOnPartyModule = wektor4;
+                        //groundType = "party";
+                        wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                        SceneObject shop = new SceneObject(wektor, "Objects/festiwal", "Textures/festiwal");
+                        nonColideObjects.Add(shop);
+                        shopOnPartyModule = wektor;
                         x++;
+                        break;
+                    case 76:    //L
+                        wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
+                        Bush bush = new Bush(wektor);
+                        bush.LoadContent();
+                        enemies.Add(bush);
+
                         break;
                 }
 

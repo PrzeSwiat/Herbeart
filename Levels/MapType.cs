@@ -63,8 +63,11 @@ namespace TheGame
         public static MapType Map_left_up_3 = new MapType("Maps/map_left_up_3.txt", left_up);
         public static MapType[] Maps_left_up = new MapType[] { Map_left_up_1, Map_left_up_2, Map_left_up_3 };
 
+        //Loot and Forest Maps
+        public static MapType Map_loot_forest_straight_1 = new MapType("Maps/map_loot_forest_straight.txt", straight);
+
         //All Maps
-        public static MapType[] All_Maps = new MapType[] { Map_left_down_1, Map_left_down_2, Map_left_down_3, Map_left_up_1, Map_left_up_2, Map_left_up_3, Map_straight_1, Map_straight_2, Map_straight_3, Map_straight_4, Map_up_down_1, Map_down_up_1, Map_up_right_1, Map_down_right_1 };
+        public static MapType[] All_Maps = new MapType[] { Map_left_down_1, Map_left_down_2, Map_left_down_3, Map_left_up_1, Map_left_up_2, Map_left_up_3, Map_straight_1, Map_straight_2, Map_straight_3, Map_straight_4, Map_up_down_1, Map_down_up_1, Map_up_right_1, Map_down_right_1, Map_loot_forest_straight_1 };
         
         //Party Maps
         //public static MapType Map_party_straight = new MapType("Maps/map_party_straight.txt", straight);
@@ -75,6 +78,7 @@ namespace TheGame
         public static MapType Map_party_up_right = new MapType("Maps/map_party_up_right.txt", up_right);
         public static MapType Map_party_up_down = new MapType("Maps/map_party_up_down.txt", up_down);
         public static MapType[] Maps_party = new MapType[] {Map_party_left_up, Map_party_left_down, Map_party_down_up, Map_party_down_right, Map_party_up_right, Map_party_up_down };
+
 
 
         public static MapType GenerateRandomMap(List<MapType> maps)

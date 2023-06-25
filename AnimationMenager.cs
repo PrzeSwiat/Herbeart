@@ -158,15 +158,18 @@ namespace TheGame
             {
                 enemi.OnAttack += EnemyAttack;
                 enemi.OnDestroy += EnemyDestroy;
-                
+                if (enemi.GetType() != typeof(Bush))
+                {
                     if (!allAnimations.Contains(enemi.AIdle))
                     {
                         allAnimations.Add(enemi.AIdle);
                     }
-                    if(!enemi.AAttack.IsPlaying && !enemi.ARun.IsPlaying)
+                    if (!enemi.AAttack.IsPlaying && !enemi.ARun.IsPlaying)
                     {
                         enemi.AIdle.IsPlaying = true;
                     }
+                }
+
                
 
             }
@@ -366,7 +369,9 @@ namespace TheGame
 
             foreach(Enemy enemy in enemies)
             {
-                
+                if (enemy.GetType() != typeof(Bush))
+                {
+
                     if (enemy.AAttack.IsPlaying)
                     {
                         DrawAnimation(enemy, enemy.AAttack, enemy.Atak, enemy.GetTexture2D());
@@ -375,7 +380,7 @@ namespace TheGame
                     {
                         DrawAnimation(enemy, enemy.AIdle, enemy.Idle, enemy.GetTexture2D());
                     }
-                
+                }
             }
 
 
