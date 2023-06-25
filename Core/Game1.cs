@@ -184,7 +184,7 @@ namespace TheGame
                             camera.nextpos = player.GetPosition();
                             Globals.viewMatrix = Matrix.CreateLookAt(camera.CamPosition, player.GetPosition(), Vector3.Up);
                             basicEffect.View = Matrix.CreateLookAt(camera.CamPosition, camera.camTracker, Vector3.Up);
-                            
+                            world.PrepareRandomMap(player.GetPosition().X, player.GetPosition().Z);
                             enemies.AddEnemies(world.returnEnemiesList(player.GetPosition().X, player.GetPosition().Z));  // czemu w update ???
                             enemies.SetObstaclePositions(world.GetEnemiesColliders(player.GetPosition().X, player.GetPosition().Z));
                             enemies.Move(delta, player,gameTime);    // i po co 3 funkcje a nie 1
@@ -192,7 +192,7 @@ namespace TheGame
                             Leafs.RefreshInventory(this.player);
                             Leafs.UpdateScene(enemies.EnemiesList, gameTime);
                             camera.Update1(player.GetPosition());
-                            world.PrepareRandomMap(player.GetPosition().X, player.GetPosition().Z);
+                            
 
                             interactionEventHandler.Update(enemies.EnemiesList);
                             Globals.viewport = GraphicsDevice.Viewport;

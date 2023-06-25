@@ -16,9 +16,9 @@
 0 0 0 0 0 0 0 a a a a a a a a a a a a a a a a a a 1
 0 0 0 0 0 0 0 a a a a a a a a a a a a a a a a a a 1
 0 0 0 0 0 0 0 a a a a a a a a a a a a a a a a a a 1
-0 0 0 0 0 0 0 a 0 a a a a a a a a a a a 0 0 a 0 0 0
-0 0 0 0 0 0 0 0 0 a a a a a a a a a a 0 0 0 a 0 0 0
-0 0 0 0 0 0 0 0 0 a a a a a a a a 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 a 0 a a a a a a a a a a a 2 2 a 2 2 2
+0 0 0 0 0 0 0 0 0 a a a a a a a a a a 2 0 0 a 0 0 0
+0 0 0 0 0 0 0 0 0 a a a a a a a a 2 2 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 a a a a a a a a 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 a a a a a a a a 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 a a a a a a a a 0 0 0 0 0 0 0 0 0
