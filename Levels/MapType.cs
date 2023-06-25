@@ -36,7 +36,7 @@ namespace TheGame
         public static MapType Map_straight_1 = new MapType("Maps/map2.txt", straight);
         public static MapType Map_straight_2 = new MapType("Maps/map3.txt", straight);
         public static MapType Map_straight_3 = new MapType("Maps/map4.txt", straight);
-        public static MapType Map_straight_4 = new MapType("Maps/map6.txt", straight);
+        public static MapType Map_straight_4 = new MapType("Maps/map5.txt", straight);
         public static MapType[] Maps_straight = new MapType[] { Map_straight_1, Map_straight_2, Map_straight_3, Map_straight_4 };
 
         //Maps from Up to Down
@@ -63,6 +63,9 @@ namespace TheGame
         public static MapType Map_left_up_3 = new MapType("Maps/map_left_up_3.txt", left_up);
         public static MapType[] Maps_left_up = new MapType[] { Map_left_up_1, Map_left_up_2, Map_left_up_3 };
 
+        //All Maps
+        public static MapType[] All_Maps = new MapType[] { Map_left_down_1, Map_left_down_2, Map_left_down_3, Map_left_up_1, Map_left_up_2, Map_left_up_3, Map_straight_1, Map_straight_2, Map_straight_3, Map_straight_4, Map_up_down_1, Map_down_up_1, Map_up_right_1, Map_down_right_1 };
+        
         //Party Maps
         //public static MapType Map_party_straight = new MapType("Maps/map_party_straight.txt", straight);
         public static MapType Map_party_left_up = new MapType("Maps/map_party_left_up.txt", left_up);
@@ -105,9 +108,20 @@ namespace TheGame
             return maps[0];
         }
 
-        public void SetProbabilities()
+        public static void SetInitialProbabilities()
         {
+            //Dla map z weselami
+            foreach (MapType map in Maps_party)
+            {
+                map.probability = 1.0 / Maps_party.Length;
+            }
 
+            //Dla zwykłych map
+            foreach (MapType map in All_Maps)
+            {
+                map.probability = 1.0 / All_Maps.Length;
+            }
         }
+
     }
 }

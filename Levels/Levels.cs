@@ -50,6 +50,7 @@ namespace TheGame
             visited = new HashSet<Rectangle>();
             modulesWithParty = new List<int>();
             shopsOnPartyModules = new List<Vector3>();
+            MapType.SetInitialProbabilities();
             
         }
 
