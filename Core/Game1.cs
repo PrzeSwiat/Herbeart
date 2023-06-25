@@ -196,6 +196,9 @@ namespace TheGame
 
                             interactionEventHandler.Update(enemies.EnemiesList);
                             Globals.viewport = GraphicsDevice.Viewport;
+                            ParticleSystem particleSystem = ParticleSystem.Instance;
+                            particleSystem.Update();
+
                             if (world.ifPlayerOnPartyModule(player.GetPosition()))
                             {
                                 player.Stop();
@@ -302,6 +305,8 @@ namespace TheGame
                         
                         hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture(), player.getRotationY());
                         hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
+                        ParticleSystem particleSystem = ParticleSystem.Instance;
+                        particleSystem.Draw();
                         Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem
                         player.DrawAnimation();
                         progressSystem.drawSelectMenu(pause_timer);

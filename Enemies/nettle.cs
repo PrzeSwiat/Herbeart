@@ -77,9 +77,8 @@ namespace TheGame
             TimeSpan time = actualTime - lastAttackTime;
             if (time.TotalSeconds > 1)
             {
-                OnAttack?.Invoke(this, EventArgs.Empty);
                 lastAttackTime = actualTime;
-                player.Hit(this.Strength);
+                player.HitWithParticle(this.Strength);
             }
         }
     }

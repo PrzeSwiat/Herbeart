@@ -9,6 +9,7 @@ using System.Threading;
 using System.Timers;
 using Liru3D.Animations;
 using Liru3D.Models;
+using TheGame.Core;
 
 namespace TheGame
 {
@@ -48,6 +49,16 @@ namespace TheGame
             }
         }
 
+        public override void Hit(int damage)
+        {
+            base.Hit(damage);
+            ParticleSystem particleSystem = ParticleSystem.Instance;
+            Vector3 projectedPosition = Globals.viewport.Project(GetPosition(),
+                Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
+
+            particleSystem.addParticles(new Vector2(projectedPosition.X, projectedPosition.Y - 100));
+        }
+
         protected virtual void Attack(Player player)
         {
             actualTime = DateTime.Now;
@@ -80,9 +91,7 @@ namespace TheGame
         public virtual void Update(float deltaTime, Player player)
         {
             Update();
-            AAttack.Update(Globals.gameTime);
-            AIdle.Update(Globals.gameTime);
-            ARun.Update(Globals.gameTime);
+            
 
             if (isStun)
             {
@@ -103,7 +112,9 @@ namespace TheGame
                         SetNormalSpeed();
                     }
                 }
-
+                AAttack.Update(Globals.gameTime);
+                AIdle.Update(Globals.gameTime);
+                ARun.Update(Globals.gameTime);
                 checkCollision(player);
                 RotateTowardsCurrentDirection();
                 if (collides)
