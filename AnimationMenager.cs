@@ -160,10 +160,6 @@ namespace TheGame
                 enemi.OnDestroy += EnemyDestroy;
                 if (enemi.GetType() != typeof(Bush))
                 {
-                    if (!allAnimations.Contains(enemi.AIdle))
-                    {
-                        allAnimations.Add(enemi.AIdle);
-                    }
                     if (!enemi.AAttack.IsPlaying && !enemi.ARun.IsPlaying)
                     {
                         enemi.AIdle.IsPlaying = true;
