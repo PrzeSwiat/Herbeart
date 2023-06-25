@@ -17,6 +17,7 @@ namespace TheGame.Leafs
         public event EventHandler OnCreate;
         public bool ispossible = true;
         public bool canStartAnimation = false;
+        Vector3 velocity = Vector3.Zero;
         public Leaf(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
 
@@ -35,7 +36,28 @@ namespace TheGame.Leafs
         {
 
         }
-
+        public void updatePosition(Player player)
+        {
+            Vector3 direction =  this.GetPosition()- player.GetPosition();
+            Vector3.Normalize(direction);   
+            velocity += direction * 0.01f ;
+            if (velocity.X > 30)
+            {
+                velocity.X = 30;
+            }
+             if (velocity.Y > 30)
+            {
+                velocity.Y = 30;
+            }
+             if(velocity.Z > 30)
+            {
+                velocity.Z = 30;
+            }
+            this.SetPosition(this.GetPosition()-velocity);
+            this.boundingBox.Min -= velocity;
+            this.boundingBox.Max -= velocity;
+            
+        }
         public void RemoveFromWorld()
         {
             OnDestroy?.Invoke(this, EventArgs.Empty);

@@ -105,6 +105,7 @@ namespace TheGame
            
             foreach (Leaf leaf in LeafsList.ToList())
             {
+                leaf.updatePosition(player);
                 leaf.UpdateInventory(player,AnimationsList);
 
                 leaf.OnDestroy += DestroyControl;
