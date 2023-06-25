@@ -80,6 +80,10 @@ namespace TheGame
         public virtual void Update(float deltaTime, Player player)
         {
             Update();
+            AAttack.Update(Globals.gameTime);
+            AIdle.Update(Globals.gameTime);
+            ARun.Update(Globals.gameTime);
+
             if (isStun)
             {
                 elapsedStunTime += deltaTime;

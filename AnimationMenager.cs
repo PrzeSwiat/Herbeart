@@ -159,10 +159,12 @@ namespace TheGame
                 enemi.OnAttack += EnemyAttack;
                 enemi.OnDestroy += EnemyDestroy;
                 
+                /*
                     if (!allAnimations.Contains(enemi.AIdle))
                     {
                         allAnimations.Add(enemi.AIdle);
                     }
+                */
                     if(!enemi.AAttack.IsPlaying && !enemi.ARun.IsPlaying)
                     {
                         enemi.AIdle.IsPlaying = true;
@@ -280,11 +282,12 @@ namespace TheGame
             Enemy enemy = (Enemy)obj;
 
             enemy.AAttack.IsPlaying = true;
+            /*
             if (!allAnimations.Contains(enemy.AAttack))
             {
                 allAnimations.Add(enemy.AAttack);
             }
-
+            */
 
         }
 
