@@ -16,8 +16,8 @@ namespace TheGame
     internal class Enemy : Creature
     {
         public event EventHandler OnAttack;
-        public bool isStun = false;
-        private bool isSlow = false;
+        public bool isStunned = false;
+        private bool isSlowed = false;
         public float stunTime = 0, elapsedStunTime = 0;
         public float slowTime = 1, elapsedSlowTime = 0;
         public Shadow shadow;
@@ -60,6 +60,31 @@ namespace TheGame
             particleSystem.addParticles(new Vector2(projectedPosition.X, projectedPosition.Y - 100));
         }
 
+        public virtual void Update(float deltaTime, Player player)
+        {
+            Update();
+            HandleStunnedStatus(deltaTime);
+            if (isStunned)
+            {
+                return;
+            }
+
+            HandleSlowedStatus(deltaTime);
+            AAttack.Update(Globals.gameTime);
+            AIdle.Update(Globals.gameTime);
+            Run.Update(Globals.gameTime);
+            CheckCollision(player);
+            RotateTowardsCurrentDirection();
+            if (collides)
+            {
+                Attack(player);
+            }
+            else
+            {
+                MoveForwards(deltaTime, true);
+            }
+        }
+
         protected virtual void Attack(Player player)
         {
             actualTime = DateTime.Now;
@@ -83,62 +108,45 @@ namespace TheGame
 
         }
 
-        protected void checkCollision(Player player)
+        protected void CheckCollision(Player player)
         {
             if (this.boundingSphere.Intersects(player.boundingBox) == true) collides = true;
             else collides = false;
         }
 
-        public virtual void Update(float deltaTime, Player player)
+        protected void HandleStunnedStatus(float deltaTime)
         {
-            Update();
-            
+            if (!isStunned) return;
 
-            if (isStun)
+            elapsedStunTime += deltaTime;
+            if (elapsedStunTime >= stunTime)
             {
-                elapsedStunTime += deltaTime;
-                if (elapsedStunTime >= stunTime)
-                {
-                    isStun = false;
-                    elapsedStunTime = 0;
-                }
+                isStunned = false;
+                elapsedStunTime = 0;
             }
-            else
-            {
-                if (isSlow)
-                {
-                    elapsedSlowTime += deltaTime;
-                    if (elapsedSlowTime >= slowTime)
-                    {
-                        SetNormalSpeed();
-                    }
-                }
-                AAttack.Update(Globals.gameTime);
-                AIdle.Update(Globals.gameTime);
-                ARun.Update(Globals.gameTime);
-                checkCollision(player);
-                RotateTowardsCurrentDirection();
-                if (collides)
-                {
-                    Attack(player);
-                }
-                else
-                {
-                    MoveForwards(deltaTime, true);
-                }
-            }
-            
         }
+
+        protected void HandleSlowedStatus(float deltaTime)
+        {
+            if (!isSlowed) return;
+
+            elapsedSlowTime += deltaTime;
+            if (elapsedSlowTime >= slowTime)
+            {
+                SetNormalSpeed();
+            }
+        }
+
 
         public void Stun(int time)
         {
-            isStun = true;
+            isStunned = true;
             stunTime = time;
         }
 
         public void Slow (float slowMultiplier)
         {
-            isSlow = true;
+            isSlowed = true;
             this.ActualAttackSpeed = this.AttackSpeed * slowMultiplier;
             this.ActualSpeed = this.MaxSpeed * slowMultiplier;
         }
@@ -147,7 +155,7 @@ namespace TheGame
         {
             this.ActualAttackSpeed = this.AttackSpeed;
             this.ActualSpeed = this.MaxSpeed;
-            isSlow = false;
+            isSlowed = false;
             elapsedSlowTime = 0;
         }
 
@@ -156,7 +164,6 @@ namespace TheGame
         {
             return new Vector2(targetPosition.X - GetPosition().X, targetPosition.Z - GetPosition().Z);
         }
-
 
 
         protected void RotateTowardsCurrentDirection()

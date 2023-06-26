@@ -59,6 +59,11 @@ namespace TheGame
             Vector3 playerPosition = player.GetPosition();
             foreach (Enemy enemy in enemiesList)
             {
+                if (enemy.GetType() == typeof(Nettle))
+                {
+                    enemy.Update(deltaTime, player);
+                    continue;
+                }
                 // avoid other enemies and chase player
                 //Vector2 alignVel = AlignBehaviour(enemy, 20, 0.1f);
                 Vector2 towardsPlayerVel = enemy.CalculateDirectionTowardsTarget(playerPosition);
