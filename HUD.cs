@@ -19,9 +19,12 @@ namespace TheGame
         private SpriteFont ScoreFont;
         private SpriteFont ItemFont;
         private SpriteFont MenuFont;
+        private SpriteFont MenuFont2;
+        private SpriteFont MenuFont3;
         private SpriteFont Menu;
         private SpriteFont Menu2;
         private Texture2D menu;
+        private Texture2D difficulty;
         private Texture2D dot;
         private Texture2D healtColor, healthBar, healthBackdrop;
         private Texture2D defaultItemFrame, offensiveItemFrame, teaItemFrame;
@@ -56,6 +59,8 @@ namespace TheGame
 
             dot = models.getTexture("Textures/EnemyHealth");
             menu = models.getTexture("HUD/tlo_listki_menu2");
+        
+            difficulty = models.getTexture("HUD/tlo_difficulty3");
             healtColor = models.getTexture("HUD/magenta");
             healthBar = models.getTexture("HUD/pasekzycia");
             healthBackdrop = models.getTexture("HUD/pasekzycia_tlo");
@@ -81,6 +86,8 @@ namespace TheGame
             meliseTexCrafting = models.getTexture("HUD/ikona_melisa_crafting");
 
             MenuFont = Globals.content.Load<SpriteFont>("menuFont");
+            MenuFont2 = Globals.content.Load<SpriteFont>("menuFont2");
+            MenuFont3 = Globals.content.Load<SpriteFont>("menuFont3");
             ItemFont = Globals.content.Load<SpriteFont>("ItemFont");
             ScoreFont = Globals.content.Load<SpriteFont>("ScoreFont");
             Menu = Globals.content.Load<SpriteFont>("Menu");
@@ -251,29 +258,45 @@ namespace TheGame
         public void DrawPause()
         {
             Rectangle rect = new Rectangle(0, 0, WindowWidth, WindowHeight);
-            Color one = Color.Gray;
-            Color two = Color.Gray;
-            Color three = Color.Gray;
+            Color one = Color.Black;
+            Color two = Color.Black;
+            Color three = Color.Black;
+            Vector2 dotpos = new Vector2(0, 0);
 
             if (MenuOption == 1)
             {
-                one = Color.White;
+                one = Color.Orange;
+                dotpos = new Vector2(WindowWidth * 13 / 20 + 20, WindowHeight * 12 / 20 + 30);
             }
             if (MenuOption == 2)
             {
-                two = Color.White;
+                two = Color.Orange;
+                dotpos = new Vector2(WindowWidth * 13 / 20 + 20, WindowHeight * 14 / 20 + 30);
             }
             if (MenuOption == 3)
             {
-                three = Color.White;
+                three = Color.Orange;
+                dotpos = new Vector2(WindowWidth * 13 / 20 + 20, WindowHeight * 16 / 20 + 30);
             }
 
             Globals.spriteBatch.Begin();
-            Globals.spriteBatch.Draw(menu, rect, Color.White);
-            Globals.spriteBatch.DrawString(Menu, "Game Paused", new Vector2(WindowWidth / 4 , WindowHeight * 1 / 10), Color.White);
-            Globals.spriteBatch.DrawString(Menu2, "Resume", new Vector2(WindowWidth / 10, WindowHeight * 9 / 20), one);
-            Globals.spriteBatch.DrawString(Menu2, "Main menu", new Vector2(WindowWidth / 10, WindowHeight * 12 / 20), two);
-            Globals.spriteBatch.DrawString(Menu2, "Exit", new Vector2(WindowWidth / 10, WindowHeight * 16 / 20), three);
+            Globals.spriteBatch.Draw(difficulty, rect, Color.White);
+            Globals.spriteBatch.Draw(dot, dotpos, null, Color.White, 0, Vector2.Zero, 0.4f, SpriteEffects.None, 0f);
+            Globals.spriteBatch.DrawString(MenuFont2, "game paused", new Vector2(WindowWidth * 4.5f / 20, WindowHeight * 1 / 20 + 13), new Color(92, 112, 142));
+            Globals.spriteBatch.DrawString(MenuFont2, "game paused", new Vector2(WindowWidth * 4.5f / 20, WindowHeight * 1 / 20 + 8), new Color(36, 36, 36));
+            Globals.spriteBatch.DrawString(MenuFont2, "game paused", new Vector2(WindowWidth * 4.5f / 20, WindowHeight * 1 / 20), Color.White);
+
+            Globals.spriteBatch.DrawString(MenuFont, "resume", new Vector2(WindowWidth * 14 / 20, WindowHeight * 12 / 20 + 13), one);
+            Globals.spriteBatch.DrawString(MenuFont, "resume", new Vector2(WindowWidth * 14 / 20, WindowHeight * 12 / 20 + 5), Color.Gray);
+            Globals.spriteBatch.DrawString(MenuFont, "resume", new Vector2(WindowWidth * 14 / 20, WindowHeight * 12 / 20), Color.White);
+
+            Globals.spriteBatch.DrawString(MenuFont, "main menu", new Vector2(WindowWidth * 14 / 20, WindowHeight * 14 / 20 + 13), two);
+            Globals.spriteBatch.DrawString(MenuFont, "main menu", new Vector2(WindowWidth * 14 / 20, WindowHeight * 14 / 20 + 5), Color.Gray);
+            Globals.spriteBatch.DrawString(MenuFont, "main menu", new Vector2(WindowWidth * 14 / 20, WindowHeight * 14 / 20), Color.White);
+
+            Globals.spriteBatch.DrawString(MenuFont, "exit", new Vector2(WindowWidth * 14 / 20, WindowHeight * 16 / 20 + 13), three);
+            Globals.spriteBatch.DrawString(MenuFont, "exit", new Vector2(WindowWidth * 14 / 20, WindowHeight * 16 / 20 + 5), Color.Gray);
+            Globals.spriteBatch.DrawString(MenuFont, "exit", new Vector2(WindowWidth * 14 / 20, WindowHeight * 16 / 20), Color.White);
             Globals.spriteBatch.End();
         }
 
@@ -411,29 +434,42 @@ namespace TheGame
 
         public void DrawTutorialMenu()
         {
-            Color one = Color.Gray;
-            Color two = Color.Gray;
+            Color one = Color.Black;
+            Color two = Color.Black;
+            Vector2 dotpos = new Vector2(0, 0);
             Rectangle rect = new Rectangle(0, 0, WindowWidth, WindowHeight);
             Globals.spriteBatch.Begin();
-            Globals.spriteBatch.Draw(menu, rect, Color.White);
+            Globals.spriteBatch.Draw(difficulty, rect, Color.White);
+
             if (MenuOption == 1)
             {
-                one = Color.White;
-                Globals.spriteBatch.DrawString(Menu2, "New player mode (hints enabled)", new Vector2(WindowWidth / 10, WindowHeight * 16 / 20), Color.Gray);
-                
+                one = Color.Orange;
+                dotpos = new Vector2(WindowWidth * 15 / 20 + 20, WindowHeight * 10 / 20 + 30);
+                Globals.spriteBatch.DrawString(MenuFont3, "if you are a new player, choose this! \n(hints enabled)", new Vector2(WindowWidth * 12 / 20, WindowHeight * 17 / 20 + 5), Color.Black);
+                Globals.spriteBatch.DrawString(MenuFont3, "if you are a new player, choose this! \n(hints enabled)", new Vector2(WindowWidth * 12 / 20, WindowHeight * 17 / 20), Color.White);
+
             }
             if (MenuOption == 2)
             {
-                two = Color.White;
-                Globals.spriteBatch.DrawString(Menu2, "Expert player mode (hints disabled)", new Vector2(WindowWidth / 10, WindowHeight * 16 / 20), Color.Gray);
-                
-            }
+                two = Color.Orange;
+                dotpos = new Vector2(WindowWidth * 15 / 20 + 20, WindowHeight * 12 / 20 + 30);
+                Globals.spriteBatch.DrawString(MenuFont3, "experts only! \n(hints disabled)", new Vector2(WindowWidth * 12 / 20, WindowHeight * 17 / 20 + 5), Color.Black);
+                Globals.spriteBatch.DrawString(MenuFont3, "experts only! \n(hints disabled)", new Vector2(WindowWidth * 12 / 20, WindowHeight * 17 / 20), Color.White);
 
-            
-            
-            Globals.spriteBatch.DrawString(Menu2, "Choose difficulty", new Vector2(WindowWidth / 5, WindowHeight * 2 / 20), Color.Gray);
-            Globals.spriteBatch.DrawString(Menu2, "Easy", new Vector2(WindowWidth / 10, WindowHeight * 7 / 20), one);
-            Globals.spriteBatch.DrawString(Menu2, "Hard", new Vector2(WindowWidth / 10, WindowHeight * 10 / 20), two);
+            }
+            Globals.spriteBatch.Draw(dot, dotpos, null, Color.White, 0, Vector2.Zero, 0.4f, SpriteEffects.None, 0f);
+            Globals.spriteBatch.DrawString(MenuFont2, "choose difficulty", new Vector2(WindowWidth * 3 / 20, WindowHeight * 1 / 20 + 13), new Color(92, 112, 142));
+            Globals.spriteBatch.DrawString(MenuFont2, "choose difficulty", new Vector2(WindowWidth * 3 / 20, WindowHeight * 1 / 20 + 8), new Color(36, 36, 36));
+            Globals.spriteBatch.DrawString(MenuFont2, "choose difficulty", new Vector2(WindowWidth * 3 / 20, WindowHeight * 1 / 20), Color.White);
+
+            Globals.spriteBatch.DrawString(MenuFont, "EASY", new Vector2(WindowWidth * 16 / 20, WindowHeight * 10 / 20 + 13), one);
+            Globals.spriteBatch.DrawString(MenuFont, "EASY", new Vector2(WindowWidth * 16 / 20, WindowHeight * 10 / 20 + 5), Color.Gray);
+            Globals.spriteBatch.DrawString(MenuFont, "EASY", new Vector2(WindowWidth * 16 / 20, WindowHeight * 10 / 20), Color.White);
+
+            Globals.spriteBatch.DrawString(MenuFont, "HARD", new Vector2(WindowWidth * 16 / 20, WindowHeight * 12 / 20 + 13), two);
+            Globals.spriteBatch.DrawString(MenuFont, "HARD", new Vector2(WindowWidth * 16 / 20, WindowHeight * 12 / 20 + 5), Color.Gray);
+            Globals.spriteBatch.DrawString(MenuFont, "HARD", new Vector2(WindowWidth * 16 / 20, WindowHeight * 12 / 20), Color.White);
+
             Globals.spriteBatch.End();
 
         }
