@@ -368,14 +368,16 @@ namespace TheGame
             {
                 if (enemy.GetType() != typeof(Bush))
                 {
-
-                    if (enemy.AAttack.IsPlaying)
+                    if(enemy.isUpdating)    //nie rysuj jak nie ma co
                     {
-                        DrawAnimation(enemy, enemy.AAttack, enemy.Atak, enemy.GetTexture2D());
-                    }
-                    else
-                    {
-                        DrawAnimation(enemy, enemy.AIdle, enemy.Idle, enemy.GetTexture2D());
+                        if (enemy.AAttack.IsPlaying)
+                        {
+                            DrawAnimation(enemy, enemy.AAttack, enemy.Atak, enemy.GetTexture2D());
+                        }
+                        else
+                        {
+                            DrawAnimation(enemy, enemy.AIdle, enemy.Idle, enemy.GetTexture2D());
+                        }
                     }
                 }
             }

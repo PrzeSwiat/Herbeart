@@ -36,6 +36,7 @@ namespace TheGame
 
         public  void Throw(int damage,Player player)
         {
+            base.OnAttackGo();
             Vector3 pos = (this.boundingBox.Min + this.boundingBox.Max) / 2;
 
             bullet.Add(new Apple(pos, "Objects/japco", "Textures/appleTexture", player.GetPosition()));

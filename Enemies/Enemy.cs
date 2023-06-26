@@ -30,6 +30,7 @@ namespace TheGame
         public AnimationPlayer AIdle;
         public AnimationPlayer AAttack;
         public AnimationPlayer ARun;
+        public bool isUpdating;
 
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)

@@ -12,7 +12,6 @@ namespace TheGame
     internal class Melissa : Enemy
     {
         private DateTime lastAttackTime, actualTime;
-        public event EventHandler OnAttack;
         private int attackCounter = 0;
         private int attacksToStun = 5;
         private int stunTime = 2;
@@ -82,7 +81,7 @@ namespace TheGame
                     attackCounter = 0;
                     player.setStun(stunTime);
                 }
-                OnAttack?.Invoke(this, EventArgs.Empty);
+                base.OnAttackGo();
                 lastAttackTime = actualTime;
                 attackCounter++;
                 player.HitWithParticle(this.Strength);
