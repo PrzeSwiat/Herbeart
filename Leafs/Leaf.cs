@@ -39,19 +39,42 @@ namespace TheGame.Leafs
         public void updatePosition(Player player)
         {
             Vector3 direction =  this.GetPosition()- player.GetPosition();
-            Vector3.Normalize(direction);   
-            velocity += direction * 0.002f ;
+            Vector3.Normalize(direction);
+            if (Math.Sign(direction.X) != Math.Sign(velocity.X))
+            {
+                velocity.X = -velocity.X;
+            }
+            if (Math.Sign(direction.Y) != Math.Sign(velocity.Y))
+            {
+                velocity.Y = -velocity.Y;
+            }
+            if (Math.Sign(direction.Z) != Math.Sign(velocity.Z))
+            {
+                velocity.Z = -velocity.Z;
+            }
+            velocity += direction * 0.001f ;
             if (velocity.X > 30)
             {
                 velocity.X = 30;
+            }else if(velocity.X < -30)
+            {
+                velocity.X = -30;
             }
              if (velocity.Y > 30)
             {
                 velocity.Y = 30;
             }
-             if(velocity.Z > 30)
+            else if (velocity.Y < -30)
+            {
+                velocity.Y = -30;
+            }
+            if (velocity.Z > 30)
             {
                 velocity.Z = 30;
+            }
+            else if (velocity.Z < -30)
+            {
+                velocity.Z = -30;
             }
             this.SetPosition(this.GetPosition()-velocity);
             this.boundingBox.Min -= velocity;
