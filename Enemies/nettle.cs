@@ -11,6 +11,7 @@ namespace TheGame
     {
         private float movementCooldown = 2f;
         private float windUpCooldown = 0.5f;
+        private int damage = 30;
         float armortime = 10; // not used
 
         private DateTime lastAttackTime, actualTime;
@@ -86,7 +87,7 @@ namespace TheGame
             if (Collides)
             {
                 StopMovement();
-                player.HitWithParticle(15);
+                player.HitWithParticle(damage);
             }
             else
             {
