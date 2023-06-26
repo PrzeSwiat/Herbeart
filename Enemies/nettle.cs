@@ -39,7 +39,7 @@ namespace TheGame
         public override void Update(float deltaTime, Player player)
         {
             this.deltaTime = deltaTime;
-            base.Update();
+            //base.Update();
             playerPosition = player.GetPosition();
             HandleStunnedStatus(deltaTime);
             if (isStunned)
@@ -86,8 +86,7 @@ namespace TheGame
             if (Collides)
             {
                 StopMovement();
-                Debug.WriteLine("COLLISION");
-                OnAttack?.Invoke(this, EventArgs.Empty);
+                player.HitWithParticle(15);
             }
             else
             {
