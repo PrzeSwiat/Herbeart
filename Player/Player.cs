@@ -105,7 +105,7 @@ namespace TheGame
         {
             this.Hit(damage);
             ParticleSystem particleSystem = ParticleSystem.Instance;
-            particleSystem.addParticles(new Vector2(Globals.WindowWidth / 2, Globals.WindowHeight / 2 - 100));
+            particleSystem.addPlayerParticles(new Vector2(Globals.WindowWidth / 2, Globals.WindowHeight / 2 - 100));
         }
 
         public override void Hit(int damage)
@@ -247,7 +247,7 @@ namespace TheGame
             Vector2 particlePosition = new Vector2(projectedPosition.X, projectedPosition.Y);
             
 
-            particleSystem.addHerbParticles(particlePosition);
+            particleSystem.addStunParticles(particlePosition);
             foreach (Enemy enemy in enemies.EnemiesList) 
             {
                 if (this.boundingSphere.Intersects(enemy.boundingBox))

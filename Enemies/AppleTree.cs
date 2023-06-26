@@ -177,6 +177,7 @@ namespace TheGame
         int dmg = 30;
         Vector3 velocity;
         float speed = 30f;
+        private float time = 0, maxTime = 2;
         public event EventHandler OnDestroy;
         public Apple(Vector3 worldPosition, string modelFileName, string textureFileName, Vector3 endPosition) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -187,21 +188,15 @@ namespace TheGame
             Vector2 direction = new Vector2(endPosition.X - startPosition.X, endPosition.Z - startPosition.Z);
             direction = Vector2.Normalize(direction);
            
-            velocity = new Vector3(direction.X, 0, direction.Y);
-            velocity.X = velocity.X * speed;
-            velocity.Y = -6;
-            velocity.Z = velocity.Z * speed;
+            velocity = new Vector3(direction.X * speed, 0, direction.Y * speed);
             SetScale(1.4f);
-
-             
         }
+
         public void Update(float deltaTime, Player player)
         {
-
             // Move the bullet
-            //position += velocity * deltaTime;
-            // position.Y = 0.2f;
-            SetPosition(this.GetPosition() + velocity * deltaTime);
+            time += deltaTime;
+            this.Move(velocity * deltaTime);
 
             // Check if the bullet has collided with the player
             if (this.boundingBox.Intersects(player.boundingBox))
@@ -212,7 +207,7 @@ namespace TheGame
             }
 
             // Check if the bullet has hit the ground
-            if (this.GetPosition().Y <= 0)
+            if (time >= maxTime)
             {
                 OnDestroy?.Invoke(this, EventArgs.Empty);
             }

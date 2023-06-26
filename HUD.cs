@@ -21,9 +21,9 @@ namespace TheGame
         private SpriteFont MenuFont;
         private SpriteFont Menu;
         private SpriteFont Menu2;
-        private Texture2D healtColor, healthBar;
         private Texture2D menu;
         private Texture2D dot;
+        private Texture2D healtColor, healthBar, healthBackdrop;
         private Texture2D defaultItemFrame, offensiveItemFrame, teaItemFrame;
         private Texture2D appleTex, meliseTex, mintTex, nettleTex;
         private Texture2D appleTexCrafting, meliseTexCrafting, mintTexCrafting, nettleTexCrafting;
@@ -58,6 +58,7 @@ namespace TheGame
             menu = models.getTexture("HUD/tlo_listki_menu2");
             healtColor = models.getTexture("HUD/magenta");
             healthBar = models.getTexture("HUD/pasekzycia");
+            healthBackdrop = models.getTexture("HUD/pasekzycia_tlo");
             defaultItemFrame = models.getTexture("HUD/default");
             offensiveItemFrame = models.getTexture("HUD/atak");
             teaItemFrame = models.getTexture("HUD/defens");
@@ -108,10 +109,13 @@ namespace TheGame
 
         private void DrawHealthBar(int hp)
         {
-            Rectangle health = new Rectangle(WindowWidth / 2 - 325/2 + 10, 17, hp, 30);
-            Rectangle healthBar = new Rectangle(WindowWidth / 2 - 325/2, 10, 320, 48);
+            int posX = WindowWidth / 2 - this.healthBar.Width / 8;
+            Rectangle health = new Rectangle(posX + 10, 40, hp, 30);
+            Rectangle healthBar = new Rectangle(posX, 0, this.healthBar.Width / 4, this.healthBar.Height / 4);
+            Rectangle healthBackdrop = new Rectangle(posX, 0, this.healthBackdrop.Width / 4, this.healthBackdrop.Height / 4);
 
-            Globals.spriteBatch.Draw(healtColor, health, Color.Magenta);
+            Globals.spriteBatch.Draw(this.healthBackdrop, healthBackdrop, Color.White); 
+            Globals.spriteBatch.Draw(this.healtColor, health, Color.Magenta);
             Globals.spriteBatch.Draw(this.healthBar, healthBar, Color.White); 
         }
         
@@ -166,6 +170,11 @@ namespace TheGame
             Rectangle inv = new Rectangle(20, WindowHeight - invLenght - 20, invLenght, invLenght);
             Rectangle rect_crafting = new Rectangle(WindowWidth / 2 - 100, WindowHeight / 2 - 240, 200, 70);
             int craftingIndex = 0;
+
+            Vector2 mintVec;
+            Vector2 nettleVec;
+            Vector2 meliseVec;
+            Vector2 appleVec;
             for (int i = 0; i < 3; i++)
             {
                 if (actualRecepture[i] != "")
@@ -206,21 +215,28 @@ namespace TheGame
                         }
                     }
                 }
+                mintVec = new Vector2(invLenght / 2 + 53 - ItemFont.MeasureString(leafs.ElementAt(0).Value.ToString()).X, WindowHeight - 74);
+                nettleVec = new Vector2(invLenght + 2 - ItemFont.MeasureString(leafs.ElementAt(1).Value.ToString()).X, WindowHeight - invLenght / 2 - 20);
+                meliseVec = new Vector2(125 - ItemFont.MeasureString(leafs.ElementAt(2).Value.ToString()).X, WindowHeight - invLenght / 2 - 22);
+                appleVec = new Vector2(invLenght / 2 + 57 - ItemFont.MeasureString(leafs.ElementAt(3).Value.ToString()).X, WindowHeight - invLenght + 55);
             } 
             else if (isThrowing) 
             {
                 Globals.spriteBatch.Draw(offensiveItemFrame, inv, Color.White);
                 DrawArrow();
+                mintVec = new Vector2(invLenght / 2 + 53 - ItemFont.MeasureString(leafs.ElementAt(0).Value.ToString()).X, WindowHeight - 74);
+                nettleVec = new Vector2(invLenght + 2 - ItemFont.MeasureString(leafs.ElementAt(1).Value.ToString()).X, WindowHeight - invLenght / 2 - 20);
+                meliseVec = new Vector2(125 - ItemFont.MeasureString(leafs.ElementAt(2).Value.ToString()).X, WindowHeight - invLenght / 2 - 22);
+                appleVec = new Vector2(invLenght / 2 + 57 - ItemFont.MeasureString(leafs.ElementAt(3).Value.ToString()).X, WindowHeight - invLenght + 55);
             } else
             {
                 Globals.spriteBatch.Draw(defaultItemFrame, inv, Color.White);
+
+                mintVec = new Vector2(invLenght / 2 + 50 - ItemFont.MeasureString(leafs.ElementAt(0).Value.ToString()).X, WindowHeight - 70);
+                nettleVec = new Vector2(invLenght + 4 - ItemFont.MeasureString(leafs.ElementAt(1).Value.ToString()).X, WindowHeight - invLenght / 2 - 22);
+                meliseVec = new Vector2(116 - ItemFont.MeasureString(leafs.ElementAt(2).Value.ToString()).X, WindowHeight - invLenght / 2 - 22);
+                appleVec = new Vector2(invLenght / 2 + 50 - ItemFont.MeasureString(leafs.ElementAt(3).Value.ToString()).X, WindowHeight - invLenght + 37);
             }
-
-
-            Vector2 mintVec = new Vector2(invLenght / 2 + 50 - ItemFont.MeasureString(leafs.ElementAt(0).Value.ToString()).X, WindowHeight - 70);
-            Vector2 nettleVec = new Vector2(invLenght + 4 - ItemFont.MeasureString(leafs.ElementAt(1).Value.ToString()).X, WindowHeight - invLenght / 2 - 22);
-            Vector2 meliseVec = new Vector2(116 - ItemFont.MeasureString(leafs.ElementAt(2).Value.ToString()).X, WindowHeight - invLenght / 2 - 22);
-            Vector2 appleVec = new Vector2(invLenght / 2 + 50 - ItemFont.MeasureString(leafs.ElementAt(3).Value.ToString()).X, WindowHeight - invLenght + 37);
 
             Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(0).Value.ToString(), new Vector2(mintVec.X - 2, mintVec.Y + 2), Color.Black);    // mint
             Globals.spriteBatch.DrawString(ItemFont, leafs.ElementAt(1).Value.ToString(), new Vector2(nettleVec.X - 2, nettleVec.Y + 2), Color.Black);    // nettle
