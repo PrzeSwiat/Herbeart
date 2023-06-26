@@ -157,7 +157,7 @@ namespace TheGame
             foreach (Enemy enemi in enemies)
             {
                 enemi.OnAttack += EnemyAttack;
-                enemi.OnDestroy += EnemyDestroy;
+        
                 if (enemi.GetType() != typeof(Bush))
                 {
                     if (!enemi.AAttack.IsPlaying && !enemi.ARun.IsPlaying)
@@ -279,31 +279,9 @@ namespace TheGame
             Enemy enemy = (Enemy)obj;
 
             enemy.AAttack.IsPlaying = true;
-            /*
-            if (!allAnimations.Contains(enemy.AAttack))
-            {
-                allAnimations.Add(enemy.AAttack);
-            }
-            */
 
         }
 
-        private void EnemyDestroy(object obj, EventArgs e)
-        {
-            Enemy enemy = (Enemy)obj;
-            if(allAnimations.Contains(enemy.ARun))
-            {
-                allAnimations.Remove(enemy.ARun);
-            }
-            if (allAnimations.Contains(enemy.AIdle))
-            {
-                allAnimations.Remove(enemy.AIdle);
-            }
-            if (allAnimations.Contains(enemy.AAttack))
-            {
-                allAnimations.Remove(enemy.AAttack);
-            }
-        }
 
 
         public void DrawAnimations()
