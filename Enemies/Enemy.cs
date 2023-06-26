@@ -72,7 +72,7 @@ namespace TheGame
             HandleSlowedStatus(deltaTime);
             AAttack.Update(Globals.gameTime);
             AIdle.Update(Globals.gameTime);
-            Run.Update(Globals.gameTime);
+            ARun.Update(Globals.gameTime);
             CheckCollision(player);
             RotateTowardsCurrentDirection();
             if (collides)
