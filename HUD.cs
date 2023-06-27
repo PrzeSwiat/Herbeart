@@ -27,6 +27,7 @@ namespace TheGame
         private Texture2D difficulty;
         private Texture2D dot;
         private Texture2D healtColor, healthBar, healthBackdrop;
+        private Texture2D strenghtTexture;
         private Texture2D defaultItemFrame, offensiveItemFrame, teaItemFrame;
         private Texture2D appleTex, meliseTex, mintTex, nettleTex;
         private Texture2D appleTexCrafting, meliseTexCrafting, mintTexCrafting, nettleTexCrafting;
@@ -64,6 +65,7 @@ namespace TheGame
             healtColor = models.getTexture("HUD/magenta");
             healthBar = models.getTexture("HUD/pasekzycia");
             healthBackdrop = models.getTexture("HUD/pasekzycia_tlo");
+            strenghtTexture = models.getTexture("HUD/strenght");
             defaultItemFrame = models.getTexture("HUD/default");
             offensiveItemFrame = models.getTexture("HUD/atak");
             teaItemFrame = models.getTexture("HUD/defens");
@@ -109,9 +111,33 @@ namespace TheGame
             Globals.spriteBatch.Begin();
             DrawInventory();
             DrawHealthBar(hp);
+            DrawPlayerEffects();
             DrawEnemyHealthBar(enemies);
             DrawScore();
             Globals.spriteBatch.End();
+        }
+
+        private void DrawPlayerEffects()
+        {
+            int posX = WindowWidth / 2 - this.healthBar.Width / 8;
+            int rectX = posX - 100;
+            Rectangle rect = new Rectangle(rectX, 0, 100, 100);
+            for (int i = 0; i < Globals.playerActiveEffects.Count; i++)
+            {
+                rect.X = rectX - 100 * i;
+                if (Globals.playerActiveEffects[i] == "immortal")
+                {
+                    Globals.spriteBatch.Draw(meliseTex, rect, Color.White);
+                }
+                if (Globals.playerActiveEffects[i] == "haste")
+                {
+                    Globals.spriteBatch.Draw(mintTex, rect, Color.White);
+                }
+                if (Globals.playerActiveEffects[i] == "strenght")
+                {
+                    Globals.spriteBatch.Draw(strenghtTexture, rect, Color.White);
+                }
+            }
         }
 
         private void DrawHealthBar(int hp)

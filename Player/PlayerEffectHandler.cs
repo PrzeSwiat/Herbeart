@@ -26,7 +26,7 @@ namespace TheGame
             damageTimer = new IntervalTimer(0, 1, EffectTakeHealth);
             stunTimer = new NormalTimer(0, undoStun);
             speedTimer = new NormalTimer(0, undoSpeed);
-            powerTimer = new NormalTimer(0, undoDamage);
+            powerTimer = new NormalTimer(0, undoStrenght);
             immortalTimer = new NormalTimer(0, undoImmortal);
         }
 
@@ -73,6 +73,10 @@ namespace TheGame
             player.ActualSpeed += speed;
             speedTimer.setTimerMaxTime(time);
             speedTimer.Start();
+            if (!Globals.playerActiveEffects.Contains("haste"))
+            {
+                Globals.playerActiveEffects.Add("haste");
+            }
         }
 
         public void BuffStrenght(int DMG, int time)
@@ -80,6 +84,10 @@ namespace TheGame
             player.Strength += DMG;
             powerTimer.setTimerMaxTime(time);
             powerTimer.Start();
+            if (!Globals.playerActiveEffects.Contains("strenght"))
+            {
+                Globals.playerActiveEffects.Add("strenght");
+            }
         }
 
         public void MakeImmortal(int time)
@@ -88,6 +96,10 @@ namespace TheGame
             immortalTimer.setTimerMaxTime(time);
             immortalTimer.Start();
             damageTimer.Stop();
+            if (!Globals.playerActiveEffects.Contains("immortal"))
+            {
+                Globals.playerActiveEffects.Add("immortal");
+            }
         }
 
 
@@ -95,6 +107,7 @@ namespace TheGame
         private void undoSpeed()
         {
             player.setOriginalSpeed();
+            Globals.playerActiveEffects.Remove("haste");
         }
 
         private void undoStun()
@@ -102,15 +115,17 @@ namespace TheGame
             player.setcanMove(true);
         }
 
-        private void undoDamage()
+        private void undoStrenght()
         {
             player.setOriginalStrenght();
+            Globals.playerActiveEffects.Remove("strenght");
         }
 
         private void undoImmortal()
         {
             player.immortal = false;
             damageTimer.Start();
+            Globals.playerActiveEffects.Remove("immortal");
         }
 
         private void EffectAddHealth()
