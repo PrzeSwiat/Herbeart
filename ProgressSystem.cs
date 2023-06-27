@@ -47,6 +47,7 @@ namespace TheGame
                 else
                 {
                       Reward1= rewe;
+                    rewards[0] = 4;
                 }
 
             }
@@ -347,11 +348,11 @@ namespace TheGame
 
         public void AddMultipleScore()
         {
-            Globals.ScoreMultipler += 1;
+            Globals.ScoreMultiplier += 1;
         }
         public void RemoveMultipleScore() 
         {
-            Globals.ScoreMultipler -= 1;
+            Globals.ScoreMultiplier -= 1;
         }
         public void AddScore(int score) 
         {

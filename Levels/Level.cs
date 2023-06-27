@@ -49,8 +49,9 @@ namespace TheGame
         private int enemyCount;
         private int difficultyLevel;
         #endregion
-        private string fileName;
+        public string fileName;
         private float separatorX, separatorZ;
+        public List<Vector3> groundPositions;
 
 
 
@@ -66,6 +67,7 @@ namespace TheGame
             forestTiles = new List<Tile>();
             spawnTiles = new List<Tile>();
             borderTiles = new List<Tile>();
+            groundPositions = new List<Vector3>();
             shopOnPartyModule = new Vector3(0, 0, 0);
 
             this.fileName = fileName;
@@ -166,8 +168,8 @@ namespace TheGame
 
             List<int> tileList = ReadFile(fileName);
             Vector3 groundPos = new Vector3(0.5f * moduleWidth * tileSize + separatorX, -0.7f, 0.5f * moduleHeight * tileSize + separatorZ);
-            Vector3 wektor = new Vector3();
-            Vector3 newVector = new Vector3();
+            Vector3 wektor;
+            Vector3 newVector;
             for (int i = 0; i < tileList.Count; i++)
             {
                 if (x == moduleWidth)
@@ -212,6 +214,7 @@ namespace TheGame
                         groundType = "grass";
                         wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
                         groundTiles.Add(new Tile(groundType, height, wektor, 0));
+                        groundPositions.Add(wektor);
                         x++;
                         break;
                     case 98: //b
@@ -220,11 +223,12 @@ namespace TheGame
                         spawnTiles.Add(new Tile(groundType, height, wektor, 0));
                         x++;
                         break;
-                    case 99:
-                        //groundType = "party";
+                    case 99:    //c
                         wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
-                        SceneObject shop = new SceneObject(wektor, "Objects/festiwal", "Textures/festiwal");
-                        nonColideObjects.Add(shop);
+                        SceneObject shop = new SceneObject(wektor, "Objects/festiwal_budka", "Textures/festiwal_smol4");
+                        SceneObject shop_around = new SceneObject(wektor, "Objects/festiwal_slupy", "Textures/festiwal_smol4");
+                        _sceneObjects.Add(shop);
+                        nonColideObjects.Add(shop_around);
                         shopOnPartyModule = wektor;
                         x++;
                         break;
@@ -251,22 +255,9 @@ namespace TheGame
             EnemiesGenerator enemiesGenerator = new EnemiesGenerator();
             if (enemyCount != 0)
             {
-                List<Vector3> enemiesPositions = new List<Vector3>();
-                for (int i = 0; i < enemyCount; i++)
-                {
-                    Vector3 enemyPosition = ChoosedTileVector();
-                    enemiesPositions.Add(enemyPosition);
-                }
-                enemiesGenerator.GenerateRandomEnemies(enemiesPositions, difficultyLevel);
+                enemiesGenerator.GenerateRandomEnemies(enemyCount, difficultyLevel, groundPositions);
                 enemies.AddRange(enemiesGenerator.returnEnemies());
             }
-        }
-
-        public void GenerateEnemy(string enemyType, Vector3 enemyPosition)
-        {
-            EnemiesGenerator enemiesGenerator = new EnemiesGenerator();
-            enemiesGenerator.GenerateEnemy(enemyType, enemyPosition);
-            enemies.AddRange(enemiesGenerator.returnEnemies());
         }
 
         public void GenerateGreenObjectsNearTrees(Tile tile)
@@ -506,6 +497,7 @@ namespace TheGame
                     big_stone.SetScale(scale / 2);
                     big_stone.SetRotation(new Vector3(0, rflot, 0));
                     _sceneObjects.Add(big_stone);
+                    groundPositions.Remove(groundPosition);
                     break;
                 case "Objects/small_stone":
                     texture = "Textures/stone";
@@ -513,6 +505,7 @@ namespace TheGame
                     small_stone.SetScale(scale);
                     small_stone.SetRotation(new Vector3(0, rflot, 0));
                     nonColideObjects.Add(small_stone);
+                    groundPositions.Remove(groundPosition);
                     break;
                 case "Objects/two_stones":
                     texture = "Textures/stone";
@@ -520,24 +513,28 @@ namespace TheGame
                     two_stones.SetScale(scale);
                     two_stones.SetRotation(new Vector3(0, rflot, 0));
                     _sceneObjects.Add(two_stones);
+                    groundPositions.Remove(groundPosition);
                     break;
                 case "Objects/bush":
                     texture = GenerateRandomString(bushTextures);
                     SceneObject bush = new SceneObject(groundPosition, "Objects/bush", texture);
                     bush.SetScale(scale / 2);
                     _sceneObjects.Add(bush);
+                    groundPositions.Remove(groundPosition);
                     break;
                 case "Objects/small_bush":
                     texture = GenerateRandomString(bushTextures);
                     SceneObject small_bush = new SceneObject(groundPosition, "Objects/small_bush", texture);
                     small_bush.SetScale(scale);
                     _sceneObjects.Add(small_bush);
+                    groundPositions.Remove(groundPosition);
                     break;
                 case "Objects/flower":
                     texture = GenerateRandomString(flowerTextures);
                     SceneObject flower = new SceneObject(groundPosition, "Objects/flower", texture);
                     flower.SetScale(scale);
                     nonColideObjects.Add(flower);
+                    groundPositions.Remove(groundPosition);
                     break;
             }
         }

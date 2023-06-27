@@ -52,13 +52,8 @@ namespace TheGame
                 leaf.AddToWorld();
                 leaf.SetPosition(this.GetPosition());
                 OnDestroy?.Invoke(this, EventArgs.Empty);
-                Globals.Score += 10 * Globals.ScoreMultipler;
+                Globals.Score += 10 * Globals.ScoreMultiplier;
             }
-            else
-            {
-                
-            }
-
         }
 
         public void MoveModelForwards(float speed)

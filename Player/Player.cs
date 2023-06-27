@@ -35,7 +35,6 @@ namespace TheGame
         public event EventHandler onMove;
         public event EventHandler onRandomNoise;
         public event EventHandler onAttackNoise;
-        private bool canAttack = true;
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
@@ -43,7 +42,7 @@ namespace TheGame
             this.setBSRadius(3);
             setBSposition(2);
 
-            AssignParameters(300, 1, 70, 0.8f);
+            AssignParameters(300, 1, 20, 0.8f);
             playerEffects = new PlayerEffectHandler(this);
             Inventory = new Inventory();
             Crafting = new Crafting(Inventory, playerEffects);
@@ -170,7 +169,6 @@ namespace TheGame
         }
         public void DrawAnimation()
         {
-            //particleSystem.Draw(Globals.spriteBatch);
             Crafting.DrawAnimation();
         }
 
@@ -355,7 +353,7 @@ namespace TheGame
                 this.slowness = slow;
                 this.maxTime = maxTime;
                 this.elapsedTime = 0;
-                this.interval = 1;
+                this.interval = 1f;
                 this.lastIntervalTime = DateTime.Now;
             }
 
@@ -427,7 +425,14 @@ namespace TheGame
                         {
                             if (this.BSphere.Intersects(enemy.boundingBox))
                             {
+                                if (!enemy.effectList.Contains("nettle"))
+                                {
+                                    enemy.effectList.Add("nettle");
+                                }
                                 enemy.Hit(damage);
+                            } else
+                            {
+                                enemy.effectList.Remove("nettle");
                             }
                         }
 
@@ -435,12 +440,16 @@ namespace TheGame
 
                 } else
                 {
+                    foreach (Enemy enemy in enemies.EnemiesList.ToList())
+                    {
+                        if (this.BSphere.Intersects(enemy.boundingBox))
+                        {
+                            enemy.effectList.Remove("nettle");
+                        }
+                    }
                     OnDestroy?.Invoke(this, EventArgs.Empty);
                 }
             }
-
-          
-
         }
 
         private class Apple : SceneObject

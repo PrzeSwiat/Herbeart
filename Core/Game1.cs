@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
 using TheGame.Core;
 using Color = Microsoft.Xna.Framework.Color;
 
@@ -84,7 +82,7 @@ namespace TheGame
             Globals.effectHandler = new EffectHandler(Content.Load<Effect>("ShaderOne"));
             Globals.effectHandler1 = new EffectHandler(Content.Load<Effect>("MainShader"));
             Globals.Score = 0;
-            Globals.ScoreMultipler = 1;
+            Globals.ScoreMultiplier = 1;
             Globals.learnedRecepture = new List<String>();
             Globals.learnedRecepture.Add("AAA");
             hud = new HUD();
@@ -120,21 +118,13 @@ namespace TheGame
             animationMenager.LoadContent();
             player.OnDestroy += DestroyControl;
             progressSystem = new ProgressSystem(player);
-
-
-            //List<Texture2D> textures = new List<Texture2D>();
-            //textures.Add(Content.Load<Texture2D>("Particles/Textures/circle"));
-            //textures.Add(Content.Load<Texture2D>("Particles/Textures/star"));
-            //textures.Add(Content.Load<Texture2D>("diamond"));
-            //particleSystem = new ParticleSystem(textures, new Vector2(400, 240));
         }
 
         protected override void Update(GameTime gameTime)
         {
             Globals.gameTime = gameTime;
             Globals.HPpercent = player.calculateHPPercent();
-            //particleSystem.EmitterLocation = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
-            //particleSystem.Update();
+
             if (Globals.Start)
             {
                 hud.name = "";
@@ -291,7 +281,6 @@ namespace TheGame
                             animationMenager.DeathAnimationDraw();
                             if (timeSpan.TotalSeconds > 4)
                             {
-                                
                                 hud.DrawDeathMenu();
                             }
                         }
@@ -360,98 +349,8 @@ namespace TheGame
                 {
                     hud.DrawPause();
                 }
-                //DrawBoundingBoxes();
             }
-
-            //particleSystem.Draw(Globals.spriteBatch);
-            //}
-            // else
-            // {
-            // hud.DrawMainMenu(_spriteBatch);
-            // }
-            //DrawBoundingBoxes();
         }
-
-        #region DrawingBB
-        public void DrawBoundingBoxes()
-        {
-            basicEffect.CurrentTechnique.Passes[0].Apply();
-
-            foreach (SceneObject obj in world.GetWorldList())
-            {
-                obj.DrawBB();
-            }
-            foreach (Enemy enemy in enemies.EnemiesList)
-            {
-                //enemy.DrawBB();
-                if (enemy.GetType() == typeof(AppleTree))
-                {
-                    AppleTree apple1 = (AppleTree)enemy;
-                    foreach (Apple apple in apple1.bullet)
-                    {
-                        //apple.DrawBB();
-                    }
-                }
-                //DrawBS(enemy.boundingSphere.Center, enemy.boundingSphere.Radius);
-            }
-
-            //player.DrawBB();
-            DrawBS(player.boundingSphere.Center, player.boundingSphere.Radius);
-        }
-
-
-
-        public void DrawBS(Vector3 center, float radius)
-        {
-            var X = new[]
-            {
-                new VertexPositionColor(center+new Vector3(radius,0,0), Color.White),
-                new VertexPositionColor(center+new Vector3(-radius,0,0), Color.White),
-
-            };
-
-            var Y = new[]
-            {
-                new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
-                new VertexPositionColor(center+new Vector3(0,-radius,0), Color.White),
-
-            };
-
-            var Z = new[]
-            {
-                new VertexPositionColor(center+new Vector3(0,0,radius), Color.White),
-                new VertexPositionColor(center+new Vector3(0,0,-radius), Color.White),
-
-            };
-
-            var XTOY = new[]
-            {
-
-                new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
-                new VertexPositionColor(center+new Vector3(-radius,0,0), Color.White),
-                new VertexPositionColor(center+new Vector3(0,-radius,0), Color.White),
-                new VertexPositionColor(center+new Vector3(radius,0,0), Color.White),
-                new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
-            };
-
-            var ZTOY = new[]
-            {
-
-                new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
-                new VertexPositionColor(center+new Vector3(0,0,-radius), Color.White),
-                new VertexPositionColor(center+new Vector3(0,-radius,0), Color.White),
-                new VertexPositionColor(center+new Vector3(0,0,radius), Color.White),
-                new VertexPositionColor(center+new Vector3(0,radius,0), Color.White),
-            };
-
-
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, X, 0, 1);
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, Y, 0, 1);
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, Z, 0, 1);
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, XTOY, 0, 4);
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, ZTOY, 0, 4);
-        }
-        #endregion
 
         #region Controls
 
@@ -896,11 +795,5 @@ namespace TheGame
         }
         #endregion
 
-        private Vector2 ConvertToXnaVector2(System.Numerics.Vector2 systemVector2)
-        {
-            return new Vector2(systemVector2.X, systemVector2.Y);
-        }
-
     }
-
 }

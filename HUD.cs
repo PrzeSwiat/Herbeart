@@ -17,13 +17,12 @@ namespace TheGame
 {
     internal class HUD
     {
-        private SpriteFont ScoreFont;
+        private SpriteFont ScoreFont, ScoreMultiplier;
         private SpriteFont ItemFont;
-        private SpriteFont MenuFont;
-        private SpriteFont MenuFont2;
-        private SpriteFont MenuFont3;
-        private SpriteFont Menu;
-        private SpriteFont Menu2;
+        private Texture2D multiplierTexture;
+
+        private SpriteFont MenuFont, MenuFont2, MenuFont3;
+        private SpriteFont Menu, Menu2;
         private Texture2D menu;
         private Texture2D difficulty;
         private Texture2D dot;
@@ -36,6 +35,7 @@ namespace TheGame
         private Texture2D EnemyHealth, HalfEnemyHealth;
         private Texture2D ReceptureBar;
         private Texture2D Arrow;
+        private Texture2D effectMelise, effectMint, effectNettle;
         private int WindowWidth, WindowHeight;
         public string name = "";
         
@@ -87,12 +87,19 @@ namespace TheGame
             mintTexCrafting = models.getTexture("HUD/ikona_mieta_crafting");
             nettleTexCrafting = models.getTexture("HUD/ikona_pokrzywa_crafting");
             meliseTexCrafting = models.getTexture("HUD/ikona_melisa_crafting");
+            multiplierTexture = models.getTexture("HUD/multiplier");
+            effectMelise = models.getTexture("HUD/efffectMelise");
+            effectMint = models.getTexture("HUD/effectMint");
+            effectNettle = models.getTexture("HUD/effectNettle");
+
+
 
             MenuFont = Globals.content.Load<SpriteFont>("menuFont");
             MenuFont2 = Globals.content.Load<SpriteFont>("menuFont2");
             MenuFont3 = Globals.content.Load<SpriteFont>("menuFont3");
             ItemFont = Globals.content.Load<SpriteFont>("ItemFont");
             ScoreFont = Globals.content.Load<SpriteFont>("ScoreFont");
+            ScoreMultiplier = Globals.content.Load<SpriteFont>("ScoreMultiplier");
             Menu = Globals.content.Load<SpriteFont>("Menu");
             Menu2 = Globals.content.Load<SpriteFont>("Menu2");
         }
@@ -196,6 +203,28 @@ namespace TheGame
                 }
 
             }
+        }
+
+        public void DrawScore()
+        {
+            int scoreX = WindowWidth - (int)ScoreFont.MeasureString(Globals.Score.ToString()).X - 20;
+            int scoreY = 20;
+            int grayDist = 3, whiteDist = 7;
+
+            string scoreMul = "x" + Globals.ScoreMultiplier.ToString();
+            int pointsX = scoreX - (int)ScoreMultiplier.MeasureString(scoreMul.ToString()).X - 26;
+            int pointsY = scoreY + 20;
+
+            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(scoreX, scoreY), Color.Black);
+            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(scoreX, scoreY - grayDist), Color.Gray);
+            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(scoreX, scoreY - whiteDist), Color.White);
+            
+            Rectangle rect = new Rectangle(pointsX - 13, pointsY - 16, 60, 60);
+            Globals.spriteBatch.Draw(multiplierTexture, rect, Color.White);
+
+            Globals.spriteBatch.DrawString(ScoreMultiplier, scoreMul, new Vector2(pointsX, pointsY), Color.Black);
+            Globals.spriteBatch.DrawString(ScoreMultiplier, scoreMul, new Vector2(pointsX, pointsY - 2), Color.Gray);
+            Globals.spriteBatch.DrawString(ScoreMultiplier, scoreMul, new Vector2(pointsX, pointsY - 4), Color.White);
         }
 
         public void DrawInventory()
@@ -570,13 +599,6 @@ namespace TheGame
             //Debug.WriteLine(name);
         }
 
-        public void DrawScore()
-        {
-            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 40 * Globals.Score.ToString().Length, 5), Color.Black);
-            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 39 * Globals.Score.ToString().Length, 4), Color.Gray);
-            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 38 * Globals.Score.ToString().Length, 2), Color.White);
-        }
-
         private void DrawEnemyHealthBar(List<Enemy> enemies)
         {
             foreach (Enemy e in enemies)
@@ -586,9 +608,10 @@ namespace TheGame
                 int fakeHealth = e.Health / 2;
                 Rectangle rect = new Rectangle(0, 0, 0, 0);
 
+
+                int effectPosX = 0;
                 for (int i = 0; i < fakeHealth; i++)
                 {
-
                     if (e.GetType() == typeof(Mint))
                     {
                         rect = new Rectangle((int)projectedPosition.X + (-20 + (i * 30)), (int)(projectedPosition.Y - 180), 30, 30);
@@ -604,6 +627,10 @@ namespace TheGame
                     else if (e.GetType() == typeof(AppleTree))
                     {
                         rect = new Rectangle((int)projectedPosition.X + (-30 + (i * 30)), (int)(projectedPosition.Y - 240), 30, 30);
+                    }
+                    if ( i == 0 )
+                    {
+                        effectPosX = rect.X;
                     }
                     Globals.spriteBatch.Draw(EnemyHealth, rect, Color.White);
                 }
@@ -626,9 +653,32 @@ namespace TheGame
                     {
                         rect = new Rectangle((int)projectedPosition.X + (-30 + (fakeHealth * 30)), (int)(projectedPosition.Y - 240), 30, 30);
                     }
-                    // Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + ((fakeHealth) * 20)), (int)(projectedPosition.Y - 100), 30, 30);
+                    
+                    if (fakeHealth == 0)
+                    {
+                        effectPosX = rect.X;
+                    }
                     Globals.spriteBatch.Draw(HalfEnemyHealth, rect, Color.White);
                 }
+
+                for (int i = 0; i < e.effectList.Count; i++)
+                {
+                    Rectangle effectRect = new Rectangle(effectPosX - 30 - i * 30, rect.Y, 30, 30);
+                    if (e.effectList[i] == "stun")
+                    {
+                        Globals.spriteBatch.Draw(effectMelise, effectRect, Color.White);
+                    }
+                    if (e.effectList[i] == "slow")
+                    {
+                        Globals.spriteBatch.Draw(effectMint, effectRect, Color.White);
+                    }
+                    if (e.effectList[i] == "nettle")
+                    {
+                        Globals.spriteBatch.Draw(effectNettle, effectRect, Color.White);
+                    }
+                }
+                
+
             }
         }
 

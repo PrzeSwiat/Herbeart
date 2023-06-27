@@ -16,7 +16,6 @@ namespace TheGame
         private static EnemyType Nettle = new EnemyType("Objects/nettle", 0.15);
         private static EnemyType Melissa = new EnemyType("Objects/melissa", 0.05);
         private EnemyType[] enemyTypes = {Mint, Apple, Nettle, Melissa};
-
         public EnemiesGenerator()
         {
             enemies = new List<Enemy>();
@@ -109,33 +108,31 @@ namespace TheGame
         }
 
 
-        public void GenerateRandomEnemies(List<Vector3> enemiesPositions, int difficultyLevel)
+        public void GenerateRandomEnemies(int enemyCount, int difficultyLevel, List<Vector3> vectors)
         {
-            if (enemiesPositions.Count() != 0)
+            List<Vector3> enemyPositions = prepareEnemiesPositions(vectors, enemyCount);
+
+            for (int i = 0; i < enemyCount; i++)
             {
-                for (int i = 0; i < enemiesPositions.Count(); i++)
+                string enemyType;
+                if (difficultyLevel == 1 && i == 0)
                 {
-                    string enemyType;
-                    if (difficultyLevel == 1 && i == 0)
-                    {
-                        enemyType = "Objects/nettle";
-                    }
-                    else if (difficultyLevel == 2 && i == 0)
-                    {
-                        enemyType = "Objects/apple";
-                    }
-                    else if (difficultyLevel == 3 && i == 0)
-                    {
-                        enemyType = "Objects/melissa";
-                    }
-                    else
-                    {
-                        enemyType = GenerateRandomEnemyTypeWithProbability(difficultyLevel).enemyType;
-                    }
-                    
-                    Vector3 enemyPosition = enemiesPositions[i];
-                    GenerateEnemy(enemyType, enemyPosition);
+                    enemyType = "Objects/nettle";
                 }
+                else if (difficultyLevel == 2 && i == 0)
+                {
+                    enemyType = "Objects/apple";
+                }
+                else if (difficultyLevel == 3 && i == 0)
+                {
+                    enemyType = "Objects/melissa";
+                }
+                else
+                {
+                    enemyType = GenerateRandomEnemyTypeWithProbability(difficultyLevel).enemyType;
+                }
+                Vector3 enemyPosition = enemyPositions[i];
+                GenerateEnemy(enemyType, enemyPosition);
             }
         }
 
@@ -164,6 +161,83 @@ namespace TheGame
                     enemies.Add(mint);
                     break;
             }
+        }
+
+
+
+        public List<Vector3> prepareEnemiesPositions(List<Vector3> vectors, int enemyCount)
+        {
+            List<EnemiesPositions> enemiesPositions = new List<EnemiesPositions>();
+            vectors.Sort((a, b) =>a.Z.CompareTo(b.Z));
+
+            int count = vectors.Count;
+            int middleIndex = count / 2;
+            double middleProbability = 1.0 / count;
+
+            // Wybierz 20% najbliższych wektorów względem środkowej wartości Z
+            int closestCount = (int)Math.Round(count * 0.2);
+            List<Vector3> closestVectors = vectors.Take(closestCount).ToList();
+            //Stwórz elementy struktury z pozycją i prawdopodobieństwem
+            enemiesPositions.AddRange(setProbabilities(closestVectors, 0.6 * middleProbability));
+            
+            // Wybierz 40% wektorów bardziej oddalonych niż 20%
+            int middleCount = (int)Math.Round(count * 0.4);
+            List<Vector3> middleVectors = vectors.Skip(closestCount).Take(middleCount).ToList();
+            enemiesPositions.AddRange(setProbabilities(middleVectors, 0.3 * middleProbability));
+
+            // Wybierz ostatnie 40% wektorów najbardziej oddalonych
+            List<Vector3> lastVectors = vectors.Skip(closestCount + middleCount).ToList();
+            enemiesPositions.AddRange(setProbabilities(lastVectors, 0.1 * middleProbability));
+
+            List<Vector3> positions = new List<Vector3>();
+            for(int i = 0; i < enemyCount; i++)
+            {
+                positions.Add(GenerateEnemiesPositions(enemiesPositions).enemyPosition);
+            }
+            return positions;
+
+
+        }
+
+        public EnemiesPositions GenerateEnemiesPositions(List<EnemiesPositions> enemiesPositions)
+        {
+            // Obliczenie sumy prawdopodobieństw
+            double totalProbability = 0;
+            foreach (var enemy in enemiesPositions)
+            {
+                totalProbability += enemy.probability;
+            }
+
+            // Losowanie liczby z zakresu [0, totalProbability)
+            Random random = new Random();
+            double randomNumber = random.NextDouble() * totalProbability;
+
+            // Wybieranie elementu na podstawie losowej liczby
+            double cumulativeProbability = 0;
+            for (int i = 0; i < enemiesPositions.Count; i++)
+            {
+                cumulativeProbability += enemiesPositions[i].probability;
+                if (randomNumber < cumulativeProbability)
+                {
+                    // Ustawienie probability na 0
+                    enemiesPositions[i].probability = 0;
+                    return enemiesPositions[i];
+                }
+            }
+
+
+            return enemiesPositions[0];
+        }
+
+        public List<EnemiesPositions> setProbabilities(List<Vector3> vectors, double probability)
+        {
+            List<EnemiesPositions> result = new List<EnemiesPositions>();
+            for (int i = 0; i < vectors.Count(); i++)
+            {
+                EnemiesPositions enemyPosition = new EnemiesPositions(vectors[i], probability);
+                result.Add(enemyPosition);
+            }
+            return result;
         }
 
         public List<Enemy> returnEnemies()
