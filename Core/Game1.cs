@@ -39,7 +39,7 @@ namespace TheGame
         {
             Globals._graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = false;
+            IsMouseVisible = true;
 
             Globals.WindowWidth = 1920;
             Globals.WindowHeight = 1080;
@@ -319,27 +319,18 @@ namespace TheGame
                                 hud.DrawTutorial(2);
 
                             }
-                            if (Globals.Module2 && Globals.moduleCounter == 0)
+                            if (Globals.Module2 && Globals.moduleCounter == 0) // 1 attack_tutorial
                             {
                                 hud.DrawTutorial(1);
                             }
-                            if (Globals.Module3 && Globals.moduleCounter == 1)
-                            {
-                                hud.DrawTutorial(3);
-                            }
-                            if (Globals.Module4 && Globals.moduleCounter == 2)
+                            if (Globals.Module4 && Globals.moduleCounter == 1) // 4 efekty miotane pierwsze
                             {
                                 hud.DrawTutorial(4);
                             }
-                            if(Globals.Module6 && Globals.moduleCounter == 3)
+                            if (Globals.Module5 && Globals.moduleCounter == 2) // 5 wesele
                             {
-                                hud.DrawTutorial(6);
+                                hud.DrawTutorial(5);
                             }
-                            if (Globals.Module9 && Globals.moduleCounter == 4)
-                            {
-                                hud.DrawTutorial(9);
-                            }
-
                         }
 
                     }
@@ -429,7 +420,7 @@ namespace TheGame
         {
             if(Globals.Easy)
             {
-                if (Globals.Module2 && Globals.moduleCounter == 0) 
+                if (Globals.Module2 && Globals.moduleCounter == 0) // 1 attack_tutorial
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
@@ -452,7 +443,7 @@ namespace TheGame
                     }
                 }
 
-                if(Globals.Module3 && Globals.moduleCounter == 1)    
+                if (Globals.Module4 && Globals.moduleCounter == 1)   
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
@@ -461,38 +452,15 @@ namespace TheGame
                         Globals.tutorialDone[2] = true;
                         pause_timer = DateTime.Now;
                     }
-                    //ODBLOKOWAĆ NOWY SKŁADNIK POKRZYWA
+
                 }
-                if (Globals.Module4 && Globals.moduleCounter == 2)   
+                if (Globals.Module5 && Globals.moduleCounter == 2)
                 {
                     player.Stop();
                     Globals.TutorialPause = true;
                     if (!Globals.tutorialDone[3])
                     {
                         Globals.tutorialDone[3] = true;
-                        pause_timer = DateTime.Now;
-                    }
-
-                }
-                if (Globals.Module6 && Globals.moduleCounter == 3)
-                {
-                    player.Stop();
-                    Globals.TutorialPause = true;
-                    if (!Globals.tutorialDone[4])
-                    {
-                        Globals.tutorialDone[4] = true;
-                        pause_timer = DateTime.Now;
-                    }
-                    //ODBLOKOWAĆ NOWY SKŁADNIK  JABŁOŃ
-
-                }
-                if (Globals.Module9 && Globals.moduleCounter == 4)
-                {
-                    player.Stop();
-                    Globals.TutorialPause = true;
-                    if (!Globals.tutorialDone[5])
-                    {
-                        Globals.tutorialDone[5] = true;
                         pause_timer = DateTime.Now;
                     }
                     //ODBLOKOWAĆ NOWY SKŁADNIK  JABŁOŃ
@@ -518,19 +486,11 @@ namespace TheGame
                         {
                             Globals.counter += 1;
                         }
-                        if (Globals.Module3 && Globals.moduleCounter == 1)
+                        if (Globals.Module4 && Globals.moduleCounter == 1)
                         {
                             Globals.moduleCounter += 1;
                         }
-                        if (Globals.Module4 && Globals.moduleCounter == 2)
-                        {
-                            Globals.moduleCounter += 1;
-                        }
-                        if (Globals.Module6 && Globals.moduleCounter == 3)
-                        {
-                            Globals.moduleCounter += 1;
-                        }
-                        if (Globals.Module9 && Globals.moduleCounter == 4)
+                        if (Globals.Module5 && Globals.moduleCounter == 2)
                         {
                             Globals.moduleCounter += 1;
                         }

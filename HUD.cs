@@ -31,6 +31,7 @@ namespace TheGame
         private Texture2D defaultItemFrame, offensiveItemFrame, teaItemFrame;
         private Texture2D appleTex, meliseTex, mintTex, nettleTex;
         private Texture2D appleTexCrafting, meliseTexCrafting, mintTexCrafting, nettleTexCrafting;
+        private Texture2D attack_tutorial, brew_tutorial, festival_tutorial, special_tutorial;
         private Texture2D[] craftingTextures = new Texture2D[4];
         private Texture2D EnemyHealth, HalfEnemyHealth;
         private Texture2D ReceptureBar;
@@ -61,7 +62,10 @@ namespace TheGame
 
             dot = models.getTexture("Textures/EnemyHealth");
             menu = models.getTexture("HUD/tlo_listki_menu2");
-        
+            attack_tutorial = models.getTexture("Textures/attackdash_tutorial"); ;
+            brew_tutorial= models.getTexture("Textures/brewTEA_tutorial"); ;
+            festival_tutorial =models.getTexture("Textures/festival_tutorial"); ;
+            special_tutorial =models.getTexture("Textures/SPECIALS_tutorial"); ;
             difficulty = models.getTexture("HUD/tlo_difficulty3");
             healtColor = models.getTexture("HUD/magenta");
             healthBar = models.getTexture("HUD/pasekzycia");
@@ -360,51 +364,31 @@ namespace TheGame
         {
             if(number==1)    //wiktor 2 modul
             {
-                Rectangle rect = new Rectangle(WindowWidth * 15 / 20, WindowHeight * 13 / 20, 400, 200);
+                Rectangle rect = new Rectangle(WindowWidth * 13 / 20, WindowHeight * 7 / 20, 375, 300);
                 Globals.spriteBatch.Begin();
-                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "Attack -> A", new Vector2(WindowWidth * 10 / 20, WindowHeight * 14 / 20), Color.Yellow);
+                Globals.spriteBatch.Draw(attack_tutorial, rect, Color.White);
                 Globals.spriteBatch.End();
             }
             if(number == 2)
             {
-                Rectangle rect = new Rectangle(WindowWidth * 12 / 20, WindowHeight * 0 / 20, 400, 100);
+                Rectangle rect = new Rectangle(WindowWidth * 13 / 20, WindowHeight * 3 / 20, 475, 550); //1900 2200
                 Globals.spriteBatch.Begin();
-                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "< hold LT to heal yourself ", new Vector2(WindowWidth * 10 / 20, WindowHeight * 0 / 20), Color.Yellow);
-                Globals.spriteBatch.End();
-            }
-            if (number == 3) //pokrzywa przeciwnik
-            {
-                Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 5 / 20, 500, 450);
-                Globals.spriteBatch.Begin();
-                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "pokrzywa", new Vector2(WindowWidth * 6 / 20, WindowHeight * 6 / 20), Color.Yellow);
+                Globals.spriteBatch.Draw(brew_tutorial, rect, Color.White);
                 Globals.spriteBatch.End();
             }
             if (number == 4) //efekty miotane pierwsze, co robią efekty miotane (ziel,czer)
             {
-                Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 0 / 20, 500, 450);
+                Rectangle rect = new Rectangle(WindowWidth * 13 / 20, WindowHeight * 3 / 20, 500, 450); //2000 1800
                 Globals.spriteBatch.Begin();
-                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "hold RT for special abilities", new Vector2(WindowWidth * 6 / 20, WindowHeight * 9 / 20), Color.Yellow);
+                Globals.spriteBatch.Draw(special_tutorial, rect, Color.White);
                 Globals.spriteBatch.End();
             }
 
-            if (number == 6) //jablon przeciwnik 
+            if (number == 5) //wesel
             {
-                Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 0 / 20, 500, 450);
+                Rectangle rect = new Rectangle(WindowWidth * 13 / 20, WindowHeight * 3 / 20, 400, 575); //1600 2300
                 Globals.spriteBatch.Begin();
-                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "jablon", new Vector2(WindowWidth * 6 / 20, WindowHeight * 9 / 20), Color.Yellow);
-                Globals.spriteBatch.End();
-            }
-            if (number == 9) //melisa przeciwnik 
-            {
-                Rectangle rect = new Rectangle(WindowWidth * 5 / 20, WindowHeight * 0 / 20, 500, 450);
-                Globals.spriteBatch.Begin();
-                Globals.spriteBatch.Draw(healtColor, rect, Color.Black);
-                Globals.spriteBatch.DrawString(Menu2, "melisa", new Vector2(WindowWidth * 6 / 20, WindowHeight * 9 / 20), Color.Yellow);
+                Globals.spriteBatch.Draw(festival_tutorial, rect, Color.White);
                 Globals.spriteBatch.End();
             }
 
