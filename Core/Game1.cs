@@ -246,7 +246,6 @@ namespace TheGame
         {
             Globals.prevState = GamePad.GetState(PlayerIndex.One);
             Globals.prevDeathState = GamePad.GetState(PlayerIndex.One);
-            Globals.prevProggresState = GamePad.GetState(PlayerIndex.One);
             Globals.prevPauseState = GamePad.GetState(PlayerIndex.One);
             Globals.prevLeaderState = GamePad.GetState(PlayerIndex.One);
             Globals.prevTutorialState = GamePad.GetState(PlayerIndex.One);
@@ -254,7 +253,6 @@ namespace TheGame
             Globals.prevKeyBoardTutorialState = Keyboard.GetState();
             Globals.prevKeyBoardState = Keyboard.GetState();
             Globals.prevKeyBoardLeaderState = Keyboard.GetState();
-            Globals.prevKeyBoardProggresState = Keyboard.GetState();
             Globals.prevKeyBoardDeathState = Keyboard.GetState();
             Globals.prevKeyBoardPauseState = Keyboard.GetState();
             if (Globals.Start)
@@ -797,6 +795,7 @@ namespace TheGame
                 }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
                 {
+
                     // notimplemented
                 }
 

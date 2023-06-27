@@ -61,7 +61,16 @@ namespace TheGame
             {
                 if (enemy.GetType() == typeof(Nettle))
                 {
-                    enemy.Update(deltaTime, player);
+                    if (Vector3.Distance(enemy.GetPosition(), playerPosition) < 50)
+                    {
+                        enemy.isUpdating = true;
+                        enemy.NormalizeDirection();
+                        enemy.Update(deltaTime, player);
+                    }
+                    else
+                    {
+                        enemy.isUpdating = false;
+                    }
                     continue;
                 }
                 // avoid other enemies and chase player
