@@ -568,9 +568,10 @@ namespace TheGame
                 int fakeHealth = e.Health / 2;
                 Rectangle rect = new Rectangle(0, 0, 0, 0);
 
+
+                int effectPosX = 0;
                 for (int i = 0; i < fakeHealth; i++)
                 {
-
                     if (e.GetType() == typeof(Mint))
                     {
                         rect = new Rectangle((int)projectedPosition.X + (-20 + (i * 30)), (int)(projectedPosition.Y - 180), 30, 30);
@@ -586,6 +587,10 @@ namespace TheGame
                     else if (e.GetType() == typeof(AppleTree))
                     {
                         rect = new Rectangle((int)projectedPosition.X + (-30 + (i * 30)), (int)(projectedPosition.Y - 240), 30, 30);
+                    }
+                    if ( i == 0 )
+                    {
+                        effectPosX = rect.X;
                     }
                     Globals.spriteBatch.Draw(EnemyHealth, rect, Color.White);
                 }
@@ -608,9 +613,32 @@ namespace TheGame
                     {
                         rect = new Rectangle((int)projectedPosition.X + (-30 + (fakeHealth * 30)), (int)(projectedPosition.Y - 240), 30, 30);
                     }
-                    // Rectangle rect = new Rectangle((int)projectedPosition.X + (0 + ((fakeHealth) * 20)), (int)(projectedPosition.Y - 100), 30, 30);
+                    
+                    if (fakeHealth == 0)
+                    {
+                        effectPosX = rect.X;
+                    }
                     Globals.spriteBatch.Draw(HalfEnemyHealth, rect, Color.White);
                 }
+
+                for (int i = 0; i < e.effectList.Count; i++)
+                {
+                    Rectangle effectRect = new Rectangle(effectPosX - 30 - i * 30, rect.Y, 30, 30);
+                    if (e.effectList[i] == "stun")
+                    {
+                        Globals.spriteBatch.Draw(meliseTex, effectRect, Color.White);
+                    }
+                    if (e.effectList[i] == "slow")
+                    {
+                        Globals.spriteBatch.Draw(mintTex, effectRect, Color.White);
+                    }
+                    if (e.effectList[i] == "nettle")
+                    {
+                        Globals.spriteBatch.Draw(nettleTex, effectRect, Color.White);
+                    }
+                }
+                
+
             }
         }
 
