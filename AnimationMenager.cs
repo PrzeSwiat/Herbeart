@@ -157,7 +157,8 @@ namespace TheGame
             foreach (Enemy enemi in enemies)
             {
                 enemi.OnAttack += EnemyAttack;
-        
+
+
                 if (enemi.GetType() != typeof(Bush))
                 {
                     if (!enemi.AAttack.IsPlaying && !enemi.ARun.IsPlaying)
@@ -166,7 +167,7 @@ namespace TheGame
                     }
                 }
 
-               
+
 
             }
 
@@ -346,8 +347,13 @@ namespace TheGame
             {
                 if (enemy.GetType() != typeof(Bush))
                 {
-                    if(enemy.isUpdating)    //nie rysuj jak nie ma co
+                    if (enemy.GetType() == typeof(Nettle))
                     {
+                       // Debug.WriteLine("cuil");
+                    }
+                    if (enemy.isUpdating)    //nie rysuj jak nie ma co
+                    {
+                       
                         if (enemy.AAttack.IsPlaying)
                         {
                             DrawAnimation(enemy, enemy.AAttack, enemy.Atak, enemy.GetTexture2D(),enemy.color,enemy.LineSize);

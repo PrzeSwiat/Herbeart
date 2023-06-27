@@ -246,9 +246,16 @@ namespace TheGame
         {
             Globals.prevState = GamePad.GetState(PlayerIndex.One);
             Globals.prevDeathState = GamePad.GetState(PlayerIndex.One);
-            Globals.prevKeyBoardState = Keyboard.GetState();
-            Globals.prevKeyBoardDeathState = Keyboard.GetState();
+            Globals.prevProggresState = GamePad.GetState(PlayerIndex.One);
             Globals.prevPauseState = GamePad.GetState(PlayerIndex.One);
+            Globals.prevLeaderState = GamePad.GetState(PlayerIndex.One);
+            Globals.prevTutorialState = GamePad.GetState(PlayerIndex.One);
+
+            Globals.prevKeyBoardTutorialState = Keyboard.GetState();
+            Globals.prevKeyBoardState = Keyboard.GetState();
+            Globals.prevKeyBoardLeaderState = Keyboard.GetState();
+            Globals.prevKeyBoardProggresState = Keyboard.GetState();
+            Globals.prevKeyBoardDeathState = Keyboard.GetState();
             Globals.prevKeyBoardPauseState = Keyboard.GetState();
             if (Globals.Start)
             {
@@ -694,7 +701,7 @@ namespace TheGame
             TimeSpan deltatime_Pause = DateTime.Now - pause_timer;
             if (deltatime_Pause.TotalSeconds >= 1)
             {
-                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1) //leader board
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevTutorialState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardTutorialState.IsKeyUp(Keys.Enter)) && hud.MenuOption == 1) //leader board
                 {
 
                     Globals.TutorialPause = false;
@@ -710,7 +717,7 @@ namespace TheGame
                     Globals.LeaderBoard = true;
 
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2) //try again 
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevTutorialState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardTutorialState.IsKeyUp(Keys.Enter)) && hud.MenuOption == 2) //try again 
                 {
                     Globals.TutorialPause = false;
                     Globals.Module2 = false;
@@ -727,7 +734,7 @@ namespace TheGame
                     player.Start();
 
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3) // main menu
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevTutorialState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardTutorialState.IsKeyUp(Keys.Enter)) && hud.MenuOption == 3) // main menu
                 {
                     Globals.TutorialPause = false;
                     Globals.Module2 = false;
@@ -780,7 +787,7 @@ namespace TheGame
                 }
                 Globals.prevState = gamePadState;
                 Globals.prevKeyBoardState = state;
-                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 1)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevDeathState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardDeathState.IsKeyUp(Keys.Enter)) && hud.MenuOption == 1)
                 {
                     Globals.Tutorial = true;
                 }
@@ -826,14 +833,14 @@ namespace TheGame
                 Globals.prevTutorialState = gamePadState;
                 Globals.prevKeyBoardTutorialState = state;
 
-                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevState.Buttons.A == ButtonState.Released|| (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardDeathState.IsKeyUp(Keys.Enter)) && hud.MenuOption == 1)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevState.Buttons.A == ButtonState.Released|| (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardState.IsKeyUp(Keys.Enter)) && hud.MenuOption == 1)
                 {
                     player.Start();
                     Globals.Start = false;
                     Globals.Easy = true;
                     Globals.Pause = false;
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardState.IsKeyUp(Keys.Enter)) && hud.MenuOption == 2)
                 {
                     player.Start();
                     Globals.Start = false;

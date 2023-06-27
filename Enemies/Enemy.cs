@@ -57,7 +57,7 @@ namespace TheGame
             Vector3 projectedPosition = Globals.viewport.Project(GetPosition(),
                 Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
 
-            particleSystem.addParticles(new Vector2(projectedPosition.X, projectedPosition.Y - 100));
+            particleSystem.addParticles(new Vector2(projectedPosition.X, projectedPosition.Y - 90));
             if (this.Health <= 0)
             {
                 

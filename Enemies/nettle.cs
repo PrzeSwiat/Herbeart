@@ -127,6 +127,7 @@ namespace TheGame
 
         public override void LoadContent()
         {
+            base.LoadContent();
             Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle");
             Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
             Run = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
@@ -156,7 +157,7 @@ namespace TheGame
             ARun.CurrentTime = 1.0f;
             ARun.CurrentTick = Run.Animations[0].DurationInTicks;
 
-            base.LoadContent();
+           
             float vlll = 2f;
             BoundingBox helper;
             helper.Min = new Vector3(-vlll, 0, -vlll);
