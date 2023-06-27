@@ -89,9 +89,11 @@ namespace TheGame
             }
 
             HandleSlowedStatus(deltaTime);
+
             AAttack.Update(Globals.gameTime);
             AIdle.Update(Globals.gameTime);
             ARun.Update(Globals.gameTime);
+
             CheckCollision(player);
             RotateTowardsCurrentDirection();
             if (collides)
@@ -100,7 +102,6 @@ namespace TheGame
             }
             else
             {
-                onMove?.Invoke(this, EventArgs.Empty);
                 MoveForwards(deltaTime, true);
             }
         }
@@ -212,8 +213,6 @@ namespace TheGame
         {
             float currentSpeed = this.ActualSpeed;
             if (!shouldChase) { currentSpeed *= -1; }
-
-
             MoveModelForwards(currentSpeed * deltaTime);
             MoveBoundingBoxForwards(currentSpeed * deltaTime);
         }

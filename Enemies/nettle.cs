@@ -136,8 +136,8 @@ namespace TheGame
         {
             base.LoadContent();
             Idle = Globals.content.Load<SkinnedModel>("Animations/pokrzyw_idle");
-            Atak = Globals.content.Load<SkinnedModel>("Animations/pokrzyw_atak");
-            Run = Globals.content.Load<SkinnedModel>("Animations/pokrzyw_atak");
+            Atak = Globals.content.Load<SkinnedModel>("Animations/pokrzyw_atak3");
+            Run = Globals.content.Load<SkinnedModel>("Animations/pokrzyw_atak3");
 
             //Idle
             AIdle = new AnimationPlayer(Idle);

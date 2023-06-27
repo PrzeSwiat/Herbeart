@@ -160,6 +160,7 @@ namespace TheGame
                     {
                         enemi.AIdle.IsPlaying = true;
                     }
+
                 }
 
 
@@ -281,7 +282,7 @@ namespace TheGame
         private void EnemyMove(object obj, EventArgs e)
         {
             Enemy enemy = (Enemy)obj;
-
+            //Debug.WriteLine(enemy.GetType());
             enemy.ARun.IsPlaying = true;
 
         }

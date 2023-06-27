@@ -97,12 +97,19 @@
 /processorParam:SkipUVs=False
 /build:Animations/atak2blend2.fbx
 
-#begin Animations/drzewko_attack.fbx
+#begin Animations/drzewko_atak2.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
 /processorParam:KeyframeDecimalPlaceRounding=5
 /processorParam:SkipUVs=False
-/build:Animations/drzewko_attack.fbx
+/build:Animations/drzewko_atak2.fbx
+
+#begin Animations/drzewko_idle4.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/drzewko_idle4.fbx
 
 #begin Animations/melisa_idle.fbx
 /importer:SkinnedMeshImporter
@@ -118,12 +125,12 @@
 /processorParam:SkipUVs=False
 /build:Animations/mieta_debug.fbx
 
-#begin Animations/mieta_idle.fbx
+#begin Animations/mieta_idle2.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
 /processorParam:KeyframeDecimalPlaceRounding=5
 /processorParam:SkipUVs=False
-/build:Animations/mieta_idle.fbx
+/build:Animations/mieta_idle2.fbx
 
 #begin Animations/mieta_run.fbx
 /importer:SkinnedMeshImporter
@@ -174,12 +181,12 @@
 /processorParam:SkipUVs=False
 /build:Animations/mis_tired_run.fbx
 
-#begin Animations/pokrzyw_atak.fbx
+#begin Animations/pokrzyw_atak3.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
 /processorParam:KeyframeDecimalPlaceRounding=5
 /processorParam:SkipUVs=False
-/build:Animations/pokrzyw_atak.fbx
+/build:Animations/pokrzyw_atak3.fbx
 
 #begin Animations/pokrzyw_idle.fbx
 /importer:SkinnedMeshImporter
@@ -1450,6 +1457,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/appleTexture.png
 
+#begin Textures/attackdash_tutorial.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/attackdash_tutorial.png
+
 #begin Textures/big_grass1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1485,6 +1504,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/black.png
+
+#begin Textures/brewTEA_tutorial.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/brewTEA_tutorial.png
 
 #begin Textures/bul.png
 /importer:TextureImporter
@@ -1581,6 +1612,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/EnemyHealth.png
+
+#begin Textures/festival_tutorial.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/festival_tutorial.png
 
 #begin Textures/festiwal.png
 /importer:TextureImporter
@@ -1917,6 +1960,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/slow.png
+
+#begin Textures/SPECIALS_tutorial.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/SPECIALS_tutorial.png
 
 #begin Textures/StarSparrow_Green.png
 /importer:TextureImporter

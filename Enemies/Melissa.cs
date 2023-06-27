@@ -28,6 +28,10 @@ namespace TheGame
         public override void Update(float deltaTime, Player player)
         {
             base.Update(deltaTime, player);
+            AAttack.Update(Globals.gameTime);
+            AIdle.Update(Globals.gameTime);
+            ARun.Update(Globals.gameTime);
+
             this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(2.5f, 0, -2.5f));
             
         }

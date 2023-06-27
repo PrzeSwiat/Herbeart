@@ -54,6 +54,7 @@ namespace TheGame
             this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.8f, 0, -1.9f));
             foreach (Apple apple in bullet.ToList())
             {
+
                 apple.Update(deltaTime, player);
                 apple.OnDestroy += RemoveBullet;
             }
@@ -138,9 +139,9 @@ namespace TheGame
         }
         public override void LoadContent()
         {
-            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle");
-            Atak = Globals.content.Load<SkinnedModel>("Animations/drzewko_attack");
-            Run = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
+            Idle = Globals.content.Load<SkinnedModel>("Animations/drzewko_idle4");
+            Atak = Globals.content.Load<SkinnedModel>("Animations/drzewko_atak2");
+            Run = Globals.content.Load<SkinnedModel>("Animations/drzewko_idle4");
 
             //Idle
             AIdle = new AnimationPlayer(Idle);

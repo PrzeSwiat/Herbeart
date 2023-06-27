@@ -533,20 +533,20 @@ namespace TheGame
             modifiedInput = modifiedInput.Replace(lines[1], "").Trim();
             modifiedInput = modifiedInput.Replace(lines[2], "").Trim();
 
-            Globals.spriteBatch.DrawString(ItemFont, lines[0], new Vector2(WindowWidth * 3 / 20, WindowHeight * 5 / 20 + 13), new Color(92, 112, 142));
-            Globals.spriteBatch.DrawString(ItemFont, lines[0], new Vector2(WindowWidth * 3 / 20, WindowHeight * 5 / 20 + 8), new Color(36, 36, 36));
+            Globals.spriteBatch.DrawString(ItemFont, lines[0], new Vector2(WindowWidth * 3 / 20, WindowHeight * 5 / 20 + 8), new Color(92, 112, 142));
+            Globals.spriteBatch.DrawString(ItemFont, lines[0], new Vector2(WindowWidth * 3 / 20, WindowHeight * 5 / 20 + 5), new Color(36, 36, 36));
             Globals.spriteBatch.DrawString(ItemFont, lines[0], new Vector2(WindowWidth * 3 / 20, WindowHeight * 5 / 20), Color.White);
 
-            Globals.spriteBatch.DrawString(ItemFont, lines[1], new Vector2(WindowWidth * 10 / 20, WindowHeight * 5 / 20 + 13), new Color(92, 112, 142));
-            Globals.spriteBatch.DrawString(ItemFont, lines[1], new Vector2(WindowWidth * 10 / 20, WindowHeight * 5 / 20 + 8), new Color(36, 36, 36));
+            Globals.spriteBatch.DrawString(ItemFont, lines[1], new Vector2(WindowWidth * 10 / 20, WindowHeight * 5 / 20 + 8), new Color(92, 112, 142));
+            Globals.spriteBatch.DrawString(ItemFont, lines[1], new Vector2(WindowWidth * 10 / 20, WindowHeight * 5 / 20 + 5), new Color(36, 36, 36));
             Globals.spriteBatch.DrawString(ItemFont, lines[1], new Vector2(WindowWidth * 10 / 20, WindowHeight * 5 / 20), Color.White);
 
-            Globals.spriteBatch.DrawString(ItemFont, lines[2], new Vector2(WindowWidth * 15 / 20, WindowHeight * 5 / 20 + 13), new Color(92, 112, 142));
-            Globals.spriteBatch.DrawString(ItemFont, lines[2], new Vector2(WindowWidth * 15 / 20, WindowHeight * 5 / 20 + 8), new Color(36, 36, 36));
+            Globals.spriteBatch.DrawString(ItemFont, lines[2], new Vector2(WindowWidth * 15 / 20, WindowHeight * 5 / 20 + 8), new Color(92, 112, 142));
+            Globals.spriteBatch.DrawString(ItemFont, lines[2], new Vector2(WindowWidth * 15 / 20, WindowHeight * 5 / 20 + 5), new Color(36, 36, 36));
             Globals.spriteBatch.DrawString(ItemFont, lines[2], new Vector2(WindowWidth * 15 / 20, WindowHeight * 5 / 20), Color.White);
 
-            Globals.spriteBatch.DrawString(ItemFont, modifiedInput, new Vector2(WindowWidth * 3 / 20, WindowHeight * 8 / 20 + 13), new Color(92, 112, 142));
-            Globals.spriteBatch.DrawString(ItemFont, modifiedInput, new Vector2(WindowWidth * 3 / 20, WindowHeight * 8 / 20 + 8), new Color(36, 36, 36));
+            Globals.spriteBatch.DrawString(ItemFont, modifiedInput, new Vector2(WindowWidth * 3 / 20, WindowHeight * 8 / 20 + 8), new Color(92, 112, 142));
+            Globals.spriteBatch.DrawString(ItemFont, modifiedInput, new Vector2(WindowWidth * 3 / 20, WindowHeight * 8 / 20 + 5), new Color(36, 36, 36));
             Globals.spriteBatch.DrawString(ItemFont, modifiedInput, new Vector2(WindowWidth * 3 / 20, WindowHeight * 8 / 20), Color.White);
             Globals.spriteBatch.End();
         }

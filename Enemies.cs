@@ -82,7 +82,7 @@ namespace TheGame
                 }
                 else if (Vector3.Distance(enemy.GetPosition(), playerPosition) < enemy.visionRange)
                 {
-
+                    enemy.OnMoveGo();
                     Vector2 flockVel = FlockBehaviour(enemy, 20, 0.7f);
                     Vector2 avoidOthersVelocity = AvoidanceBehaviour(enemy, 9, 0.5f);
                     Vector2 avoidObstaclesVelocity = AvoidObstacles(enemy, 10, 0.4f);
@@ -93,7 +93,13 @@ namespace TheGame
                 {
                     enemy.ActualSpeed = 0;
                 }
-                if (Vector3.Distance(enemy.GetPosition(), playerPosition) < 50)
+                if (enemy.GetType() == typeof(AppleTree) && Vector3.Distance(enemy.GetPosition(), playerPosition) < 100)
+                {
+                    enemy.isUpdating = true;
+                    enemy.NormalizeDirection();
+                    enemy.Update(deltaTime, player);
+                }
+                else if (Vector3.Distance(enemy.GetPosition(), playerPosition) < 50)
                 {
                     enemy.isUpdating = true;
                     enemy.NormalizeDirection();
