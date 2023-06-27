@@ -252,6 +252,7 @@ namespace TheGame
                     else
                     {
                         maps.Add(MapType.Map_up_right_1);
+                        maps.Add(MapType.Map_loot_up_down_1);
                         prepareRandomModule(enemyCount, difficultyLevel);
                     }
                     break;
@@ -266,6 +267,7 @@ namespace TheGame
                     else
                     {
                         maps.Add(MapType.Map_down_right_1);
+                        maps.Add(MapType.Map_loot_down_up_1);
                         prepareRandomModule(enemyCount, difficultyLevel);
                     }
                     break;

@@ -25,9 +25,11 @@
     <None Remove="Maps\map_left_up_1.txt" />
     <None Remove="Maps\map_left_up_2.txt" />
     <None Remove="Maps\map_left_up_3.txt" />
+    <None Remove="Maps\map_loot_down_up_1.txt" />
     <None Remove="Maps\map_loot_forest_straight.txt" />
     <None Remove="Maps\map_loot_forest_straight_1.txt" />
     <None Remove="Maps\map_loot_forest_straight_2.txt" />
+    <None Remove="Maps\map_loot_up_down_1.txt" />
     <None Remove="Maps\map_party_down_right.txt" />
     <None Remove="Maps\map_party_down_up.txt" />
     <None Remove="Maps\map_party_left_down.txt" />
@@ -83,10 +85,16 @@
     <Content Include="Maps\map_left_up_3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Maps\map_loot_down_up_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Maps\map_loot_forest_straight_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Maps\map_loot_forest_straight_2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\map_loot_up_down_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Maps\map_party_down_right.txt">
