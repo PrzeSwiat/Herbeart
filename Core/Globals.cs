@@ -74,5 +74,12 @@ namespace TheGame
 
         public static int WindowWidth;
         public static int WindowHeight;
+
+        public static int attackspeedupgrade= 0;
+        public static int dmgupgrade = 0;
+        public static int speedupgrade = 0;
+        public static int nettleupgrade =0;
+        public static int appleupgrade = 0;
+        public static int melissaupgrade = 0;
     }
 }

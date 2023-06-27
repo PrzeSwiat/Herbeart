@@ -41,6 +41,19 @@ namespace TheGame
 
         public override void Update(float deltaTime, Player player)
         {
+            TimeSpan time = DateTime.Now - lastEventTimeer;
+            if (time.TotalSeconds > 0.2f)
+            {
+                lastEventTimeer = actualTimeer;
+                if (color != Color.Black)
+                {
+                    color = Color.Black;
+                }
+                if (LineSize != 7)
+                {
+                    LineSize = 7;
+                }
+            }
             this.deltaTime = deltaTime;
             //base.Update();
             playerPosition = player.GetPosition();
