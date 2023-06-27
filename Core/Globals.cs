@@ -46,7 +46,7 @@ namespace TheGame
         public static float time;
         public static float HPpercent;
         public static int Score;
-        public static int ScoreMultipler;
+        public static int ScoreMultiplier;
         public static GamePadState prevState;
         public static ButtonState CheckA;
         public static KeyboardState prevKeyBoardState;

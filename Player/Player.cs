@@ -35,7 +35,6 @@ namespace TheGame
         public event EventHandler onMove;
         public event EventHandler onRandomNoise;
         public event EventHandler onAttackNoise;
-        private bool canAttack = true;
 
         public Player(Vector3 Position, string modelFileName, string textureFileName) : base(Position, modelFileName, textureFileName)
         {
@@ -170,7 +169,6 @@ namespace TheGame
         }
         public void DrawAnimation()
         {
-            //particleSystem.Draw(Globals.spriteBatch);
             Crafting.DrawAnimation();
         }
 
