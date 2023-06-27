@@ -68,8 +68,6 @@ namespace TheGame
             MintTexture = Content.Load<Texture2D>("Textures/mieta");
             effect1 = Content.Load<Effect>("AnimationToon");
 
-         
-
             Death = Content.Load<SkinnedModel>("Animations/mis_death3");
             Sleep = Content.Load<SkinnedModel>("Animations/mis_spanie");
             Steps = Content.Load<SkinnedModel>("Animations/mis_bieg_2");
@@ -77,7 +75,6 @@ namespace TheGame
             Steps_tired=Content.Load<SkinnedModel>("Animations/mis_tired_run");
             Attack1 = Content.Load<SkinnedModel>("Animations/atak1blend2");
             Attack2 = Content.Load<SkinnedModel>("Animations/atak2blend2");
-
             
             #region PLAYER
             player.onMove += PlayerSteps;
@@ -140,8 +137,6 @@ namespace TheGame
             AAttack2.CurrentTick = Attack2.Animations[0].DurationInTicks;
             #endregion
 
-
-
             // ADD ALL ANIMATION HERE
             allAnimations.Add(ASteps);
             allAnimations.Add(AIdle);
@@ -157,7 +152,7 @@ namespace TheGame
             foreach (Enemy enemi in enemies)
             {
                 enemi.OnAttack += EnemyAttack;
-
+                enemi.onMove += EnemyMove;
 
                 if (enemi.GetType() != typeof(Bush))
                 {
@@ -280,6 +275,14 @@ namespace TheGame
             Enemy enemy = (Enemy)obj;
 
             enemy.AAttack.IsPlaying = true;
+            enemy.ARun.IsPlaying = false;
+        }
+
+        private void EnemyMove(object obj, EventArgs e)
+        {
+            Enemy enemy = (Enemy)obj;
+
+            enemy.ARun.IsPlaying = true;
 
         }
 
@@ -347,16 +350,17 @@ namespace TheGame
             {
                 if (enemy.GetType() != typeof(Bush))
                 {
-                    if (enemy.GetType() == typeof(Nettle))
-                    {
-                       // Debug.WriteLine("cuil");
-                    }
+                    
                     if (enemy.isUpdating)    //nie rysuj jak nie ma co
                     {
                        
                         if (enemy.AAttack.IsPlaying)
                         {
                             DrawAnimation(enemy, enemy.AAttack, enemy.Atak, enemy.GetTexture2D(),enemy.color,enemy.LineSize);
+                        }
+                        else if (enemy.ARun.IsPlaying)
+                        {
+                            DrawAnimation(enemy, enemy.ARun, enemy.Run, enemy.GetTexture2D(), enemy.color, enemy.LineSize);
                         }
                         else
                         {

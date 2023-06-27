@@ -46,6 +46,11 @@ namespace TheGame
         public override void Update(float deltaTime, Player player)
         {
             Update();
+
+            AAttack.Update(Globals.gameTime);
+            AIdle.Update(Globals.gameTime);
+            ARun.Update(Globals.gameTime);
+
             this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.8f, 0, -1.9f));
             foreach (Apple apple in bullet.ToList())
             {
@@ -134,7 +139,7 @@ namespace TheGame
         public override void LoadContent()
         {
             Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle");
-            Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
+            Atak = Globals.content.Load<SkinnedModel>("Animations/drzewko_attack");
             Run = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
 
             //Idle
@@ -197,6 +202,7 @@ namespace TheGame
             // Move the bullet
             time += deltaTime;
             this.Move(velocity * deltaTime);
+
 
             // Check if the bullet has collided with the player
             if (this.boundingBox.Intersects(player.boundingBox))

@@ -255,6 +255,7 @@ namespace TheGame
             Globals.prevKeyBoardLeaderState = Keyboard.GetState();
             Globals.prevKeyBoardDeathState = Keyboard.GetState();
             Globals.prevKeyBoardPauseState = Keyboard.GetState();
+
             if (Globals.Start)
             {
                 

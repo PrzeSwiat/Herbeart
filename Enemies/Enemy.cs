@@ -31,6 +31,7 @@ namespace TheGame
         public AnimationPlayer AAttack;
         public AnimationPlayer ARun;
         public bool isUpdating;
+        public event EventHandler onMove;
 
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
@@ -47,6 +48,13 @@ namespace TheGame
             if (OnAttack != null)
             {
                 OnAttack?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        public void OnMoveGo()
+        {
+            if (onMove != null)
+            {
+                onMove?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -92,6 +100,7 @@ namespace TheGame
             }
             else
             {
+                onMove?.Invoke(this, EventArgs.Empty);
                 MoveForwards(deltaTime, true);
             }
         }
