@@ -210,7 +210,7 @@ namespace TheGame
                     foreach (Apple apple in tree.bullet)
                     {
                         apple.LoadContent();
-                        apple.Draw(lightpos);
+                        apple.DrawPlayer(lightpos);
                     }
                 }
             }

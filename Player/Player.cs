@@ -159,7 +159,7 @@ namespace TheGame
 
             foreach (Apple apple in apples)
             {
-                apple.Draw(lightpos);
+                apple.DrawPlayer(lightpos);
             }
         }
         public void DrawEffectsShadow(Vector3 lightpos)

@@ -277,6 +277,7 @@ namespace TheGame
                             GraphicsDevice.Clear(Color.Black);
                             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                             TimeSpan timeSpan = DateTime.Now - death_timer;
+                            player.SetRotation(new Vector3(0,0,0));
                             animationMenager.DeathAnimationDraw();
                             if (timeSpan.TotalSeconds > 4)
                             {
