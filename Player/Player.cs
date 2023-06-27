@@ -355,7 +355,7 @@ namespace TheGame
                 this.slowness = slow;
                 this.maxTime = maxTime;
                 this.elapsedTime = 0;
-                this.interval = 1;
+                this.interval = 1f;
                 this.lastIntervalTime = DateTime.Now;
             }
 
@@ -427,7 +427,14 @@ namespace TheGame
                         {
                             if (this.BSphere.Intersects(enemy.boundingBox))
                             {
+                                if (!enemy.effectList.Contains("nettle"))
+                                {
+                                    enemy.effectList.Add("nettle");
+                                }
                                 enemy.Hit(damage);
+                            } else
+                            {
+                                enemy.effectList.Remove("nettle");
                             }
                         }
 
@@ -435,12 +442,16 @@ namespace TheGame
 
                 } else
                 {
+                    foreach (Enemy enemy in enemies.EnemiesList.ToList())
+                    {
+                        if (this.BSphere.Intersects(enemy.boundingBox))
+                        {
+                            enemy.effectList.Remove("nettle");
+                        }
+                    }
                     OnDestroy?.Invoke(this, EventArgs.Empty);
                 }
             }
-
-          
-
         }
 
         private class Apple : SceneObject

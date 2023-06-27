@@ -31,7 +31,7 @@ namespace TheGame
         public AnimationPlayer AAttack;
         public AnimationPlayer ARun;
         public bool isUpdating;
-
+        public List<string> effectList = new List<string>();
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -133,6 +133,7 @@ namespace TheGame
             if (elapsedStunTime >= stunTime)
             {
                 isStunned = false;
+                effectList.Remove("stun");
                 elapsedStunTime = 0;
             }
         }
@@ -152,11 +153,19 @@ namespace TheGame
         public void Stun(int time)
         {
             isStunned = true;
+            if (!effectList.Contains("stun"))
+            {
+                effectList.Add("stun");
+            }
             stunTime = time;
         }
 
         public void Slow (float slowMultiplier)
         {
+            if (!effectList.Contains("slow"))
+            {
+                effectList.Add("slow");
+            }
             isSlowed = true;
             this.ActualAttackSpeed = this.AttackSpeed * slowMultiplier;
             this.ActualSpeed = this.MaxSpeed * slowMultiplier;
@@ -167,6 +176,7 @@ namespace TheGame
             this.ActualAttackSpeed = this.AttackSpeed;
             this.ActualSpeed = this.MaxSpeed;
             isSlowed = false;
+            effectList.Remove("slow");
             elapsedSlowTime = 0;
         }
 
