@@ -49,7 +49,7 @@ namespace TheGame
         private int enemyCount;
         private int difficultyLevel;
         #endregion
-        private string fileName;
+        public string fileName;
         private float separatorX, separatorZ;
 
 
@@ -220,11 +220,13 @@ namespace TheGame
                         spawnTiles.Add(new Tile(groundType, height, wektor, 0));
                         x++;
                         break;
-                    case 99:
+                    case 99:    //c
                         //groundType = "party";
                         wektor = new Vector3(x * tileSize + separatorX, height, z * tileSize + separatorZ);
-                        SceneObject shop = new SceneObject(wektor, "Objects/festiwal", "Textures/festiwal");
-                        nonColideObjects.Add(shop);
+                        SceneObject shop = new SceneObject(wektor, "Objects/festiwal_budka", "Textures/festiwal_smol4");
+                        SceneObject shop_around = new SceneObject(wektor, "Objects/festiwal_slupy", "Textures/festiwal_smol4");
+                        _sceneObjects.Add(shop);
+                        nonColideObjects.Add(shop_around);
                         shopOnPartyModule = wektor;
                         x++;
                         break;

@@ -41,7 +41,6 @@ namespace TheGame
         private string appleEnemy = "Objects/apple";
         private string melissaEnemy = "Objects/melissa";
         #endregion
-        
 
         public Levels()
         {
@@ -356,7 +355,7 @@ namespace TheGame
             if (numberOfModule == numberOfModules)
             {
                 prepareMap();
-                
+
             }
         }
 
@@ -365,7 +364,7 @@ namespace TheGame
             List<SceneObject> _sceneObjects = new List<SceneObject>();
 
             int numberOfModule = returnModuleNumber(playerX, playerZ);
-
+            
 
             for (int i = numberOfModule - 1; i <= numberOfModule + 1; i++)
             {
@@ -375,6 +374,8 @@ namespace TheGame
                     {
                         _sceneObjects.Add(obj);
                     }
+
+
                 }
 
             }
