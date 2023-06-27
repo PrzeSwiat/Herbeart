@@ -29,14 +29,14 @@ namespace TheGame
         {
             base.LoadContent();
 
-            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle");
+            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle2");
             Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
             Run = Globals.content.Load<SkinnedModel>("Animations/mieta_run");
 
             //Idle
             AIdle = new AnimationPlayer(Idle);
             AIdle.Animation = Idle.Animations[0];
-            AIdle.PlaybackSpeed = 1f;
+            AIdle.PlaybackSpeed = 0.5f;
             AIdle.IsPlaying = true;
             AIdle.IsLooping = false;
             AIdle.CurrentTime = 1.0f;
@@ -44,7 +44,7 @@ namespace TheGame
             //Attack
             AAttack = new AnimationPlayer(Atak);
             AAttack.Animation = Atak.Animations[0];
-            AAttack.PlaybackSpeed = 1f;
+            AAttack.PlaybackSpeed = 0.5f;
             AAttack.IsPlaying = false;
             AAttack.IsLooping = false;
             AAttack.CurrentTime = 1.0f;
@@ -52,7 +52,7 @@ namespace TheGame
             //Run
             ARun = new AnimationPlayer(Run);
             ARun.Animation = Run.Animations[0];
-            ARun.PlaybackSpeed = 1f;
+            ARun.PlaybackSpeed = 0.5f;
             ARun.IsPlaying = false;
             ARun.IsLooping = false;
             ARun.CurrentTime = 1.0f;
@@ -70,6 +70,9 @@ namespace TheGame
         public override void Update(float deltaTime, Player player)
         {
             base.Update(deltaTime, player);
+            AAttack.Update(Globals.gameTime);
+            AIdle.Update(Globals.gameTime);
+            ARun.Update(Globals.gameTime);
             this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.2f,0,-1));
             this.shadow.SetPositionY(-0.5f);
 

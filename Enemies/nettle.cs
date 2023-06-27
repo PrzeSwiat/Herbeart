@@ -64,6 +64,10 @@ namespace TheGame
             }
             HandleSlowedStatus(deltaTime);
 
+            AAttack.Update(Globals.gameTime);
+            AIdle.Update(Globals.gameTime);
+            ARun.Update(Globals.gameTime);
+
             movementTimer += deltaTime;
             if (CheckDistanceAndMovementCooldown(player) && !isMoving && !isWindingUp)
             {
@@ -80,6 +84,7 @@ namespace TheGame
             }
             if (isMoving)
             {
+                OnMoveGo();
                 Movement(player);
             }
             this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.8f, 0, -1.9f));
@@ -98,6 +103,7 @@ namespace TheGame
 
         private void Movement(Player player)
         {
+
             CheckCollision(player);
             if (Collides)
             {
@@ -107,6 +113,7 @@ namespace TheGame
             else
             {
                 CheckArrivedAtTargetPosition(lastPlayerPosition);
+
                 MoveForwards(deltaTime, true);
             }
         }
@@ -141,9 +148,9 @@ namespace TheGame
         public override void LoadContent()
         {
             base.LoadContent();
-            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle");
-            Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
-            Run = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
+            Idle = Globals.content.Load<SkinnedModel>("Animations/pokrzyw_idle");
+            Atak = Globals.content.Load<SkinnedModel>("Animations/pokrzyw_atak3");
+            Run = Globals.content.Load<SkinnedModel>("Animations/pokrzyw_atak3");
 
             //Idle
             AIdle = new AnimationPlayer(Idle);

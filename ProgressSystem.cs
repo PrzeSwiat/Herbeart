@@ -189,7 +189,6 @@ namespace TheGame
                
                 if (((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState .Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 1)&& ts.TotalSeconds > 1)
                 {
-                   
                     if (rewards[0] == 1 || rewards[0] == 2 || rewards[0] == 3)
                     {
                         //dodaj nowy przepis
@@ -207,7 +206,6 @@ namespace TheGame
                 }
                 if (((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 2) &&ts.TotalSeconds > 1)
                 {
-                    
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (rewards[1] == 1)
                     {

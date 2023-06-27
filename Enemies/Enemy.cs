@@ -32,6 +32,7 @@ namespace TheGame
         public AnimationPlayer ARun;
         public bool isUpdating;
         public List<string> effectList = new List<string>();
+        public event EventHandler onMove;
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -47,6 +48,13 @@ namespace TheGame
             if (OnAttack != null)
             {
                 OnAttack?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        public void OnMoveGo()
+        {
+            if (onMove != null)
+            {
+                onMove?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -81,9 +89,11 @@ namespace TheGame
             }
 
             HandleSlowedStatus(deltaTime);
+
             AAttack.Update(Globals.gameTime);
             AIdle.Update(Globals.gameTime);
             ARun.Update(Globals.gameTime);
+
             CheckCollision(player);
             RotateTowardsCurrentDirection();
             if (collides)
@@ -213,8 +223,6 @@ namespace TheGame
         {
             float currentSpeed = this.ActualSpeed;
             if (!shouldChase) { currentSpeed *= -1; }
-
-
             MoveModelForwards(currentSpeed * deltaTime);
             MoveBoundingBoxForwards(currentSpeed * deltaTime);
         }
