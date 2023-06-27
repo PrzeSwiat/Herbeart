@@ -47,6 +47,7 @@ namespace TheGame
                 else
                 {
                       Reward1= rewe;
+                    rewards[0] = 4;
                 }
 
             }
