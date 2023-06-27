@@ -24,6 +24,7 @@ namespace TheGame
         public bool canDestroy = true;
         public event EventHandler OnDestroy;
 
+
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             leaf = new Leaf(worldPosition, "Objects/mis4", "Textures/StarSparrow_Orange");
@@ -51,11 +52,11 @@ namespace TheGame
                 leaf.AddToWorld();
                 leaf.SetPosition(this.GetPosition());
                 OnDestroy?.Invoke(this, EventArgs.Empty);
-                Globals.Score += 20;
+                Globals.Score += 10 * Globals.ScoreMultipler;
             }
             else
             {
-                color = Color.Red;
+                
             }
 
         }

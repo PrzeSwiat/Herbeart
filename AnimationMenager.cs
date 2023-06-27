@@ -239,7 +239,7 @@ namespace TheGame
         {
             if(ADeath.IsPlaying)
             {
-                DrawAnimation(player, ADeath, Death,texture);
+                DrawAnimation(player, ADeath, Death,texture, Color.Black, player.LineSize);
             }
          
         }
@@ -294,7 +294,7 @@ namespace TheGame
                 AIdle.IsPlaying = false;
                 ASteps.IsPlaying = false;
                 ASteps_tired.IsPlaying = false;
-                DrawAnimation(player, ASleep, Sleep, texture);
+                DrawAnimation(player, ASleep, Sleep, texture,player.color,player.LineSize);
             }
             if (AAttack1.IsPlaying)
             {
@@ -302,7 +302,7 @@ namespace TheGame
                 AIdle.IsPlaying = false;
                 ASteps.IsPlaying = false;
                 ASteps_tired.IsPlaying = false;
-                DrawAnimation(player, AAttack1, Attack1, texture);
+                DrawAnimation(player, AAttack1, Attack1, texture, player.color, player.LineSize);
             }
             
             if (AAttack2.IsPlaying)
@@ -311,22 +311,22 @@ namespace TheGame
                 AIdle.IsPlaying = false;
                 ASteps.IsPlaying = false;
                 ASteps_tired.IsPlaying = false;
-                DrawAnimation(player, AAttack2, Attack2, texture);
+                DrawAnimation(player, AAttack2, Attack2, texture, player.color, player.LineSize);
             }
             if (AIdle.IsPlaying)
             {
-                DrawAnimation(player, AIdle, Idle, texture);
+                DrawAnimation(player, AIdle, Idle, texture, player.color, player.LineSize);
 
             }
             if (ASteps.IsPlaying && !AAttack1.IsPlaying && !AAttack2.IsPlaying)
             {
                 if (player.Health <= player.maxHealth * 0.5)
                 {
-                    DrawAnimation(player, ASteps_tired, Steps_tired, texture);
+                    DrawAnimation(player, ASteps_tired, Steps_tired, texture, player.color, player.LineSize);
                 }
                 else
                 {
-                    DrawAnimation(player, ASteps, Steps, texture);
+                    DrawAnimation(player, ASteps, Steps, texture, player.color, player.LineSize);
                 }
                 
             }
@@ -356,12 +356,11 @@ namespace TheGame
                        
                         if (enemy.AAttack.IsPlaying)
                         {
-                            DrawAnimation(enemy, enemy.AAttack, enemy.Atak, enemy.GetTexture2D());
+                            DrawAnimation(enemy, enemy.AAttack, enemy.Atak, enemy.GetTexture2D(),enemy.color,enemy.LineSize);
                         }
                         else
                         {
-                            
-                            DrawAnimation(enemy, enemy.AIdle, enemy.Idle, enemy.GetTexture2D());
+                            DrawAnimation(enemy, enemy.AIdle, enemy.Idle, enemy.GetTexture2D(), enemy.color, enemy.LineSize);
                         }
                     }
                 }
@@ -371,7 +370,7 @@ namespace TheGame
         }
 
 
-        public void DrawAnimation(Creature creature, AnimationPlayer animation, SkinnedModel model, Texture2D texture)
+        public void DrawAnimation(Creature creature, AnimationPlayer animation, SkinnedModel model, Texture2D texture,Color color,float size)
         {
             Matrix[] boneTransforms = (Matrix[])animation.BoneSpaceTransforms;
 
@@ -390,8 +389,8 @@ namespace TheGame
                 effect1.Parameters["DiffuseLightDirection"].SetValue(new Vector3(0, 0, 0));
                 effect1.Parameters["DiffuseColor"].SetValue(new Vector4(10f, 10F, 10f, 0.9f));
                 effect1.Parameters["DiffuseIntensity"].SetValue(1);
-                effect1.Parameters["LineColor"].SetValue(Color.Black.ToVector4());
-                effect1.Parameters["LineThickness"].SetValue(7f);
+                effect1.Parameters["LineColor"].SetValue(color.ToVector4());
+                effect1.Parameters["LineThickness"].SetValue(size);
                 effect1.Parameters["Texture"].SetValue(texture);
 
                 foreach (var pass in effect1.CurrentTechnique.Passes)

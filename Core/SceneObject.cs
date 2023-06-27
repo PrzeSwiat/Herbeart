@@ -19,11 +19,12 @@ namespace TheGame
         protected Texture2D texture2D;
         public string _modelFileName;
         public string _textureFileName;
-        public Color color = Color.White;
+        public Color color = Color.Black;
         SkinnedEffect skinnedEffect;
         public BoundingBox boundingBox;
-        private DateTime lastEventTime, actualTime;
+        public DateTime lastEventTimeer, actualTimeer ;
         public bool transparency;
+        public float LineSize = 7;
 
         public SceneObject(Vector3 worldPosition, string modelFileName, string textureFileName)
         {
@@ -31,20 +32,26 @@ namespace TheGame
             _modelFileName = modelFileName;
             _textureFileName = textureFileName;
             transparency = false;
+            actualTimeer = DateTime.Now;
+            lastEventTimeer = DateTime.Now;
         }
 
       
 
         public void Update()    //  USUWANIE NADANEGO KOLORU 
         {
-            actualTime = DateTime.Now;
-            TimeSpan time = actualTime - lastEventTime;
-            if (time.TotalSeconds > 1)
+           
+            TimeSpan time = DateTime.Now - lastEventTimeer;
+            if (time.TotalSeconds > 0.2f)
             {
-                lastEventTime = actualTime;
-                if (color != Color.White)
+                lastEventTimeer = actualTimeer;
+                if (color != Color.Black)
                 {
-                    color = Color.White;
+                    color = Color.Black;
+                }
+                if(LineSize != 7)
+                {
+                    LineSize = 7;
                 }
             }
         }
