@@ -34,6 +34,7 @@ namespace TheGame
         private Texture2D EnemyHealth, HalfEnemyHealth;
         private Texture2D ReceptureBar;
         private Texture2D Arrow;
+        private Texture2D effectMelise, effectMint, effectNettle;
         private int WindowWidth, WindowHeight;
         public string name = "";
         
@@ -86,6 +87,11 @@ namespace TheGame
             nettleTexCrafting = models.getTexture("HUD/ikona_pokrzywa_crafting");
             meliseTexCrafting = models.getTexture("HUD/ikona_melisa_crafting");
             multiplierTexture = models.getTexture("HUD/multiplier");
+            effectMelise = models.getTexture("HUD/efffectMelise");
+            effectMint = models.getTexture("HUD/effectMint");
+            effectNettle = models.getTexture("HUD/effectNettle");
+
+
 
             MenuFont = Globals.content.Load<SpriteFont>("menuFont");
             MenuFont2 = Globals.content.Load<SpriteFont>("menuFont2");
@@ -642,15 +648,15 @@ namespace TheGame
                     Rectangle effectRect = new Rectangle(effectPosX - 30 - i * 30, rect.Y, 30, 30);
                     if (e.effectList[i] == "stun")
                     {
-                        Globals.spriteBatch.Draw(meliseTex, effectRect, Color.White);
+                        Globals.spriteBatch.Draw(effectMelise, effectRect, Color.White);
                     }
                     if (e.effectList[i] == "slow")
                     {
-                        Globals.spriteBatch.Draw(mintTex, effectRect, Color.White);
+                        Globals.spriteBatch.Draw(effectMint, effectRect, Color.White);
                     }
                     if (e.effectList[i] == "nettle")
                     {
-                        Globals.spriteBatch.Draw(nettleTex, effectRect, Color.White);
+                        Globals.spriteBatch.Draw(effectNettle, effectRect, Color.White);
                     }
                 }
                 
