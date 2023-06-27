@@ -66,6 +66,11 @@ namespace TheGame
 
         public static bool[] tutorialDone;
 
+        public static List<string> playerActiveEffects = new List<string>();
+        /*public static bool isImmortal;
+        public static bool isHaste;
+        public static bool isStrenght;*/
+
 
         public static int WindowWidth;
         public static int WindowHeight;

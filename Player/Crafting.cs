@@ -31,10 +31,10 @@ namespace TheGame
             this.inventory = inv;
             this.playerEffects = playerEffects;
             bools.Add(true);
-            bools.Add(false);
-            bools.Add(false);
-            bools.Add(false);
-            bools.Add(false);
+            bools.Add(true);
+            bools.Add(true);
+            bools.Add(true);
+            bools.Add(true);
             
             
         }
