@@ -58,6 +58,17 @@ namespace TheGame
                 Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
 
             particleSystem.addParticles(new Vector2(projectedPosition.X, projectedPosition.Y - 100));
+            if (this.Health <= 0)
+            {
+                
+            }
+            else
+            {
+                this.color = Microsoft.Xna.Framework.Color.White;
+                LineSize = 10f;
+                this.actualTimeer = DateTime.Now;
+                this.lastEventTimeer = actualTimeer;
+            }
         }
 
         public virtual void Update(float deltaTime, Player player)

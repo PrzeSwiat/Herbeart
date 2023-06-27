@@ -116,7 +116,14 @@ namespace TheGame
                 if (this.Health <= 0)
                 {
                     playerEffects.Stop();
-                }  
+                }
+                else
+                {
+                    this.color = Microsoft.Xna.Framework.Color.White;
+                    LineSize = 10f;
+                    this.actualTimeer = DateTime.Now;
+                    this.lastEventTimeer = actualTimeer;
+                }
             }
         }
 
@@ -129,6 +136,7 @@ namespace TheGame
                 {
                     playerEffects.Stop();
                 }
+               
             }
         }
 
