@@ -33,7 +33,7 @@ namespace TheGame
         }
         public override void LoadContent()
         {
-            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle");
+            Idle = Globals.content.Load<SkinnedModel>("Animations/melisa_idle");
             Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
             Run = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
 
@@ -42,7 +42,7 @@ namespace TheGame
             AIdle.Animation = Idle.Animations[0];
             AIdle.PlaybackSpeed = 1f;
             AIdle.IsPlaying = true;
-            AIdle.IsLooping = false;
+            AIdle.IsLooping = true;
             AIdle.CurrentTime = 1.0f;
             AIdle.CurrentTick = Idle.Animations[0].DurationInTicks;
             //Attack

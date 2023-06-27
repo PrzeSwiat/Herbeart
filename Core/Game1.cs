@@ -262,6 +262,10 @@ namespace TheGame
                 {
                     hud.DrawTutorialMenu();
                 }
+                else if (Globals.LeaderBoardSumup)
+                {
+                    hud.DrawLeaderBoardSumup(Globals.LeaderBoardSting);
+                }
                 else
                 {
                     hud.DrawMainMenu();
@@ -323,7 +327,6 @@ namespace TheGame
                             if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
                             {
                                 hud.DrawTutorial(2);
-
 
                             }
                             if (Globals.Module2 && Globals.moduleCounter == 0)
@@ -779,9 +782,9 @@ namespace TheGame
                 {
                     hud.MenuOption = 1;
                 }
-                if (hud.MenuOption > 3)
+                if (hud.MenuOption > 4)
                 {
-                    hud.MenuOption = 3;
+                    hud.MenuOption = 4;
                 }
                 Globals.prevState = gamePadState;
                 Globals.prevKeyBoardState = state;
@@ -789,17 +792,24 @@ namespace TheGame
                 {
                     Globals.Tutorial = true;
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3)
-                {
-                    Exit();
-                }
                 if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
                 {
 
                     // notimplemented
                 }
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3)
+                {
+                    Globals.LeaderBoardSumup = true;
+                    Globals.LeaderBoardSting = PlayerNames.LoadFromFile();
 
-                
+                }
+                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 4)
+                {
+                    Exit();
+                }
+               
+
+
             }
 
         }

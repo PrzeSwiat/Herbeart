@@ -395,39 +395,49 @@ namespace TheGame
             Color one = Color.Black;
             Color two = Color.Black;
             Color three = Color.Black;
+            Color four = Color.Black;
             Vector2 dotpos = new Vector2(0,0);
 
             if (MenuOption == 1)
             {
                 one = Color.Orange;
-                 dotpos = new Vector2(WindowWidth * 13 / 20 + 20, WindowHeight * 12 / 20 + 30);
+                 dotpos = new Vector2(WindowWidth * 12 / 20 + 20, WindowHeight * 10 / 20 + 30);
             }
             if(MenuOption == 2)
             {
                 two = Color.Orange;
-                 dotpos = new Vector2(WindowWidth * 13 / 20 + 20, WindowHeight * 14 / 20 + 30);
+                 dotpos = new Vector2(WindowWidth * 12 / 20 + 20, WindowHeight * 12 / 20 + 30);
             }
-            if(MenuOption==3)
+            if (MenuOption == 3)
             {
                 three = Color.Orange;
-                 dotpos = new Vector2(WindowWidth * 13 / 20 + 20, WindowHeight * 16 / 20 + 30);
+                dotpos = new Vector2(WindowWidth * 12 / 20 + 20, WindowHeight * 14 / 20 + 30);
+            }
+            if (MenuOption==4)
+            {
+                four = Color.Orange;
+                 dotpos = new Vector2(WindowWidth * 12 / 20 + 20, WindowHeight * 16 / 20 + 30);
             }
 
             Rectangle rect = new Rectangle(0, 0, WindowWidth, WindowHeight);
             Globals.spriteBatch.Begin();
             Globals.spriteBatch.Draw(menu, rect, Color.White);
             Globals.spriteBatch.Draw(dot, dotpos, null, Color.White, 0, Vector2.Zero, 0.4f, SpriteEffects.None, 0f);
-            Globals.spriteBatch.DrawString(MenuFont, "start game", new Vector2(WindowWidth * 14/ 20 , WindowHeight * 12 / 20+13), one);
-            Globals.spriteBatch.DrawString(MenuFont, "start game", new Vector2(WindowWidth * 14 / 20, WindowHeight * 12 / 20+5), Color.Gray);
-            Globals.spriteBatch.DrawString(MenuFont, "start game", new Vector2(WindowWidth * 14 / 20, WindowHeight * 12 / 20), Color.White);
+            Globals.spriteBatch.DrawString(MenuFont, "start game", new Vector2(WindowWidth * 13/ 20 , WindowHeight * 10 / 20+13), one);
+            Globals.spriteBatch.DrawString(MenuFont, "start game", new Vector2(WindowWidth * 13 / 20, WindowHeight * 10 / 20+5), Color.Gray);
+            Globals.spriteBatch.DrawString(MenuFont, "start game", new Vector2(WindowWidth * 13 / 20, WindowHeight * 10 / 20), Color.White);
 
-            Globals.spriteBatch.DrawString(MenuFont, "credits", new Vector2(WindowWidth * 14 / 20, WindowHeight * 14 / 20 + 13), two);
-            Globals.spriteBatch.DrawString(MenuFont, "credits", new Vector2(WindowWidth * 14 / 20, WindowHeight * 14 / 20 + 5), Color.Gray);
-            Globals.spriteBatch.DrawString(MenuFont, "credits", new Vector2(WindowWidth * 14 / 20, WindowHeight * 14 / 20), Color.White);
+            Globals.spriteBatch.DrawString(MenuFont, "credits", new Vector2(WindowWidth * 13 / 20, WindowHeight * 12 / 20 + 13), two);
+            Globals.spriteBatch.DrawString(MenuFont, "credits", new Vector2(WindowWidth * 13 / 20, WindowHeight * 12 / 20 + 5), Color.Gray);
+            Globals.spriteBatch.DrawString(MenuFont, "credits", new Vector2(WindowWidth * 13 / 20, WindowHeight * 12 / 20), Color.White);
 
-            Globals.spriteBatch.DrawString(MenuFont, "exit", new Vector2(WindowWidth * 14 / 20, WindowHeight * 16 / 20 + 13), three);
-            Globals.spriteBatch.DrawString(MenuFont, "exit", new Vector2(WindowWidth * 14 / 20, WindowHeight * 16 / 20 + 5), Color.Gray);
-            Globals.spriteBatch.DrawString(MenuFont, "exit", new Vector2(WindowWidth * 14 / 20, WindowHeight * 16 / 20), Color.White);
+            Globals.spriteBatch.DrawString(MenuFont, "leader board", new Vector2(WindowWidth * 13 / 20, WindowHeight * 14 / 20 + 13), three);
+            Globals.spriteBatch.DrawString(MenuFont, "leader board", new Vector2(WindowWidth * 13 / 20, WindowHeight * 14 / 20 + 5), Color.Gray);
+            Globals.spriteBatch.DrawString(MenuFont, "leader board", new Vector2(WindowWidth * 13 / 20, WindowHeight * 14 / 20), Color.White);
+
+            Globals.spriteBatch.DrawString(MenuFont, "exit", new Vector2(WindowWidth * 13 / 20, WindowHeight * 16 / 20 + 13), four);
+            Globals.spriteBatch.DrawString(MenuFont, "exit", new Vector2(WindowWidth * 13 / 20, WindowHeight * 16 / 20 + 5), Color.Gray);
+            Globals.spriteBatch.DrawString(MenuFont, "exit", new Vector2(WindowWidth * 13 / 20, WindowHeight * 16 / 20), Color.White);
             Globals.spriteBatch.End();
 
         }
@@ -484,7 +494,17 @@ namespace TheGame
             Globals.spriteBatch.DrawString(Menu2, "Press 'A / ENTER' to accept", new Vector2(WindowWidth / 5, WindowHeight * 16 / 20), Color.Gray);
             Globals.spriteBatch.End();
 
+        }
 
+        public void DrawLeaderBoardSumup(string leaderboard)
+        {
+            Rectangle rect = new Rectangle(0, 0, WindowWidth, WindowHeight);
+            Globals.spriteBatch.Begin();
+            Globals.spriteBatch.Draw(menu, rect, Color.Black);
+            Globals.spriteBatch.DrawString(ItemFont, leaderboard, new Vector2(WindowWidth * 3 / 20, WindowHeight * 1 / 20 + 13), new Color(92, 112, 142));
+            Globals.spriteBatch.DrawString(ItemFont, leaderboard, new Vector2(WindowWidth * 3 / 20, WindowHeight * 1 / 20 + 8), new Color(36, 36, 36));
+            Globals.spriteBatch.DrawString(ItemFont, leaderboard, new Vector2(WindowWidth * 3 / 20, WindowHeight * 1 / 20), Color.White);
+            Globals.spriteBatch.End();
         }
 
         public void TextInputHandler(object sender, TextInputEventArgs args)
