@@ -16,13 +16,12 @@ namespace TheGame
 {
     internal class HUD
     {
-        private SpriteFont ScoreFont;
+        private SpriteFont ScoreFont, ScoreMultiplier;
         private SpriteFont ItemFont;
-        private SpriteFont MenuFont;
-        private SpriteFont MenuFont2;
-        private SpriteFont MenuFont3;
-        private SpriteFont Menu;
-        private SpriteFont Menu2;
+        private Texture2D multiplierTexture;
+
+        private SpriteFont MenuFont, MenuFont2, MenuFont3;
+        private SpriteFont Menu, Menu2;
         private Texture2D menu;
         private Texture2D difficulty;
         private Texture2D dot;
@@ -86,12 +85,14 @@ namespace TheGame
             mintTexCrafting = models.getTexture("HUD/ikona_mieta_crafting");
             nettleTexCrafting = models.getTexture("HUD/ikona_pokrzywa_crafting");
             meliseTexCrafting = models.getTexture("HUD/ikona_melisa_crafting");
+            multiplierTexture = models.getTexture("HUD/multiplier");
 
             MenuFont = Globals.content.Load<SpriteFont>("menuFont");
             MenuFont2 = Globals.content.Load<SpriteFont>("menuFont2");
             MenuFont3 = Globals.content.Load<SpriteFont>("menuFont3");
             ItemFont = Globals.content.Load<SpriteFont>("ItemFont");
             ScoreFont = Globals.content.Load<SpriteFont>("ScoreFont");
+            ScoreMultiplier = Globals.content.Load<SpriteFont>("ScoreMultiplier");
             Menu = Globals.content.Load<SpriteFont>("Menu");
             Menu2 = Globals.content.Load<SpriteFont>("Menu2");
         }
@@ -195,6 +196,28 @@ namespace TheGame
                 }
 
             }
+        }
+
+        public void DrawScore()
+        {
+            int scoreX = WindowWidth - (int)ScoreFont.MeasureString(Globals.Score.ToString()).X - 20;
+            int scoreY = 20;
+            int grayDist = 3, whiteDist = 7;
+
+            string scoreMul = "x" + Globals.ScoreMultiplier.ToString();
+            int pointsX = scoreX - (int)ScoreMultiplier.MeasureString(scoreMul.ToString()).X - 26;
+            int pointsY = scoreY + 20;
+
+            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(scoreX, scoreY), Color.Black);
+            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(scoreX, scoreY - grayDist), Color.Gray);
+            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(scoreX, scoreY - whiteDist), Color.White);
+            
+            Rectangle rect = new Rectangle(pointsX - 13, pointsY - 16, 60, 60);
+            Globals.spriteBatch.Draw(multiplierTexture, rect, Color.White);
+
+            Globals.spriteBatch.DrawString(ScoreMultiplier, scoreMul, new Vector2(pointsX, pointsY), Color.Black);
+            Globals.spriteBatch.DrawString(ScoreMultiplier, scoreMul, new Vector2(pointsX, pointsY - 2), Color.Gray);
+            Globals.spriteBatch.DrawString(ScoreMultiplier, scoreMul, new Vector2(pointsX, pointsY - 4), Color.White);
         }
 
         public void DrawInventory()
@@ -550,13 +573,6 @@ namespace TheGame
             }
 
             //Debug.WriteLine(name);
-        }
-
-        public void DrawScore()
-        {
-            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 40 * Globals.Score.ToString().Length, 5), Color.Black);
-            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 39 * Globals.Score.ToString().Length, 4), Color.Gray);
-            Globals.spriteBatch.DrawString(ScoreFont, Globals.Score.ToString(), new Vector2(WindowWidth - 38 * Globals.Score.ToString().Length, 2), Color.White);
         }
 
         private void DrawEnemyHealthBar(List<Enemy> enemies)

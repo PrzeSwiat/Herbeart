@@ -21,7 +21,7 @@ namespace TheGame
         private float ang = 0f;
         public event EventHandler OnDestroy;
         public bool destroyAnimation = false;
-        private SpriteFont ScoreFont;
+        private SpriteFont PointFont;
         private bool bcanSmaller = true;
         public Animation2D(Texture2D texture, Vector3 initialPosition, Vector2 targetPosition, float animationDuration,Viewport viewport)
         {
@@ -43,7 +43,7 @@ namespace TheGame
             this.animationDuration = animationDuration;
             this.elapsedTime = 0f;
             this.scale = new Vector2(0.1f, 0.1f);
-            ScoreFont = Globals.content.Load<SpriteFont>("ScoreFont");
+            PointFont = Globals.content.Load<SpriteFont>("PointFont");
         }
         public Animation2D(Texture2D texture, Vector2 initialPosition, Vector2 targetPosition, float animationDuration, Viewport viewport)
         {
@@ -88,8 +88,8 @@ namespace TheGame
         public void DrawScore()
         {
             Globals.spriteBatch.Begin();
-            Globals.spriteBatch.DrawString(ScoreFont, "+ " + (10 * Globals.ScoreMultipler).ToString(), position + new Vector2(-3,3), Color.Black, ang, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            Globals.spriteBatch.DrawString(ScoreFont, "+ " + (10 * Globals.ScoreMultipler).ToString(), position,Color.White,  ang, Vector2.Zero,  scale, SpriteEffects.None, 0f);
+            Globals.spriteBatch.DrawString(PointFont, "+ " + (10 * Globals.ScoreMultiplier).ToString(), position + new Vector2(-3,3), Color.Black, ang, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            Globals.spriteBatch.DrawString(PointFont, "+ " + (10 * Globals.ScoreMultiplier).ToString(), position,Color.White,  ang, Vector2.Zero,  scale, SpriteEffects.None, 0f);
             Globals.spriteBatch.End();
         }
         public void EndAnimation()
