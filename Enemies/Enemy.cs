@@ -89,10 +89,13 @@ namespace TheGame
             }
 
             HandleSlowedStatus(deltaTime);
-
-            AAttack.Update(Globals.gameTime);
-            AIdle.Update(Globals.gameTime);
-            ARun.Update(Globals.gameTime);
+            if (this.GetType() != typeof(Bush))
+            {
+                AAttack.Update(Globals.gameTime);
+                AIdle.Update(Globals.gameTime);
+                ARun.Update(Globals.gameTime);
+            }
+            
 
             CheckCollision(player);
             RotateTowardsCurrentDirection();
