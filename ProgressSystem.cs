@@ -18,15 +18,11 @@ namespace TheGame
         public int MenuOption = 1;
         public int[] rewards = { 0, 0, 0 };
         Texture2D Reward1,Reward2,Reward3;
-        int attackspeedcounter, dmgcounter, speedcounter;
-        int nettlecounter,applecounter,Melissacounter;
         Texture2D rewe;
         public ProgressSystem(Player player)
         {
             this.player = player;
-            attackspeedcounter = 0;
-            dmgcounter = 0;
-            speedcounter = 0;
+            
             rewe = Globals.content.Load<Texture2D>("Textures/itemFrame");
         }
 
@@ -58,7 +54,7 @@ namespace TheGame
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (rewards[1] == 1)
             {
-                if(attackspeedcounter <3)
+                if(Globals.attackspeedupgrade <3)
                 {
                      Reward2= rewe;
                 }
@@ -69,7 +65,7 @@ namespace TheGame
             }
             if (rewards[1] == 2)
             {
-                if(dmgcounter<3)
+                if(Globals.dmgupgrade<3)
                 {
                      Reward2= rewe;
                 }
@@ -81,7 +77,7 @@ namespace TheGame
             }
              if (rewards[1] == 3)
             {
-                if(speedcounter<3)
+                if(Globals.speedupgrade<3)
                 {
                      Reward2= rewe;
                 }
@@ -99,7 +95,7 @@ namespace TheGame
 ///////////////////////////////////////////////////////////////////////////////////
             if (rewards[2] == 1)
             {
-                if (nettlecounter < 3)
+                if (Globals.nettleupgrade < 3)
                 {
                     Reward3= rewe;
                 }
@@ -111,7 +107,7 @@ namespace TheGame
             }
             if (rewards[2] == 2)
             {
-                if(applecounter < 3)
+                if(Globals.appleupgrade < 3)
                 {
                     Reward3= rewe;
                 }
@@ -123,7 +119,7 @@ namespace TheGame
             }
             if (rewards[2] == 3)
             {
-                if (Melissacounter < 3)
+                if (Globals.melissaupgrade < 3)
                 {
                     Reward3= rewe;
                 }
@@ -216,20 +212,20 @@ namespace TheGame
                         
                             // Reward2=tekstura dodatkowego attackspeeda
                         addAttackSpeed(0.5f);
-                        attackspeedcounter++;
+                        Globals.attackspeedupgrade++;
                       
                     }
                     if (rewards[1] == 2)
                     {
                         addStrenght(2);
-                        dmgcounter++;
+                        Globals.dmgupgrade++;
                         // Reward2=tekstura dodatkowego Atacka
 
                     }
                     if (rewards[1] == 3)
                     {
                         addSpeed(3);
-                        speedcounter++;
+                        Globals.speedupgrade++;
                         // Reward2=tekstura dodatkowego speeda
 
                     }
@@ -415,6 +411,11 @@ namespace TheGame
             }
             return false;
         }
+
+        
+
+
+
 
     }
 }

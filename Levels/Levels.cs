@@ -115,6 +115,25 @@ namespace TheGame
             return (enemyCount, difficultyLevel);
         }
 
+        public bool partyFrequency(int numberOfModules)
+        {
+            if (numberOfModules == 4)
+            {
+                return true;
+            } 
+            else if (numberOfModules < 20 && numberOfModules > 4 && (numberOfModules - 4) % 6 == 0) 
+            {
+                return true;
+            }
+            else if(numberOfModules >= 20 && (numberOfModules - 4) % 8 == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public void prepareMap()
         {
             numberOfModules++;
@@ -126,10 +145,12 @@ namespace TheGame
             int enemyCount = result.Item1;
             int difficultyLevel = result.Item2;
 
+            bool ifParty = partyFrequency(numberOfModules);
+
             switch (currentMap.type)
             {
                 case "straight":        //Przypadek prostych map - wylot z lewej i prawej
-                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
+                    if (ifParty)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         maps.Add(MapType.Map_party_left_up);
@@ -149,7 +170,7 @@ namespace TheGame
                 case "left_up":         //Zakręt do góry - wylot z lewej i góry
                     moduleSeparatorZCount--;
                     moduleHeightChange++;
-                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
+                    if (ifParty)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         maps.Add(MapType.Map_party_down_up);
@@ -166,7 +187,7 @@ namespace TheGame
                     }
                     break;
                 case "down_right":          //Zakręt od dołu w prawo - wylot z dołu i po prawo
-                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
+                    if (ifParty)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         maps.Add(MapType.Map_party_left_up);
@@ -184,7 +205,7 @@ namespace TheGame
                 case "left_down":           //Zakręt w dół - wylot z lewej i z dołu
                     moduleSeparatorZCount++;
                     moduleHeightChange++;
-                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
+                    if (ifParty)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         maps.Add(MapType.Map_party_up_right);
@@ -201,7 +222,7 @@ namespace TheGame
                     }
                     break;
                 case "up_right":            //Wylot z góry i z prawej
-                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
+                    if (ifParty)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         maps.Add(MapType.Map_party_left_up);
@@ -221,7 +242,7 @@ namespace TheGame
                 case "up_down":     //Prosta od góry do dołu 
                     moduleSeparatorZCount++;
                     moduleHeightChange++;
-                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
+                    if (ifParty)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         prepareModule(MapType.Map_party_up_right, 0, 0);
@@ -235,7 +256,7 @@ namespace TheGame
                 case "down_up":     //Prosta od dołu do góry
                     moduleSeparatorZCount--;
                     moduleHeightChange++;
-                    if (numberOfModules == 4 || numberOfModules % 15 == 0)
+                    if (ifParty)
                     {
                         modulesWithParty.Add(numberOfModules - 1);
                         prepareModule(MapType.Map_party_down_right, 0, 0);
