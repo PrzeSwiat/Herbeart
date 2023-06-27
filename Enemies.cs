@@ -87,7 +87,10 @@ namespace TheGame
                     Vector2 avoidOthersVelocity = AvoidanceBehaviour(enemy, 9, 0.5f);
                     Vector2 avoidObstaclesVelocity = AvoidObstacles(enemy, 10, 0.4f);
                     enemy.Direction = flockVel + towardsPlayerVel + avoidOthersVelocity + avoidObstaclesVelocity;
-                    enemy.ActualSpeed = enemy.MaxSpeed;
+                    if (enemy.ActualSpeed == 0)
+                    {
+                        enemy.ActualSpeed = enemy.MaxSpeed;
+                    }
                 }
                 else
                 {
