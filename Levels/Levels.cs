@@ -104,12 +104,12 @@ namespace TheGame
             }
             else
             {
-                int moduleIncrements = (numberOfModules - 15) / 5;
+                int moduleIncrements = (numberOfModules - 15) / 8;
                 enemyCount = 9 + (moduleIncrements * 8);
                 difficultyLevel = 4 + moduleIncrements;
-                if (difficultyLevel > 7)
+                if (difficultyLevel > 6)
                 {
-                    difficultyLevel = 7;
+                    difficultyLevel = 6;
                 }
             }
             return (enemyCount, difficultyLevel);

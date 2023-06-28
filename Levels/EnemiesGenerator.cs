@@ -26,43 +26,43 @@ namespace TheGame
         {
             switch (difficultyLevel)
             {
-                case 1:     //Dla modułu 4 ma losować tylko mięte i pokrzywe
+                case 1:     //Dla modułu 3 ma losować tylko mięte i pokrzywe
                     Mint.probability = 0.8;
                     Apple.probability = 0.0;
                     Nettle.probability = 0.2;
                     Melissa.probability = 0.0;
                     break;
-                case 2:     //Dla modułów 6-8 ma wylosować pierwszy raz jabłko, oraz mięte i pokrzywe
-                    Mint.probability = 0.75;
-                    Apple.probability = 0.05;
-                    Nettle.probability = 0.2;
+                case 2:     //Dla modułów <=7 ma wylosować pierwszy raz jabłko, oraz mięte i pokrzywe
+                    Mint.probability = 0.6;
+                    Apple.probability = 0.15;
+                    Nettle.probability = 0.25;
                     Melissa.probability = 0.0;
                     break;
-                case 3:     //Dla modułów 9-11 ma wylosować pierwszy raz melisse, oraz mięte, pokrzywe, jabłko
-                    Mint.probability = 0.7;
-                    Apple.probability = 0.1;
-                    Nettle.probability = 0.15;
-                    Melissa.probability = 0.05;
-                    break;
-                case 5:
-                    Mint.probability = 0.54;
-                    Apple.probability = 0.18;
-                    Nettle.probability = 0.18;
-                    Melissa.probability = 0.1;
-                    break;
-                case 6:
-                    Mint.probability = 0.4;
+                case 3:     //Dla modułów <= 10 ma wylosować pierwszy raz melisse, oraz mięte, pokrzywe, jabłko
+                    Mint.probability = 0.5;
                     Apple.probability = 0.2;
                     Nettle.probability = 0.2;
-                    Melissa.probability = 0.2;
+                    Melissa.probability = 0.10;
                     break;
-                case 7:
-                    Mint.probability = 0.3;
+                case 4:     //Dla modułów <= 15
+                    Mint.probability = 0.36;
+                    Apple.probability = 0.22;
+                    Nettle.probability = 0.22;
+                    Melissa.probability = 0.20;
+                    break;
+                case 5:
+                    Mint.probability = 0.30;
                     Apple.probability = 0.25;
                     Nettle.probability = 0.25;
-                    Melissa.probability = 0.2;
+                    Melissa.probability = 0.20;
                     break;
-                case 8:
+                case 6:
+                    Mint.probability = 0.25;
+                    Apple.probability = 0.25;
+                    Nettle.probability = 0.25;
+                    Melissa.probability = 0.25;
+                    break;
+                case 8:     //Dla modułów 1 i 2 - losuje tylko mięty
                     Mint.probability = 1.0;
                     Apple.probability = 0.0;
                     Nettle.probability = 0.0;
@@ -86,7 +86,7 @@ namespace TheGame
                 cumulativeProbability += probability;
                 if (randomNumber < cumulativeProbability)
                 {
-                    if (enemyTypes[i].enemyType != "Objects/mint" && (difficultyLevel != 7 || difficultyLevel != 6))
+                    if (enemyTypes[i].enemyType != "Objects/mint" && (difficultyLevel != 5 || difficultyLevel != 6))
                     {
                         enemyTypes[i].probability = enemyTypes[i].probability / 2;
 
