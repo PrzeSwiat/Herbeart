@@ -18,12 +18,29 @@ namespace TheGame
         public int MenuOption = 1;
         public int[] rewards = { 0, 0, 0 };
         Texture2D Reward1,Reward2,Reward3;
+        Texture2D picked_Reward1,picked_Reward2,picked_Reward3;
         Texture2D rewe;
+        Texture2D apple_normal,apple_pick,dmg_normal,dmg_pick,leafs_normal,leafs_pick,m_normal,m_pick,mint_normal,mint_pick,nettle_pick,
+            nettle_normal,tea_normal,tea_pick;
         public ProgressSystem(Player player)
         {
             this.player = player;
             
             rewe = Globals.content.Load<Texture2D>("Textures/itemFrame");
+            apple_normal = Globals.content.Load<Texture2D>("ProgressSystem/apple_normal");
+            apple_pick = Globals.content.Load<Texture2D>("ProgressSystem/apple_pick");
+            dmg_normal = Globals.content.Load<Texture2D>("ProgressSystem/dmg_normal");
+            dmg_pick = Globals.content.Load<Texture2D>("ProgressSystem/dmg_pick");
+            leafs_normal = Globals.content.Load<Texture2D>("ProgressSystem/leafs_normal");
+            leafs_pick = Globals.content.Load<Texture2D>("ProgressSystem/leafs_pick");
+            m_normal = Globals.content.Load<Texture2D>("ProgressSystem/m_normal");
+            m_pick = Globals.content.Load<Texture2D>("ProgressSystem/m_pick");
+            mint_normal = Globals.content.Load<Texture2D>("ProgressSystem/mint_normal");
+            mint_pick = Globals.content.Load<Texture2D>("ProgressSystem/mint_pick");
+            nettle_pick = Globals.content.Load<Texture2D>("ProgressSystem/nettle_pick");
+            nettle_normal = Globals.content.Load<Texture2D>("ProgressSystem/nettle_normal");
+            tea_normal = Globals.content.Load<Texture2D>("ProgressSystem/tea_normal");
+            tea_pick = Globals.content.Load<Texture2D>("ProgressSystem/tea_pick");
         }
 
 
@@ -38,25 +55,28 @@ namespace TheGame
             {
                 if (isRecepturetoUnlock()) 
                 {
-                    Reward1 = rewe;
+                    Reward1 = tea_normal;
+                    picked_Reward1 = tea_pick;
                 }
                 else
                 {
-                      Reward1= rewe;
+                      
                     rewards[0] = 4;
                 }
 
             }
             if (rewards[0]==4)
             {
-                  Reward1= rewe;
+                  Reward1= leafs_normal;
+                picked_Reward1 = leafs_pick;
             }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (rewards[1] == 1)
             {
                 if(Globals.attackspeedupgrade <3)
                 {
-                     Reward2= rewe;
+                    Reward2 = dmg_normal;
+                    picked_Reward2 = dmg_pick;
                 }
                 else
                 {
@@ -67,7 +87,8 @@ namespace TheGame
             {
                 if(Globals.dmgupgrade<3)
                 {
-                     Reward2= rewe;
+                     Reward2= dmg_normal;
+                    picked_Reward2= dmg_pick;
                 }
                 else
                 {
@@ -79,7 +100,8 @@ namespace TheGame
             {
                 if(Globals.speedupgrade<3)
                 {
-                     Reward2= rewe;
+                    Reward2 = dmg_normal;
+                    picked_Reward2 = dmg_pick;
                 }
                 else
                 {
@@ -89,7 +111,8 @@ namespace TheGame
             }
             if (rewards[1] == 4)
             {
-                Reward2= rewe;
+                Reward2 = dmg_normal;
+                picked_Reward2 = dmg_pick;
 
             }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +120,8 @@ namespace TheGame
             {
                 if (Globals.nettleupgrade < 3)
                 {
-                    Reward3= rewe;
+                    Reward3= nettle_normal;
+                    picked_Reward3 = nettle_pick;
                 }
                 else
                 {
@@ -109,7 +133,8 @@ namespace TheGame
             {
                 if(Globals.appleupgrade < 3)
                 {
-                    Reward3= rewe;
+                    Reward3= apple_normal;
+                    picked_Reward3 = apple_pick;
                 }
                 else
                 {
@@ -121,7 +146,8 @@ namespace TheGame
             {
                 if (Globals.melissaupgrade < 3)
                 {
-                    Reward3= rewe;
+                    Reward3= mint_normal;
+                    picked_Reward3 = mint_pick;
                 }
                 else
                 {
@@ -133,18 +159,20 @@ namespace TheGame
             {
                 
                 Reward3= rewe;
+                picked_Reward3= rewe;
             }
             if (rewards[2] == 5)
             {
                 
-                Reward3= rewe;
+                Reward3= m_normal;
+                picked_Reward3= m_pick;
             }
            
         }
         
         public void drawSelectMenu(DateTime dt)
         {
-
+            Texture2D t1, t2, t3;
             checkGeneratedRewards();
             if (canDraw)
             {
@@ -173,18 +201,7 @@ namespace TheGame
                 Color two = Color.Gray;
                 Color three = Color.Gray;
 
-                if (MenuOption == 1)
-                {
-                    one = Color.White;
-                }
-                if (MenuOption == 2)
-                {
-                    two = Color.White;
-                }
-                if (MenuOption == 3)
-                {
-                    three = Color.White;
-                }
+                
                 TimeSpan ts = DateTime.Now - dt;
                
                 if (((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevProggresState .Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardProggresState.IsKeyUp(Keys.Enter)) && MenuOption == 1)&& ts.TotalSeconds > 1)
@@ -278,9 +295,41 @@ namespace TheGame
                 }
                 
                 Globals.spriteBatch.Begin();
-                Globals.spriteBatch.Draw(rewe, new Vector2(400,400), null, one, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
-                Globals.spriteBatch.Draw(rewe, new Vector2(600, 600), null, two, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
-                Globals.spriteBatch.Draw(rewe, new Vector2(800, 800), null, three, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                if (MenuOption == 1)
+                {
+                    t1 = picked_Reward1;
+                    Globals.spriteBatch.Draw(t1, new Vector2(400, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    t1 = Reward1;
+                    Globals.spriteBatch.Draw(t1, new Vector2(400, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                }
+                if (MenuOption == 2)
+                {
+                    t2 = picked_Reward2;
+                    Globals.spriteBatch.Draw(t2, new Vector2(700, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    t2= Reward2;
+                    Globals.spriteBatch.Draw(t2, new Vector2(700, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                }
+                if (MenuOption == 3)
+                {
+                    t3 = picked_Reward3;
+                    Globals.spriteBatch.Draw(t3, new Vector2(1000, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    t3 = Reward3;
+                    Globals.spriteBatch.Draw(t3, new Vector2(1000, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+
+                }
+
+
+
+
                 Globals.spriteBatch.End();
                 Globals.prevProggresState = gamePadState;
                 Globals.prevKeyBoardProggresState = state;
@@ -295,7 +344,7 @@ namespace TheGame
         {
             int valuefirst = random.Next(1, 4 + 1);
             int valueseccond = random.Next(1, 4 + 1);
-            int valuethird = random.Next(1, 3 + 1);
+            int valuethird = random.Next(1, 5 + 1);
 
             return new int[] { valuefirst, valueseccond, valuethird };
 
