@@ -190,7 +190,7 @@ namespace TheGame
                 effectList.Add("slow");
             }
             isSlowed = true;
-            this.ActualAttackSpeed = this.AttackSpeed * slowMultiplier;
+            this.ActualAttackSpeed = this.AttackSpeed / slowMultiplier;
             this.ActualSpeed = this.MaxSpeed * slowMultiplier;
         }
 
