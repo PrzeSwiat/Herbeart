@@ -15,10 +15,10 @@ namespace TheGame
 
         public Inventory()
         {
-            appleLeafNumber = 3;
-            meliseLeafNumber = 3;
+            appleLeafNumber = 0;
+            meliseLeafNumber = 0;
             mintLeafNumber = 3;
-            nettleLeafNumber = 3;
+            nettleLeafNumber = 0;
         }
 
         public Dictionary<string, int> returnLeafs()
