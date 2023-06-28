@@ -13,7 +13,7 @@ namespace TheGame
     {
         private DateTime lastAttackTime, actualTime;
         private int attackCounter = 0;
-        private int attacksToStun = 5;
+        private int attacksToStun = 3;
         private int stunTime = 2;
 
         public Melissa(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
