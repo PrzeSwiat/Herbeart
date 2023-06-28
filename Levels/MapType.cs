@@ -66,9 +66,11 @@ namespace TheGame
         //Loot and Forest Maps
         public static MapType Map_loot_forest_straight_1 = new MapType("Maps/map_loot_forest_straight_1.txt", straight);
         public static MapType Map_loot_forest_straight_2 = new MapType("Maps/map_loot_forest_straight_2.txt", straight);
+        public static MapType Map_loot_up_down_1 = new MapType("Maps/map_loot_up_down_1.txt", up_down);
+        public static MapType Map_loot_down_up_1 = new MapType("Maps/map_loot_up_down_1.txt", down_up);
 
         //All Maps
-        public static MapType[] All_Maps = new MapType[] { Map_left_down_1, Map_left_down_2, Map_left_down_3, Map_left_up_1, Map_left_up_2, Map_left_up_3, Map_straight_1, Map_straight_2, Map_straight_3, Map_straight_4, Map_up_down_1, Map_down_up_1, Map_up_right_1, Map_down_right_1, Map_loot_forest_straight_1, Map_loot_forest_straight_2 };
+        public static MapType[] All_Maps = new MapType[] { Map_left_down_1, Map_left_down_2, Map_left_down_3, Map_left_up_1, Map_left_up_2, Map_left_up_3, Map_straight_1, Map_straight_2, Map_straight_3, Map_straight_4, Map_up_down_1, Map_down_up_1, Map_up_right_1, Map_down_right_1, Map_loot_forest_straight_1, Map_loot_forest_straight_2, Map_loot_up_down_1, Map_loot_down_up_1 };
         
         //Party Maps
         public static MapType Map_party_left_up = new MapType("Maps/map_party_left_up.txt", left_up);
