@@ -214,7 +214,10 @@ namespace TheGame
             if (Inventory.checkNettleLeafNumber()) 
             {
                 Inventory.removeNettleLeaf();
-                NettleLeaf nettle = new NettleLeaf(GetPosition(), NettleValue, NettleTime);
+                float distance = 3;
+                Vector3 moveVector = new Vector3(getLookingDirection().X * distance, 0, getLookingDirection().Y * distance);
+                Vector3 nettlePosition = this.GetPosition() - moveVector;
+                NettleLeaf nettle = new NettleLeaf(nettlePosition, NettleValue, NettleTime);
                 nettle.OnDestroy += RemoveNettle;
                 nettle.LoadContent();
                 nettle.SetScale(2);
@@ -228,7 +231,10 @@ namespace TheGame
             if (Inventory.checkMintLeafNumber())
             {
                 Inventory.removeMintLeaf();
-                MintLeaf mint = new MintLeaf(GetPosition(), MintValue, MintTime);
+                float distance = 3;
+                Vector3 moveVector = new Vector3(getLookingDirection().X * distance, 0, getLookingDirection().Y * distance);
+                Vector3 mintPosition = this.GetPosition() - moveVector;
+                MintLeaf mint = new MintLeaf(mintPosition, MintValue, MintTime);
                 mint.OnDestroy += RemoveMint;
                 mint.LoadContent();
                 mint.SetScale(2);
