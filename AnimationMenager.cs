@@ -193,7 +193,7 @@ namespace TheGame
                 TimeSpan timeSinceLastAttack = DateTime.Now - lastAttackExecutionTime;
                 if (timeSinceLastAttack.TotalSeconds >= 0.1f)
                 {
-                    player.ActualSpeed = 13;
+                    //player.ActualSpeed = 13;
 
                     if (Combocounter == 0)
                     {
@@ -226,8 +226,10 @@ namespace TheGame
             }
             if (AAttack1.IsPlaying || AAttack2.IsPlaying)
             {
+                if (!slowness) { 
                 player.ActualSpeed -=7;
                 slowness = true;
+                }
             }
             else
             {
