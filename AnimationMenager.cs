@@ -156,6 +156,7 @@ namespace TheGame
             {
                 enemi.OnAttack += EnemyAttack;
                 enemi.onMove += EnemyMove;
+                enemi.onMoveEnd += EnemyMoveStop;
 
                 if (enemi.GetType() != typeof(Bush))
                 {
@@ -286,11 +287,17 @@ namespace TheGame
         private void EnemyMove(object obj, EventArgs e)
         {
             Enemy enemy = (Enemy)obj;
-            //Debug.WriteLine(enemy.GetType());
+            enemy.AIdle.IsPlaying = false;
             enemy.ARun.IsPlaying = true;
 
         }
+        private void EnemyMoveStop(object obj, EventArgs e)
+        {
+            Enemy enemy = (Enemy)obj;
+            enemy.ARun.IsPlaying = false;
+            enemy.AIdle.IsPlaying = true;
 
+        }
 
 
         public void DrawAnimations()

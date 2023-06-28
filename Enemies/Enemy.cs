@@ -33,6 +33,7 @@ namespace TheGame
         public bool isUpdating;
         public List<string> effectList = new List<string>();
         public event EventHandler onMove;
+        public event EventHandler onMoveEnd;
         public event EventHandler onHit;
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
@@ -56,6 +57,13 @@ namespace TheGame
             if (onMove != null)
             {
                 onMove?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        public void OnMoveStop()
+        {
+            if (onMoveEnd != null)
+            {
+                onMoveEnd?.Invoke(this, EventArgs.Empty);
             }
         }
 

@@ -70,6 +70,7 @@ namespace TheGame
             // tells the world of our orientantion
             // (the same as:
             // Vector3(0,1,0) - up and down is along y axis)
+
             Globals.worldMatrix = Matrix.CreateWorld(camera.CamTarget, Vector3.Forward, Vector3.Up);
             //.................
 

@@ -87,6 +87,10 @@ namespace TheGame
                 OnMoveGo();
                 Movement(player);
             }
+            else
+            {
+                OnMoveStop();
+            }
             this.shadow.UpdatingEnemy(this.GetPosition(), new Vector3(1.8f, 0, -1.9f));
         }
 
