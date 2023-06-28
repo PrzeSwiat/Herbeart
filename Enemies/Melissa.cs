@@ -19,7 +19,7 @@ namespace TheGame
         public Melissa(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
 
-            AssignParameters(8, 5, 1.5f, 1.0f);
+            AssignParameters(8, 10, 13f, 1.0f);
             score = 20;
             this.setBSRadius(3);
             this.visionRange = 30f;
