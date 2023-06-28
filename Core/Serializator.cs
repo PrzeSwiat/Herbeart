@@ -31,6 +31,7 @@ namespace TheGame
         public void AddRecord(string name)
         {
             var record = new ScoreRecord(name, Globals.Score);
+            records.Clear();
             records.Add(record);
             SaveToFile();
         }
