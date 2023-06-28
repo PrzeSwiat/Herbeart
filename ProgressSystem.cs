@@ -155,7 +155,7 @@ namespace TheGame
             }
             if (rewards[2] == 3)
             {
-                if (Globals.melissaupgrade < 3)
+                if (Globals.mintupgrade < 3)
                 {
                     Reward3= mint_normal;
                     picked_Reward3 = mint_pick;

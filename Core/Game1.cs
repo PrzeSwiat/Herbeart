@@ -326,7 +326,7 @@ namespace TheGame
                         GraphicsDevice.BlendState = BlendState.Opaque;
                         
                         hud.Update(player.Inventory.returnLeafs(), player.isCrafting(), player.isThrowing(), player.Crafting.returnRecepture(), player.getRotationY());
-                        hud.DrawFrontground(player.Health, enemies.EnemiesList);  //hud jako OSTATNI koniecznie
+                        hud.DrawFrontground(player.calculateHPPercent(), enemies.EnemiesList);  //hud jako OSTATNI koniecznie
                         ParticleSystem particleSystem = ParticleSystem.Instance;
                         particleSystem.Draw();
                         Leafs.DrawHud();//Koniecznie ostatnie nawet za Hudem

@@ -68,19 +68,15 @@ namespace TheGame
         public static bool[] tutorialDone;
 
         public static List<string> playerActiveEffects = new List<string>();
-        /*public static bool isImmortal;
-        public static bool isHaste;
-        public static bool isStrenght;*/
-
 
         public static int WindowWidth;
         public static int WindowHeight;
 
-        public static int attackspeedupgrade= 0;
-        public static int dmgupgrade = 0;
-        public static int speedupgrade = 0;
-        public static int nettleupgrade =0;
-        public static int appleupgrade = 0;
-        public static int melissaupgrade = 0;
+        public static int attackspeedupgrade = 1;
+        public static int dmgupgrade = 1;
+        public static int speedupgrade = 1;
+        public static int nettleupgrade = 1;
+        public static int appleupgrade = 1;
+        public static int mintupgrade = 1;
     }
 }

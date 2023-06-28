@@ -37,6 +37,9 @@ namespace TheGame
         private Texture2D ReceptureBar;
         private Texture2D Arrow;
         private Texture2D effectMelise, effectMint, effectNettle;
+        private Texture2D appleBuff1, appleBuff2, attackSpeed1, attackSpeed2;
+        private Texture2D mintBuff1, mintBuff2, nettleBuff1, nettleBuff2;
+        private Texture2D speedBuff1, speedBuff2, strenght1, strenght2;
         private int WindowWidth, WindowHeight;
         public string name = "";
         
@@ -60,12 +63,25 @@ namespace TheGame
         {
             LoadedModels models = LoadedModels.Instance;
 
+            appleBuff1 = models.getTexture("HUD/PlayerUpgrades/appleBuff1");
+            appleBuff2 = models.getTexture("HUD/PlayerUpgrades/appleBuff2");
+            attackSpeed1 = models.getTexture("HUD/PlayerUpgrades/atackSpeed1");
+            attackSpeed2 = models.getTexture("HUD/PlayerUpgrades/atackSpeed2");
+            mintBuff1 = models.getTexture("HUD/PlayerUpgrades/mintBuff1");
+            mintBuff2 = models.getTexture("HUD/PlayerUpgrades/mintBuff2");
+            nettleBuff1 = models.getTexture("HUD/PlayerUpgrades/nettleBuff1");
+            nettleBuff2 = models.getTexture("HUD/PlayerUpgrades/nettleBuff2");
+            speedBuff1 = models.getTexture("HUD/PlayerUpgrades/speedBuff1");
+            speedBuff2 = models.getTexture("HUD/PlayerUpgrades/speedBuff2");
+            strenght1 = models.getTexture("HUD/PlayerUpgrades/strenght1");
+            strenght2 = models.getTexture("HUD/PlayerUpgrades/strenght2");
+
             dot = models.getTexture("Textures/EnemyHealth");
             menu = models.getTexture("HUD/tlo_listki_menu2");
-            attack_tutorial = models.getTexture("Textures/attackdash_tutorial"); ;
-            brew_tutorial= models.getTexture("Textures/brewTEA_tutorial"); ;
-            festival_tutorial =models.getTexture("Textures/festival_tutorial"); ;
-            special_tutorial =models.getTexture("Textures/SPECIALS_tutorial"); ;
+            attack_tutorial = models.getTexture("Textures/attackdash_tutorial");
+            brew_tutorial = models.getTexture("Textures/brewTEA_tutorial");
+            festival_tutorial = models.getTexture("Textures/festival_tutorial");
+            special_tutorial = models.getTexture("Textures/SPECIALS_tutorial");
             difficulty = models.getTexture("HUD/tlo_difficulty3");
             healtColor = models.getTexture("HUD/magenta");
             healthBar = models.getTexture("HUD/pasekzycia");
@@ -122,7 +138,7 @@ namespace TheGame
             Globals.maxReceptures = Globals.learnedRecepture.Count();
         }
 
-        public void DrawFrontground(int hp, List<Enemy> enemies)
+        public void DrawFrontground(float hp, List<Enemy> enemies)
         {
             Globals.spriteBatch.Begin();
             DrawInventory();
@@ -133,8 +149,76 @@ namespace TheGame
             Globals.spriteBatch.End();
         }
 
+        private void DrawPlayerUpgrades()
+        {
+            int size = 70;
+            int distance = 60;
+            int rectX = 1120, rectY = 15;
+            Rectangle attackSpeedRect = new Rectangle(rectX, rectY, size, size);
+            Rectangle strenghtRect = new Rectangle(rectX + distance, rectY, size, size);
+            Rectangle speedRect = new Rectangle(rectX + distance * 2, rectY, size, size);
+            Rectangle mintRect = new Rectangle(rectX + distance * 3, rectY, size, size);
+            Rectangle nettleSpeedRect = new Rectangle(rectX + distance * 4, rectY, size, size);
+            Rectangle appleRect = new Rectangle(rectX + distance * 5, rectY, size, size);
+
+            if (Globals.attackspeedupgrade == 1)
+            {
+                Globals.spriteBatch.Draw(attackSpeed1, attackSpeedRect, Color.White);
+            } else if (Globals.attackspeedupgrade == 2)
+            {
+                Globals.spriteBatch.Draw(attackSpeed2, attackSpeedRect, Color.White);
+            }
+
+            if (Globals.dmgupgrade == 1)
+            {
+                Globals.spriteBatch.Draw(strenght1, strenghtRect, Color.White);
+            }
+            else if (Globals.dmgupgrade == 2)
+            {
+                Globals.spriteBatch.Draw(strenght2, strenghtRect, Color.White);
+            }
+
+            if (Globals.mintupgrade == 1)
+            {
+                Globals.spriteBatch.Draw(mintBuff1, mintRect, Color.White);
+            }
+            else if (Globals.mintupgrade == 2)
+            {
+                Globals.spriteBatch.Draw(mintBuff2, mintRect, Color.White);
+            }
+
+            if (Globals.appleupgrade == 1)
+            {
+                Globals.spriteBatch.Draw(appleBuff1, appleRect, Color.White);
+            }
+            else if (Globals.appleupgrade == 2)
+            {
+                Globals.spriteBatch.Draw(appleBuff2, appleRect, Color.White);
+            }
+
+            if (Globals.nettleupgrade == 1)
+            {
+                Globals.spriteBatch.Draw(nettleBuff1, nettleSpeedRect, Color.White);
+            }
+            else if (Globals.nettleupgrade == 2)
+            {
+                Globals.spriteBatch.Draw(nettleBuff2, nettleSpeedRect, Color.White);
+            }
+
+            if (Globals.speedupgrade == 1)
+            {
+                Globals.spriteBatch.Draw(speedBuff1, speedRect, Color.White);
+            }
+            else if (Globals.speedupgrade == 2)
+            {
+                Globals.spriteBatch.Draw(speedBuff2, speedRect, Color.White);
+            }
+
+        }
+
         private void DrawPlayerEffects()
         {
+            DrawPlayerUpgrades();
             int posX = WindowWidth / 2 - this.healthBar.Width / 8;
             int rectX = posX - 100;
             Rectangle rect = new Rectangle(rectX, 0, 100, 100);
@@ -156,10 +240,11 @@ namespace TheGame
             }
         }
 
-        private void DrawHealthBar(int hp)
+        private void DrawHealthBar(float hp)
         {
             int posX = WindowWidth / 2 - this.healthBar.Width / 8;
-            Rectangle health = new Rectangle(posX + 10, 40, hp, 30);
+            int calculatedHP = (int)(hp * 300);
+            Rectangle health = new Rectangle(posX + 10, 40, calculatedHP, 30);
             Rectangle healthBar = new Rectangle(posX, 0, this.healthBar.Width / 4, this.healthBar.Height / 4);
             Rectangle healthBackdrop = new Rectangle(posX, 0, this.healthBackdrop.Width / 4, this.healthBackdrop.Height / 4);
 
@@ -184,7 +269,6 @@ namespace TheGame
 
         private void DrawReceptures()
         {
-            //string[] recepture = { "AAB", "AXY", "XBY", "ABX" };
             float scale = 4.5f;
             Rectangle receptureRect = new Rectangle(WindowWidth / 2 - (int)(2208 / scale) / 2, WindowHeight - (int)(622 / scale) - 40, (int)(2208 / scale), (int)(622 / scale));
             Globals.spriteBatch.Draw(ReceptureBar, receptureRect, Color.White);
