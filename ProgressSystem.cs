@@ -234,7 +234,7 @@ namespace TheGame
                     }
                     if (rewards[1] == 2)
                     {
-                        addStrenght(2);
+                        addStrenght(1);
                         Globals.dmgupgrade++;
                         // Reward2=tekstura dodatkowego Atacka
 
@@ -365,7 +365,7 @@ namespace TheGame
             int value = -1; 
             do
             {
-               value = random.Next(0, player.Crafting.bools.Count());
+               value = random.Next(0, player.Crafting.bools.Count()+1);
                 
             } while (player.Crafting.bools[value]);
             if (value == 1) 
@@ -415,8 +415,8 @@ namespace TheGame
         }
         public void addAttackSpeed(float speed)
         {
-            player.AttackSpeed += speed;
-            player.ActualAttackSpeed += speed;
+            player.AttackSpeed -= speed;
+            player.ActualAttackSpeed -= speed;
         }
 
         public void addSpeed(int speed)

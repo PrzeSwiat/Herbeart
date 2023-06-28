@@ -53,6 +53,7 @@ namespace TheGame
         private DateTime LAT, AT;
         DateTime lastAttackExecutionTime;
         DateTime ComboCounter,lastcomboTimer;
+        bool slowness = false;
         public AnimationMenager(ContentManager content, Player _player, List<Enemy> _enemies)
         {
             Content = content;
@@ -193,7 +194,7 @@ namespace TheGame
                 TimeSpan timeSinceLastAttack = DateTime.Now - lastAttackExecutionTime;
                 if (timeSinceLastAttack.TotalSeconds >= 0.1f)
                 {
-                    player.ActualSpeed = 13;
+                    //player.ActualSpeed = 13;
 
                     if (Combocounter == 0)
                     {
@@ -226,11 +227,18 @@ namespace TheGame
             }
             if (AAttack1.IsPlaying || AAttack2.IsPlaying)
             {
-                player.ActualSpeed = 13;
+                if (!slowness) { 
+                player.ActualSpeed -=7;
+                slowness = true;
+                }
             }
             else
             {
-                player.ActualSpeed = player.MaxSpeed;
+                if(slowness) { 
+                    slowness = false;
+                    player.ActualSpeed +=7;
+                }
+                
             }
             #endregion
 
