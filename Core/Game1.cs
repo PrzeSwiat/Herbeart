@@ -752,6 +752,7 @@ namespace TheGame
                     player.Start();
                     Globals.Start = false;
                     Globals.Hard = true;
+                    Globals.ScoreMultiplier ++;
                     Globals.Pause = false;
                 }
             }
