@@ -165,7 +165,7 @@ namespace TheGame
                         maps.AddRange(MapType.Maps_left_up);    //idziemy do gory
                         maps.AddRange(MapType.Maps_left_down);  //idziemy do dołu
                         maps.Add(MapType.Map_loot_forest_straight_1);
-                        maps.Add(MapType.Map_loot_forest_straight_2);
+                        //maps.Add(MapType.Map_loot_forest_straight_2);
                         prepareRandomModule(enemyCount, difficultyLevel);
                     }
                     break;
