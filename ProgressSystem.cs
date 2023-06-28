@@ -365,7 +365,7 @@ namespace TheGame
             int value = -1; 
             do
             {
-               value = random.Next(0, player.Crafting.bools.Count()+1);
+               value = random.Next(0, player.Crafting.bools.Count());
                 
             } while (player.Crafting.bools[value]);
             if (value == 1) 
