@@ -31,6 +31,7 @@ namespace TheGame
         public Nettle(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(6, 12, 25, 1f);
+            score = 15;
             this.setBSRadius(2.5f);
             this.shadow.SetScale(0.95f);
             this.visionRange = 25f;

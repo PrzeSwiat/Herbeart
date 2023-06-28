@@ -227,7 +227,7 @@ namespace TheGame
         {
             
             Enemy en= (Enemy)obj;
-            Animation2D anima = new Animation2D(en.GetPosition(), new Vector2(0, 0), 0.7f, Globals.viewport);
+            Animation2D anima = new Animation2D(en.GetPosition(), new Vector2(0, 0), 0.7f, Globals.viewport, en.score);
             anima.OnDestroy += DestroyAnimation;
             anim.Add(anima);
             enemiesList.Remove((Enemy)obj);

@@ -23,6 +23,7 @@ namespace TheGame
         public bool destroyAnimation = false;
         private SpriteFont PointFont;
         private bool bcanSmaller = true;
+        private int scoretoDraw = 0;
         public Animation2D(Texture2D texture, Vector3 initialPosition, Vector2 targetPosition, float animationDuration,Viewport viewport)
         {
             Vector3 projectedPosition = viewport.Project(initialPosition,
@@ -34,7 +35,7 @@ namespace TheGame
             this.elapsedTime = 0f;
             this.scale = new Vector2(0.1f,0.1f);
         }
-        public Animation2D(Vector3 initialPosition, Vector2 targetPosition, float animationDuration, Viewport viewport)
+        public Animation2D(Vector3 initialPosition, Vector2 targetPosition, float animationDuration, Viewport viewport,int score)
         {
             Vector3 projectedPosition = viewport.Project(initialPosition,
                     Globals.projectionMatrix, Globals.viewMatrix, Matrix.Identity);
@@ -43,6 +44,7 @@ namespace TheGame
             this.animationDuration = animationDuration;
             this.elapsedTime = 0f;
             this.scale = new Vector2(0.1f, 0.1f);
+            this.scoretoDraw = score;
             PointFont = Globals.content.Load<SpriteFont>("PointFont");
         }
         public Animation2D(Texture2D texture, Vector2 initialPosition, Vector2 targetPosition, float animationDuration, Viewport viewport)
@@ -88,8 +90,8 @@ namespace TheGame
         public void DrawScore()
         {
             Globals.spriteBatch.Begin();
-            Globals.spriteBatch.DrawString(PointFont, "+ " + (10 * Globals.ScoreMultiplier).ToString(), position + new Vector2(-3,3), Color.Black, ang, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            Globals.spriteBatch.DrawString(PointFont, "+ " + (10 * Globals.ScoreMultiplier).ToString(), position,Color.White,  ang, Vector2.Zero,  scale, SpriteEffects.None, 0f);
+            Globals.spriteBatch.DrawString(PointFont, "+ " + (scoretoDraw * Globals.ScoreMultiplier).ToString(), position + new Vector2(-3,3), Color.Black, ang, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            Globals.spriteBatch.DrawString(PointFont, "+ " + (scoretoDraw * Globals.ScoreMultiplier).ToString(), position,Color.White,  ang, Vector2.Zero,  scale, SpriteEffects.None, 0f);
             Globals.spriteBatch.End();
         }
         public void EndAnimation()

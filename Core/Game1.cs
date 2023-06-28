@@ -20,6 +20,7 @@ namespace TheGame
         ParticleSystem particleSystem;
         DateTime pause_timer;
         DateTime death_timer;
+        DateTime score_timer;
         //.................
 
 
@@ -61,7 +62,7 @@ namespace TheGame
             Leafs = new LeafList();
             enemies = new Enemies();
             Globals.projectionMatrix = Matrix.CreateOrthographicOffCenter(-(Globals.WindowWidth / 65), (Globals.WindowWidth / 65), -(Globals.WindowHeight / 65f), (Globals.WindowHeight / 65f), -10f, 100f);      // orthographic view 
-                                                                                                                                                            //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
+            score_timer = DateTime.Now;                                                                                                                                  //projectionMatrix = Matrix.CreateOrthographic(20, 20, 1f, 1000f);                      // second type orthographic view
 
             // PERSPECTIVE point of view
             //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f),GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f); // render range (from 1 near playing to 1000 far playing)
@@ -177,6 +178,8 @@ namespace TheGame
                         TutorialPauseCheck(Globals.time);
                         if (!Globals.TutorialPause)
                         {
+                            TimeSpan scoredeltatime = DateTime.Now - score_timer;
+                            if (scoredeltatime.TotalSeconds > 1) { Globals.Score++; score_timer = DateTime.Now; }
                             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
                             Globals.time += delta;
                             player.Update(world, delta, enemies, gameTime);

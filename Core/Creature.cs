@@ -23,6 +23,7 @@ namespace TheGame
         private float distanceFromCenter = 0;
         public bool canDestroy = true;
         public event EventHandler OnDestroy;
+        public int score = 0;
 
 
         public Creature(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
@@ -52,7 +53,7 @@ namespace TheGame
                 leaf.AddToWorld();
                 leaf.SetPosition(this.GetPosition());
                 OnDestroy?.Invoke(this, EventArgs.Empty);
-                Globals.Score += 10 * Globals.ScoreMultiplier;
+                Globals.Score += score * Globals.ScoreMultiplier;
             }
         }
 

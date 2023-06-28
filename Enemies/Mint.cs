@@ -18,6 +18,7 @@ namespace TheGame
         public Mint(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(2, 15, 2, 3f);
+            this.score = 5;
             this.shadow.SetScale(0.7f);
             this.setBSRadius(2);
             this.visionRange = 30f;

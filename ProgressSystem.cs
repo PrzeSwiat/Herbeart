@@ -357,7 +357,7 @@ namespace TheGame
             int valueseccond = random.Next(1, 4 + 1);
             int valuethird = random.Next(1, 5 + 1);
 
-            return new int[] { valuefirst, 2, valuethird };
+            return new int[] { valuefirst, valueseccond, valuethird };
 
             
             

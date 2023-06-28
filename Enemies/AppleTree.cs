@@ -22,6 +22,7 @@ namespace TheGame
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
             AssignParameters(4, 12, 2, 1.5f);
+            score= 15;
             this.setBSRadius(3);
             this.visionRange = 30f;
             this.leaf = new Leafs.AppleLeaf(worldPosition, "Objects/apple_pickup", "Textures/apple_pickup");
