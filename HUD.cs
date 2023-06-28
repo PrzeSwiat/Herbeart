@@ -237,6 +237,11 @@ namespace TheGame
                 {
                     Globals.spriteBatch.Draw(strenghtTex, rect, Color.White);
                 }
+                if (Globals.playerActiveEffects[i] == "stun")
+                {
+                    Globals.spriteBatch.Draw(effectMelise, rect, Color.White);
+                }
+
             }
         }
 
