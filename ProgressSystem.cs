@@ -245,7 +245,7 @@ namespace TheGame
                     }
                     if (rewards[1] == 2)
                     {
-                        addStrenght(1);
+                        addStrenght();
                         Globals.dmgupgrade++;
                         // Reward2=tekstura dodatkowego Atacka
 
@@ -357,7 +357,7 @@ namespace TheGame
             int valueseccond = random.Next(1, 4 + 1);
             int valuethird = random.Next(1, 5 + 1);
 
-            return new int[] { valuefirst, valueseccond, valuethird };
+            return new int[] { valuefirst, 2, valuethird };
 
             
             
@@ -420,10 +420,11 @@ namespace TheGame
             player.MaxHealth += health;
             player.Health += health;
         }
-        public void addStrenght(int str) 
+        public void addStrenght() 
         {
-            player.Strength += str;
-            player.MaxStrength += str;
+            player.MaxStrength+=1;
+            player.Strength +=1;
+            
         }
         public void addAttackSpeed(float speed)
         {
