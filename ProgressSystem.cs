@@ -5,9 +5,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace TheGame
 {
@@ -22,7 +24,7 @@ namespace TheGame
         Texture2D picked_Reward1,picked_Reward2,picked_Reward3;
         Texture2D rewe;
         Texture2D apple_normal,apple_pick,dmg_normal,dmg_pick,leafs_normal,leafs_pick,m_normal,m_pick,mint_normal,mint_pick,nettle_pick,
-            nettle_normal,tea_normal,tea_pick;
+            nettle_normal,tea_normal,tea_pick,aspeed_normal,aspeed_pick,healt_normal,health_pick,point_normal,point_pick,speed_normal,speed_pick;
         public ProgressSystem(Player player)
         {
             this.player = player;
@@ -42,6 +44,14 @@ namespace TheGame
             nettle_normal = Globals.content.Load<Texture2D>("ProgressSystem/nettle_normal");
             tea_normal = Globals.content.Load<Texture2D>("ProgressSystem/tea_normal");
             tea_pick = Globals.content.Load<Texture2D>("ProgressSystem/tea_pick");
+            aspeed_normal = Globals.content.Load<Texture2D>("ProgressSystem/aspeed_normal");
+            aspeed_pick = Globals.content.Load<Texture2D>("ProgressSystem/aspeed_pick");
+            healt_normal = Globals.content.Load<Texture2D>("ProgressSystem/health_normal");
+            health_pick = Globals.content.Load<Texture2D>("ProgressSystem/health_pick");
+            point_normal = Globals.content.Load<Texture2D>("ProgressSystem/point_normal");
+            point_pick = Globals.content.Load<Texture2D>("ProgressSystem/point_pick");
+            speed_normal = Globals.content.Load<Texture2D>("ProgressSystem/speed_normal");
+            speed_pick = Globals.content.Load<Texture2D>("ProgressSystem/speed_pick");
         }
 
 
@@ -76,8 +86,8 @@ namespace TheGame
             {
                 if(Globals.attackspeedupgrade <3)
                 {
-                    Reward2 = dmg_normal;
-                    picked_Reward2 = dmg_pick;
+                    Reward2 = aspeed_normal;
+                    picked_Reward2 = aspeed_pick;
                 }
                 else
                 {
@@ -101,8 +111,8 @@ namespace TheGame
             {
                 if(Globals.speedupgrade<3)
                 {
-                    Reward2 = dmg_normal;
-                    picked_Reward2 = dmg_pick;
+                    Reward2 = speed_normal;
+                    picked_Reward2 = speed_pick;
                 }
                 else
                 {
@@ -112,8 +122,8 @@ namespace TheGame
             }
             if (rewards[1] == 4)
             {
-                Reward2 = dmg_normal;
-                picked_Reward2 = dmg_pick;
+                Reward2 = healt_normal;
+                picked_Reward2 = health_pick;
 
             }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -159,8 +169,8 @@ namespace TheGame
             if (rewards[2] == 4)
             {
                 
-                Reward3= rewe;
-                picked_Reward3= rewe;
+                Reward3= point_normal;
+                picked_Reward3= point_pick;
             }
             if (rewards[2] == 5)
             {
