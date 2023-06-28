@@ -13,7 +13,7 @@ namespace TheGame
     {
         private DateTime lastAttackTime, actualTime;
         private int attackCounter = 0;
-        private int attacksToStun = 5;
+        private int attacksToStun = 3;
         private int stunTime = 2;
 
         public Melissa(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
@@ -42,7 +42,7 @@ namespace TheGame
             Idle = Globals.content.Load<SkinnedModel>("Animations/melisa_idle");
             Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
             Run = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
-            SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
+            SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/melisa_stun_eksport");
 
             //Idle
             AIdle = new AnimationPlayer(Idle);

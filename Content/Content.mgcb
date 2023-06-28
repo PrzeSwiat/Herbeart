@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\..\.nuget\packages\lovebirb.monogame.skinnedmeshimporter\1.0.4\lib\netstandard2.0\SkinnedMeshImporter.dll
+/reference:C:\Users\Wiktor\.nuget\packages\lovebirb.monogame.skinnedmeshimporter\1.0.4\lib\netstandard2.0\SkinnedMeshImporter.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -117,6 +117,13 @@
 /processorParam:KeyframeDecimalPlaceRounding=5
 /processorParam:SkipUVs=False
 /build:Animations/melisa_idle.fbx
+
+#begin Animations/melisa_stun_eksport.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/melisa_stun_eksport.fbx
 
 #begin Animations/mieta_debug.fbx
 /importer:SkinnedMeshImporter
