@@ -42,7 +42,7 @@ namespace TheGame
             Idle = Globals.content.Load<SkinnedModel>("Animations/melisa_idle");
             Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
             Run = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
-            SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
+            SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/melisa_stun_eksport");
 
             //Idle
             AIdle = new AnimationPlayer(Idle);

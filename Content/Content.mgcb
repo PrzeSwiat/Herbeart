@@ -118,6 +118,13 @@
 /processorParam:SkipUVs=False
 /build:Animations/melisa_idle.fbx
 
+#begin Animations/melisa_stun_eksport.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/melisa_stun_eksport.fbx
+
 #begin Animations/mieta_debug.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
