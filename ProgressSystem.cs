@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -228,7 +229,7 @@ namespace TheGame
                     {
                         
                             // Reward2=tekstura dodatkowego attackspeeda
-                        addAttackSpeed(0.5f);
+                        addAttackSpeed(0.2f);
                         Globals.attackspeedupgrade++;
                       
                     }
@@ -241,14 +242,14 @@ namespace TheGame
                     }
                     if (rewards[1] == 3)
                     {
-                        addSpeed(3);
+                        addSpeed(5);
                         Globals.speedupgrade++;
                         // Reward2=tekstura dodatkowego speeda
 
                     }
                     if (rewards[1] == 4)
                     {
-                        addMaxHealth(4);
+                        addMaxHealth(50);
                         // Reward2=tekstura dodatkowego zycka
 
                     }
@@ -279,7 +280,7 @@ namespace TheGame
                     }
                     if (rewards[2] == 4)
                     {
-                        AddScore(100);
+                        AddScore();
                         //Reward3=AddScore
                     }
                     if (rewards[2] == 5)
@@ -399,9 +400,10 @@ namespace TheGame
         {
             Globals.ScoreMultiplier -= 1;
         }
-        public void AddScore(int score) 
+        public void AddScore() 
         {
-            Globals.Score += score;
+            int value = random.Next(0, 12);
+            Globals.Score += value*Globals.ScoreMultiplier ;
         }
         public void addMaxHealth(int health)
         {
