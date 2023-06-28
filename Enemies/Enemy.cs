@@ -16,6 +16,7 @@ namespace TheGame
     internal class Enemy : Creature
     {
         public event EventHandler OnAttack;
+        public event EventHandler OnSpecialAttack;
         public bool isStunned = false;
         private bool isSlowed = false;
         public float stunTime = 0, elapsedStunTime = 0;
@@ -27,9 +28,11 @@ namespace TheGame
         public SkinnedModel Idle;
         public SkinnedModel Atak;
         public SkinnedModel Run;
+        public SkinnedModel SpecialAttack;
         public AnimationPlayer AIdle;
         public AnimationPlayer AAttack;
         public AnimationPlayer ARun;
+        public AnimationPlayer ASpecialAttack;
         public bool isUpdating;
         public List<string> effectList = new List<string>();
         public event EventHandler onMove;
@@ -50,6 +53,13 @@ namespace TheGame
             if (OnAttack != null)
             {
                 OnAttack?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        public void OnSpecialAttackGo()
+        {
+            if (OnSpecialAttack != null)
+            {
+                OnSpecialAttack?.Invoke(this, EventArgs.Empty);
             }
         }
         public void OnMoveGo()
@@ -104,6 +114,7 @@ namespace TheGame
                 AAttack.Update(Globals.gameTime);
                 AIdle.Update(Globals.gameTime);
                 ARun.Update(Globals.gameTime);
+                ASpecialAttack.Update(Globals.gameTime);
             }
             
 

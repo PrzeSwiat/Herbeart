@@ -40,19 +40,20 @@ namespace TheGame
             Idle = Globals.content.Load<SkinnedModel>("Animations/melisa_idle");
             Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
             Run = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
+            SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
 
             //Idle
             AIdle = new AnimationPlayer(Idle);
             AIdle.Animation = Idle.Animations[0];
-            AIdle.PlaybackSpeed = 1f;
+            AIdle.PlaybackSpeed = 0.5f;
             AIdle.IsPlaying = true;
-            AIdle.IsLooping = true;
+            AIdle.IsLooping = false;
             AIdle.CurrentTime = 1.0f;
             AIdle.CurrentTick = Idle.Animations[0].DurationInTicks;
             //Attack
             AAttack = new AnimationPlayer(Atak);
             AAttack.Animation = Atak.Animations[0];
-            AAttack.PlaybackSpeed = 1f;
+            AAttack.PlaybackSpeed = 0.5f;
             AAttack.IsPlaying = false;
             AAttack.IsLooping = false;
             AAttack.CurrentTime = 1.0f;
@@ -60,11 +61,19 @@ namespace TheGame
             //Run
             ARun = new AnimationPlayer(Run);
             ARun.Animation = Run.Animations[0];
-            ARun.PlaybackSpeed = 1f;
+            ARun.PlaybackSpeed = 0.5f;
             ARun.IsPlaying = false;
             ARun.IsLooping = false;
             ARun.CurrentTime = 1.0f;
             ARun.CurrentTick = Run.Animations[0].DurationInTicks;
+            //SpecialAtack
+            ASpecialAttack = new AnimationPlayer(SpecialAttack);
+            ASpecialAttack.Animation = SpecialAttack.Animations[0];
+            ASpecialAttack.PlaybackSpeed = 1f;
+            ASpecialAttack.IsPlaying = false;
+            ASpecialAttack.IsLooping = false;
+            ASpecialAttack.CurrentTime = 1.0f;
+            ASpecialAttack.CurrentTick = SpecialAttack.Animations[0].DurationInTicks;
 
             base.LoadContent();
             float vlll = 2f;
@@ -83,6 +92,7 @@ namespace TheGame
                 if (attackCounter == attacksToStun)
                 {
                     attackCounter = 0;
+                    OnSpecialAttackGo();
                     player.setStun(stunTime);
                 }
                 base.OnAttackGo();
