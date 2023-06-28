@@ -124,14 +124,14 @@ namespace TheGame
             //atack1
             AAttack1 = new AnimationPlayer(Attack1);
             AAttack1.Animation = Attack1.Animations[0];
-            AAttack1.PlaybackSpeed = 1.3f;
+            AAttack1.PlaybackSpeed = 0.8f/player.AttackSpeed;
             AAttack1.IsLooping = false;
             AAttack1.CurrentTime = 1.0f;
             AAttack1.CurrentTick = Attack1.Animations[0].DurationInTicks;
             //atack1
             AAttack2 = new AnimationPlayer(Attack2);
             AAttack2.Animation = Attack2.Animations[0];
-            AAttack2.PlaybackSpeed = 1.3f;
+            AAttack2.PlaybackSpeed = 0.8f/player.AttackSpeed;
             AAttack2.IsLooping = false;
             AAttack2.CurrentTime = 1.0f;
             AAttack2.CurrentTick = Attack2.Animations[0].DurationInTicks;
@@ -187,19 +187,20 @@ namespace TheGame
             if(Atak)
             {
                 TimeSpan timeSinceLastAttack = DateTime.Now - lastAttackExecutionTime;
-                if (timeSinceLastAttack.TotalSeconds >= 0.01f)
+                if (timeSinceLastAttack.TotalSeconds >= 0.1f)
                 {
                     player.ActualSpeed = 13;
 
                     if (Combocounter == 0)
                     {
                         AAttack1.IsPlaying = true;
-
+                       // AAttack2.IsPlaying = false;
                         Combocounter += 1;
                         lastcomboTimer = DateTime.Now;
                     }
                     else if (Combocounter == 1)
                     {
+                        //AAttack1.IsPlaying = false;
                         AAttack2.IsPlaying = true;
 
                         Combocounter = 0;

@@ -189,6 +189,7 @@ namespace TheGame
             if (time.TotalSeconds > this.ActualAttackSpeed)
             {
                 OnAttackPressed?.Invoke(this, EventArgs.Empty);
+                InvokeOnAttackNoise();
                 lastAttackTime = actualTime;
             }
         }

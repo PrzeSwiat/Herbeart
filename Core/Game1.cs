@@ -182,7 +182,7 @@ namespace TheGame
                             Leafs.RefreshInventory(this.player);
                             Leafs.UpdateScene(enemies.EnemiesList, gameTime);
                             camera.Update1(player.GetPosition());
-                            
+                            soundActorPlayer.Update();
 
                             interactionEventHandler.Update(enemies.EnemiesList);
                             Globals.viewport = GraphicsDevice.Viewport;

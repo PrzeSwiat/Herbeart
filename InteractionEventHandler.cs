@@ -47,7 +47,6 @@ namespace TheGame
                     {
                         if (player.boundingSphere.Intersects(enemy.boundingBox))
                         {
-                            player.InvokeOnAttackNoise();
                             enemy.Hit(player.Strength);
                         }
                     }

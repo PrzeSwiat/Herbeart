@@ -106,7 +106,7 @@ namespace TheGame
             steps.Volume = 0.1f;
 
             //player Attack
-            player.onAttackNoise += PlayerAttack;
+            //player.onAttackNoise += PlayerAttack;
             attack = Content.Load<SoundEffect>("SoundFX/punch").CreateInstance();
             attack.Volume = 0.5f;
 
@@ -134,6 +134,15 @@ namespace TheGame
 
         }
 
+
+        public void Update()
+        {
+            foreach(Enemy enemy in enemies)
+            {
+                enemy.onHit += EnemyHit;
+            }
+        }
+
         private void PlayerSteps(object obj, EventArgs e)
         {
             if(steps.State != SoundState.Playing)
@@ -142,12 +151,11 @@ namespace TheGame
             }
         }
 
-        private void PlayerAttack(object obj, EventArgs e)
+        private void EnemyHit(object obj, EventArgs e)
         {
-            if (attack.State != SoundState.Playing)
-            {
-                attack.Play();
-            }
+            //if (attack.State != SoundState.Playing)
+            //Debug.WriteLine("now");
+            attack.Play();
         }
 
         private void PlayerHit(object obj, EventArgs e)

@@ -33,6 +33,7 @@ namespace TheGame
         public bool isUpdating;
         public List<string> effectList = new List<string>();
         public event EventHandler onMove;
+        public event EventHandler onHit;
 
         public Enemy(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
@@ -60,6 +61,7 @@ namespace TheGame
 
         public override void Hit(int damage)
         {
+            onHit?.Invoke(this, EventArgs.Empty);
             base.Hit(damage);
             ParticleSystem particleSystem = ParticleSystem.Instance;
             Vector3 projectedPosition = Globals.viewport.Project(GetPosition(),
