@@ -330,7 +330,6 @@ namespace TheGame
                             if (player.Health <= player.maxHealth * 0.80 && Globals.counter == 0)    // 80% zycia 
                             {
                                 hud.DrawTutorial(2);
-
                             }
                             if (Globals.Module2 && Globals.moduleCounter == 0) // 1 attack_tutorial
                             {
@@ -547,6 +546,7 @@ namespace TheGame
         }
         #endregion
 
+        #region MORE_CHECKS
         void LeaderBoardSumupCheck()
         {
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -572,6 +572,7 @@ namespace TheGame
 
 
         }
+        #endregion
 
         #region DEATH_CHECK
         void DeathMenuCheck()
@@ -628,9 +629,12 @@ namespace TheGame
                     Globals.Module9 = false;
                     Globals.Death = false;
                     Globals.Tutorial = false;
-
                     LoadContent();
                     Initialize();
+                    if (Globals.Hard)
+                    {
+                        Globals.ScoreMultiplier++;
+                    }
                     player.Start();
 
                 }
