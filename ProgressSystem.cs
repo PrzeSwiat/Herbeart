@@ -429,7 +429,7 @@ namespace TheGame
         public void addMaxHealth(int health)
         {
             player.MaxHealth += health;
-            player.Health += health;
+            player.Health = player.maxHealth;
         }
         public void addStrenght() 
         {
