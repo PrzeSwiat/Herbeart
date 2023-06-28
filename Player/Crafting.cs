@@ -57,7 +57,7 @@ namespace TheGame
                         {
                             recepture2[recepture.Length] = "mint";
                             recepture += button;
-                            animationList.Add(new Animation2D(Mint_Icon, new Microsoft.Xna.Framework.Vector2(150, 900), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 270), 0.2f, Globals.viewport));
+                            animationList.Add(new Animation2D(Mint_Icon, new Microsoft.Xna.Framework.Vector2(150, 900), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 310), 0.2f, Globals.viewport));
                             inventory.removeMintLeaf();
                         }
                         break;
@@ -66,7 +66,7 @@ namespace TheGame
                         {
                             recepture2[recepture.Length] = "nettle";
                             recepture += button;
-                            animationList.Add(new Animation2D(Nettle_Icon, new Vector2(250, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 270), 0.2f, Globals.viewport));
+                            animationList.Add(new Animation2D(Nettle_Icon, new Vector2(250, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 310), 0.2f, Globals.viewport));
                             inventory.removeNettleLeaf();
                         }
                         break;
@@ -75,7 +75,7 @@ namespace TheGame
                         {
                             recepture2[recepture.Length] = "melise";
                             recepture += button;
-                            animationList.Add(new Animation2D(Melissa_Icon, new Vector2(80, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 270), 0.2f, Globals.viewport));
+                            animationList.Add(new Animation2D(Melissa_Icon, new Vector2(80, 815), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 310), 0.2f, Globals.viewport));
                             inventory.removeMeliseLeaf();
                         }
                         break;
@@ -84,7 +84,7 @@ namespace TheGame
                         {
                             recepture2[recepture.Length] = "apple";
                             recepture += button;
-                            animationList.Add(new Animation2D(Apple_Icon, new Vector2(150, 700), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 270), 0.2f, Globals.viewport));
+                            animationList.Add(new Animation2D(Apple_Icon, new Vector2(150, 700), new Microsoft.Xna.Framework.Vector2(850 + recepture.Length * 45, 310), 0.2f, Globals.viewport));
                             inventory.removeAppleLeaf();
                         }
 
