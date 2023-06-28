@@ -27,7 +27,7 @@ namespace TheGame
         private Texture2D difficulty;
         private Texture2D dot;
         private Texture2D healtColor, healthBar, healthBackdrop;
-        private Texture2D strenghtTexture;
+        private Texture2D strenghtTex, speedTex, immortalTex, heal1Tex, heal2Tex;
         private Texture2D defaultItemFrame, offensiveItemFrame, teaItemFrame;
         private Texture2D appleTex, meliseTex, mintTex, nettleTex;
         private Texture2D appleTexCrafting, meliseTexCrafting, mintTexCrafting, nettleTexCrafting;
@@ -70,7 +70,11 @@ namespace TheGame
             healtColor = models.getTexture("HUD/magenta");
             healthBar = models.getTexture("HUD/pasekzycia");
             healthBackdrop = models.getTexture("HUD/pasekzycia_tlo");
-            strenghtTexture = models.getTexture("HUD/strenght");
+            strenghtTex = models.getTexture("HUD/PlayerEffects/strenght");
+            speedTex = models.getTexture("HUD/PlayerEffects/speed");
+            immortalTex = models.getTexture("HUD/PlayerEffects/immortal"); 
+            heal1Tex = models.getTexture("HUD/PlayerEffects/heal1");
+            heal2Tex = models.getTexture("HUD/PlayerEffects/heal2");
             defaultItemFrame = models.getTexture("HUD/default");
             offensiveItemFrame = models.getTexture("HUD/atak");
             teaItemFrame = models.getTexture("HUD/defens");
@@ -137,17 +141,17 @@ namespace TheGame
             for (int i = 0; i < Globals.playerActiveEffects.Count; i++)
             {
                 rect.X = rectX - 100 * i;
-                if (Globals.playerActiveEffects[i] == "immortal")
+                if (Globals.playerActiveEffects[i] == "immortal" || Globals.playerActiveEffects[i] == "immortal2")
                 {
-                    Globals.spriteBatch.Draw(meliseTex, rect, Color.White);
+                    Globals.spriteBatch.Draw(immortalTex, rect, Color.White);
                 }
                 if (Globals.playerActiveEffects[i] == "haste")
                 {
-                    Globals.spriteBatch.Draw(mintTex, rect, Color.White);
+                    Globals.spriteBatch.Draw(speedTex, rect, Color.White);
                 }
                 if (Globals.playerActiveEffects[i] == "strenght")
                 {
-                    Globals.spriteBatch.Draw(strenghtTexture, rect, Color.White);
+                    Globals.spriteBatch.Draw(strenghtTex, rect, Color.White);
                 }
             }
         }
@@ -205,8 +209,30 @@ namespace TheGame
                     default:
                         break;
                 }
-
             }
+
+            Rectangle effectRect = new Rectangle(receptureRect.X + 350, receptureRect.Y + 25, 90, 90);
+            if (Globals.learnedRecepture[Globals.numberOfRecepture] == "AAA")
+            {
+                Globals.spriteBatch.Draw(heal1Tex, effectRect, Color.White);
+            } 
+            else if (Globals.learnedRecepture[Globals.numberOfRecepture] == "AAB")
+            {
+                Globals.spriteBatch.Draw(heal2Tex, effectRect, Color.White);
+            }
+            else if (Globals.learnedRecepture[Globals.numberOfRecepture] == "AXY")
+            {
+                Globals.spriteBatch.Draw(speedTex, effectRect, Color.White);
+            }
+            else if (Globals.learnedRecepture[Globals.numberOfRecepture] == "XBY")
+            {
+                Globals.spriteBatch.Draw(strenghtTex, effectRect, Color.White);
+            }
+            else if (Globals.learnedRecepture[Globals.numberOfRecepture] == "ABX")
+            {
+                Globals.spriteBatch.Draw(immortalTex, effectRect, Color.White);
+            }
+
         }
 
         public void DrawScore()

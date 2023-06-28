@@ -86,6 +86,7 @@ namespace TheGame
             Globals.ScoreMultiplier = 1;
             Globals.learnedRecepture = new List<String>();
             Globals.learnedRecepture.Add("AAA");
+
             hud = new HUD();
             world = new World();
             player = new Player(new Vector3(50,0,60), "Objects/mis", "Textures/MisTexture");
@@ -201,10 +202,15 @@ namespace TheGame
                             if (world.ifPlayerOnPartyModule(player.GetPosition()))
                             {
                                 player.Stop();
+                                if (!Globals.playerActiveEffects.Contains("immortal2"))
+                                {
+                                    Globals.playerActiveEffects.Add("immortal2");
+                                }
                             }
                             else
                             {
                                 player.Start();
+                                Globals.playerActiveEffects.Remove("immortal2");
                             }
 
                             bool check = world.ifPlayerIsCloseToShop(player.GetPosition());
