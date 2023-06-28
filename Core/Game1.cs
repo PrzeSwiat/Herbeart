@@ -99,7 +99,12 @@ namespace TheGame
             animationMenager = new AnimationMenager(Content, player, enemies.EnemiesList);
             Globals.numberOfRecepture = 0;
             Globals.viewport = GraphicsDevice.Viewport;
-            
+            Globals.attackspeedupgrade = 0;
+            Globals.dmgupgrade = 0;
+            Globals.speedupgrade = 0;
+            Globals.nettleupgrade = 0;
+            Globals.appleupgrade = 0;
+            Globals.mintupgrade = 0;
             base.Initialize();
 
         }
@@ -179,7 +184,7 @@ namespace TheGame
                         if (!Globals.TutorialPause)
                         {
                             TimeSpan scoredeltatime = DateTime.Now - score_timer;
-                            if (scoredeltatime.TotalSeconds > 1) { Globals.Score++; score_timer = DateTime.Now; }
+                            
                             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
                             Globals.time += delta;
                             player.Update(world, delta, enemies, gameTime);
@@ -213,6 +218,7 @@ namespace TheGame
                             else
                             {
                                 player.Start();
+                                if (scoredeltatime.TotalSeconds > 1) { Globals.Score++; score_timer = DateTime.Now; }
                                 Globals.playerActiveEffects.Remove("immortal2");
                             }
 
