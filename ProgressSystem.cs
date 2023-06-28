@@ -444,12 +444,12 @@ namespace TheGame
         }
         public void addMintValue()
         {
-            player.MintValue -= 0.3f;
-            player.NettleTime += 5;
+            player.MintValue += 1f;
+            player.MintTime += 3;
         }
         public void addAppleValue()
         {
-            player.appleValue = 10;
+            player.appleValue +=2;
         }
         public bool isRecepturetoUnlock()
         {
