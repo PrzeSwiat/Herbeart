@@ -158,6 +158,7 @@ namespace TheGame
                 enemi.OnAttack += EnemyAttack;
                 enemi.onMove += EnemyMove;
                 enemi.onMoveEnd += EnemyMoveStop;
+                enemi.OnSpecialAttack += EnemySpecialAttack;
 
                 if (enemi.GetType() != typeof(Bush))
                 {
@@ -291,6 +292,12 @@ namespace TheGame
             enemy.AAttack.IsPlaying = true;
             enemy.ARun.IsPlaying = false;
         }
+        private void EnemySpecialAttack(object obj, EventArgs e)
+        {
+            Enemy enemy = (Enemy)obj;
+            enemy.ASpecialAttack.IsPlaying = true;
+            enemy.ARun.IsPlaying = false;
+        }
 
         private void EnemyMove(object obj, EventArgs e)
         {
@@ -381,6 +388,10 @@ namespace TheGame
                         else if (enemy.ARun.IsPlaying)
                         {
                             DrawAnimation(enemy, enemy.ARun, enemy.Run, enemy.GetTexture2D(), enemy.color, enemy.LineSize);
+                        }
+                        else if (enemy.ASpecialAttack.IsPlaying)
+                        {
+                            DrawAnimation(enemy, enemy.ASpecialAttack, enemy.SpecialAttack, enemy.GetTexture2D(), enemy.color, enemy.LineSize);
                         }
                         else
                         {

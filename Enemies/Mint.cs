@@ -32,6 +32,7 @@ namespace TheGame
             Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle2");
             Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
             Run = Globals.content.Load<SkinnedModel>("Animations/mieta_run");
+            SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
 
             //Idle
             AIdle = new AnimationPlayer(Idle);
@@ -57,6 +58,14 @@ namespace TheGame
             ARun.IsLooping = false;
             ARun.CurrentTime = 1.0f;
             ARun.CurrentTick = Run.Animations[0].DurationInTicks;
+            //SpecialAtack
+            ASpecialAttack = new AnimationPlayer(SpecialAttack);
+            ASpecialAttack.Animation = SpecialAttack.Animations[0];
+            ASpecialAttack.PlaybackSpeed = 1f;
+            ASpecialAttack.IsPlaying = false;
+            ASpecialAttack.IsLooping = false;
+            ASpecialAttack.CurrentTime = 1.0f;
+            ASpecialAttack.CurrentTick = SpecialAttack.Animations[0].DurationInTicks;
 
 
             float vlll = 1f;
