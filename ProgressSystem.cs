@@ -84,7 +84,7 @@ namespace TheGame
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (rewards[1] == 1)
             {
-                if(Globals.attackspeedupgrade != 3)
+                if(Globals.attackspeedupgrade <2)
                 {
                     Reward2 = aspeed_normal;
                     picked_Reward2 = aspeed_pick;
@@ -96,7 +96,7 @@ namespace TheGame
             }
             if (rewards[1] == 2)
             {
-                if(Globals.dmgupgrade != 3)
+                if(Globals.dmgupgrade<2)
                 {
                      Reward2= dmg_normal;
                     picked_Reward2= dmg_pick;
@@ -108,8 +108,8 @@ namespace TheGame
 
             }
              if (rewards[1] == 3)
-             {
-                if(Globals.speedupgrade!=3)
+            {
+                if(Globals.speedupgrade<2)
                 {
                     Reward2 = speed_normal;
                     picked_Reward2 = speed_pick;
@@ -119,7 +119,7 @@ namespace TheGame
                     rewards[1]++;
                 }
 
-             }
+            }
             if (rewards[1] == 4)
             {
                 Reward2 = healt_normal;
@@ -129,7 +129,7 @@ namespace TheGame
 ///////////////////////////////////////////////////////////////////////////////////
             if (rewards[2] == 1)
             {
-                if (Globals.nettleupgrade != 3)
+                if (Globals.nettleupgrade < 2)
                 {
                     Reward3= nettle_normal;
                     picked_Reward3 = nettle_pick;
@@ -142,7 +142,7 @@ namespace TheGame
             }
             if (rewards[2] == 2)
             {
-                if(Globals.appleupgrade != 3)
+                if(Globals.appleupgrade < 2)
                 {
                     Reward3= apple_normal;
                     picked_Reward3 = apple_pick;
@@ -155,7 +155,7 @@ namespace TheGame
             }
             if (rewards[2] == 3)
             {
-                if (Globals.mintupgrade != 3)
+                if (Globals.mintupgrade < 2)
                 {
                     Reward3= mint_normal;
                     picked_Reward3 = mint_pick;
@@ -221,7 +221,7 @@ namespace TheGame
                     {
                         //dodaj nowy przepis
                         unlockRecepture();
-                        rewards[0] = 0; rewards[1] = 0; rewards[2] = 0;
+
                     }
                     if (rewards[0] == 4)
                     {
