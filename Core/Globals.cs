@@ -39,6 +39,7 @@ namespace TheGame
         public static bool Pause;
         public static bool TutorialPause;
         public static bool LeaderBoardSumup;
+        public static bool Credits;
         public static string LeaderBoardSting;
         public static bool Easy;
         public static bool Hard;

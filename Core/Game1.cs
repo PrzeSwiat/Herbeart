@@ -132,6 +132,14 @@ namespace TheGame
                 {
                     TurorialCheck();
                 }
+                else if (Globals.Credits)
+                {
+                    CreditsCheck();
+                }
+                else if(Globals.LeaderBoardSumup)
+                {
+                    LeaderBoardSumupCheck();
+                }
                 else
                 {
                     MainMenuCheck();
@@ -252,6 +260,10 @@ namespace TheGame
                 if(Globals.Tutorial)
                 {
                     hud.DrawTutorialMenu();
+                }
+                else if (Globals.Credits)
+                {
+                    hud.DrawCredits();
                 }
                 else if (Globals.LeaderBoardSumup)
                 {
@@ -535,6 +547,32 @@ namespace TheGame
         }
         #endregion
 
+        void LeaderBoardSumupCheck()
+        {
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            KeyboardState state = Keyboard.GetState();
+
+            if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardState.IsKeyUp(Keys.Enter))) //ACCEPT
+            {
+                Globals.LeaderBoardSumup = false;
+            }
+
+            
+        }
+
+        void CreditsCheck()
+        {
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            KeyboardState state = Keyboard.GetState();
+
+            if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardState.IsKeyUp(Keys.Enter))) //ACCEPT
+            {
+                Globals.Credits = false;
+            }
+
+
+        }
+
         #region DEATH_CHECK
         void DeathMenuCheck()
         {
@@ -653,12 +691,11 @@ namespace TheGame
                 {
                     Globals.Tutorial = true;
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 2)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevDeathState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardDeathState.IsKeyUp(Keys.Enter)) && hud.MenuOption == 2)
                 {
-
-                    // notimplemented
+                    Globals.Credits = true;
                 }
-                if ((gamePadState.Buttons.A == ButtonState.Pressed || state.IsKeyDown(Keys.Enter)) && hud.MenuOption == 3)
+                if ((gamePadState.Buttons.A == ButtonState.Pressed && Globals.prevDeathState.Buttons.A == ButtonState.Released || (state.IsKeyDown(Keys.Enter)) && Globals.prevKeyBoardDeathState.IsKeyUp(Keys.Enter)) && hud.MenuOption == 3)
                 {
                     Globals.LeaderBoardSumup = true;
                     Globals.LeaderBoardSting = PlayerNames.LoadFromFile();
