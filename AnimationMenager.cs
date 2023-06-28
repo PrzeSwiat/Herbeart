@@ -425,7 +425,7 @@ namespace TheGame
                 effect1.Parameters["DiffuseColor"].SetValue(new Vector4(10f, 10F, 10f, 0.9f));
                 effect1.Parameters["DiffuseIntensity"].SetValue(1);
                 effect1.Parameters["LineColor"].SetValue(color.ToVector4());
-                effect1.Parameters["LineThickness"].SetValue(size);
+                effect1.Parameters["LineThickness"].SetValue(7f);
                 effect1.Parameters["Texture"].SetValue(texture);
 
                 foreach (var pass in effect1.CurrentTechnique.Passes)
