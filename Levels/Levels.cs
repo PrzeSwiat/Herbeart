@@ -152,7 +152,7 @@ namespace TheGame
                 case "straight":        //Przypadek prostych map - wylot z lewej i prawej
                     if (ifParty)
                     {
-                        modulesWithParty.Add(numberOfModules - 1);
+                        modulesWithParty.Add(numberOfModules);
                         maps.Add(MapType.Map_party_left_up);
                         maps.Add(MapType.Map_party_left_down);
                         MapType map = MapType.GenerateRandomMap(maps);
@@ -174,7 +174,7 @@ namespace TheGame
                     moduleHeightChange++;
                     if (ifParty)
                     {
-                        modulesWithParty.Add(numberOfModules - 1);
+                        modulesWithParty.Add(numberOfModules);
                         maps.Add(MapType.Map_party_down_up);
                         maps.Add(MapType.Map_party_down_right);
                         MapType map = MapType.GenerateRandomMap(maps);
@@ -191,7 +191,7 @@ namespace TheGame
                 case "down_right":          //Zakręt od dołu w prawo - wylot z dołu i po prawo
                     if (ifParty)
                     {
-                        modulesWithParty.Add(numberOfModules - 1);
+                        modulesWithParty.Add(numberOfModules);
                         maps.Add(MapType.Map_party_left_up);
                         MapType map = MapType.GenerateRandomMap(maps);
                         prepareModule(map, 0, 0);
@@ -209,7 +209,7 @@ namespace TheGame
                     moduleHeightChange++;
                     if (ifParty)
                     {
-                        modulesWithParty.Add(numberOfModules - 1);
+                        modulesWithParty.Add(numberOfModules);
                         maps.Add(MapType.Map_party_up_right);
                         maps.Add(MapType.Map_party_up_down);
                         MapType map = MapType.GenerateRandomMap(maps);
@@ -226,7 +226,7 @@ namespace TheGame
                 case "up_right":            //Wylot z góry i z prawej
                     if (ifParty)
                     {
-                        modulesWithParty.Add(numberOfModules - 1);
+                        modulesWithParty.Add(numberOfModules);
                         maps.Add(MapType.Map_party_left_up);
                         maps.Add(MapType.Map_party_left_down);
                         MapType map = MapType.GenerateRandomMap(maps);
@@ -246,7 +246,7 @@ namespace TheGame
                     moduleHeightChange++;
                     if (ifParty)
                     {
-                        modulesWithParty.Add(numberOfModules - 1);
+                        modulesWithParty.Add(numberOfModules);
                         prepareModule(MapType.Map_party_up_right, 0, 0);
                     }
                     else
@@ -261,7 +261,7 @@ namespace TheGame
                     moduleHeightChange++;
                     if (ifParty)
                     {
-                        modulesWithParty.Add(numberOfModules - 1);
+                        modulesWithParty.Add(numberOfModules);
                         prepareModule(MapType.Map_party_down_right, 0, 0);
                     }
                     else
