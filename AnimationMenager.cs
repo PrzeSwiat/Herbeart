@@ -149,6 +149,9 @@ namespace TheGame
 
         public void Update(GameTime gameTime)
         {
+            AAttack1.PlaybackSpeed = 0.8f / player.AttackSpeed;
+            AAttack2.PlaybackSpeed = 0.8f / player.AttackSpeed;
+
             foreach (Enemy enemi in enemies)
             {
                 enemi.OnAttack += EnemyAttack;
