@@ -327,7 +327,7 @@ namespace TheGame
         }
         public void setcanMove(bool can)
         {
-            this.canMove=can;
+            this.canMove = can;
         }
 
         public void RemoveApple(object sender, EventArgs e)

@@ -64,6 +64,10 @@ namespace TheGame
         public void Stun(int time) 
         {
             player.setcanMove(false);
+            if (Globals.playerActiveEffects.Contains("stun"))
+            {
+                Globals.playerActiveEffects.Add("stun");
+            }
             stunTimer.setTimerMaxTime(time);
             stunTimer.Start();
         }
@@ -113,6 +117,7 @@ namespace TheGame
         private void undoStun()
         {
             player.setcanMove(true);
+            Globals.playerActiveEffects.Remove("stun");
         }
 
         private void undoStrenght()
