@@ -21,7 +21,7 @@ namespace TheGame
         public List<Apple> bullet = new List<Apple>();
         public AppleTree(Vector3 worldPosition, string modelFileName, string textureFileName) : base(worldPosition, modelFileName, textureFileName)
         {
-            AssignParameters(4, 16, 15, 1.5f);
+            AssignParameters(4, 12, 3, 1.5f);
             score= 15;
             this.setBSRadius(3);
             this.visionRange = 30f;
