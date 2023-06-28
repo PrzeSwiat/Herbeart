@@ -162,7 +162,7 @@ namespace TheGame
 
                 if (enemi.GetType() != typeof(Bush))
                 {
-                    if (!enemi.AAttack.IsPlaying && !enemi.ARun.IsPlaying)
+                    if (!enemi.AAttack.IsPlaying && !enemi.ARun.IsPlaying && !enemi.ASpecialAttack.IsPlaying)
                     {
                         enemi.AIdle.IsPlaying = true;
                     }
@@ -297,6 +297,8 @@ namespace TheGame
             Enemy enemy = (Enemy)obj;
             enemy.ASpecialAttack.IsPlaying = true;
             enemy.ARun.IsPlaying = false;
+            enemy.AIdle.IsPlaying = false;
+            enemy.AAttack.IsPlaying = false;
         }
 
         private void EnemyMove(object obj, EventArgs e)
@@ -380,19 +382,20 @@ namespace TheGame
                     
                     if (enemy.isUpdating)    //nie rysuj jak nie ma co
                     {
-                       
-                        if (enemy.AAttack.IsPlaying)
+                        if (enemy.ASpecialAttack.IsPlaying)
+                        {
+                            DrawAnimation(enemy, enemy.ASpecialAttack, enemy.SpecialAttack, enemy.GetTexture2D(), enemy.color, enemy.LineSize);
+                        }
+                        else if (enemy.AAttack.IsPlaying)
                         {
                             DrawAnimation(enemy, enemy.AAttack, enemy.Atak, enemy.GetTexture2D(),enemy.color,enemy.LineSize);
                         }
+                        
                         else if (enemy.ARun.IsPlaying)
                         {
                             DrawAnimation(enemy, enemy.ARun, enemy.Run, enemy.GetTexture2D(), enemy.color, enemy.LineSize);
                         }
-                        else if (enemy.ASpecialAttack.IsPlaying)
-                        {
-                            DrawAnimation(enemy, enemy.ASpecialAttack, enemy.SpecialAttack, enemy.GetTexture2D(), enemy.color, enemy.LineSize);
-                        }
+                        
                         else
                         {
                             DrawAnimation(enemy, enemy.AIdle, enemy.Idle, enemy.GetTexture2D(), enemy.color, enemy.LineSize);
