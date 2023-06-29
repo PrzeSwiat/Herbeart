@@ -139,6 +139,13 @@
 /processorParam:SkipUVs=False
 /build:Animations/melisa_idle4.fbx
 
+#begin Animations/melisa_idle5.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/melisa_idle5.fbx
+
 #begin Animations/melisa_run3.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
@@ -153,12 +160,26 @@
 /processorParam:SkipUVs=False
 /build:Animations/melisa_stun_eksport.fbx
 
+#begin Animations/melisa_stun3.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/melisa_stun3.fbx
+
 #begin Animations/mieta_atak3.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
 /processorParam:KeyframeDecimalPlaceRounding=5
 /processorParam:SkipUVs=False
 /build:Animations/mieta_atak3.fbx
+
+#begin Animations/mieta_atak4.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mieta_atak4.fbx
 
 #begin Animations/mieta_debug.fbx
 /importer:SkinnedMeshImporter
@@ -181,6 +202,13 @@
 /processorParam:SkipUVs=False
 /build:Animations/mieta_idle3.fbx
 
+#begin Animations/mieta_idle4.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mieta_idle4.fbx
+
 #begin Animations/mieta_run.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
@@ -194,6 +222,13 @@
 /processorParam:KeyframeDecimalPlaceRounding=5
 /processorParam:SkipUVs=False
 /build:Animations/mieta_run3.fbx
+
+#begin Animations/mieta_run4.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mieta_run4.fbx
 
 #begin Animations/mis_bieg_2.fbx
 /importer:SkinnedMeshImporter

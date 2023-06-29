@@ -30,9 +30,9 @@ namespace TheGame
         {
             base.LoadContent();
 
-            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle3");
-            Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_atak3");
-            Run = Globals.content.Load<SkinnedModel>("Animations/mieta_run3");
+            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle4");
+            Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_atak4");
+            Run = Globals.content.Load<SkinnedModel>("Animations/mieta_run4");
             SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
 
             //Idle

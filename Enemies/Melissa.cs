@@ -39,10 +39,10 @@ namespace TheGame
         }
         public override void LoadContent()
         {
-            Idle = Globals.content.Load<SkinnedModel>("Animations/melisa_idle4");
+            Idle = Globals.content.Load<SkinnedModel>("Animations/melisa_idle5");
             Atak = Globals.content.Load<SkinnedModel>("Animations/melisa_atak3");
             Run = Globals.content.Load<SkinnedModel>("Animations/melisa_run3");
-            SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/melisa_stun_eksport");
+            SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/melisa_stun3");
 
             //Idle
             AIdle = new AnimationPlayer(Idle);
