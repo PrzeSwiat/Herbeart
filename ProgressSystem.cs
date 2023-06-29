@@ -320,32 +320,32 @@ namespace TheGame
                 if (MenuOption == 1)
                 {
                     t1 = picked_Reward1;
-                    Globals.spriteBatch.Draw(t1, new Vector2(400, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    Globals.spriteBatch.Draw(t1, new Vector2(400, 600), null, Color.White, 0, Vector2.Zero, 0.15f, SpriteEffects.None, 0f);
                 }
                 else
                 {
                     t1 = Reward1;
-                    Globals.spriteBatch.Draw(t1, new Vector2(400, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    Globals.spriteBatch.Draw(t1, new Vector2(400, 600), null, Color.White, 0, Vector2.Zero, 0.15f, SpriteEffects.None, 0f);
                 }
                 if (MenuOption == 2)
                 {
                     t2 = picked_Reward2;
-                    Globals.spriteBatch.Draw(t2, new Vector2(700, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    Globals.spriteBatch.Draw(t2, new Vector2(800, 600), null, Color.White, 0, Vector2.Zero, 0.15f, SpriteEffects.None, 0f);
                 }
                 else
                 {
                     t2= Reward2;
-                    Globals.spriteBatch.Draw(t2, new Vector2(700, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    Globals.spriteBatch.Draw(t2, new Vector2(800, 600), null, Color.White, 0, Vector2.Zero, 0.15f, SpriteEffects.None, 0f);
                 }
                 if (MenuOption == 3)
                 {
                     t3 = picked_Reward3;
-                    Globals.spriteBatch.Draw(t3, new Vector2(1000, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    Globals.spriteBatch.Draw(t3, new Vector2(1200, 600), null, Color.White, 0, Vector2.Zero, 0.15f, SpriteEffects.None, 0f);
                 }
                 else
                 {
                     t3 = Reward3;
-                    Globals.spriteBatch.Draw(t3, new Vector2(1000, 400), null, Color.White, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    Globals.spriteBatch.Draw(t3, new Vector2(1200, 600), null, Color.White, 0, Vector2.Zero, 0.15f, SpriteEffects.None, 0f);
 
                 }
 

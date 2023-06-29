@@ -40,11 +40,11 @@ namespace TheGame
         {
             Globals._graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
 
             Globals.WindowWidth = 1920;
             Globals.WindowHeight = 1080;
-            //Globals._graphics.IsFullScreen = true;
+            Globals._graphics.IsFullScreen = true;
             Globals._graphics.PreferredBackBufferWidth = Globals.WindowWidth; // Szerokość ekranu
             Globals._graphics.PreferredBackBufferHeight = Globals.WindowHeight;
             Globals._graphics.ApplyChanges();
