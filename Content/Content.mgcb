@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:C:\Users\Wiktor\.nuget\packages\lovebirb.monogame.skinnedmeshimporter\1.0.4\lib\netstandard2.0\SkinnedMeshImporter.dll
+/reference:..\..\..\..\.nuget\packages\lovebirb.monogame.skinnedmeshimporter\1.0.4\lib\netstandard2.0\SkinnedMeshImporter.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -111,6 +111,13 @@
 /processorParam:SkipUVs=False
 /build:Animations/drzewko_idle4.fbx
 
+#begin Animations/melisa_atak3.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/melisa_atak3.fbx
+
 #begin Animations/melisa_idle.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
@@ -118,12 +125,40 @@
 /processorParam:SkipUVs=False
 /build:Animations/melisa_idle.fbx
 
+#begin Animations/melisa_idle3.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/melisa_idle3.fbx
+
+#begin Animations/melisa_idle4.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/melisa_idle4.fbx
+
+#begin Animations/melisa_run3.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/melisa_run3.fbx
+
 #begin Animations/melisa_stun_eksport.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
 /processorParam:KeyframeDecimalPlaceRounding=5
 /processorParam:SkipUVs=False
 /build:Animations/melisa_stun_eksport.fbx
+
+#begin Animations/mieta_atak3.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mieta_atak3.fbx
 
 #begin Animations/mieta_debug.fbx
 /importer:SkinnedMeshImporter
@@ -139,12 +174,26 @@
 /processorParam:SkipUVs=False
 /build:Animations/mieta_idle2.fbx
 
+#begin Animations/mieta_idle3.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mieta_idle3.fbx
+
 #begin Animations/mieta_run.fbx
 /importer:SkinnedMeshImporter
 /processor:SkinnedMeshProcessor
 /processorParam:KeyframeDecimalPlaceRounding=5
 /processorParam:SkipUVs=False
 /build:Animations/mieta_run.fbx
+
+#begin Animations/mieta_run3.fbx
+/importer:SkinnedMeshImporter
+/processor:SkinnedMeshProcessor
+/processorParam:KeyframeDecimalPlaceRounding=5
+/processorParam:SkipUVs=False
+/build:Animations/mieta_run3.fbx
 
 #begin Animations/mis_bieg_2.fbx
 /importer:SkinnedMeshImporter
@@ -2404,6 +2453,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/melisa.png
 
+#begin Textures/melisa3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/melisa3.png
+
 #begin Textures/melise_pickup.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -2427,6 +2488,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/mieta.png
+
+#begin Textures/mieta3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/mieta3.png
 
 #begin Textures/mint_pickup.png
 /importer:TextureImporter

@@ -146,7 +146,7 @@ namespace TheGame
                     enemies.Add(apple);
                     break;
                 case "Objects/melissa":
-                    Melissa melissa = new Melissa(enemyPosition, "Objects/melisa", "Textures/melisa");
+                    Melissa melissa = new Melissa(enemyPosition, "Objects/melisa", "Textures/melisa3");
                     melissa.LoadContent();
                     enemies.Add(melissa);
                     break;
@@ -156,7 +156,7 @@ namespace TheGame
                     enemies.Add(nettle);
                     break;
                 case "Objects/mint":
-                    Mint mint = new Mint(enemyPosition, "Objects/mieta", "Textures/mieta");
+                    Mint mint = new Mint(enemyPosition, "Objects/mieta", "Textures/mieta3");
                     mint.LoadContent();
                     enemies.Add(mint);
                     break;

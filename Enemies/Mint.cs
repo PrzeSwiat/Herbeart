@@ -30,9 +30,9 @@ namespace TheGame
         {
             base.LoadContent();
 
-            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle2");
-            Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
-            Run = Globals.content.Load<SkinnedModel>("Animations/mieta_run");
+            Idle = Globals.content.Load<SkinnedModel>("Animations/mieta_idle3");
+            Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_atak3");
+            Run = Globals.content.Load<SkinnedModel>("Animations/mieta_run3");
             SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
 
             //Idle
@@ -46,7 +46,7 @@ namespace TheGame
             //Attack
             AAttack = new AnimationPlayer(Atak);
             AAttack.Animation = Atak.Animations[0];
-            AAttack.PlaybackSpeed = 0.5f;
+            AAttack.PlaybackSpeed = 1.5f;
             AAttack.IsPlaying = false;
             AAttack.IsLooping = false;
             AAttack.CurrentTime = 1.0f;

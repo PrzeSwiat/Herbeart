@@ -39,9 +39,9 @@ namespace TheGame
         }
         public override void LoadContent()
         {
-            Idle = Globals.content.Load<SkinnedModel>("Animations/melisa_idle");
-            Atak = Globals.content.Load<SkinnedModel>("Animations/mieta_debug");
-            Run = Globals.content.Load<SkinnedModel>("Animations/mis_bieg_2");
+            Idle = Globals.content.Load<SkinnedModel>("Animations/melisa_idle4");
+            Atak = Globals.content.Load<SkinnedModel>("Animations/melisa_atak3");
+            Run = Globals.content.Load<SkinnedModel>("Animations/melisa_run3");
             SpecialAttack = Globals.content.Load<SkinnedModel>("Animations/melisa_stun_eksport");
 
             //Idle
@@ -55,7 +55,7 @@ namespace TheGame
             //Attack
             AAttack = new AnimationPlayer(Atak);
             AAttack.Animation = Atak.Animations[0];
-            AAttack.PlaybackSpeed = 0.5f;
+            AAttack.PlaybackSpeed = 1f;
             AAttack.IsPlaying = false;
             AAttack.IsLooping = false;
             AAttack.CurrentTime = 1.0f;

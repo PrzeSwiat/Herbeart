@@ -42,7 +42,7 @@ namespace TheGame
             this.setBSRadius(3);
             setBSposition(2);
 
-            AssignParameters(300, 1, 20, 0.8f);
+            AssignParameters(3000, 1, 70, 0.8f);
             playerEffects = new PlayerEffectHandler(this);
             Inventory = new Inventory();
             Crafting = new Crafting(Inventory, playerEffects);
